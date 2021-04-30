@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{17C9BF4D-01DE-48A7-BE38-76064FE59E79}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MonkeyDungeon</RootNamespace>
+    <AssemblyName>MonkeyDungeon</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="isometricgame">
+      <HintPath>..\..\isometricgame\isometricgame\bin\Debug\isometricgame.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK, Version=3.2.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.3.2\lib\net20\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\EntityComponent.cs" />
+    <Compile Include="Components\Implemented\Enemies\Goblins\EC_Goblin.cs" />
+    <Compile Include="Components\Implemented\PlayerClasses\ArcherClass.cs" />
+    <Compile Include="Components\Implemented\PlayerClasses\ClericClass.cs" />
+    <Compile Include="Components\Implemented\PlayerClasses\KnightClass.cs" />
+    <Compile Include="Components\Implemented\PlayerClasses\MonkClass.cs" />
+    <Compile Include="Components\Implemented\PlayerClasses\WarriorClass.cs" />
+    <Compile Include="Components\Implemented\PlayerClasses\WizardClass.cs" />
+    <Compile Include="GameFeatures\Ability.cs" />
+    <Compile Include="GameFeatures\EntityController.cs" />
+    <Compile Include="GameFeatures\CombatAction.cs" />
+    <Compile Include="GameFeatures\Damage.cs" />
+    <Compile Include="GameFeatures\EntityResourceBonus.cs" />
+    <Compile Include="GameFeatures\EntityRoster.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\Ability_ChaosBolt.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\Ability_HealingTail.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\Ability_KiKick.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\Ability_StandGuard.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\MagicAbility.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\MeleeAbility.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\RangedAbility.cs" />
+    <Compile Include="GameFeatures\Implemented\ActingEntities\ActingEntity_AI.cs" />
+    <Compile Include="GameFeatures\Implemented\ActingEntities\ActingEntity_Player.cs" />
+    <Compile Include="GameFeatures\Implemented\CharacterStats\Agility.cs" />
+    <Compile Include="GameFeatures\Implemented\CharacterStats\EntityStat.cs" />
+    <Compile Include="GameFeatures\Implemented\CharacterStats\Smartypants.cs" />
+    <Compile Include="GameFeatures\Implemented\CharacterStats\Stinkiness.cs" />
+    <Compile Include="GameFeatures\Implemented\CharacterStats\Strength.cs" />
+    <Compile Include="GameFeatures\Implemented\EntityResources\Level.cs" />
+    <Compile Include="GameFeatures\Implemented\Exceptions\EntityStat_NotFound_Exception.cs" />
+    <Compile Include="GameFeatures\Implemented\Exceptions\Entity_NotBound_Exception.cs" />
+    <Compile Include="GameFeatures\Implemented\GameStates\Combat.cs" />
+    <Compile Include="GameFeatures\EntityResource.cs" />
+    <Compile Include="GameFeatures\GameStateHandler.cs" />
+    <Compile Include="GameFeatures\GameWorld_StateMachine.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\Ability_ApeShit.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\Ability_BanannaRang.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\Ability_PoopyFling.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\Ability_Punch.cs" />
+    <Compile Include="GameFeatures\Implemented\EntityResources\Health.cs" />
+    <Compile Include="GameFeatures\Implemented\EntityResources\Mana.cs" />
+    <Compile Include="GameFeatures\Implemented\EntityResources\Stamina.cs" />
+    <Compile Include="GameFeatures\Implemented\GameStates\Shopping.cs" />
+    <Compile Include="GameFeatures\Implemented\GameStates\Traveling.cs" />
+    <Compile Include="GameFeatures\Implemented\StatusEffects\StatusEffect_Dead.cs" />
+    <Compile Include="GameFeatures\Implemented\StatusEffects\StatusEffect_Petrified.cs" />
+    <Compile Include="GameFeatures\Resistance.cs" />
+    <Compile Include="GameFeatures\ScalingValue.cs" />
+    <Compile Include="GameFeatures\StatusEffect.cs" />
+    <Compile Include="GameSystems\EntityComponentFactory.cs" />
+    <Compile Include="MonkeyGame.cs" />
+    <Compile Include="Physics\PrimitiveHitbox.cs" />
+    <Compile Include="Prefabs\Entities\CreatureGameObject.cs" />
+    <Compile Include="Prefabs\Entities\Enemies\Goblin.cs" />
+    <Compile Include="Prefabs\Entities\Player.cs" />
+    <Compile Include="Prefabs\UI\Button.cs" />
+    <Compile Include="Prefabs\UI\ResourceBar.cs" />
+    <Compile Include="Prefabs\UI\StatusBar.cs" />
+    <Compile Include="Prefabs\UI\TextField.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scenes\GameScenes\GameScene.cs" />
+    <Compile Include="Scenes\GameScenes\UI_Base_Layer.cs" />
+    <Compile Include="Scenes\GameScenes\UI_Combat_Layer.cs" />
+    <Compile Include="Scenes\GameScenes\WorldLayer.cs" />
+    <Compile Include="Scenes\GameScenes\UI_StateBased_Layer.cs" />
+    <Compile Include="Scenes\GameScenes\UI_Shopping_Layer.cs" />
+    <Compile Include="Scenes\Menus\FindGame_Layer.cs" />
+    <Compile Include="Scenes\Menus\GreetingMenu_Layer.cs" />
+    <Compile Include="Scenes\Menus\MainMenu_Layer.cs" />
+    <Compile Include="Scenes\Menus\MainMenuScene.cs" />
+    <Compile Include="Scenes\Menus\NewGame_Layer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Assets\Shaders\shader_Scale.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\Shaders\shader_Scale.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\Shaders\shader.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\Shaders\shader.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenTK.dll.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Assets\button.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\creationMenu.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\gamefont.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\GoblinBody.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\GoblinHead.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\resourceBar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\mainMenu.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\MonkeyBody.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\MonkeyUnique.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\MonkeyHead.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\statusBar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\targetButton.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
