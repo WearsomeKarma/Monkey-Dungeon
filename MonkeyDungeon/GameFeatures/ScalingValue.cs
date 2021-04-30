@@ -8,25 +8,25 @@ namespace MonkeyDungeon.GameFeatures
 {
     public class ScalingValue
     {
-        public readonly float InitalValue;
+        public readonly float Inital_Value;
         public float Value { get; private set; }
-        public float ScalingRate { get; private set; }
-        public void ChangeScalingRate(float rate) { ScalingRate = rate; Adjust(); }
-        public int ScalingLevel { get; private set; }
-        public void ChangeScalingLevel(int level) { ScalingLevel = level; Adjust(); }
+        public float Scaling_Rate { get; private set; }
+        public void Change_ScalingRate(float rate) { Scaling_Rate = rate; Adjust(); }
+        public int Scaling_Level { get; private set; }
+        public void Change_ScalingLevel(int level) { Scaling_Level = level; Adjust(); }
 
         public ScalingValue(float initalValue, int level, float rate)
         {
-            InitalValue = initalValue;
+            Inital_Value = initalValue;
             Value = initalValue;
-            ScalingRate = rate;
-            ScalingLevel = level;
+            Scaling_Rate = rate;
+            Scaling_Level = level;
             Adjust();
         }
 
         private void Adjust()
         {
-            Value = ScalingLevel * ScalingRate + InitalValue;
+            Value = (Scaling_Level * Scaling_Rate) + Inital_Value;
         }
 
         public static implicit operator float(ScalingValue sv) => sv.Value;

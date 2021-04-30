@@ -27,7 +27,7 @@ namespace MonkeyDungeon.GameFeatures.Implemented.CharacterStats
             return new EntityStat(
                 Resource_Name,
                 Get_BaseValue(),
-                Max_Value.ScalingRate,
+                Max_Value.Scaling_Rate,
                 Max_Value.Value
                 );
         }

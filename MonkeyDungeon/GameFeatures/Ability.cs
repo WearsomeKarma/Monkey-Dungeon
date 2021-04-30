@@ -100,7 +100,7 @@ namespace MonkeyDungeon.GameFeatures
         public override string ToString()
         {
             return string.Format(
-                "Name: {0} Output: {1}",
+                "Name: {0} \tOutput: {1}",
                 Ability_Name,
                 Get_RelevantOutput()
                 );

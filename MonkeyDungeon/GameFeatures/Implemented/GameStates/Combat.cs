@@ -40,6 +40,7 @@ namespace MonkeyDungeon.GameFeatures.Implemented.GameStates
             : base(stateBegun, stateConcluded)
         {
             TurnHasBegun += turnBegun;
+            TurnOffset = 1;
         }
 
         private List<EntityComponent> DictateTurnOrder(List<EntityComponent> initalParticipants)
@@ -86,11 +87,11 @@ namespace MonkeyDungeon.GameFeatures.Implemented.GameStates
         }
 
         public void TakeAnExtraTurn() => TurnOffset = 0;
-        private void NormalizedTurnProgression() => TurnOffset = 1;
+        private void Normalize_TurnProgression() => TurnOffset = 1;
         private void Progress_TurnOrder()
         {
             TurnIndex = (TurnIndex + TurnOffset) % TurnOrder.Count;
-            NormalizedTurnProgression();
+            Normalize_TurnProgression();
         }
 
         public void Request_EndOfTurn()

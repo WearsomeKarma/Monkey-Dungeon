@@ -20,7 +20,11 @@ namespace MonkeyDungeon.GameFeatures.Implemented.Abilities
 
         protected override void Handle_AbilityUsage(CombatAction action)
         {
-            ImplementedHandle_DealDamage(action);
+            action.Target.DealDamage_ToThis(
+                new Damage(
+                    DamageType.Physical, 
+                    Get_RelevantOutput() * 0.25f
+                    ));
         }
 
         protected override float Get_AbilityResourceCost()

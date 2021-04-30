@@ -35,9 +35,8 @@ namespace MonkeyDungeon.GameFeatures
         }
         internal CombatAction Get_CombatAction(Combat_GameState combat)
         {
-            if (!Entity.Has_PlayableMoves(combat))
+            if (Entity.CheckIf_IsTurnUnplayable(combat))
             {
-                combat.Request_EndOfTurn();
                 return null;
             }
 

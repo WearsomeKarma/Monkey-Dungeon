@@ -143,7 +143,7 @@ namespace MonkeyDungeon.GameFeatures
         protected virtual void HandleLevelChange()
         {
             int? level = Entity?.Level;
-            Max_Value.ChangeScalingLevel((level != null) ? (int)level : 1);
+            Max_Value.Change_ScalingLevel(level ?? 1);
         }
 
         internal float Offset(float offset)
@@ -238,7 +238,7 @@ namespace MonkeyDungeon.GameFeatures
 
         internal virtual void Combat_BeginTurn_ReplenishResource(Combat_GameState combat)
         {
-            baseValue += HandleCombat_BeginTurn_ReplenishResource(combat);
+            offset_Total_ByValue(HandleCombat_BeginTurn_ReplenishResource(combat));
         }
         
         protected virtual float HandleCombat_BeginTurn_ReplenishResource(Combat_GameState combat) { return Rate_Replenish; }
@@ -254,8 +254,8 @@ namespace MonkeyDungeon.GameFeatures
                 Max_Value, 
                 Min_Value, 
                 Rate_Replenish, 
-                Max_Value.ScalingRate,
-                Min_Value.ScalingRate);
+                Max_Value.Scaling_Rate,
+                Min_Value.Scaling_Rate);
             return clone;
         }
     }

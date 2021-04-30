@@ -79,7 +79,7 @@ namespace MonkeyDungeon.Components
             return usageCheck;
         }
 
-        private EntityResource Ability_PointPool        = new EntityResource("Ability_PointPool", 4, 4, 0, 4, 0);
+        private EntityResource Ability_PointPool        = new EntityResource("Ability_PointPool", 2, 2, 0, 2, 0);
         public int Ability_PointPool_Count              => (int)Ability_PointPool.Resource_Value;
         internal bool TryPay_Ability_PointPool          (int amount, bool peek = false) => Ability_PointPool.TryPay(amount, peek);
 
@@ -109,7 +109,7 @@ namespace MonkeyDungeon.Components
             foreach (Resistance resistance in resistances)
                 Resistances.Add(resistance);
             Set_ActingEntity(controller);
-            SetLevel(level);
+            Init(level);
         }
 
         public EntityComponent(string race = null)
@@ -125,9 +125,6 @@ namespace MonkeyDungeon.Components
         private void Init(int level = 1)
         {
             Ability_PointPool.Attach_ToEntity(this);
-            Resistances.Add(new Resistance(DamageType.Magical, 1));
-            Resistances.Add(new Resistance(DamageType.Physical, 1));
-            Resistances.Add(new Resistance(DamageType.Poison, 1));
             SetLevel(level);
         }
         
@@ -262,7 +259,7 @@ namespace MonkeyDungeon.Components
             foreach (EntityResource re in Resources)
                 r += string.Format("[{0}:{1}]", re.Resource_Name, re.Resource_Value);
             string ec_s = string.Format(
-                "Name: {0},\nResources: {1}",
+                "Name: {0} \tResources: <{1}>",
                 Name,
                 r
                 );
