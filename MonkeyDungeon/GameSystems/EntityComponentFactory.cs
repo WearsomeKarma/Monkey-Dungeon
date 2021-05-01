@@ -52,12 +52,12 @@ namespace MonkeyDungeon.GameSystems
             return null;
         }
 
-        public void Bind_NewEntityComponent(CreatureGameObject obj, string ec_typeName, EntityController actingEntity = null)
+        public EntityComponent New_EntityComponent(string ec_typeName, EntityController actingEntity = null)
         {
             EntityComponent ec = GetNew_EntityComponent<EntityComponent>(ec_typeName);
             if (actingEntity != null)
                 ec.Set_ActingEntity(actingEntity);
-            obj.EntityComponent = ec;
+            return ec;
         }
     }
 }

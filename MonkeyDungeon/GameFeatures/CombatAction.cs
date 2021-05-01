@@ -1,5 +1,6 @@
 ﻿using MonkeyDungeon.Components;
 using MonkeyDungeon.GameFeatures.Implemented.GameStates;
+using MonkeyDungeon.Scenes.GameScenes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,12 @@ namespace MonkeyDungeon.GameFeatures
 {
     public class CombatAction
     {
+        public GameScene GameScene { get; private set; }
+
         public EntityComponent Owner_OfCombatAction { get; internal set; }
+
         public EntityComponent Target { get; internal set; }
+
         public bool HasTarget => Target != null;
     
         public string CombatAction_Ability_Name { get; private set; }
@@ -36,25 +41,26 @@ namespace MonkeyDungeon.GameFeatures
             &&
             (!Requires_Target || HasTarget);
 
-        public CombatAction(EntityComponent ownerOfCombatAction = null, EntityComponent target = null)
-        {
-            Owner_OfCombatAction = ownerOfCombatAction;
-            Target = target;
-        }
 
-        public CombatAction(EntityComponent ownerOfCombatAction, string abilityName, EntityComponent target = null)
+
+
+        public CombatAction(
+            GameScene gameScene
+            )
         {
-            Owner_OfCombatAction = ownerOfCombatAction;
-            Target = target;
-            Set_Ability(abilityName);
+            GameScene = gameScene;
         }
 
         public CombatAction(CombatAction action)
         {
+            GameScene = action.GameScene;
             Owner_OfCombatAction = action.Owner_OfCombatAction;
             Target = action.Target;
             Set_Ability(action.CombatAction_Ability_Name);
         }
+
+
+
 
         internal bool Conduct_Action(Combat_GameState combat)
         {

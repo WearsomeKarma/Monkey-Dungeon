@@ -17,7 +17,7 @@ namespace MonkeyDungeon.GameFeatures.Implemented.CharacterStats
 
     public class EntityStat : EntityResource
     {
-        public EntityStat(string statName, float baseValue, float maxProgresionRate, float max=-1) 
+        public EntityStat(string statName, double baseValue, double maxProgresionRate, double max =-1) 
             : base(statName, baseValue, (max < 0 ? baseValue : max), 0, 0, maxProgresionRate, 0)
         {
         }

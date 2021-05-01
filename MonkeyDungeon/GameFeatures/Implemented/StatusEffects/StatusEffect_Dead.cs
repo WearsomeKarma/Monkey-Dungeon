@@ -15,9 +15,15 @@ namespace MonkeyDungeon.GameFeatures.Implemented.StatusEffects
         {
         }
 
-        protected override void HandleNewOwner(EntityComponent target)
+        protected override void Handle_LoseOwner(EntityComponent oldOwner)
+        {
+            oldOwner?.Remove_StatusEffect(this);
+        }
+
+        protected override void Handle_NewOwner(EntityComponent target)
         {
             target?.Remove_All_StatusEffects();
+            target?.Set_IncapacitatedState();
         }
 
         protected override void HandleCombat_BeginTurn_StatusEffect(Combat_GameState combat)

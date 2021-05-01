@@ -30,18 +30,12 @@ namespace MonkeyDungeon.GameFeatures
             TurnDuration = duration;
         }
 
-        internal void MakeOwnerLess()
-        {
-            EffectedEntity = null;
-            ToggleThisEffect(false);
-        }
-
-        internal void ToggleThisEffect(bool state)
+        internal void Toggle_ThisEffect(bool state)
         {
             ToggleThisEffect((state) ? 1 : -1);
         }
 
-        internal void ToggleThisEffect()
+        internal void Toggle_ThisEffect()
         {
             ToggleThisEffect(0);
         }
@@ -57,19 +51,18 @@ namespace MonkeyDungeon.GameFeatures
 
         }
 
-        internal void GiveThisEffect_NewOwner(EntityComponent target, bool enabled = true)
+        internal void Remove_Owner(bool enabled = false) => Set_NewOwner(null, enabled);
+        internal void Set_NewOwner(EntityComponent target, bool enabled = true)
         {
-            EntityComponent oldOwner = EffectedEntity;
+            if (EffectedEntity != null)
+                Handle_LoseOwner(EffectedEntity);
             EffectedEntity = target;
-            if (enabled != Enabled)
-                ToggleThisEffect(enabled);
-            HandleNewOwner(oldOwner);
+            Toggle_ThisEffect(enabled);
+            Handle_NewOwner(target);
         }
 
-        protected virtual void HandleNewOwner(EntityComponent oldOwner)
-        {
-
-        }
+        protected virtual void Handle_NewOwner(EntityComponent newOwner) { }
+        protected virtual void Handle_LoseOwner(EntityComponent oldOwner) { }
 
         internal void Combat_BeginTurn_StatusEffect(Combat_GameState combat)
         {

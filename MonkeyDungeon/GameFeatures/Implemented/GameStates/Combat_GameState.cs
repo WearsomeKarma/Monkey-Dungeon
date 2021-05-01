@@ -15,7 +15,7 @@ namespace MonkeyDungeon.GameFeatures.Implemented.GameStates
         OutOfCombat
     }
 
-    public class Combat_GameState : GameStateHandler
+    public class Combat_GameState : GameState
     {
         public CombatState CombatState { get; private set; }
         
@@ -27,13 +27,16 @@ namespace MonkeyDungeon.GameFeatures.Implemented.GameStates
         /// If 1 - normal turn progresion. If 0 - current entity is taking another turn.
         /// </summary>
         public int TurnOffset { get; private set; }
+
         public List<EntityComponent> TurnOrder { get; private set; }
         public EntityComponent Entity_OfCurrentTurn => TurnOrder[TurnIndex];
+        public int Entity_OfCurrentTurn_Id => Entity_OfCurrentTurn.Scene_GameObject_ID;
         internal event Action<EntityController> TurnHasBegun;
 
         internal CombatAction PendingCombatAction { get; private set; }
 
         public EntityComponent[] Players => GameWorld.PlayerRoster.Entities;
+        public EntityComponent[] ConsciousPlayers { get { List<EntityComponent> cp = new List<EntityComponent>(); foreach (EntityComponent player in Players) if (!player.IsIncapacitated) cp.Add(player); return cp.ToArray(); } }
         public EntityComponent[] Enemies => GameWorld.EnemyRoster.Entities;
 
         public Combat_GameState(Action stateBegun, Action stateConcluded, Action<EntityController> turnBegun) 
@@ -43,12 +46,28 @@ namespace MonkeyDungeon.GameFeatures.Implemented.GameStates
             TurnOffset = 1;
         }
 
-        private List<EntityComponent> DictateTurnOrder(List<EntityComponent> initalParticipants)
+        private void DictateTurnOrder()
         {
-            return initalParticipants;
+            TurnOrder = new List<EntityComponent>();
+
+            EntityComponent[] players = Players;
+            EntityComponent[] enemies = Enemies;
+
+            for(int i=0;i< players.Length;i++)
+            {
+                TurnOrder.Add(players[i]);
+                players[i].Scene_GameObject_ID = i;
+                players[i].Initative_Position = i;
+            }
+            for(int i=0;i<enemies.Length;i++)
+            {
+                TurnOrder.Add(enemies[i]);
+                enemies[i].Scene_GameObject_ID = GameWorld_StateMachine.MAX_TEAM_SIZE + i;
+                enemies[i].Initative_Position = GameWorld_StateMachine.MAX_TEAM_SIZE + i;
+            }
         }
         
-        protected override void HandleUpdateState(GameWorld_StateMachine gameWorld, double deltaTime)
+        protected override void Handle_UpdateState(GameWorld_StateMachine gameWorld)
         {
             switch(CombatState)
             {
@@ -56,6 +75,16 @@ namespace MonkeyDungeon.GameFeatures.Implemented.GameStates
                     BeginTurn();
                     break;
                 case CombatState.PlayCurrentTurn:
+                    if (Is_EnemyTeam_Incapacitated())
+                    {
+                        GameWorld.Request_Transition_ToState<Traveling_GameState>();
+                        break;
+                    }
+                    if (Is_AllyTeam_Incapacitated())
+                    {
+                        GameWorld.Request_Transition_ToState<GameOver_GameState>();
+                        break;
+                    }
                     CombatAction action = Entity_OfCurrentTurn.EntityController.Get_CombatAction(this);
                     if (action != null)
                     {
@@ -99,28 +128,45 @@ namespace MonkeyDungeon.GameFeatures.Implemented.GameStates
             CombatState = CombatState.FinishCurrentTurn;
         }
 
-        protected override void BeginState(GameWorld_StateMachine gameWorld)
+        protected override void Handle_BeginState(GameWorld_StateMachine gameWorld)
         {
-            List<EntityComponent> entities = new List<EntityComponent>();
-            entities.AddRange(gameWorld.PlayerRoster.Entities);
-            gameWorld.SetEnemyRoster(GenerateNewEnemies().ToArray());
-            entities.AddRange(gameWorld.EnemyRoster.Entities);
+            List<EntityComponent> enemies = GenerateNewEnemies();
+            gameWorld.SetEnemyRoster(enemies.ToArray());
 
             CombatState = CombatState.BeginNextTurn;
 
-            TurnOrder = DictateTurnOrder(entities);
+            DictateTurnOrder();
         }
 
-        protected override void EndState(GameWorld_StateMachine gameWorld)
+        protected override void Handle_EndState(GameWorld_StateMachine gameWorld)
         {
             GenerateNewEnemies();
+        }
+
+        internal bool Is_AllyTeam_Incapacitated()
+        {
+            bool ret = true;
+            foreach (EntityComponent player in Players)
+                ret = ret && player.IsIncapacitated;
+            return ret;
+        }
+
+        internal bool Is_EnemyTeam_Incapacitated()
+        {
+            bool ret = true;
+            foreach (EntityComponent enemy in Enemies)
+                ret = ret && enemy.IsIncapacitated;
+            return ret;
         }
 
         private List<EntityComponent> GenerateNewEnemies()
         {
             return new List<EntityComponent>()
             {
-                new EC_Goblin(1)
+                new EC_Goblin(100),
+                new EC_Goblin(100),
+                new EC_Goblin(100),
+                new EC_Goblin(100)
             };
         }
     }

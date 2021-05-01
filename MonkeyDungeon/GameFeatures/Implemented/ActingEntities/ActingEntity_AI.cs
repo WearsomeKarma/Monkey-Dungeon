@@ -18,10 +18,16 @@ namespace MonkeyDungeon.GameFeatures.Implemented.ActingEntities
         protected override CombatAction Handle_CombatAction_Request(Combat_GameState combat)
         {
             Random rand = new Random();
-            EntityComponent[] players = combat.Players;
+            EntityComponent[] players = combat.ConsciousPlayers;
             EntityComponent target = players[rand.Next(players.Length)];
-            
-            return new CombatAction(Entity, Ability_Punch.NAME_PUNCH, target);
+
+            //TODO: make combat ref GameScene
+            CombatAction ca = new CombatAction(combat.GameWorld.GameScene);
+            ca.Owner_OfCombatAction = Entity;
+            ca.Target = target;
+            ca.Set_Ability(Ability_Punch.NAME_PUNCH);
+
+            return ca;
         }
     }
 }

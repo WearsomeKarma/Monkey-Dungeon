@@ -61,6 +61,7 @@ namespace MonkeyDungeon
 
             LoadSprite("statusBar", 1.25f, 400, 300);
             LoadSprite("resourceBar", 1, 128, 16);
+            LoadSprite("announcement", 1, 300, 200);
 
             foreach (string name in ENTITIES)
                 LoadEntity(name);

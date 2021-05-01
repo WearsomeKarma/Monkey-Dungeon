@@ -5,6 +5,7 @@ using isometricgame.GameEngine.Rendering;
 using isometricgame.GameEngine.Scenes;
 using isometricgame.GameEngine.Systems.Rendering;
 using MonkeyDungeon.Components;
+using MonkeyDungeon.Components.Implemented.PlayerClasses;
 using MonkeyDungeon.GameFeatures;
 using MonkeyDungeon.GameFeatures.Implemented.ActingEntities;
 using MonkeyDungeon.Prefabs.Entities;
@@ -104,8 +105,13 @@ namespace MonkeyDungeon.Scenes.Menus
 
         private void CreatePlayer_BeginGame()
         {
-            monkeyGame.EntityComponentFactory.Bind_NewEntityComponent(player, Player.CLASSES[player.ClassId], new ActingEntity_Player());
-            gameScene.GameWorld.PlayerRoster = new EntityRoster(new EntityComponent[] { player.EntityComponent });
+            gameScene.GameWorld.PlayerRoster = new EntityRoster(new EntityComponent[]
+            {
+                monkeyGame.EntityComponentFactory.New_EntityComponent(Player.CLASSES[player.ClassId], new ActingEntity_Player()),
+                monkeyGame.EntityComponentFactory.New_EntityComponent(ArcherClass.CLASS_NAME, new ActingEntity_Player()),
+                monkeyGame.EntityComponentFactory.New_EntityComponent(ClericClass.CLASS_NAME, new ActingEntity_Player()),
+                monkeyGame.EntityComponentFactory.New_EntityComponent(WizardClass.CLASS_NAME, new ActingEntity_Player()),
+            });
             Game.SceneManagementService.SetScene("gameScene");
         }
 

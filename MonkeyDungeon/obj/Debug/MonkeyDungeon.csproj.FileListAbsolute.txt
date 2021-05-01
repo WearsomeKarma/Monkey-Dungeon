@@ -28,3 +28,4 @@ C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon\bin\Debug\Assets\Sha
 C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon\bin\Debug\Assets\MonkeyBody.png
 C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon\bin\Debug\Assets\MonkeyUnique.png
 C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon\bin\Debug\Assets\MonkeyHead.png
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon\bin\Debug\Assets\announcement.png

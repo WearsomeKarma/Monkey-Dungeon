@@ -11,7 +11,7 @@ namespace MonkeyDungeon.GameFeatures
     {
         public readonly float InitalValue;
 
-        public float Value { get; private set; }
+        public double Value { get; private set; }
         public bool IsDepleted => Value <= 0;
         public event Action<EntityResourceBonus> Manipulated;
 
@@ -46,10 +46,10 @@ namespace MonkeyDungeon.GameFeatures
         /// </summary>
         /// <param name="offset"></param>
         /// <returns></returns>
-        internal float Offset_Bonus(float offset)
+        internal double Offset_Bonus(double offset)
         {
-            float diff = Value + offset;
-            float clampDiff = MathHelper.Clamp(diff, 0, InitalValue);
+            double diff = Value + offset;
+            double clampDiff = MathHelper.Clampd(diff, 0, InitalValue);
 
             //constraint
             Value = clampDiff;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MonkeyDungeon.GameFeatures.Implemented.GameStates
 {
-    public class Traveling_GameState : GameStateHandler
+    public class Traveling_GameState : GameState
     {
         Timer timer = new Timer(1f);
 
@@ -16,21 +16,19 @@ namespace MonkeyDungeon.GameFeatures.Implemented.GameStates
         {
         }
 
-        protected override void BeginState(GameWorld_StateMachine gameWorld)
+        protected override void Handle_BeginState(GameWorld_StateMachine gameWorld)
         {
             timer.Set();
         }
 
-        protected override void EndState(GameWorld_StateMachine gameWorld)
+        protected override void Handle_EndState(GameWorld_StateMachine gameWorld)
         {
 
         }
 
-        protected override void HandleUpdateState(GameWorld_StateMachine gameWorld, double deltaTime)
+        protected override void Handle_UpdateState(GameWorld_StateMachine gameWorld)
         {
-            timer.DeltaTime((float)deltaTime);
-            if (timer.Finished)
-                gameWorld.Request_Transition_ToState<Combat_GameState>();
+            gameWorld.Request_Transition_ToState<Combat_GameState>();
         }
     }
 }

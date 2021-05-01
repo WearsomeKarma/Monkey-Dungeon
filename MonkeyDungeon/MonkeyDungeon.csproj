@@ -58,6 +58,8 @@
     <Compile Include="Components\Implemented\PlayerClasses\MonkClass.cs" />
     <Compile Include="Components\Implemented\PlayerClasses\WarriorClass.cs" />
     <Compile Include="Components\Implemented\PlayerClasses\WizardClass.cs" />
+    <Compile Include="Events\GameEvent.cs" />
+    <Compile Include="Events\Implemented\MeleeEvent.cs" />
     <Compile Include="GameFeatures\Ability.cs" />
     <Compile Include="GameFeatures\EntityController.cs" />
     <Compile Include="GameFeatures\CombatAction.cs" />
@@ -81,9 +83,9 @@
     <Compile Include="GameFeatures\Implemented\EntityResources\Level.cs" />
     <Compile Include="GameFeatures\Implemented\Exceptions\EntityStat_NotFound_Exception.cs" />
     <Compile Include="GameFeatures\Implemented\Exceptions\Entity_NotBound_Exception.cs" />
-    <Compile Include="GameFeatures\Implemented\GameStates\Combat.cs" />
+    <Compile Include="GameFeatures\Implemented\GameStates\Combat_GameState.cs" />
     <Compile Include="GameFeatures\EntityResource.cs" />
-    <Compile Include="GameFeatures\GameStateHandler.cs" />
+    <Compile Include="GameFeatures\GameState.cs" />
     <Compile Include="GameFeatures\GameWorld_StateMachine.cs" />
     <Compile Include="GameFeatures\Implemented\Abilities\Ability_ApeShit.cs" />
     <Compile Include="GameFeatures\Implemented\Abilities\Ability_BanannaRang.cs" />
@@ -92,8 +94,9 @@
     <Compile Include="GameFeatures\Implemented\EntityResources\Health.cs" />
     <Compile Include="GameFeatures\Implemented\EntityResources\Mana.cs" />
     <Compile Include="GameFeatures\Implemented\EntityResources\Stamina.cs" />
-    <Compile Include="GameFeatures\Implemented\GameStates\Shopping.cs" />
-    <Compile Include="GameFeatures\Implemented\GameStates\Traveling.cs" />
+    <Compile Include="GameFeatures\Implemented\GameStates\GameOver_GameState.cs" />
+    <Compile Include="GameFeatures\Implemented\GameStates\Shopping_GameState.cs" />
+    <Compile Include="GameFeatures\Implemented\GameStates\Traveling_GameState.cs" />
     <Compile Include="GameFeatures\Implemented\StatusEffects\StatusEffect_Dead.cs" />
     <Compile Include="GameFeatures\Implemented\StatusEffects\StatusEffect_Petrified.cs" />
     <Compile Include="GameFeatures\Resistance.cs" />
@@ -105,7 +108,10 @@
     <Compile Include="Prefabs\Entities\CreatureGameObject.cs" />
     <Compile Include="Prefabs\Entities\Enemies\Goblin.cs" />
     <Compile Include="Prefabs\Entities\Player.cs" />
+    <Compile Include="Prefabs\Components\GameAnnouncement_MovementController.cs" />
+    <Compile Include="Prefabs\UI\AnnouncementMessage.cs" />
     <Compile Include="Prefabs\UI\Button.cs" />
+    <Compile Include="Prefabs\Components\MovementController.cs" />
     <Compile Include="Prefabs\UI\ResourceBar.cs" />
     <Compile Include="Prefabs\UI\StatusBar.cs" />
     <Compile Include="Prefabs\UI\TextField.cs" />
@@ -140,8 +146,13 @@
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <Folder Include="Prefabs\UI\MovementControllers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\announcement.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\button.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

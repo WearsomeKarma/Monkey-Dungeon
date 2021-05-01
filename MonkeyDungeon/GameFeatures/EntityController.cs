@@ -1,5 +1,6 @@
 ﻿using MonkeyDungeon.Components;
 using MonkeyDungeon.GameFeatures.Implemented.GameStates;
+using MonkeyDungeon.Scenes.GameScenes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,14 @@ namespace MonkeyDungeon.GameFeatures
         public EntityComponent Entity { get; private set; }
 
         internal CombatAction PendingCombatAction { get; private set; }
-        internal void Setup_CombatAction_Ability(string abilityName)
+        internal void Setup_CombatAction_Ability(GameScene gameScene, Combat_GameState combat, string abilityName)
         {
-            if(!IsAutomonous)
-                PendingCombatAction = new CombatAction(Entity, abilityName);
+            if (!IsAutomonous)
+            {
+                PendingCombatAction = new CombatAction(gameScene);
+                PendingCombatAction.Owner_OfCombatAction = combat.Entity_OfCurrentTurn;
+                PendingCombatAction.Set_Ability(abilityName);
+            }
         }
         internal void Setup_CombatAction_Target(EntityComponent target)
         {

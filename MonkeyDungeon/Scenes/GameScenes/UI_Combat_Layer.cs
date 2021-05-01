@@ -2,6 +2,7 @@
 using isometricgame.GameEngine.Events.Arguments;
 using isometricgame.GameEngine.Scenes;
 using isometricgame.GameEngine.Systems.Rendering;
+using isometricgame.GameEngine.Tools;
 using MonkeyDungeon.Components;
 using MonkeyDungeon.GameFeatures;
 using MonkeyDungeon.GameFeatures.Implemented.GameStates;
@@ -18,7 +19,10 @@ namespace MonkeyDungeon.Scenes.GameScenes
 {
     public class UI_Combat_Layer : UI_StateBased_Layer
     {
+        private GameScene GameScene { get; set; }
+
         private EntityController turnController;
+        private int entity_TurnOf_Id;
 
         private Button[] abilityButtons;
         private Button[] targetEnemyButtons;
@@ -43,10 +47,11 @@ namespace MonkeyDungeon.Scenes.GameScenes
         }
 
         private Combat_GameState Combat { get; set; }
-
-        public UI_Combat_Layer(Scene parentScene, Combat_GameState combat)
+        
+        public UI_Combat_Layer(GameScene parentScene, Combat_GameState combat)
             : base(parentScene, typeof(Combat_GameState))
         {
+            GameScene = parentScene;
             Combat = combat;
 
             Add_StaticObject(
@@ -161,10 +166,10 @@ namespace MonkeyDungeon.Scenes.GameScenes
         {
 
         }
-
+        
         private void UseAbility(int index)
         {
-            turnController.Setup_CombatAction_Ability(abilityNames[index]);
+            turnController.Setup_CombatAction_Ability(GameScene, Combat, abilityNames[index]);
         }
 
         private void SelectEnemy(int index)

@@ -18,7 +18,7 @@ namespace MonkeyDungeon.GameFeatures.Implemented.Abilities
         {
         }
 
-        protected override float Get_AbilityResourceCost()
+        protected override double Get_AbilityResourceCost()
         {
             return Resource_Value * 0.05f;
         }

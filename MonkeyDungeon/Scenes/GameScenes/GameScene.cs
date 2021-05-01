@@ -2,6 +2,7 @@
 using isometricgame.GameEngine.Events.Arguments;
 using isometricgame.GameEngine.Scenes;
 using isometricgame.GameEngine.Systems.Rendering;
+using isometricgame.GameEngine.Tools;
 using MonkeyDungeon.GameFeatures;
 using MonkeyDungeon.GameFeatures.Implemented.GameStates;
 using System;
@@ -27,16 +28,21 @@ namespace MonkeyDungeon.Scenes.GameScenes
         private Combat_GameState Combat_GameState { get; set; }
         private Shopping_GameState Shopping_GameState { get; set; }
         private Traveling_GameState Traveling_GameState { get; set; }
+        private GameOver_GameState GameOver_GameState { get; set; }
+        
+        internal EventScheduler EventScheduler { get; set; }
 
         public GameScene(Game game) 
             : base(game)
         {
+            EventScheduler = new EventScheduler();
+
             GameWorld = new GameWorld_StateMachine(
                 this,
-                new GameStateHandler[]
+                new GameState[]
                 {
                     Traveling_GameState = new Traveling_GameState(
-                        () => { }, 
+                        () => { Console.WriteLine("[GameState] Traveling"); }, 
                         () => { }),
                     Combat_GameState = new Combat_GameState(
                         () => Begin_Combat(Combat_GameState), 
@@ -44,15 +50,19 @@ namespace MonkeyDungeon.Scenes.GameScenes
                         (controller) => Begin_CombatTurn(controller)),
                     Shopping_GameState = new Shopping_GameState(
                         () => { }, 
-                        () => { })
+                        () => { }),
+                    GameOver_GameState = new GameOver_GameState(
+                        () => { Console.WriteLine("Game Over."); },
+                        () => { }
+                        )
                 }
                 );
 
             AddLayers(
                 World_Layer = new World_Layer(this, Combat_GameState),
-                UI_Base_Layer = new UI_Base_Layer(this),
                 UI_Combat_Layer = new UI_Combat_Layer(this, Combat_GameState),
-                UI_Shopping_Layer = new UI_Shopping_Layer(this)
+                UI_Shopping_Layer = new UI_Shopping_Layer(this),
+                UI_Base_Layer = new UI_Base_Layer(this)
                 );
             EnableOnlyLayer<World_Layer>();
             EnableLayers<UI_Base_Layer>();
@@ -62,7 +72,9 @@ namespace MonkeyDungeon.Scenes.GameScenes
         
         protected override void Handle_UpdateScene(FrameArgument e)
         {
-            GameWorld.CheckFor_GameState_Transition(e.DeltaTime);
+            EventScheduler.Progress_Events(e.DeltaTime);
+            if (!EventScheduler.IsActive)
+                GameWorld.CheckFor_GameState_Transition();
             base.Handle_UpdateScene(e);
         }
 
@@ -89,8 +101,14 @@ namespace MonkeyDungeon.Scenes.GameScenes
             DisableLayers<UI_Combat_Layer>();
         }
 
+        internal void Act_MeleeAttack(int ownerId, int targetId)
+        {
+            World_Layer.Act_MeleeAttack(ownerId, targetId);
+        }
+
         internal void Announce_Action(CombatAction action)
         {
+            UI_Base_Layer.Announce(action.CombatAction_Ability_Name);
             Console.WriteLine(
                 action
                 );

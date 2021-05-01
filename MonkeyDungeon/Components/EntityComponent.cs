@@ -4,6 +4,7 @@ using MonkeyDungeon.GameFeatures.Implemented.ActingEntities;
 using MonkeyDungeon.GameFeatures.Implemented.CharacterStats;
 using MonkeyDungeon.GameFeatures.Implemented.EntityResources;
 using MonkeyDungeon.GameFeatures.Implemented.GameStates;
+using MonkeyDungeon.Prefabs.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +20,18 @@ namespace MonkeyDungeon.Components
         public string TypeName                          { get; internal set; }
         private int unique_ID                           = 0;
         public int Unique_ID                            { get => unique_ID; internal set => unique_ID = (value >= 0) ? value : 0; }
+        
+        public int Scene_GameObject_ID                  { get; internal set; }
+        public int Initative_Position                   { get; internal set; }
 
         public EntityController EntityController        { get; internal set; }
         public void Set_ActingEntity                    (EntityController newEntity) { EntityController?.LoseControl(); newEntity?.GainControl(this); }
+        private bool incapacitated                      = false;
+        public bool IsIncapacitated                     { get => incapacitated; internal set => Set_IncapacitatedState(value); }
+        internal void Set_IncapacitatedState            (bool value = true) { incapacitated = value; if (value) Handle_Incapacitated(); }
 
         private Level level;
-        public int Level                                { get => (level != null) ? (int)level.Get_BaseValue() : 0; set => SetLevel(value); }
+        public int Level                                { get => (level != null) ? (int)level.Get_BaseValue() : 0; set => Set_Level(value); }
         
         private List<EntityResource> Resources          = new List<EntityResource>();
         public EntityResource[] Get_Resources           () => Resources.ToArray();
@@ -38,7 +45,6 @@ namespace MonkeyDungeon.Components
         public EntityStat[] Get_Stats                   () => Stats.ToArray();
         public T Get_Stat<T>                            (string statName=null) where T : EntityStat { foreach (T stat in Stats) return stat; return null; }
         public EntityStat Get_Stat                      (string statName) => Get_Stat<EntityStat>(statName);
-
         public void Add_Stat                            (EntityStat stat) { Stats.Add(stat); stat.Attach_ToEntity(this); }
 
         private List<Resistance> Resistances            = new List<Resistance>();
@@ -48,12 +54,16 @@ namespace MonkeyDungeon.Components
         //TODO: filter by detremental
         private List<StatusEffect> StatusEffects        = new List<StatusEffect>();
         public StatusEffect[] Get_StatusEffects         () => StatusEffects.ToArray();
-        public void Add_StatusEffect                    (StatusEffect effect) { effect.GiveThisEffect_NewOwner(this); StatusEffects.Add(effect);  }
-        public void Remove_StatusEffect                 (StatusEffect effect) { if (!StatusEffects.Contains(effect)) return; StatusEffects.Remove(effect); effect.MakeOwnerLess(); }
-        public void Remove_All_StatusEffects            () { foreach (StatusEffect effect in StatusEffects) Remove_StatusEffect(effect); }
-        public void Remove_All_StatusEffects_Except<T>  () where T : StatusEffect { foreach (StatusEffect effect in StatusEffects) if (effect is T) Remove_StatusEffect(effect); }
-        public void Disable_StatusEffects<T>            () where T : StatusEffect { foreach (StatusEffect effect in StatusEffects) if (effect is T) effect.ToggleThisEffect(false); }
-        public void Disable_StatusEffect                (StatusEffect effect) { foreach (StatusEffect subEffect in StatusEffects) if (subEffect == effect) effect.ToggleThisEffect(false); }
+        public void Add_StatusEffect                    (StatusEffect effect) { effect.Set_NewOwner(this); StatusEffects.Add(effect);  }
+        public void Remove_StatusEffect                 (StatusEffect effect) { if (!StatusEffects.Contains(effect)) return; StatusEffects.Remove(effect); effect.Remove_Owner(); }
+        public void Remove_All_StatusEffects            () { foreach (StatusEffect effect in StatusEffects.ToList()) Remove_StatusEffect(effect); }
+        public void Remove_All_StatusEffects_Except<T>  () where T : StatusEffect { foreach (StatusEffect effect in StatusEffects.ToList()) if (effect is T) Remove_StatusEffect(effect); }
+        public void Disable_StatusEffects<T>            () where T : StatusEffect { foreach (StatusEffect effect in StatusEffects.ToList()) if (effect is T) effect.Toggle_ThisEffect(false); }
+        public void Disable_StatusEffect                (StatusEffect effect) { foreach (StatusEffect subEffect in StatusEffects.ToList()) if (subEffect == effect) effect.Toggle_ThisEffect(false); }
+
+        private EntityResource Ability_PointPool        = new EntityResource("Ability_PointPool", 2, 2, 0, 2, 0);
+        public int Ability_PointPool_Count              => (int)Ability_PointPool.Resource_Value;
+        internal bool TryPay_Ability_PointPool          (int amount, bool peek = false) => Ability_PointPool.TryPay(amount, peek);
 
         private List<Ability> Abilities                 = new List<Ability>();
         public Ability[] Get_Abilities                  () => Abilities.ToArray();
@@ -78,11 +88,7 @@ namespace MonkeyDungeon.Components
             }
             return usageCheck;
         }
-
-        private EntityResource Ability_PointPool        = new EntityResource("Ability_PointPool", 2, 2, 0, 2, 0);
-        public int Ability_PointPool_Count              => (int)Ability_PointPool.Resource_Value;
-        internal bool TryPay_Ability_PointPool          (int amount, bool peek = false) => Ability_PointPool.TryPay(amount, peek);
-
+        
         public EntityComponent(
             string race,
             string name,
@@ -115,9 +121,6 @@ namespace MonkeyDungeon.Components
         public EntityComponent(string race = null)
         {
             Race = race ?? RACE_NAME_PLAYER;
-            Add_Resource(new Health(1, 1, 0, 0.1f, 1));
-            Add_Resource(new Stamina(1, 1, 0.1f, 1));
-            Add_Resource(new Mana(1, 1, 0.1f, 1));
             Set_ActingEntity(new ActingEntity_AI());
             Init();
         }
@@ -125,24 +128,27 @@ namespace MonkeyDungeon.Components
         private void Init(int level = 1)
         {
             Ability_PointPool.Attach_ToEntity(this);
-            SetLevel(level);
+            Set_Level(level);
         }
         
-        internal void SetLevel(int level)
+        internal void Set_Level(int level)
         {
             if (this.level == null)
             {
                 this.level = new Level(level, 100, 0, 0, 0);
                 this.level.Attach_ToEntity(this);
             }
+            foreach (EntityStat stat in Stats)
+                stat.PerformLevelChange();
             foreach (EntityResource resource in Resources)
                 resource.PerformLevelChange();
+
             Ability_PointPool.PerformLevelChange();
         }
 
-        internal float DealDamage_ToThis(Damage damage)
+        internal float Damage_This(Damage damage)
         {
-            float? difference = Get_ResourceByType<Health>()?.Offset(-damage.Amount * Get_Resistance_Value(damage.DamageType));
+            double? difference = Get_ResourceByType<Health>()?.Offset(-damage.Amount * Get_Resistance_Value(damage.DamageType));
             bool state = difference != null;
             float ret = (difference != null) ? (float)difference : float.NaN;
             if (state)
@@ -150,9 +156,9 @@ namespace MonkeyDungeon.Components
             return ret;
         }
 
-        internal float Recover_This<T>(float amount) where T : EntityResource
+        internal double Recover_This<T>(double amount) where T : EntityResource
         {
-            float diff = 0;
+            double diff = 0;
             foreach (T resource in Resources.OfType<T>())
                 diff += resource.Offset(amount);
             return diff;
@@ -165,7 +171,7 @@ namespace MonkeyDungeon.Components
 
         internal void Combat_BeginTurn(Combat_GameState combat)
         {
-            HandleCombat_BeginTurn_PreUpkeep(combat);
+            Handle_Combat_BeginTurn_PreUpkeep(combat);
             Ability_PointPool.Combat_BeginTurn_ReplenishResource(combat);
 
             foreach (StatusEffect effect in StatusEffects)
@@ -181,12 +187,12 @@ namespace MonkeyDungeon.Components
             if (CheckIf_IsTurnUnplayable(combat))
                 return;
 
-            HandleCombat_BeginTurn_PostUpkeep(combat);
+            Handle_Combat_BeginTurn_PostUpkeep(combat);
         }
 
         internal void Combat_EndTurn(Combat_GameState combat)
         {
-            HandleCombat_EndTurn_Cleanup(combat);
+            Handle_Combat_EndTurn_Cleanup(combat);
         }
 
         internal bool CheckIf_IsTurnUnplayable(Combat_GameState combat)
@@ -230,9 +236,10 @@ namespace MonkeyDungeon.Components
             return ret;
         }
 
-        protected virtual void HandleCombat_BeginTurn_PreUpkeep(Combat_GameState combat) { }
-        protected virtual void HandleCombat_BeginTurn_PostUpkeep(Combat_GameState combat) { }
-        protected virtual void HandleCombat_EndTurn_Cleanup(Combat_GameState combat) { }
+        protected virtual void Handle_Combat_BeginTurn_PreUpkeep(Combat_GameState combat) { }
+        protected virtual void Handle_Combat_BeginTurn_PostUpkeep(Combat_GameState combat) { }
+        protected virtual void Handle_Combat_EndTurn_Cleanup(Combat_GameState combat) { }
+        protected virtual void Handle_Incapacitated() { }
 
         public override GameComponent Clone()
         {

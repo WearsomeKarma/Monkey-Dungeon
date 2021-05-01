@@ -13,7 +13,7 @@ namespace MonkeyDungeon.Scenes.GameScenes
         public Type GameStateHandler_Type { get; private set; }
 
         public UI_StateBased_Layer(Scene parentScene, Type gameStateHandler_Type) 
-            : base(parentScene)
+            : base(parentScene, 1)
         {
             GameStateHandler_Type = gameStateHandler_Type;
         }

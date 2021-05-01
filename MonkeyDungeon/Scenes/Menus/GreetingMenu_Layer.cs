@@ -14,11 +14,13 @@ namespace MonkeyDungeon.Scenes.Menus
 {
     public class GreetingMenu_Layer : MainMenu_Layer
     {
+        GameObject background;
+
         public GreetingMenu_Layer(MainMenuScene parentScene) 
             : base(parentScene)
         {
             Add_StaticObject(
-                new GameObject(this, new Vector3(-Game.Width/2,-Game.Height/2,0), "mainMenu")
+                background = new GameObject(this, new Vector3(-Game.Width/2,-Game.Height/2,0), "mainMenu")
                 );
 
             Add_StaticObject(
@@ -48,6 +50,13 @@ namespace MonkeyDungeon.Scenes.Menus
                     Game.SpriteLibrary.ExtractRenderUnit("button"),
                     "Quit"
                     ));
+        }
+
+        protected override void Handle_Rescale()
+        {
+            Game.SpriteLibrary.GetSprite("mainMenu").SetSize(new Vector2(Game.Width, Game.Height));
+            if (background != null)
+                background.Position = new Vector3(-Game.Width / 2, -Game.Height / 2, 0);
         }
     }
 }

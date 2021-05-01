@@ -43,28 +43,28 @@ namespace MonkeyDungeon.Prefabs.UI
             base.OnUpdate(args);
         }
 
-        public EntityResourceBar ResourceBar_Health { get; private set; }
-        public EntityResourceBar ResourceBar_Stamina { get; private set; }
-        public EntityResourceBar ResourceBar_Mana { get; private set; }
+        public ResourceBar ResourceBar_Health { get; private set; }
+        public ResourceBar ResourceBar_Stamina { get; private set; }
+        public ResourceBar ResourceBar_Mana { get; private set; }
 
         public StatusBar(SceneLayer sceneLayer, Vector3 position) 
             : base(sceneLayer, position, "statusBar")
         {
             spriteLibrary = sceneLayer.Game.SpriteLibrary;
             
-            ResourceBar_Health = new EntityResourceBar(
+            ResourceBar_Health = new ResourceBar(
                 sceneLayer,
                 Position + new Vector3(320, 340, 0),
                 isometricgame.GameEngine.Systems.MathHelper.Color_To_Vec4(Color.Red)
             );
 
-            ResourceBar_Stamina = new EntityResourceBar(
+            ResourceBar_Stamina = new ResourceBar(
                 sceneLayer,
                 Position + new Vector3(320, 310, 0),
                 isometricgame.GameEngine.Systems.MathHelper.Color_To_Vec4(Color.Yellow)
             );
 
-            ResourceBar_Mana = new EntityResourceBar(
+            ResourceBar_Mana = new ResourceBar(
                 sceneLayer,
                 Position + new Vector3(320, 280, 0),
                 isometricgame.GameEngine.Systems.MathHelper.Color_To_Vec4(Color.Blue)

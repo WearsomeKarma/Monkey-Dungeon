@@ -16,14 +16,14 @@ namespace MonkeyDungeon.GameFeatures
         internal EntityComponent Entity { get; private set; }
         
         internal string Resource_Name { get; private set; }
-        public float Cost => Get_AbilityResourceCost();
+        public double Cost => Get_AbilityResourceCost();
         public int Cost_Ability_Points => Get_AbilityPointCost();
-        public float Resource_Value => Entity?.Get_Resource(Resource_Name)?.Resource_Value ?? throw new Exception("TODO: replace excep");
-        public float Resource_ValueStrict => Entity?.Get_Resource(Resource_Name)?.Resource_StrictValue ?? throw new Exception("TODO: replace excep");
+        public double Resource_Value => Entity?.Get_Resource(Resource_Name)?.Resource_Value ?? throw new Exception("TODO: replace excep");
+        public double Resource_ValueStrict => Entity?.Get_Resource(Resource_Name)?.Resource_StrictValue ?? throw new Exception("TODO: replace excep");
 
         internal string Stat_Name { get; private set; }
-        public float Stat_Value => Entity?.Get_Stat(Stat_Name ?? "")?.Resource_Value ?? throw new Exception("TODO: replace excep");
-        public float Stat_StrictValue => Entity?.Get_Stat(Stat_Name ?? "")?.Resource_StrictValue ?? throw new Exception("TODO: replace excep");
+        public double Stat_Value => Entity?.Get_Stat(Stat_Name ?? "")?.Resource_Value ?? throw new Exception("TODO: replace excep");
+        public double Stat_StrictValue => Entity?.Get_Stat(Stat_Name ?? "")?.Resource_StrictValue ?? throw new Exception("TODO: replace excep");
 
         public DamageType Ability_DamageType { get; private set; }
 
@@ -72,17 +72,17 @@ namespace MonkeyDungeon.GameFeatures
         protected float ImplementedHandle_DealDamage(CombatAction combatAction)
         {
             if (combatAction.HasTarget)
-                return combatAction.Target.DealDamage_ToThis(new Damage(Ability_DamageType, Get_RelevantOutput()));
+                return combatAction.Target.Damage_This(new Damage(Ability_DamageType, Get_RelevantOutput()));
             return 0;
         }
 
-        protected float ImpementedHandle_Recover<T>(EntityComponent target) where T : EntityResource
+        protected double ImpementedHandle_Recover<T>(EntityComponent target) where T : EntityResource
         {
             return target.Recover_This<T>(Get_RelevantOutput());
         }
 
-        protected virtual float Get_RelevantOutput() => Entity?.Get_Stat(Stat_Name)?.Resource_Value ?? 0;
-        protected virtual float Get_AbilityResourceCost() => 1;
+        protected virtual double Get_RelevantOutput() => Entity?.Get_Stat(Stat_Name)?.Resource_Value ?? 0;
+        protected virtual double Get_AbilityResourceCost() => 1;
         protected virtual int Get_AbilityPointCost() => 1;
 
         public virtual Ability Clone()

@@ -26,12 +26,13 @@ namespace MonkeyDungeon.GameFeatures
         public readonly string Resource_Name;
 
         public event Action<EntityResource> BaseValueChanged;
-        private float baseValue;
-        public float Get_BaseValue() { return baseValue; }
+        private double baseValue;
+        public double Get_BaseValue() { return baseValue; }
 
         public ScalingValue Max_Value { get; private set; }
         public ScalingValue Min_Value { get; private set; }
 
+        public event Action<EntityResource> ValueChanged;
         /// <summary>
         /// Does not invoke from bonus additions/removals.
         /// </summary>
@@ -49,10 +50,10 @@ namespace MonkeyDungeon.GameFeatures
         /// </summary>
         public event Action<EntityResource> StrictValueDecreased;
 
-        public float Resource_Value => baseValue + Get_TotalBonus();
-        public float Resource_StrictValue => baseValue + Get_TotalStrictBonus();
+        public double Resource_Value => baseValue + Get_TotalBonus();
+        public double Resource_StrictValue => baseValue + Get_TotalStrictBonus();
 
-        public bool TryPay(float amount, bool peek = false)
+        public bool TryPay(double amount, bool peek = false)
         {
             if (amount < 0)
                 return false;
@@ -66,7 +67,7 @@ namespace MonkeyDungeon.GameFeatures
         }
 
         public ScalingValue Max_ForReplenish { get; private set; }
-        public float Rate_Replenish { get; private set; }
+        public double Rate_Replenish { get; private set; }
 
         public event Action<EntityResource> Depleted;
         public bool IsDepleted => Resource_Value == Min_Value;
@@ -75,8 +76,8 @@ namespace MonkeyDungeon.GameFeatures
         public EntityResourceBonus[] Bonuses                    => bonuses.ToArray();
         public void Add_Bonus                                   (EntityResourceBonus bonus) { bonuses.Add(bonus); bonus.handle_NewResource(this); }
         public bool Remove_Bonus                                (EntityResourceBonus bonus) { bool ret; if (ret = bonuses.Contains(bonus)) { bonuses.Remove(bonus); bonus.handle_LoseResouce(this); } return ret; }
-        public float Get_TotalBonus                             () { float ret = 0; foreach(EntityResourceBonus bonus in bonuses) ret += bonus.Value; return ret; }
-        public float Get_TotalStrictBonus                       () { float ret = 0; foreach (EntityResourceBonus bonus in bonuses) { if (bonus.IsStrict) ret += bonus.Value; } return ret; }
+        public double Get_TotalBonus                             () { double ret = 0; foreach(EntityResourceBonus bonus in bonuses) ret += bonus.Value; return ret; }
+        public double Get_TotalStrictBonus                       () { double ret = 0; foreach (EntityResourceBonus bonus in bonuses) { if (bonus.IsStrict) ret += bonus.Value; } return ret; }
         private EntityResourceBonus LastBonus                   => (bonuses.Count > 0) ? bonuses[bonuses.Count - 1] : null;
 
         public EntityComponent Entity { get; private set; }
@@ -104,13 +105,13 @@ namespace MonkeyDungeon.GameFeatures
             } }
         
         public EntityResource(
-            string resourceName, 
-            float baseValue, 
-            float max, 
-            float min, 
-            float replenishRate, 
-            float maxProgresionRate, 
-            float minProgresionRate=0
+            string resourceName,
+            double baseValue,
+            double max,
+            double min,
+            double replenishRate,
+            double maxProgresionRate,
+            double minProgresionRate =0
             )
         {
             Resource_Name = resourceName;
@@ -144,12 +145,14 @@ namespace MonkeyDungeon.GameFeatures
         {
             int? level = Entity?.Level;
             Max_Value.Change_ScalingLevel(level ?? 1);
+            set_BaseValue(Max_Value);
         }
 
-        internal float Offset(float offset)
+        internal double Offset(double offset)
         {
-            float ret = offset_Total_ByValue(offset);
+            double ret = offset_Total_ByValue(offset);
 
+            ValueChanged?.Invoke(this);
             if (ret < 0)
             {
                 ValueDecreased?.Invoke(this);
@@ -167,16 +170,16 @@ namespace MonkeyDungeon.GameFeatures
             return ret;
         }
 
-        private float offset_Total_ByValue(float offset)
+        private double offset_Total_ByValue(double offset)
         {
             bool isOffsetNegative = offset < 0;
 
-            float totalValue = Resource_Value;
-            float totalBonus = Get_TotalBonus();
+            double totalValue = Resource_Value;
+            double totalBonus = Get_TotalBonus();
 
-            float sum = offset + totalValue;
-            float diffTarget = MathHelper.Clamp(sum, Min_Value, Max_Value);
-            float diff = diffTarget - totalValue;
+            double sum = offset + totalValue;
+            double diffTarget = MathHelper.Clampd(sum, Min_Value, Max_Value);
+            double diff = diffTarget - totalValue;
 
             bool isOverflow = offset + totalValue > Max_Value;
             bool isUnderflow = offset + totalValue < Min_Value;
@@ -189,7 +192,7 @@ namespace MonkeyDungeon.GameFeatures
 
             if (isOffsetNegative)
             {
-                float bleed = deduct_FromBonuses(offset);
+                double bleed = deduct_FromBonuses(offset);
                 set_BaseValue(baseValue + bleed);
                 return diff;
             }
@@ -202,7 +205,7 @@ namespace MonkeyDungeon.GameFeatures
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        private float deduct_FromBonuses(float value)
+        private double deduct_FromBonuses(double value)
         {
             //ignore positive values.
             if (value >= 0)
@@ -211,8 +214,8 @@ namespace MonkeyDungeon.GameFeatures
                 Console.WriteLine("[Warning: EntityResource.cs] Improper usage of deduct_FromBonuses.");
                 return 0;
             }
-            
-            float bleed = value;
+
+            double bleed = value;
             while(bleed < 0 && bonuses.Count > 0)
             {
                 bleed = LastBonus.Offset_Bonus(bleed);
@@ -220,16 +223,16 @@ namespace MonkeyDungeon.GameFeatures
                     Remove_Bonus(LastBonus);
             }
             
-            return MathHelper.ClampMax(bleed, 0);
+            return MathHelper.ClampMaxd(bleed, 0);
         }
 
-        private float set_BaseValue(float value)
+        private double set_BaseValue(double value)
         {
             //parameter constraint:
-            value = MathHelper.Clamp(value, Min_Value, Max_Value);
+            value = MathHelper.Clampd(value, Min_Value, Max_Value);
 
 
-            float dif = value - baseValue;
+            double dif = value - baseValue;
 
             baseValue = value;
 
@@ -241,7 +244,7 @@ namespace MonkeyDungeon.GameFeatures
             offset_Total_ByValue(HandleCombat_BeginTurn_ReplenishResource(combat));
         }
         
-        protected virtual float HandleCombat_BeginTurn_ReplenishResource(Combat_GameState combat) { return Rate_Replenish; }
+        protected virtual double HandleCombat_BeginTurn_ReplenishResource(Combat_GameState combat) { return Rate_Replenish; }
         protected virtual void Handle_Enabled() { }
         protected virtual void Handle_Disabled() { }
         protected virtual void Handle_Depleted() { }

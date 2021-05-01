@@ -17,9 +17,9 @@ namespace MonkeyDungeon.GameFeatures
     public class Damage
     {
         public DamageType DamageType { get; private set; }
-        public float Amount { get; private set; }
+        public double Amount { get; private set; }
 
-        public Damage(DamageType damageType, float amount)
+        public Damage(DamageType damageType, double amount)
         {
             DamageType = damageType;
             Amount = (amount > 0) ? amount : 0;
