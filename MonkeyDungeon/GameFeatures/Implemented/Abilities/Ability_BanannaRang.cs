@@ -1,4 +1,5 @@
-﻿using MonkeyDungeon.Components;
+﻿using MonkeyDungeon.GameFeatures.CombatObjects;
+using MonkeyDungeon.GameFeatures.EntityResourceManagement;
 using MonkeyDungeon.GameFeatures.Implemented.CharacterStats;
 using MonkeyDungeon.GameFeatures.Implemented.EntityResources;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MonkeyDungeon.GameFeatures.Implemented.Abilities
 {
-    public class Ability_BanannaRang : Ability
+    public class Ability_BanannaRang : GameEntity_Ability
     {
         public static readonly string NAME_BANANNA_RANG = "Bananna Rang";
 
@@ -22,6 +23,11 @@ namespace MonkeyDungeon.GameFeatures.Implemented.Abilities
         {
             float cost = 6 - ((Entity.Level > 12) ? 3 : Entity.Level / 4);
             return cost;
+        }
+
+        public override GameEntity_Ability Clone()
+        {
+            return new Ability_BanannaRang();
         }
     }
 }

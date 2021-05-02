@@ -1,4 +1,5 @@
-﻿using MonkeyDungeon.Components;
+﻿using MonkeyDungeon.GameFeatures.CombatObjects;
+using MonkeyDungeon.GameFeatures.EntityResourceManagement;
 using MonkeyDungeon.GameFeatures.Implemented.CharacterStats;
 using MonkeyDungeon.GameFeatures.Implemented.EntityResources;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MonkeyDungeon.GameFeatures.Implemented.Abilities
 {
-    public class Ability_ApeShit : Ability
+    public class Ability_ApeShit : GameEntity_Ability
     {
         public static readonly string NAME_APE_SHIT = "Ape Shit";
 
@@ -23,6 +24,11 @@ namespace MonkeyDungeon.GameFeatures.Implemented.Abilities
             return 0;
             float cost = 8 - ((Entity.Level > 12) ? 4 : Entity.Level / 3);
             return cost;
+        }
+
+        public override GameEntity_Ability Clone()
+        {
+            return new Ability_ApeShit();
         }
     }
 }

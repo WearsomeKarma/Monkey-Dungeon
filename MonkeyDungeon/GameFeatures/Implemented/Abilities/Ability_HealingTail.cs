@@ -1,4 +1,6 @@
-﻿using MonkeyDungeon.GameFeatures.Implemented.CharacterStats;
+﻿using MonkeyDungeon.GameFeatures.CombatObjects;
+using MonkeyDungeon.GameFeatures.EntityResourceManagement;
+using MonkeyDungeon.GameFeatures.Implemented.CharacterStats;
 using MonkeyDungeon.GameFeatures.Implemented.EntityResources;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MonkeyDungeon.GameFeatures.Implemented.Abilities
 {
-    public class Ability_HealingTail : Ability
+    public class Ability_HealingTail : GameEntity_Ability
     {
         public static readonly string NAME_HEALING_TAIL = "Healing Tail";
 
@@ -17,9 +19,14 @@ namespace MonkeyDungeon.GameFeatures.Implemented.Abilities
         {
         }
 
-        protected override void Handle_AbilityUsage(CombatAction action)
+        protected override void Handle_AbilityUsage(Combat_Action action)
         {
             throw new NotImplementedException();
+        }
+
+        public override GameEntity_Ability Clone()
+        {
+            return new Ability_HealingTail();
         }
     }
 }

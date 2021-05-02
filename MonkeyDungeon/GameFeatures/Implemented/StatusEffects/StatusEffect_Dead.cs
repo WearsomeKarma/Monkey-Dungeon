@@ -3,26 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MonkeyDungeon.Components;
+using MonkeyDungeon.GameFeatures.EntityResourceManagement;
 using MonkeyDungeon.GameFeatures.Implemented.GameStates;
 
 namespace MonkeyDungeon.GameFeatures.Implemented.StatusEffects
 {
-    public class StatusEffect_Dead : StatusEffect
+    public class StatusEffect_Dead : GameEntity_StatusEffect
     {
         public StatusEffect_Dead() 
             : base(StatusEffectType.Dead, -1)
         {
         }
 
-        protected override void Handle_LoseOwner(EntityComponent oldOwner)
+        protected override void Handle_LoseOwner(GameEntity oldOwner)
         {
-            oldOwner?.Remove_StatusEffect(this);
+            oldOwner?.StatusEffect_Manager.Remove_StatusEffect(this);
         }
 
-        protected override void Handle_NewOwner(EntityComponent target)
+        protected override void Handle_NewOwner(GameEntity target)
         {
-            target?.Remove_All_StatusEffects();
+            target?.StatusEffect_Manager.Remove_All_StatusEffects();
             target?.Set_IncapacitatedState();
         }
 

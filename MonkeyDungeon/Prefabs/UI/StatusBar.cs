@@ -3,7 +3,6 @@ using isometricgame.GameEngine.Events.Arguments;
 using isometricgame.GameEngine.Rendering;
 using isometricgame.GameEngine.Scenes;
 using isometricgame.GameEngine.Systems.Rendering;
-using MonkeyDungeon.Components;
 using MonkeyDungeon.GameFeatures;
 using MonkeyDungeon.GameFeatures.Implemented.EntityResources;
 using MonkeyDungeon.Prefabs.Entities;
@@ -20,33 +19,26 @@ namespace MonkeyDungeon.Prefabs.UI
     public class StatusBar : GameObject
     {
         private SpriteLibrary spriteLibrary;
-
-        Health health;
-        Stamina stamina;
-        Mana mana;
-
+        
         private RenderUnit target;
-        public void SetTarget(EntityComponent target_EC)
-        {
-            target = spriteLibrary.ExtractRenderUnit(target_EC.Race + CreatureGameObject.Suffix_Head);
-
-            health = target_EC.Get_ResourceByType<Health>();
-            stamina = target_EC.Get_ResourceByType<Stamina>();
-            mana = target_EC.Get_ResourceByType<Mana>();
-        }
-
-        public override void OnUpdate(FrameArgument args)
-        {
-            ResourceBar_Health.Percentage = health.Resource_StrictValue / health.Max_Value;
-            ResourceBar_Stamina.Percentage = stamina.Resource_StrictValue / stamina.Max_Value;
-            ResourceBar_Mana.Percentage = mana.Resource_StrictValue / mana.Max_Value;
-            base.OnUpdate(args);
-        }
-
         public ResourceBar ResourceBar_Health { get; private set; }
         public ResourceBar ResourceBar_Stamina { get; private set; }
         public ResourceBar ResourceBar_Mana { get; private set; }
 
+        public void Update_StatusBar(string race, float pHealth, float pStamina, float pMana)
+        {
+            target = spriteLibrary.ExtractRenderUnit(race + CreatureGameObject.Suffix_Head);
+
+            ResourceBar_Health.Percentage = pHealth;
+            ResourceBar_Stamina.Percentage = pStamina;
+            ResourceBar_Mana.Percentage = pMana;
+        }
+
+        public override void OnUpdate(FrameArgument args)
+        {
+            base.OnUpdate(args);
+        }
+        
         public StatusBar(SceneLayer sceneLayer, Vector3 position) 
             : base(sceneLayer, position, "statusBar")
         {

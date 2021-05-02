@@ -1,19 +1,12 @@
 ﻿using isometricgame.GameEngine;
 using isometricgame.GameEngine.Events.Arguments;
-using isometricgame.GameEngine.Scenes;
 using isometricgame.GameEngine.Systems.Rendering;
-using isometricgame.GameEngine.Tools;
-using MonkeyDungeon.Components;
 using MonkeyDungeon.GameFeatures;
+using MonkeyDungeon.GameFeatures.EntityResourceManagement;
 using MonkeyDungeon.GameFeatures.Implemented.GameStates;
-using MonkeyDungeon.Prefabs.Entities;
 using MonkeyDungeon.Prefabs.UI;
 using OpenTK;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonkeyDungeon.Scenes.GameScenes
 {
@@ -21,8 +14,7 @@ namespace MonkeyDungeon.Scenes.GameScenes
     {
         private GameScene GameScene { get; set; }
 
-        private EntityController turnController;
-        private int entity_TurnOf_Id;
+        private GameEntity_Controller turnController;
 
         private Button[] abilityButtons;
         private Button[] targetEnemyButtons;
@@ -64,7 +56,7 @@ namespace MonkeyDungeon.Scenes.GameScenes
                     this,
                     new Vector3(-Game.Width / 3f - 100, -Game.Height/2 + 20, 0),
                     new Vector2(200, 100),
-                    () => UseAbility(0),
+                    () => Use_Ability(0),
                     Game.SpriteLibrary.ExtractRenderUnit("button"),
                     ""
                     ),
@@ -72,7 +64,7 @@ namespace MonkeyDungeon.Scenes.GameScenes
                     this,
                     new Vector3(-100, -Game.Height/2 + 20, 0),
                     new Vector2(200, 100),
-                    () => UseAbility(1),
+                    () => Use_Ability(1),
                     Game.SpriteLibrary.ExtractRenderUnit("button"),
                     ""
                     ),
@@ -80,7 +72,7 @@ namespace MonkeyDungeon.Scenes.GameScenes
                     this,
                     new Vector3(Game.Width / 3f - 100, -Game.Height/2 + 20, 0),
                     new Vector2(200, 100),
-                    () => UseAbility(2),
+                    () => Use_Ability(2),
                     Game.SpriteLibrary.ExtractRenderUnit("button"),
                     ""
                     )
@@ -92,7 +84,7 @@ namespace MonkeyDungeon.Scenes.GameScenes
                     this,
                     new Vector3(Game.Width/8f,Game.Height/4,0),
                     new Vector2(50,50),
-                    () => SelectEnemy(0),
+                    () => Select_Enemy(0),
                     Game.SpriteLibrary.ExtractRenderUnit("targetButton"),
                     ""
                     ),
@@ -100,7 +92,7 @@ namespace MonkeyDungeon.Scenes.GameScenes
                     this,
                     new Vector3(Game.Width/4f,Game.Height / 8f,0),
                     new Vector2(50,50),
-                    () => SelectEnemy(1),
+                    () => Select_Enemy(1),
                     Game.SpriteLibrary.ExtractRenderUnit("targetButton"),
                     ""
                     ),
@@ -108,7 +100,7 @@ namespace MonkeyDungeon.Scenes.GameScenes
                     this,
                     new Vector3(Game.Width/4f,Game.Height * 3f / 8f,0),
                     new Vector2(50,50),
-                    () => SelectEnemy(2),
+                    () => Select_Enemy(2),
                     Game.SpriteLibrary.ExtractRenderUnit("targetButton"),
                     ""
                     ),
@@ -116,14 +108,14 @@ namespace MonkeyDungeon.Scenes.GameScenes
                     this,
                     new Vector3(Game.Width * 3 / 8,Game.Height/4,0),
                     new Vector2(50,50),
-                    () => SelectEnemy(3),
+                    () => Select_Enemy(3),
                     Game.SpriteLibrary.ExtractRenderUnit("targetButton"),
                     ""
                     )
             };
 
-            AddButtons(abilityButtons);
-            AddButtons(targetEnemyButtons);
+            Add_Buttons(abilityButtons);
+            Add_Buttons(targetEnemyButtons);
         }
 
         protected override void Handle_RenderLayer(RenderService renderService, FrameArgument e)
@@ -134,16 +126,21 @@ namespace MonkeyDungeon.Scenes.GameScenes
 
         internal void BeginCombat()
         {
-            Set_Ability_Names(Combat.Entity_OfCurrentTurn.Get_Ability_Names());
+            Set_Ability_Names(Combat.Entity_OfCurrentTurn.Ability_Manager.Get_Ability_Names());
             Initalize_Buttons(abilityButtons, abilityNames.Length, (i) => abilityNames[i]);
             Initalize_Buttons(targetEnemyButtons, Combat.Enemies.Length, (i) => "");
         }
 
-        internal void BeginTurn(EntityController turnController)
+        internal void BeginTurn(GameEntity_Controller turnController)
         {
             this.turnController = turnController;
-            statusBar.SetTarget(turnController.Entity);
-            Set_Ability_Names(turnController.Entity.Get_Ability_Names());
+            statusBar.Update_StatusBar(
+                turnController.Entity.Race,
+                (float)turnController.Entity.Resource_Manager.Get_Resource_Percentage(ENTITY_RESOURCES.HEALTH),
+                (float)turnController.Entity.Resource_Manager.Get_Resource_Percentage(ENTITY_RESOURCES.STAMINA),
+                (float)turnController.Entity.Resource_Manager.Get_Resource_Percentage(ENTITY_RESOURCES.MANA)
+                );
+            Set_Ability_Names(turnController.Entity.Ability_Manager.Get_Ability_Names());
         }
 
         internal void Initalize_Buttons(Button[] buttons, int comparingLength, Func<int, string> buttonTextHandler)
@@ -167,17 +164,19 @@ namespace MonkeyDungeon.Scenes.GameScenes
 
         }
         
-        private void UseAbility(int index)
+        private void Use_Ability(int index)
         {
+            Console.WriteLine("Use_Ability");
             turnController.Setup_CombatAction_Ability(GameScene, Combat, abilityNames[index]);
         }
 
-        private void SelectEnemy(int index)
+        private void Select_Enemy(int index)
         {
+            Console.WriteLine("Select_Enemy");
             turnController.Setup_CombatAction_Target(Combat.Enemies[index]);
         }
 
-        private void AddButtons(Button[] buttons)
+        private void Add_Buttons(Button[] buttons)
         {
             foreach (Button button in buttons)
                 Add_StaticObject(button);
@@ -185,7 +184,7 @@ namespace MonkeyDungeon.Scenes.GameScenes
 
         private void SetState_TargetEnemy_Buttons(bool state)
         {
-            EntityComponent[] enemies = Combat.Enemies;
+            GameEntity[] enemies = Combat.Enemies;
             for (int i = 0; i < enemies.Length; i++)
             {
                 targetEnemyButtons[i].Enabled = state;

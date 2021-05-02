@@ -16,17 +16,17 @@ namespace MonkeyDungeon.GameFeatures.Implemented.GameStates
         {
         }
 
-        protected override void Handle_BeginState(GameWorld_StateMachine gameWorld)
+        protected override void Handle_BeginState(GameState_Machine gameWorld)
         {
             timer.Set();
         }
 
-        protected override void Handle_EndState(GameWorld_StateMachine gameWorld)
+        protected override void Handle_EndState(GameState_Machine gameWorld)
         {
 
         }
 
-        protected override void Handle_UpdateState(GameWorld_StateMachine gameWorld)
+        protected override void Handle_UpdateState(GameState_Machine gameWorld)
         {
             gameWorld.Request_Transition_ToState<Combat_GameState>();
         }

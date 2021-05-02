@@ -1,4 +1,5 @@
-﻿using MonkeyDungeon.Components;
+﻿using MonkeyDungeon.GameFeatures.CombatObjects;
+using MonkeyDungeon.GameFeatures.EntityResourceManagement;
 using MonkeyDungeon.GameFeatures.Implemented.CharacterStats;
 using MonkeyDungeon.GameFeatures.Implemented.EntityResources;
 using System;
@@ -18,11 +19,11 @@ namespace MonkeyDungeon.GameFeatures.Implemented.Abilities
         {
         }
 
-        protected override void Handle_AbilityUsage(CombatAction action)
+        protected override void Handle_AbilityUsage(Combat_Action action)
         {
             base.Handle_AbilityUsage(action);
             action.Target.Damage_This(
-                new Damage(
+                new Combat_Damage(
                     DamageType.Physical, 
                     Get_RelevantOutput() * 0.25
                     ));
@@ -31,6 +32,11 @@ namespace MonkeyDungeon.GameFeatures.Implemented.Abilities
         protected override double Get_AbilityResourceCost()
         {
             return 0;
+        }
+
+        public override GameEntity_Ability Clone()
+        {
+            return new Ability_Punch();
         }
     }
 }

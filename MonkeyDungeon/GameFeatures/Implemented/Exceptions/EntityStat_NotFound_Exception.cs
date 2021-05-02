@@ -1,5 +1,4 @@
-﻿using MonkeyDungeon.Components;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +8,9 @@ namespace MonkeyDungeon.GameFeatures.Implemented.Exceptions
 {
     public class EntityStat_NotFound_Exception : Exception
     {
-        public readonly EntityComponent Entity;
+        public readonly GameEntity Entity;
 
-        public EntityStat_NotFound_Exception(EntityComponent entity, string statName)
+        public EntityStat_NotFound_Exception(GameEntity entity, string statName)
             : base(String.Format(
                 "Requested stat was not found: {0}\n Did you misspell the stat name?",
                 (statName.Length > 10 ? statName.Substring(0,10) + "..." : statName)                

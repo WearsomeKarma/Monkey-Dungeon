@@ -1,9 +1,8 @@
 ﻿using isometricgame.GameEngine;
 using isometricgame.GameEngine.Rendering;
 using isometricgame.GameEngine.Systems;
-using MonkeyDungeon.Components;
-using MonkeyDungeon.Components.Implemented.Enemies.Goblins;
-using MonkeyDungeon.GameSystems;
+using MonkeyDungeon.GameFeatures;
+using MonkeyDungeon.GameFeatures.Implemented.Entities.Enemies.Goblins;
 using MonkeyDungeon.Prefabs.Entities;
 using MonkeyDungeon.Scenes.GameScenes;
 using MonkeyDungeon.Scenes.Menus;
@@ -21,11 +20,9 @@ namespace MonkeyDungeon
     {
         public static readonly string[] ENTITIES = new string[] 
         {
-            EntityComponent.RACE_NAME_PLAYER,
+            GameEntity.RACE_NAME_PLAYER,
             EC_Goblin.DEFAULT_RACE_NAME
         };
-        
-        internal EntityComponentFactory EntityComponentFactory { get; set; }
 
         public MonkeyGame(string GAME_DIR = "", string GAME_DIR_ASSETS = "", string GAME_DIR_WORLDS = "") 
             : base(1200, 900, "Monkey Dungeon", GAME_DIR, GAME_DIR_ASSETS, GAME_DIR_WORLDS)
@@ -35,12 +32,6 @@ namespace MonkeyDungeon
             SceneManagementService.AddScene("mainMenu", new MainMenuScene(this));
 
             SceneManagementService.SetScene("mainMenu");
-        }
-
-        protected override void RegisterCustomSystems()
-        {
-            EntityComponentFactory = new EntityComponentFactory(this);
-            RegisterSystem(EntityComponentFactory);
         }
 
         protected override string[] GetShaders()

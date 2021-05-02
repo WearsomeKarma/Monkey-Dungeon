@@ -1,5 +1,5 @@
-﻿using MonkeyDungeon.Components;
-using MonkeyDungeon.Components.Implemented.Enemies.Goblins;
+﻿using MonkeyDungeon.GameFeatures.CombatObjects;
+using MonkeyDungeon.GameFeatures.Implemented.Entities.Enemies.Goblins;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,18 +28,18 @@ namespace MonkeyDungeon.GameFeatures.Implemented.GameStates
         /// </summary>
         public int TurnOffset { get; private set; }
 
-        public List<EntityComponent> TurnOrder { get; private set; }
-        public EntityComponent Entity_OfCurrentTurn => TurnOrder[TurnIndex];
+        public List<GameEntity> TurnOrder { get; private set; }
+        public GameEntity Entity_OfCurrentTurn => TurnOrder[TurnIndex];
         public int Entity_OfCurrentTurn_Id => Entity_OfCurrentTurn.Scene_GameObject_ID;
-        internal event Action<EntityController> TurnHasBegun;
+        internal event Action<GameEntity_Controller> TurnHasBegun;
 
-        internal CombatAction PendingCombatAction { get; private set; }
+        internal Combat_Action PendingCombatAction { get; private set; }
 
-        public EntityComponent[] Players => GameWorld.PlayerRoster.Entities;
-        public EntityComponent[] ConsciousPlayers { get { List<EntityComponent> cp = new List<EntityComponent>(); foreach (EntityComponent player in Players) if (!player.IsIncapacitated) cp.Add(player); return cp.ToArray(); } }
-        public EntityComponent[] Enemies => GameWorld.EnemyRoster.Entities;
+        public GameEntity[] Players => GameWorld.PlayerRoster.Entities;
+        public GameEntity[] ConsciousPlayers { get { List<GameEntity> cp = new List<GameEntity>(); foreach (GameEntity player in Players) if (!player.IsIncapacitated) cp.Add(player); return cp.ToArray(); } }
+        public GameEntity[] Enemies => GameWorld.EnemyRoster.Entities;
 
-        public Combat_GameState(Action stateBegun, Action stateConcluded, Action<EntityController> turnBegun) 
+        public Combat_GameState(Action stateBegun, Action stateConcluded, Action<GameEntity_Controller> turnBegun) 
             : base(stateBegun, stateConcluded)
         {
             TurnHasBegun += turnBegun;
@@ -48,10 +48,10 @@ namespace MonkeyDungeon.GameFeatures.Implemented.GameStates
 
         private void DictateTurnOrder()
         {
-            TurnOrder = new List<EntityComponent>();
+            TurnOrder = new List<GameEntity>();
 
-            EntityComponent[] players = Players;
-            EntityComponent[] enemies = Enemies;
+            GameEntity[] players = Players;
+            GameEntity[] enemies = Enemies;
 
             for(int i=0;i< players.Length;i++)
             {
@@ -62,12 +62,12 @@ namespace MonkeyDungeon.GameFeatures.Implemented.GameStates
             for(int i=0;i<enemies.Length;i++)
             {
                 TurnOrder.Add(enemies[i]);
-                enemies[i].Scene_GameObject_ID = GameWorld_StateMachine.MAX_TEAM_SIZE + i;
-                enemies[i].Initative_Position = GameWorld_StateMachine.MAX_TEAM_SIZE + i;
+                enemies[i].Scene_GameObject_ID = GameState_Machine.MAX_TEAM_SIZE + i;
+                enemies[i].Initative_Position = GameState_Machine.MAX_TEAM_SIZE + i;
             }
         }
         
-        protected override void Handle_UpdateState(GameWorld_StateMachine gameWorld)
+        protected override void Handle_UpdateState(GameState_Machine gameWorld)
         {
             switch(CombatState)
             {
@@ -85,7 +85,7 @@ namespace MonkeyDungeon.GameFeatures.Implemented.GameStates
                         GameWorld.Request_Transition_ToState<GameOver_GameState>();
                         break;
                     }
-                    CombatAction action = Entity_OfCurrentTurn.EntityController.Get_CombatAction(this);
+                    Combat_Action action = Entity_OfCurrentTurn.EntityController.Get_CombatAction(this);
                     if (action != null)
                     {
                         if (action.Conduct_Action(this))
@@ -128,9 +128,9 @@ namespace MonkeyDungeon.GameFeatures.Implemented.GameStates
             CombatState = CombatState.FinishCurrentTurn;
         }
 
-        protected override void Handle_BeginState(GameWorld_StateMachine gameWorld)
+        protected override void Handle_BeginState(GameState_Machine gameWorld)
         {
-            List<EntityComponent> enemies = GenerateNewEnemies();
+            List<GameEntity> enemies = GenerateNewEnemies();
             gameWorld.SetEnemyRoster(enemies.ToArray());
 
             CombatState = CombatState.BeginNextTurn;
@@ -138,7 +138,7 @@ namespace MonkeyDungeon.GameFeatures.Implemented.GameStates
             DictateTurnOrder();
         }
 
-        protected override void Handle_EndState(GameWorld_StateMachine gameWorld)
+        protected override void Handle_EndState(GameState_Machine gameWorld)
         {
             GenerateNewEnemies();
         }
@@ -146,7 +146,7 @@ namespace MonkeyDungeon.GameFeatures.Implemented.GameStates
         internal bool Is_AllyTeam_Incapacitated()
         {
             bool ret = true;
-            foreach (EntityComponent player in Players)
+            foreach (GameEntity player in Players)
                 ret = ret && player.IsIncapacitated;
             return ret;
         }
@@ -154,19 +154,19 @@ namespace MonkeyDungeon.GameFeatures.Implemented.GameStates
         internal bool Is_EnemyTeam_Incapacitated()
         {
             bool ret = true;
-            foreach (EntityComponent enemy in Enemies)
+            foreach (GameEntity enemy in Enemies)
                 ret = ret && enemy.IsIncapacitated;
             return ret;
         }
 
-        private List<EntityComponent> GenerateNewEnemies()
+        private List<GameEntity> GenerateNewEnemies()
         {
-            return new List<EntityComponent>()
+            return new List<GameEntity>()
             {
-                new EC_Goblin(100),
-                new EC_Goblin(100),
-                new EC_Goblin(100),
-                new EC_Goblin(100)
+                new EC_Goblin(1),
+                new EC_Goblin(1),
+                new EC_Goblin(1),
+                new EC_Goblin(1)
             };
         }
     }

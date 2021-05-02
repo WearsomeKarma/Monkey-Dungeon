@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonkeyDungeon.GameFeatures.EntityResourceManagement;
 using MonkeyDungeon.GameFeatures.Implemented.GameStates;
 
 namespace MonkeyDungeon.GameFeatures.Implemented.StatusEffects
 {
-    public class StatusEffect_Petrified : StatusEffect
+    public class StatusEffect_Petrified : GameEntity_StatusEffect
     {
         public StatusEffect_Petrified(int duration) 
             : base(StatusEffectType.Petrified, duration)

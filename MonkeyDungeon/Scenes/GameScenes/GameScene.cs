@@ -4,6 +4,7 @@ using isometricgame.GameEngine.Scenes;
 using isometricgame.GameEngine.Systems.Rendering;
 using isometricgame.GameEngine.Tools;
 using MonkeyDungeon.GameFeatures;
+using MonkeyDungeon.GameFeatures.CombatObjects;
 using MonkeyDungeon.GameFeatures.Implemented.GameStates;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,8 @@ namespace MonkeyDungeon.Scenes.GameScenes
 {
     public class GameScene : Scene
     {
-        internal GameWorld_StateMachine GameWorld { get; set; }
-        private bool IsGameState_Available => GameWorld.CurrentGameState != null;
+        internal GameState_Machine Game_StateMachine { get; set; }
+        private bool IsGameState_Available => Game_StateMachine.CurrentGameState != null;
 
         private UI_Base_Layer UI_Base_Layer { get; set; }
         private UI_Combat_Layer UI_Combat_Layer { get; set; }
@@ -37,7 +38,7 @@ namespace MonkeyDungeon.Scenes.GameScenes
         {
             EventScheduler = new EventScheduler();
 
-            GameWorld = new GameWorld_StateMachine(
+            Game_StateMachine = new GameState_Machine(
                 this,
                 new GameState[]
                 {
@@ -74,16 +75,17 @@ namespace MonkeyDungeon.Scenes.GameScenes
         {
             EventScheduler.Progress_Events(e.DeltaTime);
             if (!EventScheduler.IsActive)
-                GameWorld.CheckFor_GameState_Transition();
+                Game_StateMachine.CheckFor_GameState_Transition();
             base.Handle_UpdateScene(e);
         }
 
         private void Begin_Combat(Combat_GameState combat)
         {
+            Console.WriteLine("[GameState] Begin combat.");
             UI_Combat_Layer.BeginCombat();
         }
 
-        private void Begin_CombatTurn(EntityController turnController)
+        private void Begin_CombatTurn(GameEntity_Controller turnController)
         {
             if (!turnController.IsAutomonous)
             {
@@ -106,7 +108,7 @@ namespace MonkeyDungeon.Scenes.GameScenes
             World_Layer.Act_MeleeAttack(ownerId, targetId);
         }
 
-        internal void Announce_Action(CombatAction action)
+        internal void Announce_Action(Combat_Action action)
         {
             UI_Base_Layer.Announce(action.CombatAction_Ability_Name);
             Console.WriteLine(
@@ -115,7 +117,7 @@ namespace MonkeyDungeon.Scenes.GameScenes
             //throw new NotImplementedException();
         }
 
-        internal void Announce_ActionFailure(CombatAction action)
+        internal void Announce_ActionFailure(Combat_Action action)
         {
             Console.WriteLine(
                 String.Format(

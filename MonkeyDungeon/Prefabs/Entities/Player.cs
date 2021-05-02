@@ -4,8 +4,6 @@ using isometricgame.GameEngine.Rendering;
 using isometricgame.GameEngine.Rendering.Animation;
 using isometricgame.GameEngine.Scenes;
 using isometricgame.GameEngine.Systems.Rendering;
-using MonkeyDungeon.Components;
-using MonkeyDungeon.Components.Implemented.PlayerClasses;
 using MonkeyDungeon.GameFeatures;
 using OpenTK;
 using System;
@@ -31,8 +29,8 @@ namespace MonkeyDungeon.Prefabs.Entities
             }
         }
 
-        public Player(SceneLayer sceneLayer, Vector3 position, EntityComponent ec) 
-            : base(sceneLayer, position, ec, 8, 8)
+        public Player(SceneLayer sceneLayer, Vector3 position, string className=null) 
+            : base(sceneLayer, position, className ?? GameEntity.RACE_NAME_PLAYER, 0, 8, 8)
         {
         }
     }
