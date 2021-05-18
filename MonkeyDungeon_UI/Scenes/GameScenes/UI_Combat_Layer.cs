@@ -153,7 +153,8 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
         {
             Reset_Selections();
             UI_GameEntity_Descriptor entity = World_Layer.Get_Description_From_Id(entityId);
-            Set_Ability_Names(entity.ABILITY_NAMES);
+            Set_Ability_Names(entity.Ability_Names);
+            Focus_Entity(entity);
         }
 
         internal void Announce_ActionFailure(string combatAction_Ability_Name)

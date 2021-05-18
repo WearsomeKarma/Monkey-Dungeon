@@ -15,11 +15,12 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
         public MMH_Accept_Client(MonkeyDungeon_Game_Client md_gc) 
             : base(null, MD_VANILLA_MMH.MMH_ACCEPT_CLIENT)
         {
+            MD_GC = md_gc;
         }
 
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
-            MD_GC.SceneManagementService.SetScene("GameScene");
+            MD_GC.SceneManagementService.SetScene("gameScene");
         }
     }
 }

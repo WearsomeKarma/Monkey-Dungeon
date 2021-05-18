@@ -38,8 +38,8 @@ namespace MonkeyDungeon_Core.GameFeatures
                 return null;
 
             if (entityScene_Id < MAX_TEAM_SIZE)
-                return (PlayerRoster.Set_Entity(entityScene_Id, GameEntity_Factory.Create_NewEntity(factory_Tag)));
-            return (EnemyRoster.Set_Entity(entityScene_Id, GameEntity_Factory.Create_NewEntity(factory_Tag)));
+                return (PlayerRoster.Set_Entity(GameEntity_Factory.Create_NewEntity(entityScene_Id, factory_Tag)));
+            return (EnemyRoster.Set_Entity(GameEntity_Factory.Create_NewEntity(entityScene_Id, factory_Tag)));
         }
 
         public GameState CurrentGameState { get; private set; }
@@ -71,7 +71,24 @@ namespace MonkeyDungeon_Core.GameFeatures
             Server.ServerSide_Local_Reciever.Queue_Message(
                 new MMW_Set_Party_UI_Descriptions(0, PlayerRoster.Get_Races())
                 );
+
+            foreach(GameEntity entity in PlayerRoster.Entities)
+            {
+                Server.ServerSide_Local_Reciever.Queue_Message(
+                    new MMW_Update_Entity_Abilities(entity.Scene_GameObject_ID, entity.Ability_Manager.Get_Ability_Names())
+                    );
+                Server.ServerSide_Local_Reciever.Queue_Message(
+                    new MMW_Update_Entity_UniqueID(entity.Scene_GameObject_ID, (uint)entity.Unique_ID)
+                    );
+            }
+
+            //TODO: Make a means to send message to specific client, and all clients.
+            Server.ServerSide_Local_Reciever.Queue_Message(
+                new MMW_Accept_Client()
+                );
         }
+
+        internal void Relay_To_UI() { }
 
         public void Request_Transition_ToState<T>() where T : GameState
         {
@@ -99,10 +116,6 @@ namespace MonkeyDungeon_Core.GameFeatures
                 if (PlayerRoster.CheckIf_Team_Is_Ready())
                 {
                     Begin_Game();
-                    //TODO: Make a means to send message to specific client, and all clients.
-                    Server.ServerSide_Local_Reciever.Queue_Message(
-                        new MMW_Accept_Client()
-                        );
                 }
             }
 

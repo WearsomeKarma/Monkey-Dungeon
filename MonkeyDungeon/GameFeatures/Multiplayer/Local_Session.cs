@@ -25,11 +25,17 @@ namespace MonkeyDungeon.GameFeatures.Multiplayer
 
             Client_Endpoint.Set_Local_Endpoint((m) => {
                 Handle_Local_Endpoint(m, serverEndpoint);
-                Console.WriteLine("[SENT from Client] \n{0}", m);
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("[SENT from Client]");
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine("{0}", m);
             });
             serverEndpoint.Set_Local_Endpoint((m) => {
                 Handle_Local_Endpoint(m, Client_Endpoint);
-                Console.WriteLine("[SENT from Server] \n{0}", m);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("[SENT from Server]");
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine("{0}", m);
             });
         }
 

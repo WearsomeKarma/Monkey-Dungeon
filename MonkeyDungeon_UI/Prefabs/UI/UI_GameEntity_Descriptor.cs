@@ -9,9 +9,8 @@ namespace MonkeyDungeon_UI.Prefabs.UI
     public class UI_GameEntity_Descriptor
     {
         public readonly string RACE;
-        public readonly uint UNIQUE_IDENTIFIER = 0;
-        private readonly string[] abilityNames;
-        public string[] ABILITY_NAMES => abilityNames.ToArray();
+        public uint UNIQUE_IDENTIFIER { get; internal set; }
+        public string[] Ability_Names { get; private set; }
 
         public float Percentage_Health { get; private set; }
         public float Percentage_Stamina { get; private set; }
@@ -29,6 +28,11 @@ namespace MonkeyDungeon_UI.Prefabs.UI
             Percentage_Health = pHealth;
             Percentage_Stamina = pStamina;
             Percentage_Mana = pMana;
+        }
+
+        internal void Set_Abilities(string[] abilities)
+        {
+            Ability_Names = abilities;
         }
 
         internal void Set_Resource_Percentage(string resourceName, float percentage)

@@ -53,7 +53,10 @@
     <Compile Include="Multiplayer\Handlers\MMH_Set_Party_UI_Descriptions.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Begin_Turn.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Invoke_UI_Event.cs" />
+    <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_Abilities.cs" />
+    <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_Level.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_Resource.cs" />
+    <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_UniqueID.cs" />
     <Compile Include="Multiplayer\MessageWrappers\MMW_Set_Entity.cs" />
     <Compile Include="Multiplayer\MessageWrappers\MMW_Set_Entity_Ready.cs" />
     <Compile Include="Multiplayer\Multiplayer_Message_UI_Handler.cs" />

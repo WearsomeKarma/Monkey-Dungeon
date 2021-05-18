@@ -22,11 +22,9 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
             int entityId = recievedMessage.ENTITY_ID;
-            int entityUID = recievedMessage.INT_VALUE;
             string factoryTag = recievedMessage.STRING_VALUE;
 
             GameEntity e = GameState_Machine.Set_Entity(entityId, factoryTag);
-            e.Unique_ID = entityUID;
         }
     }
 }

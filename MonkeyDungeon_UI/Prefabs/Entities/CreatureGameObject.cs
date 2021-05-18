@@ -103,6 +103,12 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
             }
         }
 
+        internal void Set_Unique_ID(uint uid)
+        {
+            UniqueIdentifier.VAO_Index = uid;
+            EntityDescription.UNIQUE_IDENTIFIER = uid;
+        }
+
         protected override void HandleDraw(RenderService renderService)
         {
             float bodyHeight = 1;

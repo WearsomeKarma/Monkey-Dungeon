@@ -102,8 +102,10 @@
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Entity_Ready.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Accept_Client.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Begin_Turn.cs" />
+    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Entity_Abilities.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Entity_Resource.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Set_Party_UI_Descriptions.cs" />
+    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Entity_UniqueID.cs" />
     <Compile Include="GameFeatures\Multiplayer\Multiplayer_Message_GameStateHandler.cs" />
     <Compile Include="MonkeyDungeon_Game_Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

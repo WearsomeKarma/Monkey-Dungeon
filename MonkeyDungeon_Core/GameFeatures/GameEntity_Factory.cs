@@ -16,13 +16,13 @@ namespace MonkeyDungeon_Core.GameFeatures
         private readonly Dictionary<string, GameEntity> GameEntity_Catalog = new Dictionary<string, GameEntity>()
         {
             //Players
-            { GameEntity.RACE_NAME_PLAYER, new GameEntity() },
-            { WarriorClass.CLASS_NAME, new WarriorClass(GameEntity.RACE_NAME_PLAYER, 1, new GameEntity_Controller_Player()) },
-            { WizardClass.CLASS_NAME, new WizardClass(GameEntity.RACE_NAME_PLAYER, 1, new GameEntity_Controller_Player()) },
-            { ArcherClass.CLASS_NAME, new ArcherClass(GameEntity.RACE_NAME_PLAYER, 1, new GameEntity_Controller_Player()) },
-            { ClericClass.CLASS_NAME, new ClericClass(GameEntity.RACE_NAME_PLAYER, 1, new GameEntity_Controller_Player()) },
-            { KnightClass.CLASS_NAME, new KnightClass(GameEntity.RACE_NAME_PLAYER, 1, new GameEntity_Controller_Player()) },
-            { MonkClass.CLASS_NAME, new MonkClass(GameEntity.RACE_NAME_PLAYER, 1, new GameEntity_Controller_Player()) },
+            { GameEntity.RACE_NAME_PLAYER, new GameEntity() }, //TODO: Fix this awful thing with unique_id
+            { WarriorClass.CLASS_NAME, new WarriorClass(GameEntity.RACE_NAME_PLAYER, 1, new GameEntity_Controller_Player()) { Unique_ID = 0 } },
+            { WizardClass.CLASS_NAME, new WizardClass(GameEntity.RACE_NAME_PLAYER, 1, new GameEntity_Controller_Player()) { Unique_ID = 1 } },
+            { ArcherClass.CLASS_NAME, new ArcherClass(GameEntity.RACE_NAME_PLAYER, 1, new GameEntity_Controller_Player()) { Unique_ID = 2 } },
+            { ClericClass.CLASS_NAME, new ClericClass(GameEntity.RACE_NAME_PLAYER, 1, new GameEntity_Controller_Player()) { Unique_ID = 3 } },
+            { KnightClass.CLASS_NAME, new KnightClass(GameEntity.RACE_NAME_PLAYER, 1, new GameEntity_Controller_Player()) { Unique_ID = 4 } },
+            { MonkClass.CLASS_NAME, new MonkClass(GameEntity.RACE_NAME_PLAYER, 1, new GameEntity_Controller_Player()) { Unique_ID = 5 } },
 
             //Merchants
 
@@ -50,7 +50,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             GameEntity_Catalog.Add(gameEntity.Name, gameEntity);
         }
 
-        public GameEntity Create_NewEntity(string name)
-            => GameEntity_Catalog[name].Clone();
+        public GameEntity Create_NewEntity(int entityScene_ID, string name)
+            => GameEntity_Catalog[name].Clone(entityScene_ID);
     }
 }

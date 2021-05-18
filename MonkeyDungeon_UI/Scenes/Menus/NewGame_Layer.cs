@@ -132,6 +132,7 @@ namespace MonkeyDungeon_UI.Scenes.Menus
 
             MMW_Set_Entity[] setPlayerCommands = new MMW_Set_Entity[]
             {
+                //TODO: Fix non-centralized primitives
                 new MMW_Set_Entity(0, CLASSES[classSelection]),
                 new MMW_Set_Entity(1, "Archer"),
                 new MMW_Set_Entity(2, "Cleric"),

@@ -62,9 +62,9 @@ namespace MonkeyDungeon_Core.GameFeatures
             return ret;
         }
 
-        public GameEntity Set_Entity(int rosterPosition, GameEntity gameEntity)
+        public GameEntity Set_Entity(GameEntity gameEntity)
         {
-            entities[rosterPosition] = gameEntity;
+            entities[gameEntity.Scene_GameObject_ID % entities.Length] = gameEntity;
             return gameEntity;
         }
 

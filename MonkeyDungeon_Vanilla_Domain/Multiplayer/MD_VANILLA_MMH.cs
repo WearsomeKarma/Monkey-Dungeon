@@ -22,6 +22,8 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             MMH_SET_ENTITY,
             MMH_SET_ENTITY_READY,
             MMH_UPDATE_ENTITY_RESOURCE,
+            MMH_UPDATE_ENTITY_ABILITIES,
+            MMH_UPDATE_ENTITY_UNIQUEID,
             //UI CLIENT EVENTS
             MMH_INVOKE_UI_EVENT
         };
@@ -64,6 +66,19 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
         /// STRING: name of resource.
         /// </summary>
         public static readonly string MMH_UPDATE_ENTITY_RESOURCE = "MMH_Update_Entity_Resource";
+        /// <summary>
+        /// Context for updating to the client side - the abilities of an entity.
+        /// ENTITY_ID,
+        /// STRING: all the abilities sperated by a comma.
+        /// </summary>
+        public static readonly string MMH_UPDATE_ENTITY_ABILITIES = "MMH_Update_Entity_Abilities";
+        /// <summary>
+        /// Context for updating to the client side - the uid of an entity. 
+        /// Important for visual appearance.
+        /// ENTITY_ID,
+        /// INT: (uint) uid.
+        /// </summary>
+        public static readonly string MMH_UPDATE_ENTITY_UNIQUEID = "MMH_Update_Entity_UniqueID";
 
         /// <summary>
         /// Context for initiating a UI event on the client side. STRING: EventTag

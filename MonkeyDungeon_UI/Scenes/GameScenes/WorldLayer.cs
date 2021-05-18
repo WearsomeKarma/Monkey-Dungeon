@@ -47,6 +47,10 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                 creatures[i].EntityDescription = new UI_GameEntity_Descriptor(descriptions[i], 1);
             }
         }
+        public void Set_Unique_ID(int id, uint uid)
+        {
+            Get_Entity_From_Id(id).Set_Unique_ID(uid);
+        }
 
         internal World_Layer(GameScene parentScene)
             : base(parentScene, WORLD_LAYER_INDEX)
@@ -74,6 +78,15 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
 
             GameScene.MonkeyDungeon_Game_UI.Expectation_Context.Register_Handler(
                 new MMH_Set_Party_UI_Descriptions(this)
+                );
+            GameScene.MonkeyDungeon_Game_UI.Expectation_Context.Register_Handler(
+                new MMH_Accept_Client(GameScene.MonkeyDungeon_Game_UI)
+                );
+            GameScene.MonkeyDungeon_Game_UI.Expectation_Context.Register_Handler(
+                new MMH_Update_Entity_Abilities(this)
+                );
+            GameScene.MonkeyDungeon_Game_UI.Expectation_Context.Register_Handler(
+                new MMH_Update_Entity_UniqueID(this)
                 );
         }
 

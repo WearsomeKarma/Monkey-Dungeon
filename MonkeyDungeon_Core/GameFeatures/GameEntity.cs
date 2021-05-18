@@ -186,7 +186,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         protected virtual void Handle_Combat_EndTurn_Cleanup(Combat_GameState combat) { }
         protected virtual void Handle_Incapacitated() { }
 
-        public GameEntity Clone()
+        public GameEntity Clone(int entityScene_ID=0)
         {
             List<GameEntity_Stat> clonedStats = new List<GameEntity_Stat>();
             List<GameEntity_Resource> clonedResources = new List<GameEntity_Resource>();
@@ -212,7 +212,8 @@ namespace MonkeyDungeon_Core.GameFeatures
                 clonedAbilities,
                 clonedResistances,
                 EntityController.Clone()
-                );
+                )
+            { Scene_GameObject_ID = entityScene_ID };
         }
 
         public override string ToString()
