@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B40F1240-55CE-42D4-B1C6-C7638D1B47B7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MonkeyDungeon_Core</RootNamespace>
+    <AssemblyName>MonkeyDungeon_Core</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GameFeatures\CombatObjects\Combat_Action.cs" />
+    <Compile Include="GameFeatures\CombatObjects\Combat_Damage.cs" />
+    <Compile Include="GameFeatures\CombatObjects\GameEntity_Ability.cs" />
+    <Compile Include="GameFeatures\CombatObjects\GameEntity_Ability_Manager.cs" />
+    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_Resistance.cs" />
+    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_Resistance_Manager.cs" />
+    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_Resource.cs" />
+    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_Resource_Bonus.cs" />
+    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_Resource_Manager.cs" />
+    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_Resource_ScalingValue.cs" />
+    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_Stat.cs" />
+    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_StatusEffect.cs" />
+    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_StatusEffect_Manager.cs" />
+    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_Stat_Manager.cs" />
+    <Compile Include="GameFeatures\GameEntity.cs" />
+    <Compile Include="GameFeatures\GameEntity_Controller.cs" />
+    <Compile Include="GameFeatures\GameEntity_Factory.cs" />
+    <Compile Include="GameFeatures\GameEntity_Roster.cs" />
+    <Compile Include="GameFeatures\GameState.cs" />
+    <Compile Include="GameFeatures\GameState_Machine.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\Ability_ApeShit.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\Ability_BanannaRang.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\Ability_ChaosBolt.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\Ability_HealingTail.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\Ability_KiKick.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\Ability_PoopyFling.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\Ability_Punch.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\Ability_StandGuard.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\MagicAbility.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\MeleeAbility.cs" />
+    <Compile Include="GameFeatures\Implemented\Abilities\RangedAbility.cs" />
+    <Compile Include="GameFeatures\Implemented\CharacterStats\Agility.cs" />
+    <Compile Include="GameFeatures\Implemented\CharacterStats\Smartypants.cs" />
+    <Compile Include="GameFeatures\Implemented\CharacterStats\Stinkiness.cs" />
+    <Compile Include="GameFeatures\Implemented\CharacterStats\Strength.cs" />
+    <Compile Include="GameFeatures\Implemented\Entities\Enemies\Goblins\EC_Goblin.cs" />
+    <Compile Include="GameFeatures\Implemented\Entities\PlayerClasses\ArcherClass.cs" />
+    <Compile Include="GameFeatures\Implemented\Entities\PlayerClasses\ClericClass.cs" />
+    <Compile Include="GameFeatures\Implemented\Entities\PlayerClasses\KnightClass.cs" />
+    <Compile Include="GameFeatures\Implemented\Entities\PlayerClasses\MonkClass.cs" />
+    <Compile Include="GameFeatures\Implemented\Entities\PlayerClasses\WarriorClass.cs" />
+    <Compile Include="GameFeatures\Implemented\Entities\PlayerClasses\WizardClass.cs" />
+    <Compile Include="GameFeatures\Implemented\EntityControllers\GameEntity_Controller_AI.cs" />
+    <Compile Include="GameFeatures\Implemented\EntityControllers\GameEntity_Controller_Player.cs" />
+    <Compile Include="GameFeatures\Implemented\EntityResources\Health.cs" />
+    <Compile Include="GameFeatures\Implemented\EntityResources\Level.cs" />
+    <Compile Include="GameFeatures\Implemented\EntityResources\Mana.cs" />
+    <Compile Include="GameFeatures\Implemented\EntityResources\Stamina.cs" />
+    <Compile Include="GameFeatures\Implemented\Exceptions\EntityStat_NotFound_Exception.cs" />
+    <Compile Include="GameFeatures\Implemented\Exceptions\Entity_NotBound_Exception.cs" />
+    <Compile Include="GameFeatures\Implemented\GameStates\Combat_GameState.cs" />
+    <Compile Include="GameFeatures\Implemented\GameStates\GameOver_GameState.cs" />
+    <Compile Include="GameFeatures\Implemented\GameStates\Shopping_GameState.cs" />
+    <Compile Include="GameFeatures\Implemented\GameStates\Traveling_GameState.cs" />
+    <Compile Include="GameFeatures\Implemented\StatusEffects\StatusEffect_Dead.cs" />
+    <Compile Include="GameFeatures\Implemented\StatusEffects\StatusEffect_Petrified.cs" />
+    <Compile Include="GameFeatures\MathHelper.cs" />
+    <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Entity.cs" />
+    <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Entity_Ready.cs" />
+    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Accept_Client.cs" />
+    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Begin_Turn.cs" />
+    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Entity_Resource.cs" />
+    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Set_Party_UI_Descriptions.cs" />
+    <Compile Include="GameFeatures\Multiplayer\Multiplayer_Message_GameStateHandler.cs" />
+    <Compile Include="MonkeyDungeon_Game_Server.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MonkeyDungeon_Vanilla_Domain\MonkeyDungeon_Vanilla_Domain.csproj">
+      <Project>{067f372f-ff8a-4071-a1e2-5d9acf9c37c0}</Project>
+      <Name>MonkeyDungeon_Vanilla_Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

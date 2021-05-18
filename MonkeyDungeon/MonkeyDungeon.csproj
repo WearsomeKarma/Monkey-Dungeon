@@ -50,89 +50,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameFeatures\CombatObjects\GameEntity_Ability_Manager.cs" />
-    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_Resistance_Manager.cs" />
-    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_Resource_Manager.cs" />
-    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_StatusEffect_Manager.cs" />
-    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_Stat_Manager.cs" />
-    <Compile Include="GameFeatures\GameEntity.cs" />
-    <Compile Include="GameFeatures\GameEntity_Factory.cs" />
-    <Compile Include="GameFeatures\Implemented\Entities\Enemies\Goblins\EC_Goblin.cs" />
-    <Compile Include="GameFeatures\Implemented\Entities\PlayerClasses\ArcherClass.cs" />
-    <Compile Include="GameFeatures\Implemented\Entities\PlayerClasses\ClericClass.cs" />
-    <Compile Include="GameFeatures\Implemented\Entities\PlayerClasses\KnightClass.cs" />
-    <Compile Include="GameFeatures\Implemented\Entities\PlayerClasses\MonkClass.cs" />
-    <Compile Include="GameFeatures\Implemented\Entities\PlayerClasses\WarriorClass.cs" />
-    <Compile Include="GameFeatures\Implemented\Entities\PlayerClasses\WizardClass.cs" />
-    <Compile Include="GameFeatures\Events\GameEvent.cs" />
-    <Compile Include="GameFeatures\Events\Implemented\MeleeEvent.cs" />
-    <Compile Include="GameFeatures\CombatObjects\GameEntity_Ability.cs" />
-    <Compile Include="GameFeatures\GameEntity_Controller.cs" />
-    <Compile Include="GameFeatures\CombatObjects\Combat_Action.cs" />
-    <Compile Include="GameFeatures\CombatObjects\Combat_Damage.cs" />
-    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_Resource_Bonus.cs" />
-    <Compile Include="GameFeatures\GameEntity_Roster.cs" />
-    <Compile Include="GameFeatures\Implemented\Abilities\Ability_ChaosBolt.cs" />
-    <Compile Include="GameFeatures\Implemented\Abilities\Ability_HealingTail.cs" />
-    <Compile Include="GameFeatures\Implemented\Abilities\Ability_KiKick.cs" />
-    <Compile Include="GameFeatures\Implemented\Abilities\Ability_StandGuard.cs" />
-    <Compile Include="GameFeatures\Implemented\Abilities\MagicAbility.cs" />
-    <Compile Include="GameFeatures\Implemented\Abilities\MeleeAbility.cs" />
-    <Compile Include="GameFeatures\Implemented\Abilities\RangedAbility.cs" />
-    <Compile Include="GameFeatures\Implemented\EntityControllers\GameEntity_Controller_AI.cs" />
-    <Compile Include="GameFeatures\Implemented\EntityControllers\GameEntity_Controller_Player.cs" />
-    <Compile Include="GameFeatures\Implemented\CharacterStats\Agility.cs" />
-    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_Stat.cs" />
-    <Compile Include="GameFeatures\Implemented\CharacterStats\Smartypants.cs" />
-    <Compile Include="GameFeatures\Implemented\CharacterStats\Stinkiness.cs" />
-    <Compile Include="GameFeatures\Implemented\CharacterStats\Strength.cs" />
-    <Compile Include="GameFeatures\Implemented\EntityResources\Level.cs" />
-    <Compile Include="GameFeatures\Implemented\Exceptions\EntityStat_NotFound_Exception.cs" />
-    <Compile Include="GameFeatures\Implemented\Exceptions\Entity_NotBound_Exception.cs" />
-    <Compile Include="GameFeatures\Implemented\GameStates\Combat_GameState.cs" />
-    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_Resource.cs" />
-    <Compile Include="GameFeatures\GameState.cs" />
-    <Compile Include="GameFeatures\GameState_Machine.cs" />
-    <Compile Include="GameFeatures\Implemented\Abilities\Ability_ApeShit.cs" />
-    <Compile Include="GameFeatures\Implemented\Abilities\Ability_BanannaRang.cs" />
-    <Compile Include="GameFeatures\Implemented\Abilities\Ability_PoopyFling.cs" />
-    <Compile Include="GameFeatures\Implemented\Abilities\Ability_Punch.cs" />
-    <Compile Include="GameFeatures\Implemented\EntityResources\Health.cs" />
-    <Compile Include="GameFeatures\Implemented\EntityResources\Mana.cs" />
-    <Compile Include="GameFeatures\Implemented\EntityResources\Stamina.cs" />
-    <Compile Include="GameFeatures\Implemented\GameStates\GameOver_GameState.cs" />
-    <Compile Include="GameFeatures\Implemented\GameStates\Shopping_GameState.cs" />
-    <Compile Include="GameFeatures\Implemented\GameStates\Traveling_GameState.cs" />
-    <Compile Include="GameFeatures\Implemented\StatusEffects\StatusEffect_Dead.cs" />
-    <Compile Include="GameFeatures\Implemented\StatusEffects\StatusEffect_Petrified.cs" />
-    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_Resistance.cs" />
-    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_Resource_ScalingValue.cs" />
-    <Compile Include="GameFeatures\EntityResourceManagement\GameEntity_StatusEffect.cs" />
+    <Compile Include="GameFeatures\Multiplayer\Local_Session.cs" />
+    <Compile Include="GameFeatures\Multiplayer\Local_Recievers\Local_Reciever.cs" />
     <Compile Include="MonkeyGame.cs" />
-    <Compile Include="Physics\PrimitiveHitbox.cs" />
-    <Compile Include="Prefabs\Entities\CreatureGameObject.cs" />
-    <Compile Include="Prefabs\Entities\Enemies\Goblin.cs" />
-    <Compile Include="Prefabs\Entities\Player.cs" />
-    <Compile Include="Prefabs\Components\GameAnnouncement_MovementController.cs" />
-    <Compile Include="Prefabs\UI\AnnouncementMessage.cs" />
-    <Compile Include="Prefabs\UI\Button.cs" />
-    <Compile Include="Prefabs\Components\MovementController.cs" />
-    <Compile Include="Prefabs\UI\ResourceBar.cs" />
-    <Compile Include="Prefabs\UI\StatusBar.cs" />
-    <Compile Include="Prefabs\UI\TextField.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scenes\GameScenes\GameScene.cs" />
-    <Compile Include="Scenes\GameScenes\UI_Base_Layer.cs" />
-    <Compile Include="Scenes\GameScenes\UI_Combat_Layer.cs" />
-    <Compile Include="Scenes\GameScenes\WorldLayer.cs" />
-    <Compile Include="Scenes\GameScenes\UI_StateBased_Layer.cs" />
-    <Compile Include="Scenes\GameScenes\UI_Shopping_Layer.cs" />
-    <Compile Include="Scenes\Menus\FindGame_Layer.cs" />
-    <Compile Include="Scenes\Menus\GreetingMenu_Layer.cs" />
-    <Compile Include="Scenes\Menus\MainMenu_Layer.cs" />
-    <Compile Include="Scenes\Menus\MainMenuScene.cs" />
-    <Compile Include="Scenes\Menus\NewGame_Layer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -150,9 +72,6 @@
     </None>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Prefabs\UI\MovementControllers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\announcement.png">
@@ -194,6 +113,23 @@
     <Content Include="Assets\targetButton.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MonkeyDungeon_Core\MonkeyDungeon_Vanilla_Core.csproj">
+      <Project>{b40f1240-55ce-42d4-b1c6-c7638d1b47b7}</Project>
+      <Name>MonkeyDungeon_Vanilla_Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MonkeyDungeon_UI\MonkeyDungeon_Vanilla_UI.csproj">
+      <Project>{1dfa7722-d7cf-4fbd-a34f-ef3ba0dea5be}</Project>
+      <Name>MonkeyDungeon_Vanilla_UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MonkeyDungeon_Vanilla_Domain\MonkeyDungeon_Vanilla_Domain.csproj">
+      <Project>{067f372f-ff8a-4071-a1e2-5d9acf9c37c0}</Project>
+      <Name>MonkeyDungeon_Vanilla_Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GameFeatures\Multiplayer\Client_Handlers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

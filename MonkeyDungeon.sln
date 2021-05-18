@@ -5,6 +5,12 @@ VisualStudioVersion = 15.0.28307.705
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonkeyDungeon", "MonkeyDungeon\MonkeyDungeon.csproj", "{17C9BF4D-01DE-48A7-BE38-76064FE59E79}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonkeyDungeon_Vanilla_Core", "MonkeyDungeon_Core\MonkeyDungeon_Vanilla_Core.csproj", "{B40F1240-55CE-42D4-B1C6-C7638D1B47B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonkeyDungeon_Vanilla_UI", "MonkeyDungeon_UI\MonkeyDungeon_Vanilla_UI.csproj", "{1DFA7722-D7CF-4FBD-A34F-EF3BA0DEA5BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonkeyDungeon_Vanilla_Domain", "MonkeyDungeon_Vanilla_Domain\MonkeyDungeon_Vanilla_Domain.csproj", "{067F372F-FF8A-4071-A1E2-5D9ACF9C37C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{17C9BF4D-01DE-48A7-BE38-76064FE59E79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17C9BF4D-01DE-48A7-BE38-76064FE59E79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17C9BF4D-01DE-48A7-BE38-76064FE59E79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B40F1240-55CE-42D4-B1C6-C7638D1B47B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B40F1240-55CE-42D4-B1C6-C7638D1B47B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B40F1240-55CE-42D4-B1C6-C7638D1B47B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B40F1240-55CE-42D4-B1C6-C7638D1B47B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DFA7722-D7CF-4FBD-A34F-EF3BA0DEA5BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DFA7722-D7CF-4FBD-A34F-EF3BA0DEA5BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DFA7722-D7CF-4FBD-A34F-EF3BA0DEA5BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DFA7722-D7CF-4FBD-A34F-EF3BA0DEA5BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{067F372F-FF8A-4071-A1E2-5D9ACF9C37C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{067F372F-FF8A-4071-A1E2-5D9ACF9C37C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{067F372F-FF8A-4071-A1E2-5D9ACF9C37C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{067F372F-FF8A-4071-A1E2-5D9ACF9C37C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

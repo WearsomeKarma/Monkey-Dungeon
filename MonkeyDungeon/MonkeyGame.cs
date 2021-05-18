@@ -1,92 +1,59 @@
 ﻿using isometricgame.GameEngine;
 using isometricgame.GameEngine.Rendering;
 using isometricgame.GameEngine.Systems;
-using MonkeyDungeon.GameFeatures;
-using MonkeyDungeon.GameFeatures.Implemented.Entities.Enemies.Goblins;
-using MonkeyDungeon.Prefabs.Entities;
-using MonkeyDungeon.Scenes.GameScenes;
-using MonkeyDungeon.Scenes.Menus;
-using OpenTK.Graphics.OpenGL;
+using isometricgame.GameEngine.Tools;
+using MonkeyDungeon.GameFeatures.Multiplayer;
+using MonkeyDungeon.GameFeatures.Multiplayer.Local_Recievers;
+using MonkeyDungeon_Core.GameFeatures;
+using MonkeyDungeon_Core.GameFeatures.Implemented.Entities.Enemies.Goblins;
+using MonkeyDungeon_Core.GameFeatures.Implemented.GameStates;
+using MonkeyDungeon_Core.GameFeatures.Multiplayer;
+using MonkeyDungeon_UI;
+using MonkeyDungeon_Vanilla_Domain.Multiplayer;
+using OpenTK;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MonkeyDungeon
+namespace MonkeyDungeon_Core
 {
-    public class MonkeyGame : Game
+    public class MonkeyDungeon_Game : MonkeyDungeon_Game_Client
     {
-        public static readonly string[] ENTITIES = new string[] 
+        internal Local_Session Local_Session { get; private set; }
+        internal Local_Reciever Client { get; private set; }
+
+        //TODO: Draw entity names from CORE and mods.
+        public static readonly string[] ENTITIES = new string[]
         {
             GameEntity.RACE_NAME_PLAYER,
             EC_Goblin.DEFAULT_RACE_NAME
         };
 
-        public MonkeyGame(string GAME_DIR = "", string GAME_DIR_ASSETS = "", string GAME_DIR_WORLDS = "") 
-            : base(1200, 900, "Monkey Dungeon", GAME_DIR, GAME_DIR_ASSETS, GAME_DIR_WORLDS)
+        public MonkeyDungeon_Game(string GAME_DIR = "", string GAME_DIR_ASSETS = "", string GAME_DIR_WORLDS = "") 
+            : base(GameEntity.RACE_NAME_PLAYER, GAME_DIR, GAME_DIR_ASSETS, GAME_DIR_WORLDS)
         {
-            SceneManagementService.AddScene("gameScene", new GameScene(this));
-
-            SceneManagementService.AddScene("mainMenu", new MainMenuScene(this));
-
-            SceneManagementService.SetScene("mainMenu");
         }
 
-        protected override string[] GetShaders()
+        protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            return new string[] { "shader", "shader_Scale" };
+            base.OnUpdateFrame(e);
+            if (!EventScheduler.IsActive)
+                Local_Session?.On_Update_Frame();
+        }
+        
+        protected override void Handle_Load_Entities()
+        {
+            foreach (string race in ENTITIES)
+                LoadEntity(race);
         }
 
-        protected override void LoadContent()
+        protected override Multiplayer_Reciever Handle_Create_Local_Game()
         {
-            LoadSprite("mainMenu", 1, 1200, 900);
-            SpriteLibrary.GetSprite("mainMenu").SetSize(new OpenTK.Vector2(Width, Height));
-            LoadSprite("creationMenu", 1, 1200, 900);
-            SpriteLibrary.GetSprite("creationMenu").SetSize(new OpenTK.Vector2(Width, Height));
-
-            LoadSprite("button", 1, 200, 100);
-            LoadSprite("gamefont", 1, 18, 28, true, "font");
-            LoadSprite("targetButton", 1, 50, 50);
-
-            LoadSprite("statusBar", 1.25f, 400, 300);
-            LoadSprite("resourceBar", 1, 128, 16);
-            LoadSprite("announcement", 1, 300, 200);
-
-            foreach (string name in ENTITIES)
-                LoadEntity(name);
-
-            TextDisplayer.LoadFont("font", SpriteLibrary.GetSpriteID("font"));
-        }
-
-        private void LoadEntity(string name)
-        {
-            LoadSprite(String.Format("{0}{1}", name, CreatureGameObject.Suffix_Head), 4, 32, 32);
-
-            LoadSprite(String.Format("{0}{1}", name, CreatureGameObject.Suffix_Body), 4, 32, 32);
-
-            LoadSprite(String.Format("{0}{1}", name, CreatureGameObject.Suffix_Unique), 4, 32, 32, false);
-        }
-
-        private void LoadSprite(string spriteName, float scale, int width, int height, bool throwIf_NotExists = true, string savedName=null)
-        {
-            string path = Path.Combine(
-                            GAME_DIRECTORY_ASSETS,
-                            spriteName + ".png"
-                            );
-            if (!throwIf_NotExists && !File.Exists(path))
-                return;
-            Sprite s;
-            SpriteLibrary.RecordSprite(
-                s = AssetProvider.ExtractSpriteSheet(
-                    path,
-                    (savedName == null) ? spriteName : savedName,
-                    width,
-                    height
-                    )
+            Local_Session = new Local_Session(
+                Client = new Local_Reciever(),
+                new Local_Reciever()
                 );
-            s.Scale = scale;
+            return Client;
         }
     }
 }

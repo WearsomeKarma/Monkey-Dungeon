@@ -1,0 +1,5 @@
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_Core\bin\Release\MonkeyDungeon_Core.dll
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_Core\bin\Release\MonkeyDungeon_Core.pdb
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_Core\obj\Release\MonkeyDungeon_Core.csproj.CoreCompileInputs.cache
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_Core\obj\Release\MonkeyDungeon_Core.dll
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_Core\obj\Release\MonkeyDungeon_Core.pdb

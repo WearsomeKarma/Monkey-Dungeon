@@ -1,0 +1,15 @@
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_UI\obj\Debug\MonkeyDungeon_Vanilla_UI.csprojAssemblyReference.cache
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_UI\obj\Debug\MonkeyDungeon_Vanilla_UI.csproj.CoreCompileInputs.cache
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_UI\obj\Debug\MonkeyDungeon_UI.dll
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_UI\obj\Debug\MonkeyDungeon_UI.pdb
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_UI\bin\Debug\MonkeyDungeon_UI.dll
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_UI\bin\Debug\MonkeyDungeon_UI.pdb
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_UI\bin\Debug\isometricgame.dll
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_UI\bin\Debug\MonkeyDungeon_Vanilla_Domain.dll
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_UI\bin\Debug\OpenTK.dll
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_UI\bin\Debug\MonkeyDungeon_Vanilla_Domain.pdb
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_UI\bin\Debug\isometricgame.pdb
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_UI\bin\Debug\isometricgame.dll.config
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_UI\bin\Debug\OpenTK.pdb
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_UI\bin\Debug\OpenTK.xml
+C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_UI\obj\Debug\MonkeyDungeon_Vanilla_UI.csproj.CopyComplete
