@@ -11,7 +11,7 @@ namespace MonkeyDungeon_Core
     {
         static void Main(string[] args)
         {
-            string dir = "C:\\Users\\grauslysd\\source\\repos\\MonkeyDungeon\\MonkeyDungeon";
+            string dir = AppDomain.CurrentDomain.BaseDirectory;
             MonkeyDungeon_Game game = new MonkeyDungeon_Game(
                 dir,
                 Path.Combine(dir, "Assets\\")
