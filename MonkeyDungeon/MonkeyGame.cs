@@ -9,6 +9,7 @@ using MonkeyDungeon_Core.GameFeatures.Implemented.Entities.Enemies.Goblins;
 using MonkeyDungeon_Core.GameFeatures.Implemented.GameStates;
 using MonkeyDungeon_Core.GameFeatures.Multiplayer;
 using MonkeyDungeon_UI;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using OpenTK;
 using System;
@@ -21,14 +22,7 @@ namespace MonkeyDungeon_Core
     {
         internal Local_Session Local_Session { get; private set; }
         internal Local_Reciever Client { get; private set; }
-
-        //TODO: Draw entity names from CORE and mods.
-        public static readonly string[] ENTITIES = new string[]
-        {
-            GameEntity.RACE_NAME_PLAYER,
-            EC_Goblin.DEFAULT_RACE_NAME
-        };
-
+        
         public MonkeyDungeon_Game(string GAME_DIR = "", string GAME_DIR_ASSETS = "", string GAME_DIR_WORLDS = "") 
             : base(GameEntity.RACE_NAME_PLAYER, GAME_DIR, GAME_DIR_ASSETS, GAME_DIR_WORLDS)
         {
@@ -43,8 +37,10 @@ namespace MonkeyDungeon_Core
         
         protected override void Handle_Load_Entities()
         {
-            foreach (string race in ENTITIES)
+            foreach (string race in MD_VANILLA_RACES.STRINGS)
                 LoadEntity(race);
+            foreach (string particle in MD_VANILLA_PARTICLES.STRINGS)
+                LoadSprite(particle, 4, 32, 32);
         }
 
         protected override Multiplayer_Reciever Handle_Create_Local_Game()
