@@ -75,3 +75,4 @@ C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\isometricgame
 C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\Assets\Chaos_Bolt.png
 C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\Assets\Poopy_Fling.png
 C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\Assets\AbilityPoint.png
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\Assets\EndTurnButton.png

@@ -57,7 +57,8 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.GameStates
             GameWorld.Server.ServerSide_Local_Reciever.Register_Handler(
                 new MMH_Set_Entity(GameWorld),
                 new MMH_Set_Entity_Ready(GameWorld),
-                new MMH_Set_Combat_Action(this)
+                new MMH_Set_Combat_Action(this),
+                new MMH_Request_EndTurn(GameWorld)
                 );
         }
 

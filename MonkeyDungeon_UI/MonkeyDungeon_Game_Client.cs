@@ -78,6 +78,7 @@ namespace MonkeyDungeon_UI
             LoadSprite("resourceBar", 1, 128, 16);
             LoadSprite("announcement", 1, 300, 200);
             LoadSprite("AbilityPoint", 1, 32, 32);
+            LoadSprite("EndTurnButton", 4, 32, 32);
 
             TextDisplayer.LoadFont("font", (int)SpriteLibrary.GetSpriteID("font"));
         }

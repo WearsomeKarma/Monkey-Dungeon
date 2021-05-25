@@ -24,7 +24,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
 
         private Button[] abilityButtons;
         private Button[] targetEnemyButtons;
-        private Button endTurnButton;
+        private EndTurnButton endTurnButton;
 
         private StatusBar statusBar;
 
@@ -55,6 +55,10 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
             
             Add_StaticObject(
                 statusBar = new StatusBar(this, new Vector3(-Game.Width / 2, Game.Height / 2 - 375, 0))
+                );
+
+            Add_StaticObject(
+                endTurnButton = new EndTurnButton(this, new Vector3(Game.Width/2 - 130, -Game.Height/2+130, 0))
                 );
 
             abilityButtons = new Button[]
@@ -149,6 +153,11 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
         protected override void Handle_UpdateLayer(FrameArgument e)
         {
             base.Handle_UpdateLayer(e);
+            Inform_Ability();
+        }
+
+        private void Inform_Ability()
+        {
             if (Selected_Ability != null && Selected_TargetIndex > 0)
             {
                 GameScene.MonkeyDungeon_Game_UI.Client_RecieverEndpoint_UI.Queue_Message(
@@ -158,6 +167,13 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                 Selected_TargetIndex = -1;
                 statusBar.Use_Point();
             }
+        }
+
+        internal void Inform_EndTurn()
+        {
+            GameScene.MonkeyDungeon_Game_UI.Client_RecieverEndpoint_UI.Queue_Message(
+                new MMW_Request_EndTurn()
+                );
         }
 
         internal void Enable_TurnControl()
@@ -177,6 +193,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
 
         internal void BeginTurn(int entityId)
         {
+            endTurnButton.RefreshButton();
             statusBar.ReplenishPoints();
             Reset_Selections();
             UI_GameEntity_Descriptor entity = World_Layer.Get_Description_From_Id(entityId);

@@ -60,6 +60,7 @@
     <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_Level.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_Resource.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_UniqueID.cs" />
+    <Compile Include="Multiplayer\MessageWrappers\MMW_Request_EndTurn.cs" />
     <Compile Include="Multiplayer\MessageWrappers\MMW_Set_Combat_Action.cs" />
     <Compile Include="Multiplayer\MessageWrappers\MMW_Set_Entity.cs" />
     <Compile Include="Multiplayer\MessageWrappers\MMW_Set_Entity_Ready.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Prefabs\UI\AbilityPoint.cs" />
     <Compile Include="Prefabs\UI\AnnouncementMessage.cs" />
     <Compile Include="Prefabs\UI\Button.cs" />
+    <Compile Include="Prefabs\UI\EndTurnButton.cs" />
     <Compile Include="Prefabs\UI\ResourceBar.cs" />
     <Compile Include="Prefabs\UI\StatusBar.cs" />
     <Compile Include="Prefabs\UI\TextField.cs" />

@@ -46,6 +46,11 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
         /// </summary>
         public static readonly string MMH_SET_ENTITY_READY = "MMH_Set_Entity_Ready";
         /// <summary>
+        /// Context for updating to the server - client is requesting the end of their turn.
+        /// </summary>
+        public static readonly string MMH_REQUEST_ENDTURN = "MMH_Request_EndTurn";
+
+        /// <summary>
         /// Context for updating to the client side - the percentage of an entity's resource.
         /// ENTITY_ID,
         /// FLOAT: percentage of resource,
@@ -100,8 +105,11 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
 
             MMH_BEGIN_TURN,
 
+            //client
             MMH_SET_ENTITY,
             MMH_SET_ENTITY_READY,
+            MMH_REQUEST_ENDTURN,
+
             MMH_UPDATE_ENTITY_RESOURCE,
             MMH_UPDATE_ENTITY_ABILITIES,
             MMH_UPDATE_ENTITY_UNIQUEID,

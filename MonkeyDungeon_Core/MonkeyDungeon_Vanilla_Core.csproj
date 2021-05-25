@@ -98,6 +98,7 @@
     <Compile Include="GameFeatures\Implemented\StatusEffects\StatusEffect_Dead.cs" />
     <Compile Include="GameFeatures\Implemented\StatusEffects\StatusEffect_Petrified.cs" />
     <Compile Include="GameFeatures\MathHelper.cs" />
+    <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Request_EndTurn.cs" />
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Combat_Action.cs" />
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Entity.cs" />
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Entity_Ready.cs" />
