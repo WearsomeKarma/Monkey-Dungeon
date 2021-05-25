@@ -2,7 +2,10 @@
 using isometricgame.GameEngine.Events.Arguments;
 using isometricgame.GameEngine.Systems.Rendering;
 using MonkeyDungeon_UI.Multiplayer.Handlers;
+using MonkeyDungeon_UI.Multiplayer.MessageWrappers;
 using MonkeyDungeon_UI.Prefabs.UI;
+using MonkeyDungeon_UI.UI_Events.Implemented;
+using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using OpenTK;
 using System;
 
@@ -17,27 +20,28 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
         private World_Layer World_Layer { get; set; }
 
         private AnnouncementMessage announcementMessage;
+        private UI_Panning_Event UI_Announcement_Event { get; set; }
 
         private Button[] abilityButtons;
         private Button[] targetEnemyButtons;
         private Button endTurnButton;
-        
+
         private StatusBar statusBar;
 
         private string[] abilityNames;
         private void Set_Ability_Names(string[] abilityNames)
         {
-            this.abilityNames = abilityNames;
+            this.abilityNames = abilityNames ?? new string[] { };
 
             for (int i = 0; i < abilityButtons.Length; i++)
             {
-                bool state = abilityNames.Length > i;
+                bool state = this.abilityNames.Length > i;
                 if (state)
                 {
-                    abilityButtons[i].Text = abilityNames[i];
+                    abilityButtons[i].Text = this.abilityNames[i];
                 }
-                abilityButtons[i].Enabled = true;
-                abilityButtons[i].SpriteComponent.Enabled = true;
+                abilityButtons[i].Enabled = state;
+                abilityButtons[i].SpriteComponent.Enabled = state;
             }
         }
 
@@ -48,11 +52,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
             World_Layer = GameScene.World_Layer;
 
             Reset_Selections();
-
-            Add_StaticObject(
-                announcementMessage = new AnnouncementMessage(this, new Vector3(-Game.Width/2 - 320, Game.Height/4, 0))
-                );
-
+            
             Add_StaticObject(
                 statusBar = new StatusBar(this, new Vector3(-Game.Width / 2, Game.Height / 2 - 375, 0))
                 );
@@ -121,8 +121,20 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                     )
             };
 
+            Add_StaticObject(
+                announcementMessage = new AnnouncementMessage(this, new Vector3(-Game.Width / 2 - 320, Game.Height / 4, 0))
+                );
+
+            UI_Announcement_Event = new UI_Announcement_Event(
+                Game.EventScheduler,
+                announcementMessage,
+                announcementMessage.Position,
+                new Vector3(0,announcementMessage.Position.Y,0)
+                );
+            
             GameScene.MonkeyDungeon_Game_UI.Expectation_Context.Register_Handler(
-                new MMH_Begin_Turn(this)
+                new MMH_Begin_Turn(this),
+                new MMH_Announcement(this)
                 );
 
             Add_Buttons(abilityButtons);
@@ -132,6 +144,20 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
         protected override void Handle_RenderLayer(RenderService renderService, FrameArgument e)
         {
             base.Handle_RenderLayer(renderService, e);
+        }
+
+        protected override void Handle_UpdateLayer(FrameArgument e)
+        {
+            base.Handle_UpdateLayer(e);
+            if (Selected_Ability != null && Selected_TargetIndex > 0)
+            {
+                GameScene.MonkeyDungeon_Game_UI.Client_RecieverEndpoint_UI.Queue_Message(
+                    new MMW_Set_Combat_Action(Selected_TargetIndex, Selected_Ability)
+                    );
+                Selected_Ability = null;
+                Selected_TargetIndex = -1;
+                statusBar.Use_Point();
+            }
         }
 
         internal void Enable_TurnControl()
@@ -151,6 +177,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
 
         internal void BeginTurn(int entityId)
         {
+            statusBar.ReplenishPoints();
             Reset_Selections();
             UI_GameEntity_Descriptor entity = World_Layer.Get_Description_From_Id(entityId);
             Set_Ability_Names(entity.Ability_Names);
@@ -164,8 +191,8 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
 
         internal void Announce_Action(string combatAction_Ability_Name)
         {
-            announcementMessage.SetAnnouncement(combatAction_Ability_Name);
-            EventScheduler.Invoke_Event(AnnouncementMessage.EVENT_TAG);
+            announcementMessage.Set_Announcement(combatAction_Ability_Name);
+            EventScheduler.Invoke_Event(MD_VANILLA_UI.UI_EVENT_ANNOUNCEMENT);
         }
 
         internal void Focus_Entity(UI_GameEntity_Descriptor entityDescription)
@@ -221,18 +248,6 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
         {
             foreach (Button button in buttons)
                 Add_StaticObject(button);
-        }
-
-        private void SetState_TargetEnemy_Buttons(bool state)
-        {
-            /*
-            GameEntity[] enemies = Combat.Enemies;
-            for (int i = 0; i < enemies.Length; i++)
-            {
-                targetEnemyButtons[i].Enabled = state;
-                targetEnemyButtons[i].SpriteComponent.Enabled = state;
-            }
-            */
         }
 
         internal static Vector3[] Get_UI_TargetPositions(Game game)

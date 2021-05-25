@@ -72,7 +72,10 @@ namespace MonkeyDungeon_Core.GameFeatures.CombatObjects
         protected float ImplementedHandle_DealDamage(Combat_Action combatAction)
         {
             if (combatAction.HasTarget)
-                return combatAction.Target.Damage_This(new Combat_Damage(Ability_DamageType, Get_RelevantOutput()));
+            {
+                GameEntity target = Entity.Game.Get_Entity(combatAction.Target_ID);
+                return target.Damage_This(new Combat_Damage(Ability_DamageType, Get_RelevantOutput()));
+            }
             return 0;
         }
 

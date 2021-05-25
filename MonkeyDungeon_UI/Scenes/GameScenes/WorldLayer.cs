@@ -4,10 +4,11 @@ using isometricgame.GameEngine.Scenes;
 using isometricgame.GameEngine.Systems.Rendering;
 using isometricgame.GameEngine.Tools;
 using MonkeyDungeon_UI.Multiplayer.Handlers;
-using MonkeyDungeon_UI.Prefabs.Components;
 using MonkeyDungeon_UI.Prefabs.Entities;
 using MonkeyDungeon_UI.Prefabs.UI;
 using MonkeyDungeon_UI.UI_Events.Implemented;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using OpenTK;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,8 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
 {
     public class World_Layer : GameScene_Layer
     {
-        private UI_MeleeEvent UI_MeleeEvent;
+        internal UI_MeleeEvent UI_MeleeEvent { get; private set; }
+        internal UI_Ranged_Attack UI_Ranged_Particle_Event { get; private set; }
 
         private readonly string DEFAULT_RACE;
 
@@ -36,6 +38,8 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                 ? Enemy_LayerObjects[Get_IndexFrom_TargetId(id)]
                 : Player_LayerObjects[Get_IndexFrom_TargetId(id)];
         }
+        public Vector3 Get_Position_From_Id(int id)
+            => Get_Entity_From_Id(id).Position;
         public UI_GameEntity_Descriptor Get_Description_From_Id(int id)
             => Get_Entity_From_Id(id).EntityDescription;
         internal void Set_Descriptions(int isPlayerDescriptions, string[] descriptions)
@@ -51,6 +55,8 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
         {
             Get_Entity_From_Id(id).Set_Unique_ID(uid);
         }
+
+        internal Particle Ranged_Particle { get; set; }
 
         internal World_Layer(GameScene parentScene)
             : base(parentScene, WORLD_LAYER_INDEX)
@@ -69,24 +75,35 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
             for(int i=0;i< MonkeyDungeon_Game_Client.MAX_TEAM_SIZE; i++)
                 Add_StaticObject(Enemy_LayerObjects[i] = new CreatureGameObject(this, positions[i]));
 
+            Add_StaticObject(Ranged_Particle = new Particle(this, new Vector3(0, 0, 0)));
+            Ranged_Particle.Toggle_Sprite(false);
+            Ranged_Particle.Set_Particle(MD_VANILLA_PARTICLES.CHAOS_BOLT);
+
             UI_MeleeEvent = new UI_MeleeEvent(
                 EventScheduler,
                 1, 
                 new Vector3(-20, -20, 0), 
-                new Vector3(20, 20, 0)
+                new Vector3(20, 20, 0),
+                Player_LayerObjects,
+                Enemy_LayerObjects
+                );
+
+            UI_Ranged_Particle_Event = new UI_Ranged_Attack(
+                EventScheduler,
+                Ranged_Particle,
+                Ranged_Particle.Position
                 );
 
             GameScene.MonkeyDungeon_Game_UI.Expectation_Context.Register_Handler(
-                new MMH_Set_Party_UI_Descriptions(this)
-                );
-            GameScene.MonkeyDungeon_Game_UI.Expectation_Context.Register_Handler(
-                new MMH_Accept_Client(GameScene.MonkeyDungeon_Game_UI)
-                );
-            GameScene.MonkeyDungeon_Game_UI.Expectation_Context.Register_Handler(
-                new MMH_Update_Entity_Abilities(this)
-                );
-            GameScene.MonkeyDungeon_Game_UI.Expectation_Context.Register_Handler(
-                new MMH_Update_Entity_UniqueID(this)
+                new MMH_Invoke_UI_Event(this),
+                new MMH_Set_Party_UI_Descriptions(this),
+                new MMH_Accept_Client(GameScene.MonkeyDungeon_Game_UI),
+                new MMH_Update_Entity_Level(this),
+                new MMH_Update_Entity_Resource(this),
+                new MMH_Update_Entity_Abilities(this),
+                new MMH_Update_Entity_UniqueID(this),
+                new MMH_Set_Melee_Combattants(this),
+                new MMH_Set_Ranged_Particle(this)
                 );
         }
 
@@ -101,15 +118,6 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
             Set_IfInbounds(Player_LayerObjects, players, Player_LayerObjects.Length, players.Length);
             
             Set_IfInbounds(Enemy_LayerObjects, enemies, Enemy_LayerObjects.Length, enemies.Length);
-        }
-
-        internal void Act_MeleeAttack(int eventOwnerId, int targetId)
-        {
-            CreatureGameObject owner = Get_Entity_From_Id(eventOwnerId);
-            CreatureGameObject target = Get_Entity_From_Id(targetId);
-
-            owner.Melee_MovementController.Invoke();
-            target.Melee_MovementController.Invoke();
         }
 
         //TODO: FIX THIS

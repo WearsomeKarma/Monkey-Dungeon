@@ -50,20 +50,24 @@
   <ItemGroup>
     <Compile Include="MonkeyDungeon_Game_Client.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Accept_Client.cs" />
+    <Compile Include="Multiplayer\Handlers\MMH_Announcement.cs" />
+    <Compile Include="Multiplayer\Handlers\MMH_Set_Melee_Combattants.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Set_Party_UI_Descriptions.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Begin_Turn.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Invoke_UI_Event.cs" />
+    <Compile Include="Multiplayer\Handlers\MMH_Set_Ranged_Particle.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_Abilities.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_Level.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_Resource.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_UniqueID.cs" />
+    <Compile Include="Multiplayer\MessageWrappers\MMW_Set_Combat_Action.cs" />
     <Compile Include="Multiplayer\MessageWrappers\MMW_Set_Entity.cs" />
     <Compile Include="Multiplayer\MessageWrappers\MMW_Set_Entity_Ready.cs" />
     <Compile Include="Multiplayer\Multiplayer_Message_UI_Handler.cs" />
     <Compile Include="Physics\PrimitiveHitbox.cs" />
-    <Compile Include="Prefabs\Components\GameAnnouncement_MovementController.cs" />
-    <Compile Include="Prefabs\Components\MovementController.cs" />
     <Compile Include="Prefabs\Entities\CreatureGameObject.cs" />
+    <Compile Include="Prefabs\Entities\Particle.cs" />
+    <Compile Include="Prefabs\UI\AbilityPoint.cs" />
     <Compile Include="Prefabs\UI\AnnouncementMessage.cs" />
     <Compile Include="Prefabs\UI\Button.cs" />
     <Compile Include="Prefabs\UI\ResourceBar.cs" />
@@ -82,12 +86,13 @@
     <Compile Include="Scenes\Menus\MainMenuScene.cs" />
     <Compile Include="Scenes\Menus\MainMenu_Layer.cs" />
     <Compile Include="Scenes\Menus\NewGame_Layer.cs" />
+    <Compile Include="UI_Events\Implemented\UI_Announcement_Event.cs" />
+    <Compile Include="UI_Events\Implemented\UI_Panning_Event.cs" />
+    <Compile Include="UI_Events\Implemented\UI_Ranged_Attack.cs" />
     <Compile Include="UI_Events\UI_GameEvent.cs" />
     <Compile Include="UI_Events\Implemented\UI_MeleeEvent.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Prefabs\UI\MovementControllers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />

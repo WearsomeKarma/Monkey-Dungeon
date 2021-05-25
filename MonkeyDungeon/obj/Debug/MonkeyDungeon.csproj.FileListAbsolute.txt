@@ -74,3 +74,4 @@ C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\obj\Debug\MonkeyDungeon
 C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\isometricgame.dll
 C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\Assets\Chaos_Bolt.png
 C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\Assets\Poopy_Fling.png
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\Assets\AbilityPoint.png

@@ -1,4 +1,5 @@
-﻿using MonkeyDungeon_Core.GameFeatures.Implemented.GameStates;
+﻿using MonkeyDungeon_Core.GameFeatures.EntityResourceManagement;
+using MonkeyDungeon_Core.GameFeatures.Implemented.GameStates;
 using MonkeyDungeon_Core.GameFeatures.Multiplayer.MessageWrappers;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,9 @@ namespace MonkeyDungeon_Core.GameFeatures
         public static readonly int MAX_TEAM_SIZE = 4;
         
         private readonly List<GameState> gameStates = new List<GameState>();
-        private void AddGameState(GameState gameState) { gameState.Set_GameWorld(this); gameStates.Add(gameState); }
+        private void Add_GameState(GameState gameState) { gameState.Set_GameWorld(this); gameStates.Add(gameState); }
+        internal T Get_GameState<T>() where T : GameState 
+            => gameStates.OfType<T>().ElementAt(0);
         
         public MonkeyDungeon_Game_Server Server { get; private set; }
 
@@ -23,7 +26,7 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         public GameEntity_Roster PlayerRoster { get; internal set; }
         public GameEntity_Roster EnemyRoster { get; internal set; }
-        internal void Set_Enemy_Roster(GameEntity[] enemyRoster) => EnemyRoster = new GameEntity_Roster(enemyRoster);
+        internal void Set_Enemy_Roster(GameEntity[] enemyRoster) => EnemyRoster.Set_Entities(enemyRoster);
         public GameEntity Get_Entity(int entityScene_Id)
         {
             if (entityScene_Id < 0)
@@ -32,6 +35,8 @@ namespace MonkeyDungeon_Core.GameFeatures
                 return PlayerRoster.Entities[entityScene_Id];
             return EnemyRoster.Entities[entityScene_Id % MAX_TEAM_SIZE];
         }
+        public GameEntity_Controller Get_Entity_Controller(int entityScene_Id)
+            => Get_Entity(entityScene_Id).EntityController;
         public GameEntity Set_Entity(int entityScene_Id, string factory_Tag)
         {
             if (entityScene_Id < 0)
@@ -53,12 +58,12 @@ namespace MonkeyDungeon_Core.GameFeatures
             Server = server;
 
             foreach (GameState gameState in gameStates)
-                AddGameState(gameState);
+                Add_GameState(gameState);
 
             GameEntity_Factory = new GameEntity_Factory(this);
 
-            PlayerRoster = new GameEntity_Roster(new GameEntity[MAX_TEAM_SIZE]);
-            EnemyRoster = new GameEntity_Roster(new GameEntity[MAX_TEAM_SIZE]);
+            PlayerRoster = new GameEntity_Roster(this, new GameEntity[MAX_TEAM_SIZE]);
+            EnemyRoster = new GameEntity_Roster(this, new GameEntity[MAX_TEAM_SIZE]);
             CurrentGameState = gameStates[0];
         }
         
@@ -80,6 +85,11 @@ namespace MonkeyDungeon_Core.GameFeatures
                 Server.ServerSide_Local_Reciever.Queue_Message(
                     new MMW_Update_Entity_UniqueID(entity.Scene_GameObject_ID, (uint)entity.Unique_ID)
                     );
+
+                foreach (GameEntity_Resource resource in entity.Resource_Manager.Get_Resources())
+                {
+                    Relay_Entity_Resource_Info(resource);
+                }
             }
 
             //TODO: Make a means to send message to specific client, and all clients.
@@ -131,6 +141,17 @@ namespace MonkeyDungeon_Core.GameFeatures
             }
 
             CurrentGameState.UpdateState(this);
+        }
+
+        internal void Relay_Entity_Resource_Info(GameEntity_Resource resource)
+        {
+            Server.ServerSide_Local_Reciever.Queue_Message(
+                new MMW_Update_Entity_Resource(
+                    resource.Entity.Scene_GameObject_ID,
+                    (float)(resource.Resource_Value / resource.Max_Value),
+                    resource.Resource_Name
+                    )
+                );
         }
     }
 }

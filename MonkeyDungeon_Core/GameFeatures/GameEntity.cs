@@ -30,6 +30,8 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         private Level level;
         public int Level                                { get => (level != null) ? (int)level.Get_BaseValue() : 0; set => Set_Level(value); }
+        
+        public GameState_Machine Game                   { get; internal set; }
 
         public readonly GameEntity_Stat_Manager         Stat_Manager;
         public readonly GameEntity_Resource_Manager     Resource_Manager;

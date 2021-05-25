@@ -19,12 +19,12 @@ namespace MonkeyDungeon_Core.GameFeatures
         public GameEntity Entity { get; private set; }
 
         internal Combat_Action PendingCombatAction { get; private set; }
-        internal void Setup_CombatAction_Ability(Combat_GameState combat, string abilityName)
+        internal void Setup_CombatAction_Ability(string abilityName)
         {
             if (!IsAutomonous)
             {
-                PendingCombatAction = new Combat_Action(combat);
-                PendingCombatAction.Owner_OfCombatAction = combat.Entity_OfCurrentTurn;
+                PendingCombatAction = new Combat_Action();
+                PendingCombatAction.Owner_OfCombatAction = Entity;
                 PendingCombatAction.Set_Ability(abilityName);
             }
         }
@@ -34,7 +34,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             {
                 if (PendingCombatAction == null)
                     throw new InvalidOperationException("Ability is null.");
-                PendingCombatAction.Set_Target(index);
+                PendingCombatAction.Target_ID = index;
             }
         }
         internal Combat_Action Get_CombatAction(Combat_GameState combat)

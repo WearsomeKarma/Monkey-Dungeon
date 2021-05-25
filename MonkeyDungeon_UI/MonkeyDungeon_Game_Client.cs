@@ -20,17 +20,15 @@ namespace MonkeyDungeon_UI
         public readonly string DEFAULT_RACE;
 
         public static readonly int MAX_TEAM_SIZE = 4;
-        protected EventScheduler EventScheduler { get; set; }
         internal EventScheduler UI_EventScheduler => EventScheduler;
 
         internal Multiplayer_Expectation_Context Expectation_Context { get; private set; }
         internal Multiplayer_Reciever Client_RecieverEndpoint_UI { get; private set; }
         
         public MonkeyDungeon_Game_Client(string defaultRace, string GAME_DIR = "", string GAME_DIR_ASSETS = "", string GAME_DIR_WORLDS = "") 
-            : base(1200, 900, "Monkey Dungeon", GAME_DIR, GAME_DIR_ASSETS, GAME_DIR_WORLDS)
+            : base(1000, 600, "Monkey Dungeon", GAME_DIR, GAME_DIR_ASSETS, GAME_DIR_WORLDS)
         {
             DEFAULT_RACE = defaultRace;
-            EventScheduler = new EventScheduler();
             Expectation_Context = new Multiplayer_Expectation_Context();
 
             //TODO: Change to Load_Entity_Factory();
@@ -79,6 +77,7 @@ namespace MonkeyDungeon_UI
             LoadSprite("statusBar", 1.25f, 400, 300);
             LoadSprite("resourceBar", 1, 128, 16);
             LoadSprite("announcement", 1, 300, 200);
+            LoadSprite("AbilityPoint", 1, 32, 32);
 
             TextDisplayer.LoadFont("font", (int)SpriteLibrary.GetSpriteID("font"));
         }

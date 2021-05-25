@@ -7,3 +7,12 @@ C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_Core\obj\Debug\Monke
 C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_Core\obj\Debug\MonkeyDungeon_Vanilla_Core.csproj.CopyComplete
 C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_Core\obj\Debug\MonkeyDungeon_Core.dll
 C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_Core\obj\Debug\MonkeyDungeon_Core.pdb
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon_Core\bin\Debug\MonkeyDungeon_Core.dll
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon_Core\bin\Debug\MonkeyDungeon_Core.pdb
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon_Core\bin\Debug\MonkeyDungeon_Vanilla_Domain.dll
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon_Core\bin\Debug\MonkeyDungeon_Vanilla_Domain.pdb
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon_Core\obj\Debug\MonkeyDungeon_Vanilla_Core.csprojAssemblyReference.cache
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon_Core\obj\Debug\MonkeyDungeon_Vanilla_Core.csproj.CoreCompileInputs.cache
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon_Core\obj\Debug\MonkeyDungeon_Vanilla_Core.csproj.CopyComplete
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon_Core\obj\Debug\MonkeyDungeon_Core.dll
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon_Core\obj\Debug\MonkeyDungeon_Core.pdb

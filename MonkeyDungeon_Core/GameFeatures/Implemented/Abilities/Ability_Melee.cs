@@ -1,4 +1,5 @@
 ﻿using MonkeyDungeon_Core.GameFeatures.CombatObjects;
+using MonkeyDungeon_Core.GameFeatures.Implemented.GameStates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace MonkeyDungeon_Core.GameFeatures.Implemented.Abilities
 {
-    public class MeleeAbility : GameEntity_Ability
+    public class Ability_Melee : GameEntity_Ability
     {
-        public MeleeAbility(
+        public Ability_Melee(
             string name, 
             string resourceName, 
             string statName,
@@ -21,9 +22,11 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.Abilities
 
         protected override void Handle_AbilityUsage(Combat_Action combatAction)
         {
-            combatAction.Combat_GameState.Act_MeleeAttack(
-                combatAction.Owner_OfCombatAction.Scene_GameObject_ID, 
-                combatAction.Target.Scene_GameObject_ID
+            Combat_GameState combat = Entity.Game.Get_GameState<Combat_GameState>();
+
+            combat.Act_Melee_Attack(
+                combatAction.Owner_OfCombatAction.Scene_GameObject_ID,
+                combatAction.Target_ID
                 );
         }
     }

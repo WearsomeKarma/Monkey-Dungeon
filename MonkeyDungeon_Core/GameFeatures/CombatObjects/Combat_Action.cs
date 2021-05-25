@@ -9,18 +9,11 @@ namespace MonkeyDungeon_Core.GameFeatures.CombatObjects
 {
     public class Combat_Action
     {
-        public Combat_GameState Combat_GameState { get; private set; }
-
         public GameEntity Owner_OfCombatAction { get; internal set; }
 
-        public GameEntity Target { get; internal set; }
-        public void Set_Target(int index)
-        {
-            if (index >= 0)
-                Target = Combat_GameState.Get_Target(index);
-        }
+        public int Target_ID { get; internal set; }
 
-        public bool HasTarget => Target != null;
+        public bool HasTarget => Target_ID != -1;
     
         public string CombatAction_Ability_Name { get; private set; }
         public bool Requires_Target { get; private set; }
@@ -44,16 +37,15 @@ namespace MonkeyDungeon_Core.GameFeatures.CombatObjects
             &&
             (!Requires_Target || HasTarget);
 
-        public Combat_Action(Combat_GameState combat_GameState)
+        public Combat_Action()
         {
-            Combat_GameState = combat_GameState;
+            Target_ID = -1;
         }
 
         public Combat_Action(Combat_Action action)
         {
-            Combat_GameState = action.Combat_GameState;
             Owner_OfCombatAction = action.Owner_OfCombatAction;
-            Target = action.Target;
+            Target_ID = action.Target_ID;
             Set_Ability(action.CombatAction_Ability_Name);
         }
         
@@ -69,7 +61,7 @@ namespace MonkeyDungeon_Core.GameFeatures.CombatObjects
                 "\nAction Target: {1}" +
                 "\nAbility: {2}",
                   Owner_OfCombatAction,
-                  Target,
+                  Target_ID,
                   Owner_OfCombatAction.Ability_Manager.Get_Ability(CombatAction_Ability_Name)
                 );
         }

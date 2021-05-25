@@ -59,7 +59,7 @@ namespace MonkeyDungeon_Core.GameFeatures.EntityResourceManagement
             if (Resource_Value - amount >= Min_Value)
             {
                 if (!peek)
-                    offset_Total_ByValue(-amount);
+                    Offset(-amount);
                 return true;
             }
             return false;
@@ -120,6 +120,13 @@ namespace MonkeyDungeon_Core.GameFeatures.EntityResourceManagement
             Rate_Replenish = replenishRate;
             IsEnabled = true;
         }
+        
+        internal void Add_To_Entity(GameEntity_Resource_Manager resource_Manager)
+        {
+            Handle_Add_To_Entity(resource_Manager);
+        }
+        protected virtual void Handle_Add_To_Entity(GameEntity_Resource_Manager resource_Manager)
+            => resource_Manager.Add_Resource(this);
 
         internal void Attach_ToEntity(GameEntity entity)
         {

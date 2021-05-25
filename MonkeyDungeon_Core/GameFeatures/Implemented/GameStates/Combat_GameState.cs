@@ -2,6 +2,7 @@
 using MonkeyDungeon_Core.GameFeatures.Implemented.Entities.Enemies.Goblins;
 using MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers;
 using MonkeyDungeon_Core.GameFeatures.Multiplayer.MessageWrappers;
+using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,9 +35,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.GameStates
         public List<GameEntity> TurnOrder { get; private set; }
         public GameEntity Entity_OfCurrentTurn => TurnOrder[TurnIndex];
         public int Entity_OfCurrentTurn_Id => Entity_OfCurrentTurn.Scene_GameObject_ID;
-
-        internal Combat_Action PendingCombatAction { get; private set; }
-
+        
         public GameEntity[] Players => GameWorld.PlayerRoster.Entities;
         public GameEntity[] ConsciousPlayers { get { List<GameEntity> cp = new List<GameEntity>(); foreach (GameEntity player in Players) if (!player.IsIncapacitated) cp.Add(player); return cp.ToArray(); } }
         public GameEntity[] Enemies => GameWorld.EnemyRoster.Entities;
@@ -48,16 +47,6 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.GameStates
             return Players[index];
         }
 
-        //TODO: ADD RELAYS
-        /*
-        internal Combat_Relay Combat_Relay { get; set; }
-        internal override void Set_UI_Relay(UI_Relay ui_relay)
-        {
-            Combat_Relay = ui_relay as Combat_Relay;
-            base.Set_UI_Relay(ui_relay);
-        }
-        */
-
         public Combat_GameState()
         {
             TurnOffset = 1;
@@ -67,7 +56,8 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.GameStates
         {
             GameWorld.Server.ServerSide_Local_Reciever.Register_Handler(
                 new MMH_Set_Entity(GameWorld),
-                new MMH_Set_Entity_Ready(GameWorld)
+                new MMH_Set_Entity_Ready(GameWorld),
+                new MMH_Set_Combat_Action(this)
                 );
         }
 
@@ -115,13 +105,14 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.GameStates
                     {
                         if (action.Conduct_Action(this))
                         {
-                            throw new NotImplementedException();
-                            //Combat_Relay.Announce_Action(action);
-                            //Combat_Relay.Reset_Selections();
+                            GameWorld.Server.ServerSide_Local_Reciever.Queue_Message(
+                                new MMW_Announcement(action.CombatAction_Ability_Name)
+                                );
                         }
                         else
-                            throw new NotImplementedException();
-                            //Combat_Relay.Announce_ActionFailure(action);
+                        {
+                            //TODO: implement.
+                        }
                     }
                     break;
                 case CombatState.FinishCurrentTurn:
@@ -148,10 +139,42 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.GameStates
                 );
         }
 
-        internal void Act_MeleeAttack(int scene_GameObject_ID1, int scene_GameObject_ID2)
+        internal void Act_Melee_Attack(int scene_GameObject_ID1, int scene_GameObject_ID2)
         {
-            throw new NotImplementedException();
-            //Combat_Relay.Act_MeleeAttack(scene_GameObject_ID1, scene_GameObject_ID2);
+            int ally, enemy;
+            if (scene_GameObject_ID1 < GameState_Machine.MAX_TEAM_SIZE)
+            {
+                ally = scene_GameObject_ID1;
+                enemy = scene_GameObject_ID2;
+            }
+            else
+            {
+                ally = scene_GameObject_ID2;
+                enemy = scene_GameObject_ID1;
+            }
+            GameWorld.Server.ServerSide_Local_Reciever.Queue_Message(
+                new MMW_Set_Melee_Combattants(
+                    ally,
+                    enemy
+                    )
+                );
+
+            GameWorld.Server.ServerSide_Local_Reciever.Queue_Message(
+                new MMW_Invoke_UI_Event(
+                    MD_VANILLA_UI.UI_EVENT_MELEE
+                    )
+                );
+        }
+
+        internal void Act_Ranged_Attack(int shooterId, int targetId, string particleType)
+        {
+            GameWorld.Server.ServerSide_Local_Reciever.Queue_Message(
+                new MMW_Set_Ranged_Particle(
+                    shooterId,
+                    targetId,
+                    particleType
+                    )
+                );
         }
 
         public void TakeAnExtraTurn() => TurnOffset = 0;
@@ -170,6 +193,14 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.GameStates
         protected override void Handle_Begin_State(GameState_Machine gameWorld)
         {
             List<GameEntity> enemies = GenerateNewEnemies(gameWorld);
+            string[] enemyRaces = new string[enemies.Count];
+            for (int i = 0; i < enemies.Count; i++)
+                enemyRaces[i] = enemies[i].Race;
+
+            GameWorld.Server.ServerSide_Local_Reciever.Queue_Message(
+                new MMW_Set_Party_UI_Descriptions(1, enemyRaces)
+                );
+
             gameWorld.Set_Enemy_Roster(enemies.ToArray());
 
             CombatState = CombatState.BeginNextTurn;
@@ -179,7 +210,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.GameStates
 
         protected override void Handle_End_State(GameState_Machine gameWorld)
         {
-            GenerateNewEnemies(gameWorld);
+
         }
 
         internal bool Is_AllyTeam_Incapacitated()

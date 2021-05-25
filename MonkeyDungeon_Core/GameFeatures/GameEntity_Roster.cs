@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MonkeyDungeon_Core.GameFeatures.EntityResourceManagement;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace MonkeyDungeon_Core.GameFeatures
 {
     public class GameEntity_Roster
     {
+        private GameState_Machine Game { get; set; }
+
         public int EntityCount { get; private set; }
         private GameEntity[] entities;
         public GameEntity[] Entities => entities.ToArray();
@@ -20,9 +23,12 @@ namespace MonkeyDungeon_Core.GameFeatures
             return ret;
         }
 
-        public GameEntity_Roster(GameEntity[] entities)
+        public GameEntity_Roster(GameState_Machine game, GameEntity[] entities)
         {
-            this.entities = entities.ToArray();
+            Game = game;
+            this.entities = new GameEntity[entities.Length];
+            foreach (GameEntity entity in entities)
+                Set_Entity(entity);
             readyEntities = new bool[entities.Length];
             EntityCount = entities.Length-1;
         }
@@ -64,8 +70,20 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         public GameEntity Set_Entity(GameEntity gameEntity)
         {
+            if (gameEntity == null)
+                return null;
+
             entities[gameEntity.Scene_GameObject_ID % entities.Length] = gameEntity;
+            gameEntity.Game = Game;
+            gameEntity.Resource_Manager.Resources_Updated += (e) => Game.Relay_Entity_Resource_Info(e);
             return gameEntity;
+        }
+        
+        public GameEntity[] Set_Entities(GameEntity[] gameEntities)
+        {
+            foreach (GameEntity gameEntity in gameEntities)
+                Set_Entity(gameEntity);
+            return gameEntities;
         }
 
         internal string[] Get_Races()

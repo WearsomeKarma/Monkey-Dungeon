@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MonkeyDungeon_Core.GameFeatures.Implemented.Abilities
 {
-    class RangedAbility
+    class Ability_Magic
     {
     }
 }

@@ -1,10 +1,10 @@
 ﻿using isometricgame.GameEngine;
 using isometricgame.GameEngine.Components.Rendering;
+using isometricgame.GameEngine.Events.Arguments;
 using isometricgame.GameEngine.Rendering;
 using isometricgame.GameEngine.Rendering.Animation;
 using isometricgame.GameEngine.Scenes;
 using isometricgame.GameEngine.Systems.Rendering;
-using MonkeyDungeon_UI.Prefabs.Components;
 using MonkeyDungeon_UI.Prefabs.UI;
 using OpenTK;
 using System;
@@ -38,21 +38,34 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
         {
             get => entityDescription; set
             {
+                //TODO: make this better.
+                if (entityDescription != null)
+                    entityDescription.Resources_Updated -= EntityDescription_Resources_Updated;
+
                 entityDescription = value;
+                entityDescription.Resources_Updated += EntityDescription_Resources_Updated;
+                Set_Race(value);
                 updateHealth(UI_Percentage_Health);
             }
         }
+
+        private void EntityDescription_Resources_Updated()
+        {
+            healthBar.Percentage = EntityDescription.Percentage_Health;
+        }
+
         public string UI_Race => EntityDescription.RACE;
         public float UI_Percentage_Health => EntityDescription.Percentage_Health;
         public float UI_Percentage_Stamina => EntityDescription.Percentage_Stamina;
         public float UI_Percentage_Mana => EntityDescription.Percentage_Mana;
 
         private AnimationComponent AnimationComponent;
-        internal MovementController Melee_MovementController { get; private set; }
+        public Vector3 Inital_Position { get; private set; }
 
         public CreatureGameObject(SceneLayer sceneLayer, Vector3 position, UI_GameEntity_Descriptor entity = null, int animRow = 1, int animCol = 8)
             : base(sceneLayer, position)
         {
+            Inital_Position = position;
             healthBar = new ResourceBar(
                 sceneLayer,
                 position + new Vector3(0, -35, 0),
@@ -60,7 +73,7 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
                 );
 
             //head anim
-            AnimationSchematic schem = new AnimationSchematic(8);
+            AnimationSchematic schem = new AnimationSchematic(8, 0.1);
             for (int i = 0; i < animRow; i++)
             {
                 int[] subNodes = new int[animCol];
@@ -68,14 +81,11 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
                     subNodes[j] = i * animCol + j;
                 schem.DefineNode(i, subNodes);
             }
-
-            schem.SetSpeed(0.1);
+            
             SpriteComponent = AnimationComponent = new AnimationComponent(schem);
             AnimationComponent.SetNode(0);
 
             Set_Race(entity);
-
-            AddComponent(Melee_MovementController = new MovementController(new Vector3(), 1.5));
         }
 
         internal void Set_Race(UI_GameEntity_Descriptor entity)

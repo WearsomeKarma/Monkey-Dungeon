@@ -14,8 +14,11 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
     public class Multiplayer_Expectation_Context
     {
         internal readonly List<Multiplayer_Message_Handler> Handlers = new List<Multiplayer_Message_Handler>();
-        public void Register_Handler(Multiplayer_Message_Handler handler)
-            => Handlers.Add(handler);
+        public void Register_Handler(params Multiplayer_Message_Handler[] handlers)
+        {
+            foreach (Multiplayer_Message_Handler mmh in handlers)
+                Handlers.Add(mmh);
+        }
 
         public void Link(Multiplayer_Reciever reciever)
         {

@@ -4,3 +4,9 @@ C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_Vanilla_Domain\obj\D
 C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_Vanilla_Domain\obj\Debug\MonkeyDungeon_Vanilla_Domain.csproj.CoreCompileInputs.cache
 C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_Vanilla_Domain\obj\Debug\MonkeyDungeon_Vanilla_Domain.dll
 C:\Users\grauslysd\source\repos\MonkeyDungeon\MonkeyDungeon_Vanilla_Domain\obj\Debug\MonkeyDungeon_Vanilla_Domain.pdb
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon_Vanilla_Domain\bin\Debug\MonkeyDungeon_Vanilla_Domain.dll
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon_Vanilla_Domain\bin\Debug\MonkeyDungeon_Vanilla_Domain.pdb
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon_Vanilla_Domain\obj\Debug\MonkeyDungeon_Vanilla_Domain.csprojAssemblyReference.cache
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon_Vanilla_Domain\obj\Debug\MonkeyDungeon_Vanilla_Domain.csproj.CoreCompileInputs.cache
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon_Vanilla_Domain\obj\Debug\MonkeyDungeon_Vanilla_Domain.dll
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon_Vanilla_Domain\obj\Debug\MonkeyDungeon_Vanilla_Domain.pdb

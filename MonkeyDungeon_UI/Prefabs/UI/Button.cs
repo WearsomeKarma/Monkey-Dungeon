@@ -81,13 +81,14 @@ namespace MonkeyDungeon_UI.Prefabs.UI
         protected override void HandleDraw(RenderService renderService)
         {
             base.HandleDraw(renderService);
-            SceneLayer.Game.TextDisplayer.DrawText
-                (
-                renderService,
-                Text, 
-                "font", 
-                Position.X - (Text.Length / 2 * 18) + (hitbox.Size.X/2), 
-                Position.Y + (hitbox.Size.Y/2) - 14);
+            if (SpriteComponent.Enabled)
+                SceneLayer.Game.TextDisplayer.DrawText
+                    (
+                    renderService,
+                    Text, 
+                    "font", 
+                    Position.X - (Text.Length / 2 * 18) + (hitbox.Size.X/2), 
+                    Position.Y + (hitbox.Size.Y/2) - 14);
         }
     }
 }

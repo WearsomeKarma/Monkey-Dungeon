@@ -24,11 +24,5 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
 
             Add_StaticObject(announcement = new AnnouncementMessage(this, new Vector3(-Game.Width / 2 - 310, Game.Height / 4, 0)));
         }
-
-        internal void Announce(string msg)
-        {
-            announcement.SetAnnouncement(msg);
-            EventScheduler.Invoke_Event("announce");
-        }
     }
 }

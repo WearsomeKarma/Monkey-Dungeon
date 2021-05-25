@@ -41,7 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameFeatures\MD_VANILLA_PARTICLES.cs" />
+    <Compile Include="GameFeatures\MD_VANILLA_RACES.cs" />
     <Compile Include="Multiplayer\MD_VANILLA_MMH.cs" />
+    <Compile Include="Multiplayer\MD_VANILLA_UI.cs" />
     <Compile Include="Multiplayer\Multiplayer_Expectation_Context.cs" />
     <Compile Include="Multiplayer\Multiplayer_Message.cs" />
     <Compile Include="Multiplayer\Multiplayer_Message_Handler.cs" />

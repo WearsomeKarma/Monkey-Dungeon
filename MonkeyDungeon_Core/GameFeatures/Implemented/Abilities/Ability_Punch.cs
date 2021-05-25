@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MonkeyDungeon_Core.GameFeatures.Implemented.Abilities
 {
-    public class Ability_Punch : MeleeAbility
+    public class Ability_Punch : Ability_Melee
     {
         public static readonly string NAME_PUNCH = "Punch";
 
@@ -22,7 +22,9 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.Abilities
         protected override void Handle_AbilityUsage(Combat_Action action)
         {
             base.Handle_AbilityUsage(action);
-            action.Target.Damage_This(
+            GameEntity target = Entity.Game.Get_Entity(action.Target_ID);
+
+            target.Damage_This(
                 new Combat_Damage(
                     DamageType.Physical, 
                     Get_RelevantOutput() * 0.25

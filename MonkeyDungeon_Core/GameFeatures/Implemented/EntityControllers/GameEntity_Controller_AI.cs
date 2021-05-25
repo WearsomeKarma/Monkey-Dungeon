@@ -19,12 +19,12 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.EntityControllers
         {
             Random rand = new Random();
             GameEntity[] players = combat.ConsciousPlayers;
-            GameEntity target = players[rand.Next(players.Length)];
+            int targetId = players[rand.Next(players.Length)].Scene_GameObject_ID;
 
             //TODO: make combat ref GameScene
-            Combat_Action ca = new Combat_Action(combat);
+            Combat_Action ca = new Combat_Action();
             ca.Owner_OfCombatAction = Entity;
-            ca.Target = target;
+            ca.Target_ID = targetId;
             ca.Set_Ability(Ability_Punch.NAME_PUNCH);
 
             return ca;

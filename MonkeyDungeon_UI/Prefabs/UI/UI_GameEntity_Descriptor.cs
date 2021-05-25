@@ -16,6 +16,8 @@ namespace MonkeyDungeon_UI.Prefabs.UI
         public float Percentage_Stamina { get; private set; }
         public float Percentage_Mana { get; private set; }
 
+        public event Action Resources_Updated;
+
         public readonly int SCENE_ID;
         public readonly int INITATIVE_ORDER;
 
@@ -52,6 +54,7 @@ namespace MonkeyDungeon_UI.Prefabs.UI
                 default:
                     break;
             }
+            Resources_Updated?.Invoke();
         }
     }
 }
