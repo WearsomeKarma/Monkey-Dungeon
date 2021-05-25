@@ -32,10 +32,10 @@ namespace MonkeyDungeon_Core
                 );
         }
 
-        public void On_Update_Frame()
+        public void On_Update_Frame(double deltaTime)
         {
             ServerSide_Local_Reciever.CheckFor_NewMessages();
-            GameState_Machine.CheckFor_GameState_Transition();
+            GameState_Machine.CheckFor_GameState_Transition(deltaTime);
 
             ServerSide_Local_Reciever.Flush_Messages();
         }

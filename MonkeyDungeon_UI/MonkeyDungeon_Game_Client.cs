@@ -74,11 +74,12 @@ namespace MonkeyDungeon_UI
             LoadSprite("gamefont", 1, 18, 28, true, "font");
             LoadSprite("targetButton", 1, 50, 50);
 
-            LoadSprite("statusBar", 1.25f, 400, 300);
+            LoadSprite("statusBar", 1.25f, 400, 299);
             LoadSprite("resourceBar", 1, 128, 16);
             LoadSprite("announcement", 1, 300, 200);
             LoadSprite("AbilityPoint", 1, 32, 32);
             LoadSprite("EndTurnButton", 4, 32, 32);
+            LoadSprite("BridgePath", 1, 1920, 1080);
 
             TextDisplayer.LoadFont("font", (int)SpriteLibrary.GetSpriteID("font"));
         }

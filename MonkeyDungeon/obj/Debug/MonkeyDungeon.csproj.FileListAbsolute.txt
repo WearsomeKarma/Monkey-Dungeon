@@ -76,3 +76,4 @@ C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\Assets\Chaos_
 C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\Assets\Poopy_Fling.png
 C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\Assets\AbilityPoint.png
 C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\Assets\EndTurnButton.png
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\Assets\BridgePath.png

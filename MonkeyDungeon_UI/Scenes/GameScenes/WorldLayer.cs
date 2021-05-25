@@ -57,6 +57,9 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
         }
 
         internal Particle Ranged_Particle { get; set; }
+        internal DungeonBridge DungeonBridge { get; set; }
+
+        internal bool IsTraveling { get; set; }
 
         internal World_Layer(GameScene parentScene)
             : base(parentScene, WORLD_LAYER_INDEX)
@@ -68,7 +71,15 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
             Vector3[] positionVectors = UI_Combat_Layer.Get_UI_TargetPositions(Game);
             
             Vector3[] positions = UI_Combat_Layer.Get_UI_TargetPositions(Game);
-            
+
+            Add_StaticObject(
+                DungeonBridge = new DungeonBridge(
+                    this, 
+                    new Vector3(50,-50,0),
+                    Game.Width, 
+                    Game.SpriteLibrary.ExtractRenderUnit("BridgePath"))
+                );
+
             for(int i=0;i< MonkeyDungeon_Game_Client.MAX_TEAM_SIZE;i++)
                 Add_StaticObject(Player_LayerObjects[i] = new CreatureGameObject(this, -positions[i]));
             
@@ -103,8 +114,16 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                 new MMH_Update_Entity_Abilities(this),
                 new MMH_Update_Entity_UniqueID(this),
                 new MMH_Set_Melee_Combattants(this),
-                new MMH_Set_Ranged_Particle(this)
+                new MMH_Set_Ranged_Particle(this),
+                new MMH_Set_Traveling_State(this)
                 );
+        }
+
+        protected override void Handle_UpdateLayer(FrameArgument e)
+        {
+            base.Handle_UpdateLayer(e);
+            if (IsTraveling)
+                DungeonBridge.Scroll_Bridge(-200, (float)e.DeltaTime);
         }
 
         internal void RemovePlayer(int playerIndex)

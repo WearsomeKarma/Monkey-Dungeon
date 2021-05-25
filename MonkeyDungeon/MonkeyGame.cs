@@ -32,7 +32,7 @@ namespace MonkeyDungeon_Core
         {
             base.OnUpdateFrame(e);
             if (!EventScheduler.IsActive)
-                Local_Session?.On_Update_Frame();
+                Local_Session?.On_Update_Frame(e.Time);
         }
         
         protected override void Handle_Load_Entities()

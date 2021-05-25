@@ -39,13 +39,13 @@ namespace MonkeyDungeon.GameFeatures.Multiplayer
             });
         }
 
-        internal void On_Update_Frame()
+        internal void On_Update_Frame(double deltaTime)
         {
             Client_Endpoint.CheckFor_NewMessages();
             
             Client_Endpoint.Flush_Messages();
 
-            Server_Instance.On_Update_Frame();
+            Server_Instance.On_Update_Frame(deltaTime);
         }
 
         private void Handle_Local_Endpoint(Multiplayer_Message message, Local_Reciever endpoint)

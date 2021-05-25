@@ -83,7 +83,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.GameStates
             }
         }
         
-        protected override void Handle_Update_State(GameState_Machine gameWorld)
+        protected override void Handle_Update_State(GameState_Machine gameWorld, double deltaTime)
         {
             switch(CombatState)
             {

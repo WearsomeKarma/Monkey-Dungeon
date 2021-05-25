@@ -70,6 +70,13 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
         /// INT: (uint) uid.
         /// </summary>
         public static readonly string MMH_UPDATE_ENTITY_UNIQUEID = "MMH_Update_Entity_UniqueID";
+
+        /// <summary>
+        /// Context for relaying to client side - if the party is traveling or not.
+        /// INT: 0 is not traveling, any other value is.
+        /// </summary>
+        public static readonly string MMH_SET_TRAVELING_STATE = "MMH_Set_Traveling_State";
+
         /// <summary>
         /// Context for relaying to server side - the client's combat action.
         /// ENTITY_ID: the sender of the message.
@@ -110,9 +117,13 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             MMH_SET_ENTITY_READY,
             MMH_REQUEST_ENDTURN,
 
+            //server
             MMH_UPDATE_ENTITY_RESOURCE,
             MMH_UPDATE_ENTITY_ABILITIES,
             MMH_UPDATE_ENTITY_UNIQUEID,
+
+            //state
+            MMH_SET_TRAVELING_STATE,
 
             //COMBAT
             MMH_SET_COMBAT_ACTION,

@@ -119,7 +119,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             CurrentGameState.End(this);
         }
 
-        public void CheckFor_GameState_Transition()
+        public void CheckFor_GameState_Transition(double deltaTime = 0)
         {
             if (!HasStarted)
             {
@@ -140,7 +140,7 @@ namespace MonkeyDungeon_Core.GameFeatures
                 CurrentGameState.Begin(this);
             }
 
-            CurrentGameState.UpdateState(this);
+            CurrentGameState.UpdateState(this, deltaTime);
         }
 
         internal void Relay_Entity_Resource_Info(GameEntity_Resource resource)

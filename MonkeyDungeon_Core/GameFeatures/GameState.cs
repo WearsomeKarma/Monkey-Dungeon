@@ -38,7 +38,6 @@ namespace MonkeyDungeon_Core.GameFeatures
         internal void Reset(GameState_Machine gameWorld)
         {
             Handle_ResetState(gameWorld);
-            //UI_Relay?.Reset_State(this);
             TransitionState = TransitionState.Awaiting;
         }
 
@@ -46,7 +45,6 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             TransitionState = TransitionState.Beginning;
             Handle_Begin_State(gameWorld);
-            //UI_Relay?.Begin_State(this);
             TransitionState = TransitionState.Acting;
         }
 
@@ -54,14 +52,12 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             TransitionState = TransitionState.Ending;
             Handle_End_State(gameWorld);
-            //UI_Relay?.End_State(this);
             TransitionState = TransitionState.Finished;
         }
 
-        internal void UpdateState(GameState_Machine gameWorld)
+        internal void UpdateState(GameState_Machine gameWorld, double deltaTime=0)
         {
-            Handle_Update_State(gameWorld);
-            //UI_Relay?.Update_State(this);
+            Handle_Update_State(gameWorld, deltaTime);
         }
 
         protected void End() => TransitionState = TransitionState.Ending;
@@ -78,7 +74,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
 
         }
-        protected virtual void Handle_Update_State(GameState_Machine gameWorld)
+        protected virtual void Handle_Update_State(GameState_Machine gameWorld, double deltaTime)
         {
 
         }
