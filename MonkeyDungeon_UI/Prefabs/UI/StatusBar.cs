@@ -4,6 +4,8 @@ using isometricgame.GameEngine.Rendering;
 using isometricgame.GameEngine.Scenes;
 using isometricgame.GameEngine.Systems.Rendering;
 using MonkeyDungeon_UI.Prefabs.Entities;
+using MonkeyDungeon_UI.Prefabs.UI.EntityData;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using OpenTK;
 using System;
 using System.Collections.Generic;
@@ -25,10 +27,10 @@ namespace MonkeyDungeon_UI.Prefabs.UI
         public ResourceBar ResourceBar_Health { get; private set; }
         public ResourceBar ResourceBar_Stamina { get; private set; }
         public ResourceBar ResourceBar_Mana { get; private set; }
+        public ResourceBar[] ResourceBars { get; private set; }
 
         private AbilityPoint[] abilityPoints = new AbilityPoint[3];
-        private int abilityPointCount = 1;
-        private int abilityPointIndex = 1;
+        private int abilityPointCount = 2;
                 
         public StatusBar(SceneLayer sceneLayer, Vector3 position) 
             : base(sceneLayer, position, "statusBar")
@@ -38,20 +40,30 @@ namespace MonkeyDungeon_UI.Prefabs.UI
             ResourceBar_Health = new ResourceBar(
                 sceneLayer,
                 Position + new Vector3(320, 340, 0),
-                new Vector4(255, 0, 0, 1)
+                new Vector4(255, 0, 0, 1),
+                MD_VANILLA_RESOURCES.RESOURCE_HEALTH
             );
 
             ResourceBar_Stamina = new ResourceBar(
                 sceneLayer,
                 Position + new Vector3(320, 310, 0),
-                new Vector4(255, 255, 0, 1)
+                new Vector4(255, 255, 0, 1),
+                MD_VANILLA_RESOURCES.RESOURCE_STAMINA
             );
             
             ResourceBar_Mana = new ResourceBar(
                 sceneLayer,
                 Position + new Vector3(320, 280, 0),
-                new Vector4(0, 0, 255, 1)
+                new Vector4(0, 0, 255, 1),
+                MD_VANILLA_RESOURCES.RESOURCE_MANA
             );
+
+            ResourceBars = new ResourceBar[]
+            {
+                ResourceBar_Health,
+                ResourceBar_Mana,
+                ResourceBar_Stamina
+            };
 
             for(int i=0;i<abilityPoints.Length;i++)
             {
@@ -63,36 +75,27 @@ namespace MonkeyDungeon_UI.Prefabs.UI
 
         public void Set_EntityFocus(UI_GameEntity_Descriptor entityDescription)
         {
-            //TODO: make this better.
             if (EntityDescription != null)
-                EntityDescription.Resources_Updated -= EntityDescription_Resources_Updated;
+                Detatch_From_Entity();
 
-            EntityDescription = entityDescription;
-            EntityDescription.Resources_Updated += EntityDescription_Resources_Updated;
-            target = spriteLibrary.ExtractRenderUnit(entityDescription.RACE +  CreatureGameObject.Suffix_Head);
+            Attach_From_Entity(entityDescription);
+        }
+
+        private void Detatch_From_Entity()
+        {
+            EntityDescription.Unsubscribe_To_Resource_Changes(ResourceBars);
+            EntityDescription.Ability_Points.Resource_Updated -= Handle_AbilityPoint_Change;
+        }
+
+        private void Attach_From_Entity(UI_GameEntity_Descriptor entity)
+        {
+            EntityDescription = entity;
+            EntityDescription.Subscribe_To_Resource_Changes(ResourceBars);
+            EntityDescription.Ability_Points.Resource_Updated += Handle_AbilityPoint_Change;
+            Handle_AbilityPoint_Change((int)EntityDescription.Ability_Points.Resource_Percentage);
+
+            target = spriteLibrary.ExtractRenderUnit(EntityDescription.RACE + CreatureGameObject.Suffix_Head);
             Entity_SceneID = EntityDescription.SCENE_ID;
-
-            update_Entity(EntityDescription);
-        }
-
-        private void EntityDescription_Resources_Updated()
-        {
-            update_Entity(EntityDescription);
-        }
-
-        internal void Update_Entity(UI_GameEntity_Descriptor entityDescription)
-        {
-            if (entityDescription.SCENE_ID == Entity_SceneID)
-            {
-                update_Entity(entityDescription);
-            }
-        }
-
-        private void update_Entity(UI_GameEntity_Descriptor entityDescription)
-        {
-            ResourceBar_Health.Percentage = entityDescription.Percentage_Health;
-            ResourceBar_Stamina.Percentage = entityDescription.Percentage_Stamina;
-            ResourceBar_Mana.Percentage = entityDescription.Percentage_Mana;
         }
 
         public override void OnUpdate(FrameArgument args)
@@ -102,17 +105,36 @@ namespace MonkeyDungeon_UI.Prefabs.UI
                 ap.OnUpdate(args);
         }
 
-        public void ReplenishPoints()
+        internal void Dump_AbilityPoints()
         {
-            abilityPointIndex = abilityPointCount;
-            for (int i = 0; i < abilityPointCount + 1; i++)
-                abilityPoints[i].Replenish();
+            foreach (AbilityPoint ap in abilityPoints)
+                ap.Waste();
         }
 
-        public void Use_Point()
+        private void Handle_AbilityPoint_Change(float val)
         {
-            abilityPoints[abilityPointIndex].Use_Point();
-            abilityPointIndex--;
+            int index = 0;
+            if (abilityPointCount > 0)
+                index = abilityPointCount - 1;
+            int ival = (int)val;
+            int diff = abilityPointCount - ival;
+            if (diff == 0)
+                return;
+            int stepDist = Math.Abs(diff);
+            abilityPointCount -= diff;
+
+            bool waste = diff > 0;
+            int step = (waste) ? -1 : 1;
+
+            for (int i = 0; i < stepDist; i++)
+            {
+                if (waste)
+                {
+                    abilityPoints[index + (i * step)].Use_Point();
+                    continue;
+                }
+                abilityPoints[i].Replenish();
+            }
         }
 
         protected override void HandleDraw(RenderService renderService)

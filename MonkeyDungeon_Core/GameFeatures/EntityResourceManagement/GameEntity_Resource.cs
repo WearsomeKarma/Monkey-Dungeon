@@ -8,18 +8,6 @@ using System.Threading.Tasks;
 
 namespace MonkeyDungeon_Core.GameFeatures.EntityResourceManagement
 {
-    public static class ENTITY_RESOURCES
-    {
-        // Managed Resources
-        public static readonly string HEALTH = "Health";
-        public static readonly string STAMINA = "Stamina";
-        public static readonly string MANA = "Mana";
-
-        // Unmanaged Resources
-        internal static readonly string LEVEL = "Level";
-        internal static readonly string ABILITY_POINTPOOL = "Ability_PointPool";
-    }
-
     public class GameEntity_Resource
     {
         public readonly string Resource_Name;

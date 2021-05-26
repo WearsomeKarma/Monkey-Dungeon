@@ -77,3 +77,4 @@ C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\Assets\Poopy_
 C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\Assets\AbilityPoint.png
 C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\Assets\EndTurnButton.png
 C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\Assets\BridgePath.png
+C:\Users\Pahpr\source\repos\Monkey-Dungeon\MonkeyDungeon\bin\Debug\Assets\Bannana_Rang.png

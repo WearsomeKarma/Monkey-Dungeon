@@ -4,6 +4,7 @@ using MonkeyDungeon_Core.GameFeatures.EntityResourceManagement;
 using MonkeyDungeon_Core.GameFeatures.Implemented.Abilities;
 using MonkeyDungeon_Core.GameFeatures.Implemented.CharacterStats;
 using MonkeyDungeon_Core.GameFeatures.Implemented.EntityResources;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +46,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.Entities.PlayerClasses
         
         public ArcherClass(string name, int level, GameEntity_Controller controller)
             : base(
-                  RACE_NAME_PLAYER,
+                  MD_VANILLA_RACES.PLAYER_RACE,
                   name,
                   level,
                   CLASS_ID,

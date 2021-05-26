@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MonkeyDungeon_Core.GameFeatures.EntityResourceManagement;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 
 namespace MonkeyDungeon_Core.GameFeatures.Implemented.EntityResources
 {
     public class Stamina : GameEntity_Resource
     {
         public Stamina(double baseValue, double max, double replenishRate, double progressionRate) 
-            : base(ENTITY_RESOURCES.STAMINA, baseValue, max, 0, replenishRate, progressionRate)
+            : base(MD_VANILLA_RESOURCES.RESOURCE_STAMINA, baseValue, max, 0, replenishRate, progressionRate)
         {
         }
 

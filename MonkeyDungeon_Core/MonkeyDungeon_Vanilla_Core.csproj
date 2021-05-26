@@ -102,13 +102,15 @@
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Combat_Action.cs" />
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Entity.cs" />
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Entity_Ready.cs" />
-    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMH_Set_Traveling_State.cs" />
+    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Set_Entity_Resources.cs" />
+    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Set_Traveling_State.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Accept_Client.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Announcement.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Begin_Turn.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Invoke_UI_Event.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Set_Melee_Combattants.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Set_Ranged_Particle.cs" />
+    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Ability_Point.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Entity_Abilities.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Entity_Resource.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Set_Party_UI_Descriptions.cs" />

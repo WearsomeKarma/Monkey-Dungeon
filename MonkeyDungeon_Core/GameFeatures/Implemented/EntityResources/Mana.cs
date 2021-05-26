@@ -1,4 +1,5 @@
 ﻿using MonkeyDungeon_Core.GameFeatures.EntityResourceManagement;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.EntityResources
     public class Mana : GameEntity_Resource
     {
         public Mana(double baseValue, double max, double replenishRate, double progressionRate) 
-            : base(ENTITY_RESOURCES.MANA, baseValue, max, 0, replenishRate, progressionRate)
+            : base(MD_VANILLA_RESOURCES.RESOURCE_MANA, baseValue, max, 0, replenishRate, progressionRate)
         {
         }
 

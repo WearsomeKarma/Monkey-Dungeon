@@ -27,14 +27,14 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.GameStates
         {
             timer.Set();
             GameWorld.Server.ServerSide_Local_Reciever.Queue_Message(
-                new MMH_Set_Traveling_State(true)
+                new MMW_Set_Traveling_State(true)
                 );
         }
 
         protected override void Handle_End_State(GameState_Machine gameWorld)
         {
             GameWorld.Server.ServerSide_Local_Reciever.Queue_Message(
-                new MMH_Set_Traveling_State(false)
+                new MMW_Set_Traveling_State(false)
                 );
         }
     }

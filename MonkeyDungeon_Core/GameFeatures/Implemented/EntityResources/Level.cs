@@ -1,4 +1,5 @@
 ﻿using MonkeyDungeon_Core.GameFeatures.EntityResourceManagement;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.EntityResources
     public class Level : GameEntity_Resource
     {
         public Level(float baseValue, float max, float min, float replenishRate, float progressionRate) 
-            : base(ENTITY_RESOURCES.LEVEL, baseValue, max, min, replenishRate, progressionRate)
+            : base(MD_VANILLA_RESOURCES.RESOURCE_LEVEL, baseValue, max, min, replenishRate, progressionRate)
         {
         }
 

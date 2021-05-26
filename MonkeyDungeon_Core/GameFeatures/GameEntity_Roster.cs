@@ -75,7 +75,8 @@ namespace MonkeyDungeon_Core.GameFeatures
 
             entities[gameEntity.Scene_GameObject_ID % entities.Length] = gameEntity;
             gameEntity.Game = Game;
-            gameEntity.Resource_Manager.Resources_Updated += (e) => Game.Relay_Entity_Resource_Info(e);
+            gameEntity.Resource_Manager.Resources_Updated += (e) => Game.Relay_Entity_Resource(e);
+            gameEntity.Ability_Manager.Ability_PointPool.ValueChanged += (e) => Game.Relay_Entity_Static_Resource(e);
             return gameEntity;
         }
         

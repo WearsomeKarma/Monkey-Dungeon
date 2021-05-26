@@ -13,15 +13,13 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.Abilities
 {
     public class Ability_ChaosBolt : Ability_Ranged
     {
-        public static readonly string NAME_CHAOS_BOLT = "Chaos Bolt";
-
         private Random rand = new Random();
 
         public Ability_ChaosBolt() 
             : base(
-                  NAME_CHAOS_BOLT, 
-                  ENTITY_RESOURCES.MANA, 
-                  ENTITY_STATS.SMARTYPANTS,
+                  MD_VANILLA_ABILITYNAMES.ABILITY_CHAOS_BOLT, 
+                  MD_VANILLA_RESOURCES.RESOURCE_MANA, 
+                  MD_VANILLA_STATS.STAT_SMARTYPANTS,
                   MD_VANILLA_PARTICLES.CHAOS_BOLT,
                   DamageType.Magical, 
                   true)

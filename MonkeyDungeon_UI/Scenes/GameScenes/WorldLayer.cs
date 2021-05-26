@@ -6,6 +6,7 @@ using isometricgame.GameEngine.Tools;
 using MonkeyDungeon_UI.Multiplayer.Handlers;
 using MonkeyDungeon_UI.Prefabs.Entities;
 using MonkeyDungeon_UI.Prefabs.UI;
+using MonkeyDungeon_UI.Prefabs.UI.EntityData;
 using MonkeyDungeon_UI.UI_Events.Implemented;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
@@ -109,10 +110,12 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                 new MMH_Invoke_UI_Event(this),
                 new MMH_Set_Party_UI_Descriptions(this),
                 new MMH_Accept_Client(GameScene.MonkeyDungeon_Game_UI),
+                new MMH_Set_MD_VANILLA_RESOURCES(this),
                 new MMH_Update_Entity_Level(this),
                 new MMH_Update_Entity_Resource(this),
                 new MMH_Update_Entity_Abilities(this),
                 new MMH_Update_Entity_UniqueID(this),
+                new MMH_Update_Ability_Point(this),
                 new MMH_Set_Melee_Combattants(this),
                 new MMH_Set_Ranged_Particle(this),
                 new MMH_Set_Traveling_State(this)
@@ -124,47 +127,6 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
             base.Handle_UpdateLayer(e);
             if (IsTraveling)
                 DungeonBridge.Scroll_Bridge(-200, (float)e.DeltaTime);
-        }
-
-        internal void RemovePlayer(int playerIndex)
-        {
-            //throw new NotImplementedException();
-            //resolve primitive obsession.
-        }
-
-        internal void BeginCombat(UI_GameEntity_Descriptor[] players, UI_GameEntity_Descriptor[] enemies)
-        {
-            Set_IfInbounds(Player_LayerObjects, players, Player_LayerObjects.Length, players.Length);
-            
-            Set_IfInbounds(Enemy_LayerObjects, enemies, Enemy_LayerObjects.Length, enemies.Length);
-        }
-
-        //TODO: FIX THIS
-        internal void Update_Entity(UI_GameEntity_Descriptor entity)
-        {
-            int trueId = entity.SCENE_ID % MonkeyDungeon_Game_Client.MAX_TEAM_SIZE;
-            if (entity.SCENE_ID >= MonkeyDungeon_Game_Client.MAX_TEAM_SIZE)
-            {
-                Enemy_LayerObjects[trueId].EntityDescription = entity;
-            }
-            else
-            {
-                Player_LayerObjects[trueId].EntityDescription = entity;
-            }
-        }
-
-        private void Set_IfInbounds<T>(T[] objs, UI_GameEntity_Descriptor[] descriptions, int length, int comparingLength) where T : CreatureGameObject
-        {
-            for (int i = 0; i < length; i++)
-            {
-                if (comparingLength <= i)
-                {
-                    objs[i].SpriteComponent.Enabled = false;
-                    continue;
-                }
-                objs[i].SpriteComponent.Enabled = true;
-                objs[i].Set_Race(descriptions[i]);
-            }
         }
     }
 }

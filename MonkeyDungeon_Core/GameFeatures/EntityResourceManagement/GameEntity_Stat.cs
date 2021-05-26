@@ -6,15 +6,6 @@ using System.Threading.Tasks;
 
 namespace MonkeyDungeon_Core.GameFeatures.EntityResourceManagement
 {
-    public static class ENTITY_STATS
-    {
-        // Stats
-        public static readonly string STRENGTH = "Strength";
-        public static readonly string AGILITY = "Agility";
-        public static readonly string SMARTYPANTS = "Smartypants";
-        public static readonly string STINKINESS = "Stinkiness";
-    }
-
     public class GameEntity_Stat : GameEntity_Resource
     {
         public GameEntity_Stat(string statName, double baseValue, double maxProgresionRate, double max =-1) 

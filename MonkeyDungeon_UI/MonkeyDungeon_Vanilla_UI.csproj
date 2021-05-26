@@ -51,12 +51,14 @@
     <Compile Include="MonkeyDungeon_Game_Client.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Accept_Client.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Announcement.cs" />
+    <Compile Include="Multiplayer\Handlers\MMH_Set_Entity_Resources.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Set_Melee_Combattants.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Set_Party_UI_Descriptions.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Begin_Turn.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Invoke_UI_Event.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Set_Ranged_Particle.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Set_Traveling_State.cs" />
+    <Compile Include="Multiplayer\Handlers\MMH_Update_Ability_Point.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_Abilities.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_Level.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_Resource.cs" />
@@ -73,10 +75,11 @@
     <Compile Include="Prefabs\UI\AnnouncementMessage.cs" />
     <Compile Include="Prefabs\UI\Button.cs" />
     <Compile Include="Prefabs\UI\EndTurnButton.cs" />
+    <Compile Include="Prefabs\UI\EntityData\UI_GameEntity_Resource.cs" />
     <Compile Include="Prefabs\UI\ResourceBar.cs" />
     <Compile Include="Prefabs\UI\StatusBar.cs" />
     <Compile Include="Prefabs\UI\TextField.cs" />
-    <Compile Include="Prefabs\UI\UI_GameEntity_Descriptor.cs" />
+    <Compile Include="Prefabs\UI\EntityData\UI_GameEntity_Descriptor.cs" />
     <Compile Include="Prefabs\UI\DungeonBridge.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scenes\GameScenes\GameScene.cs" />

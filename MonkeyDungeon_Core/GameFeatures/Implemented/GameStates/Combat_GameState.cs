@@ -204,6 +204,8 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.GameStates
 
             gameWorld.Set_Enemy_Roster(enemies.ToArray());
 
+            gameWorld.Relay_Roster(gameWorld.EnemyRoster);
+
             CombatState = CombatState.BeginNextTurn;
 
             DictateTurnOrder();

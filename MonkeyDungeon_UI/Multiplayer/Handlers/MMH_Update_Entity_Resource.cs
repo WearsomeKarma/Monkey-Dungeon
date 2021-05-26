@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using isometricgame.GameEngine.Scenes;
-using MonkeyDungeon_UI.Prefabs.UI;
+using MonkeyDungeon_UI.Prefabs.UI.EntityData;
 using MonkeyDungeon_UI.Scenes.GameScenes;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 

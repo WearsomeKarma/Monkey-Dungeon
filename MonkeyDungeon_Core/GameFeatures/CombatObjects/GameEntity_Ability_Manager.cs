@@ -14,7 +14,7 @@ namespace MonkeyDungeon_Core.GameFeatures.CombatObjects
 
         private readonly GameEntity Entity;
 
-        private GameEntity_Resource Ability_PointPool = new GameEntity_Resource(NAME_ABILITY_POINTPOOL, 2, 2, 0, 2, 0);
+        internal GameEntity_Resource Ability_PointPool = new GameEntity_Resource(NAME_ABILITY_POINTPOOL, 2, 2, 0, 2, 0);
         public int Ability_PointPool_Count => (int)Ability_PointPool.Resource_Value;
 
         public bool Ability_PointPool_IsDepleted => Ability_PointPool.IsDepleted;

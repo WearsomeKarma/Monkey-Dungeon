@@ -2,6 +2,7 @@
 using MonkeyDungeon_Core.GameFeatures.EntityResourceManagement;
 using MonkeyDungeon_Core.GameFeatures.Implemented.CharacterStats;
 using MonkeyDungeon_Core.GameFeatures.Implemented.EntityResources;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,12 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.Abilities
 {
     public class Ability_StandGuard : GameEntity_Ability
     {
-        public static readonly string NAME_STAND_GUARD = "Stand Guard";
-
         public Ability_StandGuard() 
-            : base(NAME_STAND_GUARD, ENTITY_RESOURCES.STAMINA, ENTITY_STATS.STRENGTH)
+            : base(
+                  MD_VANILLA_ABILITYNAMES.ABILITY_STAND_GUARD, 
+                  MD_VANILLA_RESOURCES.RESOURCE_STAMINA, 
+                  MD_VANILLA_STATS.STAT_STRENGTH
+                  )
         {
         }
 

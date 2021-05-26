@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MonkeyDungeon_Core.GameFeatures.CombatObjects;
 using MonkeyDungeon_Core.GameFeatures.Implemented.Abilities;
 using MonkeyDungeon_Core.GameFeatures.Implemented.GameStates;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 
 namespace MonkeyDungeon_Core.GameFeatures.Implemented.EntityControllers
 {
@@ -25,7 +26,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.EntityControllers
             Combat_Action ca = new Combat_Action();
             ca.Owner_OfCombatAction = Entity;
             ca.Target_ID = targetId;
-            ca.Set_Ability(Ability_Punch.NAME_PUNCH);
+            ca.Set_Ability(MD_VANILLA_ABILITYNAMES.ABILITY_PUNCH);
 
             return ca;
         }

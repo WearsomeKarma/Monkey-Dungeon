@@ -6,6 +6,8 @@ using isometricgame.GameEngine.Rendering.Animation;
 using isometricgame.GameEngine.Scenes;
 using isometricgame.GameEngine.Systems.Rendering;
 using MonkeyDungeon_UI.Prefabs.UI;
+using MonkeyDungeon_UI.Prefabs.UI.EntityData;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using OpenTK;
 using System;
 using System.Collections.Generic;
@@ -30,34 +32,34 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
         protected RenderUnit Body;
 
         private ResourceBar healthBar;
-        private void updateHealth(float percentageHealth)
-            => healthBar.Percentage = percentageHealth;
 
         private UI_GameEntity_Descriptor entityDescription;
         internal UI_GameEntity_Descriptor EntityDescription
         {
             get => entityDescription; set
             {
-                //TODO: make this better.
-                if (entityDescription != null)
-                    entityDescription.Resources_Updated -= EntityDescription_Resources_Updated;
-
-                entityDescription = value;
-                entityDescription.Resources_Updated += EntityDescription_Resources_Updated;
+                Bind_To_Description(value);
                 Set_Race(value);
-                updateHealth(UI_Percentage_Health);
             }
         }
 
-        private void EntityDescription_Resources_Updated()
+        private void Bind_To_Description(UI_GameEntity_Descriptor entity)
         {
-            healthBar.Percentage = EntityDescription.Percentage_Health;
+            if (entityDescription != null)
+                entityDescription.Resource_Added -= Resource_Added;
+            entityDescription = entity;
+            if (entity == null)
+                return;
+            entityDescription.Resource_Added += Resource_Added;
+        }
+
+        private void Resource_Added(UI_GameEntity_Resource resource)
+        {
+            if (resource.Resource_Name == healthBar.Resource_Name)
+                healthBar.Attach_To_Resource(resource);
         }
 
         public string UI_Race => EntityDescription.RACE;
-        public float UI_Percentage_Health => EntityDescription.Percentage_Health;
-        public float UI_Percentage_Stamina => EntityDescription.Percentage_Stamina;
-        public float UI_Percentage_Mana => EntityDescription.Percentage_Mana;
 
         private AnimationComponent AnimationComponent;
         public Vector3 Inital_Position { get; private set; }
@@ -69,7 +71,8 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
             healthBar = new ResourceBar(
                 sceneLayer,
                 position + new Vector3(0, -35, 0),
-                isometricgame.GameEngine.Systems.MathHelper.Color_To_Vec4(Color.Red)
+                isometricgame.GameEngine.Systems.MathHelper.Color_To_Vec4(Color.Red),
+                MD_VANILLA_RESOURCES.RESOURCE_HEALTH
                 );
 
             //head anim
@@ -85,7 +88,7 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
             SpriteComponent = AnimationComponent = new AnimationComponent(schem);
             AnimationComponent.SetNode(0);
 
-            Set_Race(entity);
+            EntityDescription = entity;
         }
 
         internal void Set_Race(UI_GameEntity_Descriptor entity)

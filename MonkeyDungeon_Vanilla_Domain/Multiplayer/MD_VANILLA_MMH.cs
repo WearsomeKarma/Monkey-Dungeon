@@ -51,6 +51,12 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
         public static readonly string MMH_REQUEST_ENDTURN = "MMH_Request_EndTurn";
 
         /// <summary>
+        /// Context for updating to the client side - the names of the resources used.
+        /// ENTITY_ID,
+        /// STRING: seperated by a space, the names of the resources.
+        /// </summary>
+        public static readonly string MMH_SET_MD_VANILLA_RESOURCES = "MMH_Set_MD_VANILLA_RESOURCES";
+        /// <summary>
         /// Context for updating to the client side - the percentage of an entity's resource.
         /// ENTITY_ID,
         /// FLOAT: percentage of resource,
@@ -70,6 +76,12 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
         /// INT: (uint) uid.
         /// </summary>
         public static readonly string MMH_UPDATE_ENTITY_UNIQUEID = "MMH_Update_Entity_UniqueID";
+        /// <summary>
+        /// Context for updating the the client side - the ability point count of an entity.
+        /// ENTITY_ID,
+        /// INT: ability point count.
+        /// </summary>
+        public static readonly string MMH_UPDATE_ABILITY_POINT = "MMH_Update_Ability_Point";
 
         /// <summary>
         /// Context for relaying to client side - if the party is traveling or not.
@@ -118,6 +130,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             MMH_REQUEST_ENDTURN,
 
             //server
+            MMH_SET_MD_VANILLA_RESOURCES,
             MMH_UPDATE_ENTITY_RESOURCE,
             MMH_UPDATE_ENTITY_ABILITIES,
             MMH_UPDATE_ENTITY_UNIQUEID,

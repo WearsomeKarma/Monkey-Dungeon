@@ -2,6 +2,7 @@
 using MonkeyDungeon_Core.GameFeatures.EntityResourceManagement;
 using MonkeyDungeon_Core.GameFeatures.Implemented.CharacterStats;
 using MonkeyDungeon_Core.GameFeatures.Implemented.EntityResources;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,14 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.Abilities
 {
     public class Ability_KiKick : GameEntity_Ability
     {
-        public static readonly string NAME_KI_KICK = "Ki Kick";
-
         public Ability_KiKick() 
-            : base(NAME_KI_KICK, ENTITY_RESOURCES.STAMINA, ENTITY_STATS.AGILITY, DamageType.Physical, true)
+            : base(
+                  MD_VANILLA_ABILITYNAMES.ABILITY_KI_KICK, 
+                  MD_VANILLA_RESOURCES.RESOURCE_STAMINA, 
+                  MD_VANILLA_STATS.STAT_AGILITY, 
+                  DamageType.Physical, 
+                  true
+                  )
         {
         }
 

@@ -15,6 +15,13 @@ namespace MonkeyDungeon_Core.GameFeatures.EntityResourceManagement
 
         private readonly List<GameEntity_Resource> Resources    = new List<GameEntity_Resource>();
         public GameEntity_Resource[] Get_Resources              () => Resources.ToArray();
+        public string[] Get_Resource_Names                      ()
+        {
+            string[] ret = new string[Resources.Count];
+            for (int i = 0; i < Resources.Count; i++)
+                ret[i] = Resources[i].Resource_Name;
+            return ret;
+        }
         public T Get_ResourceByType<T>                          (string resourceName = null) where T : GameEntity_Resource { foreach (T resource in Resources.OfType<T>()) if (resource.IsEnabled && (resourceName == null || resource.Resource_Name == resourceName)) return resource; return null; }
         public GameEntity_Resource Get_Resource                 (string resourceName) => Get_ResourceByType<GameEntity_Resource>(resourceName);
         public double Get_Resource_Percentage                   (string resourceName) { GameEntity_Resource r = Get_Resource(resourceName); return r.Resource_StrictValue / r.Max_Value; }

@@ -77,20 +77,7 @@ namespace MonkeyDungeon_Core.GameFeatures
                 new MMW_Set_Party_UI_Descriptions(0, PlayerRoster.Get_Races())
                 );
 
-            foreach(GameEntity entity in PlayerRoster.Entities)
-            {
-                Server.ServerSide_Local_Reciever.Queue_Message(
-                    new MMW_Update_Entity_Abilities(entity.Scene_GameObject_ID, entity.Ability_Manager.Get_Ability_Names())
-                    );
-                Server.ServerSide_Local_Reciever.Queue_Message(
-                    new MMW_Update_Entity_UniqueID(entity.Scene_GameObject_ID, (uint)entity.Unique_ID)
-                    );
-
-                foreach (GameEntity_Resource resource in entity.Resource_Manager.Get_Resources())
-                {
-                    Relay_Entity_Resource_Info(resource);
-                }
-            }
+            Relay_Roster(PlayerRoster);
 
             //TODO: Make a means to send message to specific client, and all clients.
             Server.ServerSide_Local_Reciever.Queue_Message(
@@ -143,7 +130,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             CurrentGameState.UpdateState(this, deltaTime);
         }
 
-        internal void Relay_Entity_Resource_Info(GameEntity_Resource resource)
+        internal void Relay_Entity_Resource(GameEntity_Resource resource)
         {
             Server.ServerSide_Local_Reciever.Queue_Message(
                 new MMW_Update_Entity_Resource(
@@ -151,6 +138,37 @@ namespace MonkeyDungeon_Core.GameFeatures
                     (float)(resource.Resource_Value / resource.Max_Value),
                     resource.Resource_Name
                     )
+                );
+        }
+
+        internal void Relay_Entity(GameEntity entity)
+        {
+            //send abilities
+            Server.ServerSide_Local_Reciever.Queue_Message(
+                new MMW_Update_Entity_Abilities(entity.Scene_GameObject_ID, entity.Ability_Manager.Get_Ability_Names())
+                );
+
+            //send uid
+            Server.ServerSide_Local_Reciever.Queue_Message(
+                new MMW_Update_Entity_UniqueID(entity.Scene_GameObject_ID, (uint)entity.Unique_ID)
+                );
+
+            //send resource names
+            Server.ServerSide_Local_Reciever.Queue_Message(
+                new MMW_Set_MD_VANILLA_RESOURCES(entity.Scene_GameObject_ID, entity.Resource_Manager.Get_Resource_Names())
+                );
+        }
+
+        internal void Relay_Roster(GameEntity_Roster roster)
+        {
+            foreach (GameEntity entity in roster.Entities)
+                Relay_Entity(entity);
+        }
+
+        internal void Relay_Entity_Static_Resource(GameEntity_Resource resource)
+        {
+            Server.ServerSide_Local_Reciever.Queue_Message(
+                new MMW_Update_Ability_Point(resource.Entity.Scene_GameObject_ID, (int)resource.Resource_Value)
                 );
         }
     }

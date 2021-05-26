@@ -2,6 +2,7 @@
 using MonkeyDungeon_Core.GameFeatures.EntityResourceManagement;
 using MonkeyDungeon_Core.GameFeatures.Implemented.CharacterStats;
 using MonkeyDungeon_Core.GameFeatures.Implemented.EntityResources;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,13 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.Abilities
 {
     public class Ability_Punch : Ability_Melee
     {
-        public static readonly string NAME_PUNCH = "Punch";
-
         public Ability_Punch() 
-            : base(NAME_PUNCH, ENTITY_RESOURCES.STAMINA, ENTITY_STATS.STRENGTH, DamageType.Physical, true)
+            : base(
+                  MD_VANILLA_ABILITYNAMES.ABILITY_PUNCH, 
+                  MD_VANILLA_RESOURCES.RESOURCE_STAMINA, 
+                  MD_VANILLA_STATS.STAT_STRENGTH, 
+                  DamageType.Physical, 
+                  true)
         {
         }
 

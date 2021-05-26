@@ -2,6 +2,7 @@
 using MonkeyDungeon_Core.GameFeatures.EntityResourceManagement;
 using MonkeyDungeon_Core.GameFeatures.Implemented.CharacterStats;
 using MonkeyDungeon_Core.GameFeatures.Implemented.EntityResources;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,8 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.Abilities
 {
     public class Ability_ApeShit : GameEntity_Ability
     {
-        public static readonly string NAME_APE_SHIT = "Ape Shit";
-
         public Ability_ApeShit() 
-            : base(NAME_APE_SHIT, ENTITY_RESOURCES.STAMINA, ENTITY_STATS.STRENGTH)
+            : base(MD_VANILLA_ABILITYNAMES.ABILITY_APE_SHIT, MD_VANILLA_RESOURCES.RESOURCE_STAMINA, MD_VANILLA_STATS.STAT_STRENGTH)
         {
         }
 

@@ -4,6 +4,7 @@ using isometricgame.GameEngine.Systems.Rendering;
 using MonkeyDungeon_UI.Multiplayer.Handlers;
 using MonkeyDungeon_UI.Multiplayer.MessageWrappers;
 using MonkeyDungeon_UI.Prefabs.UI;
+using MonkeyDungeon_UI.Prefabs.UI.EntityData;
 using MonkeyDungeon_UI.UI_Events.Implemented;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using OpenTK;
@@ -165,7 +166,6 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                     );
                 Selected_Ability = null;
                 Selected_TargetIndex = -1;
-                statusBar.Use_Point();
             }
         }
 
@@ -174,6 +174,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
             GameScene.MonkeyDungeon_Game_UI.Client_RecieverEndpoint_UI.Queue_Message(
                 new MMW_Request_EndTurn()
                 );
+            statusBar.Dump_AbilityPoints();
         }
 
         internal void Enable_TurnControl()
@@ -194,7 +195,6 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
         internal void BeginTurn(int entityId)
         {
             endTurnButton.RefreshButton();
-            statusBar.ReplenishPoints();
             Reset_Selections();
             UI_GameEntity_Descriptor entity = World_Layer.Get_Description_From_Id(entityId);
             Set_Ability_Names(entity.Ability_Names);
@@ -215,11 +215,6 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
         internal void Focus_Entity(UI_GameEntity_Descriptor entityDescription)
         {
             statusBar.Set_EntityFocus(entityDescription);
-        }
-
-        internal void Update_Entity(UI_GameEntity_Descriptor entityDescription)
-        {
-            statusBar.Update_Entity(entityDescription);
         }
 
         internal void Reset_Selections()

@@ -13,13 +13,11 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.Abilities
 {
     public class Ability_PoopyFling : Ability_Ranged
     {
-        public static readonly string NAME_POOPY_FLING = "Poopy Fling";
-
         public Ability_PoopyFling() 
             : base(
-                  NAME_POOPY_FLING, 
-                  ENTITY_RESOURCES.HEALTH, 
-                  ENTITY_STATS.STINKINESS, 
+                  MD_VANILLA_ABILITYNAMES.ABILITY_POOPY_FLING, 
+                  MD_VANILLA_RESOURCES.RESOURCE_HEALTH, 
+                  MD_VANILLA_STATS.STAT_STINKINESS, 
                   MD_VANILLA_PARTICLES.POOPY_FLING, 
                   DamageType.Poison, true
                   )

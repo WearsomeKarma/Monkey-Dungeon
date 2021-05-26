@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using MonkeyDungeon_Core.GameFeatures.EntityResourceManagement;
 using MonkeyDungeon_Core.GameFeatures.Implemented.GameStates;
 using MonkeyDungeon_Core.GameFeatures.Implemented.StatusEffects;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 
 namespace MonkeyDungeon_Core.GameFeatures.Implemented.EntityResources
 {
     public class Health : GameEntity_Resource
     {
         public Health(double baseValue, double max, double min, double replenishRate, double progressionRate)
-            : base(ENTITY_RESOURCES.HEALTH, baseValue, max, min, replenishRate, progressionRate)
+            : base(MD_VANILLA_RESOURCES.RESOURCE_HEALTH, baseValue, max, min, replenishRate, progressionRate)
         {
         }
         

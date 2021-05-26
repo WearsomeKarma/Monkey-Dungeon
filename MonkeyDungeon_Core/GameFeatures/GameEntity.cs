@@ -4,6 +4,7 @@ using MonkeyDungeon_Core.GameFeatures.EntityResourceManagement;
 using MonkeyDungeon_Core.GameFeatures.Implemented.EntityControllers;
 using MonkeyDungeon_Core.GameFeatures.Implemented.EntityResources;
 using MonkeyDungeon_Core.GameFeatures.Implemented.GameStates;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,17 +13,15 @@ namespace MonkeyDungeon_Core.GameFeatures
 {
     public class GameEntity
     {
-        public static readonly string RACE_NAME_PLAYER  = "Monkey";
-
-        public string Name                              { get; set; }
-        public string Race                              { get; internal set; }
+        public string Name                              { get; set;             }
+        public string Race                              { get; internal set;    }
         private int unique_ID                           = 0;
         public int Unique_ID                            { get => unique_ID; internal set => unique_ID = (value >= 0) ? value : 0; }
         
-        public int Scene_GameObject_ID                  { get; internal set; }
-        public int Initative_Position                   { get; internal set; }
+        public int Scene_GameObject_ID                  { get; internal set;    }
+        public int Initative_Position                   { get; internal set;    }
 
-        public GameEntity_Controller EntityController   { get; internal set; }
+        public GameEntity_Controller EntityController   { get; internal set;    }
         public void Set_ActingEntity                    (GameEntity_Controller newEntity) { EntityController?.LoseControl(); newEntity?.GainControl(this); }
         private bool incapacitated                      = false;
         public bool IsIncapacitated                     { get => incapacitated; internal set => Set_IncapacitatedState(value); }
@@ -31,7 +30,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         private Level level;
         public int Level                                { get => (level != null) ? (int)level.Get_BaseValue() : 0; set => Set_Level(value); }
         
-        public GameState_Machine Game                   { get; internal set; }
+        public GameState_Machine Game                   { get; internal set;    }
 
         public readonly GameEntity_Stat_Manager         Stat_Manager;
         public readonly GameEntity_Resource_Manager     Resource_Manager;
@@ -58,34 +57,37 @@ namespace MonkeyDungeon_Core.GameFeatures
         }
 
         public GameEntity(
-            string race,
-            string name,
-            int level,
-            int unique_ID,
-            List<GameEntity_Stat> stats,
-            List<GameEntity_Resource> resources,
-            List<GameEntity_Ability> abilities,
+
+            string  race,
+            string  name,
+            int     level,
+            int     unique_ID,
+
+            List<GameEntity_Stat>       stats,
+            List<GameEntity_Resource>   resources,
+            List<GameEntity_Ability>    abilities,
             List<GameEntity_Resistance> resistances,
-            GameEntity_Controller controller
+            GameEntity_Controller       controller
+
             )
         {
             Race                    = race;
             Name                    = name;
             Unique_ID               = unique_ID;
 
-            Stat_Manager            = new GameEntity_Stat_Manager           (this, stats);
-            Resource_Manager        = new GameEntity_Resource_Manager       (this, resources);
-            Resistance_Manager      = new GameEntity_Resistance_Manager     (this, resistances);
-            Ability_Manager         = new GameEntity_Ability_Manager        (this, abilities);
-            StatusEffect_Manager    = new GameEntity_StatusEffect_Manager   (this);
+            Stat_Manager            = new GameEntity_Stat_Manager           (this, stats        );
+            Resource_Manager        = new GameEntity_Resource_Manager       (this, resources    );
+            Resistance_Manager      = new GameEntity_Resistance_Manager     (this, resistances  );
+            Ability_Manager         = new GameEntity_Ability_Manager        (this, abilities    );
+            StatusEffect_Manager    = new GameEntity_StatusEffect_Manager   (this               );
             
-            Set_ActingEntity(controller);
-            Set_Level(level);
+            Set_ActingEntity        (controller);
+            Set_Level               (level);
         }
 
         public GameEntity(string race = null)
         {
-            Race = race ?? RACE_NAME_PLAYER;
+            Race                    = race ?? MD_VANILLA_RACES.PLAYER_RACE;
             
             Stat_Manager            = new GameEntity_Stat_Manager           (this);
             Resource_Manager        = new GameEntity_Resource_Manager       (this);
@@ -93,8 +95,8 @@ namespace MonkeyDungeon_Core.GameFeatures
             Ability_Manager         = new GameEntity_Ability_Manager        (this);
             StatusEffect_Manager    = new GameEntity_StatusEffect_Manager   (this);
 
-            Set_ActingEntity(new GameEntity_Controller_AI());
-            Set_Level();
+            Set_ActingEntity        (new GameEntity_Controller_AI());
+            Set_Level               ();
         }
 
         internal void Set_Level(int level=1)

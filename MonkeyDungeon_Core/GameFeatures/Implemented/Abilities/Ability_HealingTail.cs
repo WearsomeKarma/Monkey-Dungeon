@@ -2,6 +2,7 @@
 using MonkeyDungeon_Core.GameFeatures.EntityResourceManagement;
 using MonkeyDungeon_Core.GameFeatures.Implemented.CharacterStats;
 using MonkeyDungeon_Core.GameFeatures.Implemented.EntityResources;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,13 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.Abilities
 {
     public class Ability_HealingTail : GameEntity_Ability
     {
-        public static readonly string NAME_HEALING_TAIL = "Healing Tail";
-
         public Ability_HealingTail() 
-            : base(NAME_HEALING_TAIL, ENTITY_RESOURCES.MANA, ENTITY_STATS.SMARTYPANTS, DamageType.Abstract, true)
+            : base(
+                  MD_VANILLA_ABILITYNAMES.ABILITY_HEALING_TAIL, 
+                  MD_VANILLA_RESOURCES.RESOURCE_MANA, 
+                  MD_VANILLA_STATS.STAT_SMARTYPANTS, 
+                  DamageType.Abstract, 
+                  true)
         {
         }
 
