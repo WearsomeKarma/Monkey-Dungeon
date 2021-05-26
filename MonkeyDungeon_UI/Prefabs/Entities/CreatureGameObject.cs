@@ -47,6 +47,7 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
             Unbind_To_Description();
             Bind_To_Description(entity);
             Set_Race(entity);
+            AnimationComponent.Play(0);
         }
 
         public void Bind_To_Description(UI_GameEntity_Descriptor entity)
@@ -56,14 +57,17 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
                 return;
             EntityDescription.Resource_Added += Resource_Added;
             EntityDescription.Entity_Died += Entity_Died;
+            EntityDescription.Entity_Dismissal_State_Changed += Entity_Dismissal_State_Changed;
+            Entity_Dismissal_State_Changed(entity);
         }
-
+        
         private void Unbind_To_Description()
         {
             if (entityDescription == null)
                 return;
             EntityDescription.Resource_Added -= Resource_Added;
             EntityDescription.Entity_Died -= Entity_Died;
+            EntityDescription.Entity_Dismissal_State_Changed -= Entity_Dismissal_State_Changed;
             entityDescription = null;
         }
 
@@ -93,6 +97,11 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
         private void Entity_Died(UI_GameEntity_Descriptor entity)
         {
             AnimationComponent.Play(4);
+        }
+
+        private void Entity_Dismissal_State_Changed(UI_GameEntity_Descriptor obj)
+        {
+            AnimationComponent.Enabled = !obj.IsDismissed;
         }
 
         public string UI_Race => EntityDescription.RACE;
@@ -168,12 +177,14 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
             float bodyHeight = 1;
             bodyHeight = SceneLayer.Game.SpriteLibrary.GetSprite(Race + Suffix_Body).SubHeight;
             if (SpriteComponent.Enabled)
+            {
                 renderService.DrawSprite(ref Body, Position.X, Position.Y - (bodyHeight * 0.3f));
+                renderService.DrawObj(healthBar);
+            }
+
             base.HandleDraw(renderService);
             if (SpriteComponent.Enabled && Has_UniqueIdentifier)
                 renderService.DrawSprite(ref UniqueIdentifier, Position.X, Position.Y + (bodyHeight * 0.3f));
-
-            renderService.DrawObj(healthBar);
         }
     }
 }

@@ -50,11 +50,18 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
         /// </summary>
         public static readonly string MMH_REQUEST_ENDTURN = "MMH_Request_EndTurn";
 
+        public static readonly string MMH_INTRODUCE_ENTITY = "MMH_Introduce_Entity";
         /// <summary>
-        /// Context for updating ot the client side - that an entity died.
+        /// Context for updating to the client side - the dismissal of an entity.
+        /// This will hide the entity on the client side. Good for NPC death or player disconnect.
         /// ENTITY_ID.
         /// </summary>
-        public static readonly string MMH_ENTITY_DEATH = "MMH_Dismiss_Entity";
+        public static readonly string MMH_DISMISS_ENTITY = "MMH_Dismiss_Entity";
+        /// <summary>
+        /// Context for updating to the client side - that an entity died.
+        /// ENTITY_ID.
+        /// </summary>
+        public static readonly string MMH_ENTITY_DEATH = "MMH_Entity_Death";
         /// <summary>
         /// Context for updating to the client side - the names of the resources used.
         /// ENTITY_ID,
@@ -135,6 +142,8 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             MMH_REQUEST_ENDTURN,
 
             //server
+            MMH_INTRODUCE_ENTITY,
+            MMH_DISMISS_ENTITY,
             MMH_ENTITY_DEATH,
             MMH_SET_MD_VANILLA_RESOURCES,
             MMH_UPDATE_ENTITY_RESOURCE,

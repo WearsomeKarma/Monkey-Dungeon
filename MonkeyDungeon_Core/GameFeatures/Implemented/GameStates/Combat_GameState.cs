@@ -213,7 +213,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Implemented.GameStates
 
         protected override void Handle_End_State(GameState_Machine gameWorld)
         {
-
+            gameWorld.Dismiss_Roster(gameWorld.EnemyRoster);
         }
 
         internal bool Is_AllyTeam_Incapacitated()

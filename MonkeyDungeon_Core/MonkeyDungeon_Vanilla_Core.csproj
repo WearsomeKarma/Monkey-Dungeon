@@ -102,7 +102,9 @@
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Combat_Action.cs" />
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Entity.cs" />
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Entity_Ready.cs" />
+    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Dismiss_Entity.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Entity_Death.cs" />
+    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Introduce_Entity.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Set_Entity_Resources.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Set_Traveling_State.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Accept_Client.cs" />

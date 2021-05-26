@@ -10,9 +10,15 @@ namespace MonkeyDungeon_UI.Prefabs.UI.EntityData
     public class UI_GameEntity_Descriptor
     {
         public readonly string RACE;
-        private bool isDead;
+
+        private bool isDead = false;
         public bool IsDead { get => isDead; internal set => Set_Death_State(value); }
         private void Set_Death_State(bool state) { isDead = state; Entity_Died?.Invoke(this); }
+
+        private bool isDismissed = false;
+        public bool IsDismissed { get => isDismissed; internal set => Set_Dismissed_State(value); }
+        private void Set_Dismissed_State(bool state) { isDismissed = state; Entity_Dismissal_State_Changed?.Invoke(this); }
+
         public uint UNIQUE_IDENTIFIER { get; internal set; }
         public string[] Ability_Names { get; private set; }
 
@@ -26,17 +32,21 @@ namespace MonkeyDungeon_UI.Prefabs.UI.EntityData
 
         public event Action<UI_GameEntity_Resource> Resource_Added;
         public event Action<UI_GameEntity_Descriptor> Entity_Died;
+        public event Action<UI_GameEntity_Descriptor> Entity_Dismissal_State_Changed;
 
-        public UI_GameEntity_Descriptor(string race, uint uid = 0, string[] abilityNames = null, string[] resourceNames = null)
+
+        public UI_GameEntity_Descriptor(string race, bool isDismissed = false)
         {
             Level = new UI_GameEntity_Resource(MD_VANILLA_RESOURCES.RESOURCE_LEVEL);
             Ability_Points = new UI_GameEntity_Resource(MD_VANILLA_RESOURCES.RESOURCE_ABILITYPOINTS, 2);
 
+            this.isDismissed = isDismissed;
+
             RACE = race;
-            UNIQUE_IDENTIFIER = uid;
-            Set_Abilities(abilityNames);
+            UNIQUE_IDENTIFIER = 0;
+            Set_Abilities(null);
             Resources = new List<UI_GameEntity_Resource>();
-            Set_Resources(resourceNames);
+            Set_Resources(null);
         }
         
         internal void Set_Abilities(string[] abilityNames)

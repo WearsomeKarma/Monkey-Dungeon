@@ -78,6 +78,7 @@ namespace MonkeyDungeon_Core.GameFeatures
                 );
 
             Relay_Roster(PlayerRoster);
+            Dismiss_Roster(null);
 
             //TODO: Make a means to send message to specific client, and all clients.
             Server.ServerSide_Local_Reciever.Queue_Message(
@@ -157,12 +158,34 @@ namespace MonkeyDungeon_Core.GameFeatures
             Server.ServerSide_Local_Reciever.Queue_Message(
                 new MMW_Set_MD_VANILLA_RESOURCES(entity.Scene_GameObject_ID, entity.Resource_Manager.Get_Resource_Names())
                 );
+
+            //introduce the entity to the scene.
+            Server.ServerSide_Local_Reciever.Queue_Message(
+                new MMW_Introduce_Entity(entity.Scene_GameObject_ID)
+                );
         }
 
         internal void Relay_Roster(GameEntity_Roster roster)
         {
             foreach (GameEntity entity in roster.Entities)
                 Relay_Entity(entity);
+        }
+
+        internal void Dismiss_Roster(GameEntity_Roster roster)
+        {
+            if (roster == null)
+            {
+                for (int i = MAX_TEAM_SIZE; i < MAX_TEAM_SIZE * 2; i++)
+                {
+                    Server.ServerSide_Local_Reciever.Queue_Message(
+                        new MMW_Dismiss_Entity(i)
+                        );
+                }
+                return;
+            }
+
+            foreach (GameEntity entity in roster.Entities)
+                Relay_Dismissal(entity);
         }
 
         internal void Relay_Entity_Static_Resource(GameEntity_Resource resource)
@@ -176,6 +199,13 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             Server.ServerSide_Local_Reciever.Queue_Message(
                 new MMW_Entity_Death(gameEntity.Scene_GameObject_ID)
+                );
+        }
+
+        internal void Relay_Dismissal(GameEntity gameEntity)
+        {
+            Server.ServerSide_Local_Reciever.Queue_Message(
+                new MMW_Dismiss_Entity(gameEntity.Scene_GameObject_ID)
                 );
         }
     }

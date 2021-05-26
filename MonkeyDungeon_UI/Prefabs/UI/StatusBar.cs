@@ -148,7 +148,8 @@ namespace MonkeyDungeon_UI.Prefabs.UI
                 if (ap.SpriteComponent.Enabled)
                     renderService.DrawObj(ap);
 
-            renderService.DrawSprite(ref target, Position.X + 20, Position.Y + 240);
+            if (EntityDescription != null)
+                renderService.DrawSprite(ref target, Position.X + 20, Position.Y + 240);
         }
     }
 }

@@ -49,7 +49,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
 
             for(int i=0;i<descriptions.Length && i < creatures.Length;i++)
             {
-                creatures[i].EntityDescription = new UI_GameEntity_Descriptor(descriptions[i], 1);
+                creatures[i].EntityDescription = new UI_GameEntity_Descriptor(descriptions[i]);
             }
         }
         public void Set_Unique_ID(int id, uint uid)
@@ -82,10 +82,10 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                 );
 
             for(int i=0;i< MonkeyDungeon_Game_Client.MAX_TEAM_SIZE;i++)
-                Add_StaticObject(Player_LayerObjects[i] = new CreatureGameObject(this, -positions[i]));
+                Add_StaticObject(Player_LayerObjects[i] = new CreatureGameObject(this, -positions[i], new UI_GameEntity_Descriptor(MD_VANILLA_RACES.PLAYER_RACE)));
             
             for(int i=0;i< MonkeyDungeon_Game_Client.MAX_TEAM_SIZE; i++)
-                Add_StaticObject(Enemy_LayerObjects[i] = new CreatureGameObject(this, positions[i]));
+                Add_StaticObject(Enemy_LayerObjects[i] = new CreatureGameObject(this, positions[i], new UI_GameEntity_Descriptor(MD_VANILLA_RACES.PLAYER_RACE, true)));
 
             Add_StaticObject(Ranged_Particle = new Particle(this, new Vector3(0, 0, 0)));
             Ranged_Particle.Toggle_Sprite(false);
@@ -111,6 +111,8 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                 new MMH_Set_Party_UI_Descriptions(this),
                 new MMH_Accept_Client(GameScene.MonkeyDungeon_Game_UI),
                 new MMH_Set_MD_VANILLA_RESOURCES(this),
+                new MMH_Introduce_Entity(this),
+                new MMH_Dismiss_Entity(this),
                 new MMH_Entity_Death(this),
                 new MMH_Update_Entity_Level(this),
                 new MMH_Update_Entity_Resource(this),
