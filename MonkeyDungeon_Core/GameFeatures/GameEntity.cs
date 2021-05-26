@@ -188,7 +188,10 @@ namespace MonkeyDungeon_Core.GameFeatures
         protected virtual void Handle_Combat_BeginTurn_PreUpkeep(Combat_GameState combat) { }
         protected virtual void Handle_Combat_BeginTurn_PostUpkeep(Combat_GameState combat) { }
         protected virtual void Handle_Combat_EndTurn_Cleanup(Combat_GameState combat) { }
-        protected virtual void Handle_Incapacitated() { }
+        protected virtual void Handle_Incapacitated()
+        {
+            Game.Relay_Death(this);
+        }
 
         public GameEntity Clone(int entityScene_ID=0)
         {

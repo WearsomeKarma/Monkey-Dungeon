@@ -111,6 +111,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                 new MMH_Set_Party_UI_Descriptions(this),
                 new MMH_Accept_Client(GameScene.MonkeyDungeon_Game_UI),
                 new MMH_Set_MD_VANILLA_RESOURCES(this),
+                new MMH_Entity_Death(this),
                 new MMH_Update_Entity_Level(this),
                 new MMH_Update_Entity_Resource(this),
                 new MMH_Update_Entity_Abilities(this),

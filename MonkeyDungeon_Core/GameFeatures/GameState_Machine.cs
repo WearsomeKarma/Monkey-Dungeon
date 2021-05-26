@@ -171,5 +171,12 @@ namespace MonkeyDungeon_Core.GameFeatures
                 new MMW_Update_Ability_Point(resource.Entity.Scene_GameObject_ID, (int)resource.Resource_Value)
                 );
         }
+
+        internal void Relay_Death(GameEntity gameEntity)
+        {
+            Server.ServerSide_Local_Reciever.Queue_Message(
+                new MMW_Entity_Death(gameEntity.Scene_GameObject_ID)
+                );
+        }
     }
 }

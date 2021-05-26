@@ -10,10 +10,13 @@ namespace MonkeyDungeon_UI.Prefabs.UI.EntityData
     public class UI_GameEntity_Descriptor
     {
         public readonly string RACE;
+        private bool isDead;
+        public bool IsDead { get => isDead; internal set => Set_Death_State(value); }
+        private void Set_Death_State(bool state) { isDead = state; Entity_Died?.Invoke(this); }
         public uint UNIQUE_IDENTIFIER { get; internal set; }
         public string[] Ability_Names { get; private set; }
 
-        public List<UI_GameEntity_Resource> Resources { get; set; }
+        public List<UI_GameEntity_Resource> Resources { get; private set; }
 
         public UI_GameEntity_Resource Level { get; private set; }
         public UI_GameEntity_Resource Ability_Points { get; private set; }
@@ -22,6 +25,7 @@ namespace MonkeyDungeon_UI.Prefabs.UI.EntityData
         public readonly int INITATIVE_ORDER;
 
         public event Action<UI_GameEntity_Resource> Resource_Added;
+        public event Action<UI_GameEntity_Descriptor> Entity_Died;
 
         public UI_GameEntity_Descriptor(string race, uint uid = 0, string[] abilityNames = null, string[] resourceNames = null)
         {

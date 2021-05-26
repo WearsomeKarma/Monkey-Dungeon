@@ -38,25 +38,61 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
         {
             get => entityDescription; set
             {
-                Bind_To_Description(value);
-                Set_Race(value);
+                Change_Entity(value);
             }
         }
 
-        private void Bind_To_Description(UI_GameEntity_Descriptor entity)
+        private void Change_Entity(UI_GameEntity_Descriptor entity)
         {
-            if (entityDescription != null)
-                entityDescription.Resource_Added -= Resource_Added;
+            Unbind_To_Description();
+            Bind_To_Description(entity);
+            Set_Race(entity);
+        }
+
+        public void Bind_To_Description(UI_GameEntity_Descriptor entity)
+        {
             entityDescription = entity;
             if (entity == null)
                 return;
-            entityDescription.Resource_Added += Resource_Added;
+            EntityDescription.Resource_Added += Resource_Added;
+            EntityDescription.Entity_Died += Entity_Died;
+        }
+
+        private void Unbind_To_Description()
+        {
+            if (entityDescription == null)
+                return;
+            EntityDescription.Resource_Added -= Resource_Added;
+            EntityDescription.Entity_Died -= Entity_Died;
+            entityDescription = null;
         }
 
         private void Resource_Added(UI_GameEntity_Resource resource)
         {
             if (resource.Resource_Name == healthBar.Resource_Name)
+            {
+                resource.Resource_Removed += (e) => e.Resource_Updated -= Check_Health;
+                resource.Resource_Updated += Check_Health;
+
                 healthBar.Attach_To_Resource(resource);
+            }
+        }
+
+        private void Check_Health(float val)
+        {
+            if (val > 0.75f)
+                AnimationComponent.SetNode(0);
+            else if (val > 0.50f)
+                AnimationComponent.SetNode(1);
+            else if (val > 0.25f)
+                AnimationComponent.SetNode(2);
+            else if (val > 0)
+                AnimationComponent.SetNode(3);
+        }
+
+        private void Entity_Died(UI_GameEntity_Descriptor entity)
+        {
+            AnimationComponent.Play(4);
         }
 
         public string UI_Race => EntityDescription.RACE;
@@ -64,7 +100,7 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
         private AnimationComponent AnimationComponent;
         public Vector3 Inital_Position { get; private set; }
 
-        public CreatureGameObject(SceneLayer sceneLayer, Vector3 position, UI_GameEntity_Descriptor entity = null, int animRow = 1, int animCol = 8)
+        public CreatureGameObject(SceneLayer sceneLayer, Vector3 position, UI_GameEntity_Descriptor entity = null, int animRow = 8, int animCol = 8)
             : base(sceneLayer, position)
         {
             Inital_Position = position;
@@ -77,14 +113,19 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
 
             //head anim
             AnimationSchematic schem = new AnimationSchematic(8, 0.1);
+            AnimationNode[] nodes = new AnimationNode[animRow];
             for (int i = 0; i < animRow; i++)
             {
                 int[] subNodes = new int[animCol];
                 for (int j = 0; j < animCol; j++)
                     subNodes[j] = i * animCol + j;
-                schem.DefineNode(i, subNodes);
+                nodes[i] = new AnimationNode(schem, subNodes, -1);
+                schem.DefineNode(i, nodes[i]);
             }
-            
+
+            nodes[4].Pauses_OnCompletion = true;
+            nodes[4].Speed = 0.2;
+
             SpriteComponent = AnimationComponent = new AnimationComponent(schem);
             AnimationComponent.SetNode(0);
 

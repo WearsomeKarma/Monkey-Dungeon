@@ -8,7 +8,7 @@ namespace MonkeyDungeon_UI.Prefabs.UI.EntityData
 {
     public class UI_GameEntity_Resource
     {
-        public event Action Resource_Removed;
+        public event Action<UI_GameEntity_Resource> Resource_Removed;
 
         public event Action<float> Resource_Updated;
         private float resource_Percentage;
@@ -30,7 +30,7 @@ namespace MonkeyDungeon_UI.Prefabs.UI.EntityData
 
         internal void Remove_Resource()
         {
-            Resource_Removed?.Invoke();
+            Resource_Removed?.Invoke(this);
         }
     }
 }
