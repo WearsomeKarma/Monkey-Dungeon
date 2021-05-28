@@ -20,7 +20,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
                 Handlers.Add(mmh);
         }
 
-        public void Link(Multiplayer_Reciever reciever)
+        public void Link(Multiplayer_Relay reciever)
         {
             foreach (Multiplayer_Message_Handler mmh in Handlers)
                 reciever.Register_Handler(mmh);

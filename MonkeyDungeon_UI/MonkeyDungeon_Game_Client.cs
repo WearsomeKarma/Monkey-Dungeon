@@ -23,7 +23,7 @@ namespace MonkeyDungeon_UI
         internal EventScheduler UI_EventScheduler => EventScheduler;
 
         internal Multiplayer_Expectation_Context Expectation_Context { get; private set; }
-        internal Multiplayer_Reciever Client_RecieverEndpoint_UI { get; private set; }
+        internal Multiplayer_Relay Client_RecieverEndpoint_UI { get; private set; }
         
         public MonkeyDungeon_Game_Client(string defaultRace, string GAME_DIR = "", string GAME_DIR_ASSETS = "", string GAME_DIR_WORLDS = "") 
             : base(1000, 600, "Monkey Dungeon", GAME_DIR, GAME_DIR_ASSETS, GAME_DIR_WORLDS)
@@ -53,7 +53,7 @@ namespace MonkeyDungeon_UI
 
         internal void Create_Local_Game() 
             => Client_RecieverEndpoint_UI = Handle_Create_Local_Game();
-        protected abstract Multiplayer_Reciever Handle_Create_Local_Game();
+        protected abstract Multiplayer_Relay Handle_Create_Local_Game();
 
         internal void Link_Endpoint()
             => Expectation_Context.Link(Client_RecieverEndpoint_UI);

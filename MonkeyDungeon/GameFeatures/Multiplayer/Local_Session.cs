@@ -16,12 +16,12 @@ namespace MonkeyDungeon.GameFeatures.Multiplayer
     public class Local_Session
     {
         internal readonly Local_Reciever Client_Endpoint;
-        internal readonly MonkeyDungeon_Game_Server Server_Instance;
+        internal readonly MonkeyDungeon_Server Server_Instance;
 
         public Local_Session(Local_Reciever clientEndpoint, Local_Reciever serverEndpoint)
         {
             Client_Endpoint = clientEndpoint;
-            Server_Instance = new MonkeyDungeon_Game_Server(serverEndpoint);
+            Server_Instance = new MonkeyDungeon_Server(serverEndpoint);
 
             Client_Endpoint.Set_Local_Endpoint((m) => {
                 Handle_Local_Endpoint(m, serverEndpoint);

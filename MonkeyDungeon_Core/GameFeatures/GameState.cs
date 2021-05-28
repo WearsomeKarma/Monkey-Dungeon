@@ -17,10 +17,10 @@ namespace MonkeyDungeon_Core.GameFeatures
 
     public class GameState
     {
-        public GameState_Machine GameWorld { get; private set; }
+        public GameState_Machine GameState_Machine { get; private set; }
         internal void Set_GameWorld(GameState_Machine gameWorld)
         {
-            GameWorld = gameWorld;
+            GameState_Machine = gameWorld;
             Handle_AcquiredWorld();
         }
         protected virtual void Handle_AcquiredWorld() { }

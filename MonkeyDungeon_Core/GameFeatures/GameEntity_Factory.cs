@@ -51,7 +51,14 @@ namespace MonkeyDungeon_Core.GameFeatures
             GameEntity_Catalog.Add(gameEntity.Name, gameEntity);
         }
 
-        public GameEntity Create_NewEntity(int entityScene_ID, string name)
-            => GameEntity_Catalog[name].Clone(entityScene_ID);
+        public GameEntity Create_NewEntity(int entityScene_ID, int relayId, string race)
+        {
+            GameEntity entity = GameEntity_Catalog[race].Clone();
+
+            entity.Scene_GameObject_ID = entityScene_ID;
+            entity.Relay_ID_Of_Owner = relayId;
+
+            return entity;
+        }
     }
 }

@@ -43,7 +43,7 @@ namespace MonkeyDungeon_Core
                 LoadSprite(particle, 4, 32, 32);
         }
 
-        protected override Multiplayer_Reciever Handle_Create_Local_Game()
+        protected override Multiplayer_Relay Handle_Create_Local_Game()
         {
             Local_Session = new Local_Session(
                 Client = new Local_Reciever(),

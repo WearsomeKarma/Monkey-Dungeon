@@ -1,6 +1,7 @@
 ﻿using MonkeyDungeon_Core.GameFeatures.EntityResourceManagement;
 using MonkeyDungeon_Core.GameFeatures.Implemented.GameStates;
 using MonkeyDungeon_Core.GameFeatures.Multiplayer.MessageWrappers;
+using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         internal T Get_GameState<T>() where T : GameState 
             => gameStates.OfType<T>().ElementAt(0);
         
-        public MonkeyDungeon_Game_Server Server { get; private set; }
+        private MonkeyDungeon_Server Server { get; set; }
 
         public int Level { get; set; }
 
@@ -37,15 +38,21 @@ namespace MonkeyDungeon_Core.GameFeatures
         }
         public GameEntity_Controller Get_Entity_Controller(int entityScene_Id)
             => Get_Entity(entityScene_Id).EntityController;
-        public GameEntity Set_Entity(int entityScene_Id, string factory_Tag)
+        public bool IsMatching_Relay_Id(int entityId, int relayId)
+            => Get_Entity(entityId).Relay_ID_Of_Owner == relayId;
+        public GameEntity Set_Entity(int entityScene_Id, int relayId, string factory_Tag)
         {
             if (entityScene_Id < 0)
                 return null;
 
+            GameEntity entity = GameEntity_Factory.Create_NewEntity(entityScene_Id, relayId, factory_Tag);
+
             if (entityScene_Id < MAX_TEAM_SIZE)
-                return (PlayerRoster.Set_Entity(GameEntity_Factory.Create_NewEntity(entityScene_Id, factory_Tag)));
-            return (EnemyRoster.Set_Entity(GameEntity_Factory.Create_NewEntity(entityScene_Id, factory_Tag)));
+                return PlayerRoster.Set_Entity(entity);
+            return EnemyRoster.Set_Entity(entity);
         }
+        public void Set_Entity_Ready_State(int entityId, bool state)
+            => PlayerRoster.Set_Ready_To_Start(entityId, state);
 
         public GameState CurrentGameState { get; private set; }
         public GameState RequestedGameState { get; private set; }
@@ -53,7 +60,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         public bool IsCombatHappening => CurrentGameState != null && CurrentGameState is Combat_GameState;
         public bool HasStarted { get; private set; }
 
-        public GameState_Machine(MonkeyDungeon_Game_Server server, GameState[] gameStates)
+        public GameState_Machine(MonkeyDungeon_Server server, GameState[] gameStates)
         {
             Server = server;
 
@@ -73,7 +80,7 @@ namespace MonkeyDungeon_Core.GameFeatures
                 return; //TODO: Warn in log.
             HasStarted = true;
 
-            Server.ServerSide_Local_Reciever.Queue_Message(
+            Broadcast(
                 new MMW_Set_Party_UI_Descriptions(0, PlayerRoster.Get_Races())
                 );
 
@@ -81,12 +88,10 @@ namespace MonkeyDungeon_Core.GameFeatures
             Dismiss_Roster(null);
 
             //TODO: Make a means to send message to specific client, and all clients.
-            Server.ServerSide_Local_Reciever.Queue_Message(
+            Broadcast(
                 new MMW_Accept_Client()
                 );
         }
-
-        internal void Relay_To_UI() { }
 
         public void Request_Transition_ToState<T>() where T : GameState
         {
@@ -131,9 +136,18 @@ namespace MonkeyDungeon_Core.GameFeatures
             CurrentGameState.UpdateState(this, deltaTime);
         }
 
+        internal void Register_Multiplayer_Handlers(params Multiplayer_Message_Handler[] handlers)
+            => Server.Register_Multiplayer_Handlers(handlers);
+
+        internal void Broadcast(Multiplayer_Message_Wrapper msg)
+            => Server.Broadcast(msg);
+
+        internal void Relay(int relayId, Multiplayer_Message_Wrapper msg)
+            => Server.Relay(relayId, msg);
+
         internal void Relay_Entity_Resource(GameEntity_Resource resource)
         {
-            Server.ServerSide_Local_Reciever.Queue_Message(
+            Server.Broadcast(
                 new MMW_Update_Entity_Resource(
                     resource.Entity.Scene_GameObject_ID,
                     (float)(resource.Resource_Value / resource.Max_Value),
@@ -145,22 +159,22 @@ namespace MonkeyDungeon_Core.GameFeatures
         internal void Relay_Entity(GameEntity entity)
         {
             //send abilities
-            Server.ServerSide_Local_Reciever.Queue_Message(
+            Broadcast(
                 new MMW_Update_Entity_Abilities(entity.Scene_GameObject_ID, entity.Ability_Manager.Get_Ability_Names())
                 );
 
             //send uid
-            Server.ServerSide_Local_Reciever.Queue_Message(
+            Broadcast(
                 new MMW_Update_Entity_UniqueID(entity.Scene_GameObject_ID, (uint)entity.Unique_ID)
                 );
 
             //send resource names
-            Server.ServerSide_Local_Reciever.Queue_Message(
+            Broadcast(
                 new MMW_Set_MD_VANILLA_RESOURCES(entity.Scene_GameObject_ID, entity.Resource_Manager.Get_Resource_Names())
                 );
 
             //introduce the entity to the scene.
-            Server.ServerSide_Local_Reciever.Queue_Message(
+            Broadcast(
                 new MMW_Introduce_Entity(entity.Scene_GameObject_ID)
                 );
         }
@@ -177,7 +191,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             {
                 for (int i = MAX_TEAM_SIZE; i < MAX_TEAM_SIZE * 2; i++)
                 {
-                    Server.ServerSide_Local_Reciever.Queue_Message(
+                    Broadcast(
                         new MMW_Dismiss_Entity(i)
                         );
                 }
@@ -190,21 +204,21 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         internal void Relay_Entity_Static_Resource(GameEntity_Resource resource)
         {
-            Server.ServerSide_Local_Reciever.Queue_Message(
+            Broadcast(
                 new MMW_Update_Ability_Point(resource.Entity.Scene_GameObject_ID, (int)resource.Resource_Value)
                 );
         }
 
         internal void Relay_Death(GameEntity gameEntity)
         {
-            Server.ServerSide_Local_Reciever.Queue_Message(
+            Broadcast(
                 new MMW_Entity_Death(gameEntity.Scene_GameObject_ID)
                 );
         }
 
         internal void Relay_Dismissal(GameEntity gameEntity)
         {
-            Server.ServerSide_Local_Reciever.Queue_Message(
+            Broadcast(
                 new MMW_Dismiss_Entity(gameEntity.Scene_GameObject_ID)
                 );
         }

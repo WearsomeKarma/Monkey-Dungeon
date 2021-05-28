@@ -12,14 +12,22 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
     {
         Combat_GameState Combat { get; set; }
 
-        public MMH_Set_Combat_Action(Combat_GameState combat) 
-            : base(combat.GameWorld, MD_VANILLA_MMH.MMH_SET_COMBAT_ACTION)
+        public MMH_Set_Combat_Action(Combat_GameState gameState) 
+            : base(gameState, MD_VANILLA_MMH.MMH_SET_COMBAT_ACTION)
         {
-            Combat = combat;
+            Combat = gameState;
         }
 
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
+            int relayId = recievedMessage.Relay_ID;
+
+            if (Combat.Entity_OfCurrentTurn_Relay_Id != relayId)
+            {
+                Handle_Invalid_Message(recievedMessage);
+                return;
+            }
+
             int targetId = recievedMessage.INT_VALUE;
             string abilityName = recievedMessage.STRING_VALUE;
 

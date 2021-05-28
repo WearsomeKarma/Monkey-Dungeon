@@ -18,6 +18,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         private int unique_ID                           = 0;
         public int Unique_ID                            { get => unique_ID; internal set => unique_ID = (value >= 0) ? value : 0; }
         
+        public int Relay_ID_Of_Owner                    { get; internal set;    }
         public int Scene_GameObject_ID                  { get; internal set;    }
         public int Initative_Position                   { get; internal set;    }
 
@@ -193,7 +194,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             Game.Relay_Death(this);
         }
 
-        public GameEntity Clone(int entityScene_ID=0)
+        public GameEntity Clone()
         {
             List<GameEntity_Stat> clonedStats = new List<GameEntity_Stat>();
             List<GameEntity_Resource> clonedResources = new List<GameEntity_Resource>();
@@ -219,8 +220,7 @@ namespace MonkeyDungeon_Core.GameFeatures
                 clonedAbilities,
                 clonedResistances,
                 EntityController.Clone()
-                )
-            { Scene_GameObject_ID = entityScene_ID };
+                );
         }
 
         public override string ToString()

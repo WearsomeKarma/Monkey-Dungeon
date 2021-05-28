@@ -10,16 +10,15 @@ using System.Threading.Tasks;
 
 namespace MonkeyDungeon_Core
 {
-    public class MonkeyDungeon_Game_Server
+    public class MonkeyDungeon_Server : Multiplayer_Relay_Manager
     {
         public GameState_Machine GameState_Machine { get; private set; }
-        public Multiplayer_Reciever ServerSide_Local_Reciever { get; private set; }
 
-        public MonkeyDungeon_Game_Server(
-            Multiplayer_Reciever localEndpoint
+        public MonkeyDungeon_Server(
+            Multiplayer_Relay localRelay
             )
+            :base(localRelay)
         {
-            ServerSide_Local_Reciever = localEndpoint;
             GameState_Machine = new GameState_Machine(
                 this,
                 new GameState[]
@@ -34,10 +33,11 @@ namespace MonkeyDungeon_Core
 
         public void On_Update_Frame(double deltaTime)
         {
-            ServerSide_Local_Reciever.CheckFor_NewMessages();
+            Check_Relays();
+
             GameState_Machine.CheckFor_GameState_Transition(deltaTime);
 
-            ServerSide_Local_Reciever.Flush_Messages();
+            Flush_Relays();
         }
     }
 }

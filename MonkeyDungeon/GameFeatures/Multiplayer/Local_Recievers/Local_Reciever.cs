@@ -11,7 +11,7 @@ namespace MonkeyDungeon.GameFeatures.Multiplayer.Local_Recievers
     /// <summary>
     /// A relay endpoint for either the local UI or local gamestate (server)
     /// </summary>
-    public class Local_Reciever : Multiplayer_Reciever
+    public class Local_Reciever : Multiplayer_Relay
     {
         private Action<Multiplayer_Message> Local_Endpoint_Delivery { get; set; }
         internal Queue<Multiplayer_Message> Local_Inbox { get; set; }
@@ -22,8 +22,8 @@ namespace MonkeyDungeon.GameFeatures.Multiplayer.Local_Recievers
             Local_Inbox = new Queue<Multiplayer_Message>();
         }
 
-        protected override Multiplayer_Message Read_New_Message()
-            => (Local_Inbox.Count > 0) ? Local_Inbox.Dequeue() : Multiplayer_Message.DEFAULT;
+        protected override Multiplayer_Message Handle_Read_New_Message()
+            => (Local_Inbox.Count > 0) ? Local_Inbox.Dequeue() : Multiplayer_Message.MESSAGE_NULL;
 
         internal void Set_Local_Endpoint(Action<Multiplayer_Message> localEndpoint)
         {

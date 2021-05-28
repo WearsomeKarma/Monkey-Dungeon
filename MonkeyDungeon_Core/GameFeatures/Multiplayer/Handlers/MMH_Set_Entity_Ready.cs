@@ -14,14 +14,25 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
     /// </summary>
     public class MMH_Set_Entity_Ready : Multiplayer_Message_GameStateHandler
     {
-        public MMH_Set_Entity_Ready(GameState_Machine gameStateMachine) 
-            : base(gameStateMachine, MD_VANILLA_MMH.MMH_SET_ENTITY_READY)
+        public MMH_Set_Entity_Ready(GameState gameState) 
+            : base(gameState, MD_VANILLA_MMH.MMH_SET_ENTITY_READY)
         {
         }
 
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
-            GameState_Machine.PlayerRoster.Set_Ready_To_Start(recievedMessage.ENTITY_ID, recievedMessage.INT_VALUE);
+            int relayId = recievedMessage.Relay_ID;
+            int entityId = recievedMessage.ENTITY_ID;
+            bool state = recievedMessage.INT_VALUE == 0;
+            
+            bool validMsg = GameState_Machine.IsMatching_Relay_Id(entityId, relayId);
+            if (!validMsg)
+            {
+                Handle_Invalid_Message(recievedMessage);
+                return;
+            }
+
+            GameState_Machine.PlayerRoster.Set_Ready_To_Start(entityId, state);
         }
     }
 }

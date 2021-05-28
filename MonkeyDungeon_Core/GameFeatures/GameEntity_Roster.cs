@@ -43,9 +43,9 @@ namespace MonkeyDungeon_Core.GameFeatures
         /// </summary>
         /// <param name="entityId"></param>
         /// <param name="state"></param>
-        internal void Set_Ready_To_Start(int entityId, int state=0)
+        internal void Set_Ready_To_Start(int entityId, bool state = true)
         {
-            readyEntities[entityId] = state == 0;
+            readyEntities[entityId] = state;
         }
 
         /// <summary>
