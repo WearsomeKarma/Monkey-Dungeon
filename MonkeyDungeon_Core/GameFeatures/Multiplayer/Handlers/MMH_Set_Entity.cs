@@ -1,5 +1,6 @@
 ﻿using MonkeyDungeon_Core.GameFeatures.GameEntities;
 using MonkeyDungeon_Core.GameFeatures.GameStates;
+using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
@@ -19,8 +20,8 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
             int relayId = recievedMessage.Relay_ID;
-            int entityId = recievedMessage.ENTITY_ID;
-            string factoryTag = recievedMessage.STRING_VALUE;
+            GameEntity_ID entityId = recievedMessage.ENTITY_ID;
+            GameEntity_Attribute_Name factoryTag = recievedMessage.ATTRIBUTE;
 
             if(IsInvalid_Message(relayId, entityId))
             {
@@ -31,7 +32,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
             GameEntity e = GameState_Machine.Set_Entity(entityId, relayId, factoryTag);
         }
 
-        private bool IsInvalid_Message(int relayId, int entityId)
+        private bool IsInvalid_Message(int relayId, GameEntity_ID entityId)
         {
             GameEntity entity = GameState_Machine.Get_Entity(entityId);
 

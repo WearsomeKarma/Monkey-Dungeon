@@ -1,7 +1,7 @@
-﻿using MonkeyDungeon_Core.GameFeatures.GameEntities;
-using MonkeyDungeon_Core.GameFeatures.GameEntities.Resources;
+﻿using MonkeyDungeon_Core.GameFeatures.GameEntities.Resources;
 using MonkeyDungeon_Core.GameFeatures.GameStates;
 using MonkeyDungeon_Core.GameFeatures.Multiplayer.MessageWrappers;
+using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using System.Collections.Generic;
@@ -25,26 +25,21 @@ namespace MonkeyDungeon_Core.GameFeatures
         public GameEntity_Roster PlayerRoster { get; internal set; }
         public GameEntity_Roster EnemyRoster { get; internal set; }
         internal void Set_Enemy_Roster(GameEntity[] enemyRoster) => EnemyRoster.Set_Entities(enemyRoster);
-        public GameEntity Get_Entity(int entityScene_Id)
+        public GameEntity Get_Entity(GameEntity_ID entityId)
         {
-            if (entityScene_Id < 0)
-                return null;
-            if (entityScene_Id < MD_PARTY.MAX_PARTY_SIZE)
-                return PlayerRoster.Entities[entityScene_Id];
-            return EnemyRoster.Entities[entityScene_Id % MD_PARTY.MAX_PARTY_SIZE];
+            if (entityId < MD_PARTY.MAX_PARTY_SIZE)
+                return PlayerRoster.Entities[entityId];
+            return EnemyRoster.Entities[entityId % MD_PARTY.MAX_PARTY_SIZE];
         }
-        public GameEntity_Controller Get_Entity_Controller(int entityScene_Id)
-            => Get_Entity(entityScene_Id).EntityController;
-        public bool IsMatching_Relay_Id(int entityId, int relayId)
+        public GameEntity_Controller Get_Entity_Controller(GameEntity_ID entityId)
+            => Get_Entity(entityId).EntityController;
+        public bool IsMatching_Relay_Id(GameEntity_ID entityId, int relayId)
             => Get_Entity(entityId).Relay_ID_Of_Owner == relayId;
-        public GameEntity Set_Entity(int entityScene_Id, int relayId, string factory_Tag)
+        public GameEntity Set_Entity(GameEntity_ID entityId, int relayId, GameEntity_Attribute_Name factory_Tag)
         {
-            if (entityScene_Id < 0)
-                return null;
+            GameEntity entity = GameEntity_Factory.Create_NewEntity(entityId, relayId, factory_Tag);
 
-            GameEntity entity = GameEntity_Factory.Create_NewEntity(entityScene_Id, relayId, factory_Tag);
-
-            if (entityScene_Id < MD_PARTY.MAX_PARTY_SIZE)
+            if (entityId < MD_PARTY.MAX_PARTY_SIZE)
                 return PlayerRoster.Set_Entity(entity);
             return EnemyRoster.Set_Entity(entity);
         }
@@ -77,9 +72,7 @@ namespace MonkeyDungeon_Core.GameFeatures
                 return; //TODO: Warn in log.
             HasStarted = true;
 
-            Broadcast(
-                new MMW_Set_Party_UI_Descriptions(0, PlayerRoster.Get_Races())
-                );
+            Declare_Descriptions(0, PlayerRoster.Get_Races());
 
             Relay_Roster(PlayerRoster);
             Dismiss_Roster(null);
@@ -156,9 +149,13 @@ namespace MonkeyDungeon_Core.GameFeatures
         internal void Relay_Entity(GameEntity entity)
         {
             //send abilities
-            Broadcast(
-                new MMW_Update_Entity_Abilities(entity.Scene_GameObject_ID, entity.Ability_Manager.Get_Ability_Names())
-                );
+            GameEntity_Attribute_Name[] abilities = entity.Ability_Manager.Get_Ability_Names();
+            for (int i = 0; i < abilities.Length; i++)
+            {
+                Broadcast(
+                    new MMW_Update_Entity_Abilities(entity.Scene_GameObject_ID, abilities[i])
+                    );
+            }
 
             //send uid
             Broadcast(
@@ -166,14 +163,29 @@ namespace MonkeyDungeon_Core.GameFeatures
                 );
 
             //send resource names
-            Broadcast(
-                new MMW_Set_MD_VANILLA_RESOURCES(entity.Scene_GameObject_ID, entity.Resource_Manager.Get_Resource_Names())
-                );
+            GameEntity_Attribute_Name[] resources = entity.Resource_Manager.Get_Resource_Names();
+            for(int i=0;i<resources.Length;i++)
+            {
+                Broadcast(
+                    new MMW_Declare_Entity_Resource(entity.Scene_GameObject_ID, resources[i])
+                    );
+            }
 
             //introduce the entity to the scene.
             Broadcast(
                 new MMW_Introduce_Entity(entity.Scene_GameObject_ID)
                 );
+        }
+
+        //TODO: fix
+        internal void Declare_Descriptions(int offset, GameEntity_Attribute_Name[] descriptions)
+        {
+            for (int i = 0; i < descriptions.Length; i++)
+            {
+                Broadcast(
+                    new MMW_Declare_Entity_Descriptions(GameEntity_ID.IDS[offset + i], descriptions[i])
+                    );
+            }
         }
 
         internal void Relay_Roster(GameEntity_Roster roster)
@@ -189,7 +201,7 @@ namespace MonkeyDungeon_Core.GameFeatures
                 for (int i = MD_PARTY.MAX_PARTY_SIZE; i < MD_PARTY.MAX_PARTY_SIZE * 2; i++)
                 {
                     Broadcast(
-                        new MMW_Dismiss_Entity(i)
+                        new MMW_Dismiss_Entity(GameEntity_ID.IDS[i])
                         );
                 }
                 return;

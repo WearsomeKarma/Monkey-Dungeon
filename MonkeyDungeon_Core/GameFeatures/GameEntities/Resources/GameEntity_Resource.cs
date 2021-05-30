@@ -1,12 +1,11 @@
-﻿using MonkeyDungeon_Core.GameFeatures.GameStates;
-using System;
-using System.Collections.Generic;
+﻿
+using MonkeyDungeon_Vanilla_Domain;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Resources
 {
     public class GameEntity_Resource : GameEntity_Quantity
     {
-        public GameEntity_Resource(string resourceName, double min, double max, double? initalValue = null) 
+        public GameEntity_Resource(GameEntity_Attribute_Name resourceName, double min, double max, double? initalValue = null) 
             : base(resourceName, min, max)
         {
             if (initalValue != null)

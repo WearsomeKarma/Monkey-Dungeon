@@ -8,10 +8,10 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
 {
     public struct Multiplayer_Message
     {
-        public static readonly string 
-            MM_MESSAGE_NULL = "MESSAGE_NULL", 
-            MM_MESSAGE_INVALID = "MESSAGE_INVALID",
-            MM_MESSAGE_FAIL = "MESSAGE_FAIL";
+        public static readonly GameEntity_Attribute_Name
+            MM_MESSAGE_NULL = new GameEntity_Attribute_Name("MESSAGE_NULL"), 
+            MM_MESSAGE_INVALID = new GameEntity_Attribute_Name("MESSAGE_INVALID"),
+            MM_MESSAGE_FAIL = new GameEntity_Attribute_Name("MESSAGE_FAIL");
 
         public static readonly Multiplayer_Message MESSAGE_NULL = new Multiplayer_Message();
         public static int ID_NULL = -1;
@@ -20,49 +20,49 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
         public int Message_ID { get; internal set; }
         public bool Is_Unsent_Message => Relay_ID == ID_NULL;
 
-        public readonly string MESSAGE_TYPE;
+        public readonly GameEntity_Attribute_Name MESSAGE_TYPE;
 
-        public readonly int ENTITY_ID;
+        public readonly GameEntity_ID ENTITY_ID;
 
         public readonly float FLOAT_VALUE;
         public readonly int INT_VALUE;
-        public readonly string STRING_VALUE;
+        public GameEntity_Attribute_Name ATTRIBUTE;
 
         public Multiplayer_Message(
-            string messageType = "MESSAGE_NULL", 
-            int entityId = 0, 
+            GameEntity_Attribute_Name messageType = null, 
+            GameEntity_ID entityId = null, 
             float fval = 0, 
-            int ival = 0, 
-            string sval = ""
+            int ival = 0,
+            GameEntity_Attribute_Name sval = null
             )
         {
             Relay_ID = ID_NULL;
             Message_ID = ID_NULL;
 
             MESSAGE_TYPE = messageType ?? MD_VANILLA_MMH.MMH_DEFAULT;
-            ENTITY_ID = entityId;
+            ENTITY_ID = entityId ?? GameEntity_ID.ID_ZERO;
             FLOAT_VALUE = fval;
             INT_VALUE = ival;
-            STRING_VALUE = sval;
+            ATTRIBUTE = sval ?? GameEntity_Attribute_Name.DEFAULT;
         }
 
         internal Multiplayer_Message(
-            int relayId, 
-            string messageType = "MESSAGE_NULL", 
-            int entityId = 0, 
+            int relayId,
+            GameEntity_Attribute_Name messageType = null,
+            GameEntity_ID entityId = null, 
             float fval = 0, 
-            int ival = 0, 
-            string sval = ""
+            int ival = 0,
+            GameEntity_Attribute_Name sval = null
             )
         {
             Relay_ID = relayId;
             Message_ID = ID_NULL;
 
             MESSAGE_TYPE = messageType ?? MD_VANILLA_MMH.MMH_DEFAULT;
-            ENTITY_ID = entityId;
+            ENTITY_ID = entityId ?? GameEntity_ID.ID_ZERO;
             FLOAT_VALUE = fval;
             INT_VALUE = ival;
-            STRING_VALUE = sval;
+            ATTRIBUTE = sval ?? GameEntity_Attribute_Name.DEFAULT;
         }
         
         public bool Equals(Multiplayer_Message m)
@@ -72,7 +72,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
                 ENTITY_ID == m.ENTITY_ID &&
                 FLOAT_VALUE == m.FLOAT_VALUE &&
                 INT_VALUE == m.INT_VALUE &&
-                STRING_VALUE == m.STRING_VALUE
+                ATTRIBUTE == m.ATTRIBUTE
                 );
         }
 
@@ -88,7 +88,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
                   ENTITY_ID,
                   INT_VALUE,
                   FLOAT_VALUE,
-                  STRING_VALUE
+                  ATTRIBUTE
                 );
         }
 

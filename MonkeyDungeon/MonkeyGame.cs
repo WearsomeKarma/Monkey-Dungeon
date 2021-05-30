@@ -14,7 +14,7 @@ namespace MonkeyDungeon_Core
         internal Local_Reciever Client { get; private set; }
         
         public MonkeyDungeon_Game(string GAME_DIR = "", string GAME_DIR_ASSETS = "", string GAME_DIR_WORLDS = "") 
-            : base(MD_VANILLA_RACES.PLAYER_RACE, GAME_DIR, GAME_DIR_ASSETS, GAME_DIR_WORLDS)
+            : base(MD_VANILLA_RACES.RACE_MONKEY, GAME_DIR, GAME_DIR_ASSETS, GAME_DIR_WORLDS)
         {
         }
 

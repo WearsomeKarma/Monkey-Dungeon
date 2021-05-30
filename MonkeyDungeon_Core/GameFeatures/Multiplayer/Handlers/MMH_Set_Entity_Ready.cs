@@ -1,4 +1,5 @@
 ﻿using MonkeyDungeon_Core.GameFeatures.GameStates;
+using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
@@ -18,7 +19,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
             int relayId = recievedMessage.Relay_ID;
-            int entityId = recievedMessage.ENTITY_ID;
+            GameEntity_ID entityId = recievedMessage.ENTITY_ID;
             bool state = recievedMessage.INT_VALUE == 0;
             
             bool validMsg = GameState_Machine.IsMatching_Relay_Id(entityId, relayId);

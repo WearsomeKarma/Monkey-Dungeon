@@ -8,16 +8,16 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 {
     public static class MD_VANILLA_ABILITYNAMES
     {
-        public static readonly string ABILITY_PUNCH = "Punch";
-        public static readonly string ABILITY_POOPY_FLING = "Poopy Fling";
-        public static readonly string ABILITY_APE_SHIT = "Ape Shit";
-        public static readonly string ABILITY_BANNANA_RANG = "Bannana Rang";
-        public static readonly string ABILITY_CHAOS_BOLT = "Chaos Bolt";
-        public static readonly string ABILITY_HEALING_TAIL = "Healing Tail";
-        public static readonly string ABILITY_KI_KICK = "Ki Kick";
-        public static readonly string ABILITY_STAND_GUARD = "Stand Guard";
+        public static readonly GameEntity_Attribute_Name ABILITY_PUNCH = new GameEntity_Attribute_Name("Punch");
+        public static readonly GameEntity_Attribute_Name ABILITY_POOPY_FLING = new GameEntity_Attribute_Name("Poopy Fling");
+        public static readonly GameEntity_Attribute_Name ABILITY_APE_SHIT = new GameEntity_Attribute_Name("Ape Shit");
+        public static readonly GameEntity_Attribute_Name ABILITY_BANNANA_RANG = new GameEntity_Attribute_Name("Bannana Rang");
+        public static readonly GameEntity_Attribute_Name ABILITY_CHAOS_BOLT = new GameEntity_Attribute_Name("Chaos Bolt");
+        public static readonly GameEntity_Attribute_Name ABILITY_HEALING_TAIL = new GameEntity_Attribute_Name("Healing Tail");
+        public static readonly GameEntity_Attribute_Name ABILITY_KI_KICK = new GameEntity_Attribute_Name("Ki Kick");
+        public static readonly GameEntity_Attribute_Name ABILITY_STAND_GUARD = new GameEntity_Attribute_Name("Stand Guard");
 
-        public static readonly string[] STRINGS = new string[]
+        public static readonly GameEntity_Attribute_Name[] STRINGS = new GameEntity_Attribute_Name[]
         {
             ABILITY_PUNCH,
             ABILITY_POOPY_FLING,

@@ -25,7 +25,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
             }
 
             int targetId = recievedMessage.INT_VALUE;
-            string abilityName = recievedMessage.STRING_VALUE;
+            string abilityName = recievedMessage.ATTRIBUTE;
 
             GameEntity_Controller controller = 
                 Combat.Entity_OfCurrentTurn.EntityController;

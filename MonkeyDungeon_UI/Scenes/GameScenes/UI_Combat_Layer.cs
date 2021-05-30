@@ -6,6 +6,7 @@ using MonkeyDungeon_UI.Multiplayer.MessageWrappers;
 using MonkeyDungeon_UI.Prefabs.UI;
 using MonkeyDungeon_UI.Prefabs.UI.EntityData;
 using MonkeyDungeon_UI.UI_Events.Implemented;
+using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using OpenTK;
 using System;
@@ -14,8 +15,8 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
 {
     public class UI_Combat_Layer : GameScene_Layer
     {
-        internal string Selected_Ability { get; private set; }
-        internal int Selected_TargetIndex { get; private set; }
+        internal GameEntity_Attribute_Name Selected_Ability { get; private set; }
+        internal GameEntity_ID Selected_TargetIndex { get; private set; }
 
         private GameScene GameScene { get; set; }
         private World_Layer World_Layer { get; set; }
@@ -29,11 +30,9 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
 
         private StatusBar statusBar;
 
-        private string[] abilityNames;
-        private void Set_Ability_Names(string[] abilityNames)
+        private GameEntity_Attribute_Name[] abilityNames;
+        private void Set_Ability_Names(GameEntity_Attribute_Name[] abilityNames)
         {
-            this.abilityNames = abilityNames ?? new string[] { };
-
             for (int i = 0; i < abilityButtons.Length; i++)
             {
                 bool state = this.abilityNames.Length > i;
@@ -68,7 +67,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                     this,
                     new Vector3(-Game.Width / 3f - 100, -Game.Height/2 + 20, 0),
                     new Vector2(200, 100),
-                    (b) => Use_Ability(b.Text),
+                    (b) => Use_Ability(abilityNames[0]),
                     Game.SpriteLibrary.ExtractRenderUnit("button"),
                     ""
                     ),
@@ -76,7 +75,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                     this,
                     new Vector3(-100, -Game.Height/2 + 20, 0),
                     new Vector2(200, 100),
-                    (b) => Use_Ability(b.Text),
+                    (b) => Use_Ability(abilityNames[1]),
                     Game.SpriteLibrary.ExtractRenderUnit("button"),
                     ""
                     ),
@@ -84,7 +83,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                     this,
                     new Vector3(Game.Width / 3f - 100, -Game.Height/2 + 20, 0),
                     new Vector2(200, 100),
-                    (b) => Use_Ability(b.Text),
+                    (b) => Use_Ability(abilityNames[2]), //TODO: fix
                     Game.SpriteLibrary.ExtractRenderUnit("button"),
                     ""
                     )
@@ -96,7 +95,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                     this,
                     new Vector3(Game.Width/8f,Game.Height/4,0),
                     new Vector2(50,50),
-                    (b) => Select_Enemy(4),
+                    (b) => Select_Enemy(GameEntity_ID.ID_FOUR),
                     Game.SpriteLibrary.ExtractRenderUnit("targetButton"),
                     ""
                     ),
@@ -104,7 +103,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                     this,
                     new Vector3(Game.Width/4f,Game.Height / 8f,0),
                     new Vector2(50,50),
-                    (b) => Select_Enemy(5),
+                    (b) => Select_Enemy(GameEntity_ID.ID_FIVE),
                     Game.SpriteLibrary.ExtractRenderUnit("targetButton"),
                     ""
                     ),
@@ -112,7 +111,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                     this,
                     new Vector3(Game.Width/4f,Game.Height * 3f / 8f,0),
                     new Vector2(50,50),
-                    (b) => Select_Enemy(6),
+                    (b) => Select_Enemy(GameEntity_ID.ID_SIX),
                     Game.SpriteLibrary.ExtractRenderUnit("targetButton"),
                     ""
                     ),
@@ -120,7 +119,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                     this,
                     new Vector3(Game.Width * 3 / 8,Game.Height/4,0),
                     new Vector2(50,50),
-                    (b) => Select_Enemy(7),
+                    (b) => Select_Enemy(GameEntity_ID.ID_SEVEN),
                     Game.SpriteLibrary.ExtractRenderUnit("targetButton"),
                     ""
                     )
@@ -159,13 +158,13 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
 
         private void Inform_Ability()
         {
-            if (Selected_Ability != null && Selected_TargetIndex > 0)
+            if (Selected_Ability != GameEntity_Attribute_Name.DEFAULT && Selected_TargetIndex != GameEntity_ID.ID_NULL)
             {
                 GameScene.MonkeyDungeon_Game_UI.Client_RecieverEndpoint_UI.Queue_Message(
                     new MMW_Set_Combat_Action(Selected_TargetIndex, Selected_Ability)
                     );
                 Selected_Ability = null;
-                Selected_TargetIndex = -1;
+                Selected_TargetIndex = GameEntity_ID.ID_NULL;
             }
         }
 
@@ -197,7 +196,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
             endTurnButton.RefreshButton();
             Reset_Selections();
             UI_GameEntity_Descriptor entity = World_Layer.Get_Description_From_Id(entityId);
-            Set_Ability_Names(entity.Ability_Names);
+            Set_Ability_Names(entity.ABILITY_NAMES);
             Focus_Entity(entity);
         }
 
@@ -219,8 +218,8 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
 
         internal void Reset_Selections()
         {
-            Selected_Ability = null;
-            Selected_TargetIndex = -1;
+            Selected_Ability = GameEntity_Attribute_Name.DEFAULT;
+            Selected_TargetIndex = GameEntity_ID.ID_NULL;
         }
 
         internal void Initalize_Buttons(Button[] buttons, int comparingLength, Func<int, string> buttonTextHandler)
@@ -244,13 +243,13 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
 
         }
         
-        private void Use_Ability(string abilityName)
+        private void Use_Ability(GameEntity_Attribute_Name abilityName)
         {
             Console.WriteLine("Use_Ability");
             Selected_Ability = abilityName;
         }
 
-        private void Select_Enemy(int index)
+        private void Select_Enemy(GameEntity_ID index)
         {
             Console.WriteLine("Select_Enemy");
             Selected_TargetIndex = index;

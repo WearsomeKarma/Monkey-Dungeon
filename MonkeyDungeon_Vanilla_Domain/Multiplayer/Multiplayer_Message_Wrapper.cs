@@ -11,19 +11,19 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
         public readonly Multiplayer_Message MESSAGE;
 
         public Multiplayer_Message_Wrapper(
-            string messageType = null,
-            int entityId=0,
+            GameEntity_Attribute_Name messageType = null,
+            GameEntity_ID entityId = null,
             float fval=0,
             int ival=0,
-            string sval=""
+            GameEntity_Attribute_Name sval = null
             )
         {
             MESSAGE = new Multiplayer_Message(
-                messageType,
-                entityId,
+                messageType ?? GameEntity_Attribute_Name.DEFAULT,
+                entityId ?? GameEntity_ID.ID_ZERO,
                 fval,
                 ival,
-                sval
+                sval ?? GameEntity_Attribute_Name.DEFAULT
                 );
         }
 

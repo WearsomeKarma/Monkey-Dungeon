@@ -21,7 +21,7 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
 
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
-            UI_Combat_Layer.Announce_Action(recievedMessage.STRING_VALUE);
+            UI_Combat_Layer.Announce_Action(recievedMessage.ATTRIBUTE);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
 
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
-            GAMESCENE_LAYER.EventScheduler.Invoke_Event(recievedMessage.STRING_VALUE);
+            GAMESCENE_LAYER.EventScheduler.Invoke_Event(recievedMessage.ATTRIBUTE);
         }
     }
 }

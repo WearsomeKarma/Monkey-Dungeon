@@ -1,4 +1,5 @@
-﻿using MonkeyDungeon_Vanilla_Domain.Multiplayer;
+﻿using MonkeyDungeon_Vanilla_Domain;
+using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.MessageWrappers
 {
     public class MMW_Announcement : Multiplayer_Message_Wrapper
     {
-        public MMW_Announcement(string announcementMessage) 
-            : base(MD_VANILLA_MMH.MMH_ANNOUNCEMENT, 0, 0, 0, announcementMessage)
+        public MMW_Announcement(GameEntity_Attribute_Name announcementMessage) 
+            : base(MD_VANILLA_MMH.MMH_ANNOUNCEMENT, GameEntity_ID.ID_ZERO, 0, 0, announcementMessage)
         {
         }
     }

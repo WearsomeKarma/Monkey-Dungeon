@@ -24,7 +24,7 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
         {
             int shootingEntity = recievedMessage.ENTITY_ID;
             int shootingTarget = recievedMessage.INT_VALUE;
-            string particleType = recievedMessage.STRING_VALUE;
+            string particleType = recievedMessage.ATTRIBUTE;
 
             Vector3 shooterPos = World_Layer.Get_Position_From_Id(shootingEntity);
             Vector3 targetPos = World_Layer.Get_Position_From_Id(shootingTarget);

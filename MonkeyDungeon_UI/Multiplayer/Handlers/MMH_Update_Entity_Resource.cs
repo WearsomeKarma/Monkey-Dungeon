@@ -24,7 +24,7 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
         {
             int id = recievedMessage.ENTITY_ID;
             float percentage = recievedMessage.FLOAT_VALUE;
-            string resourceName = recievedMessage.STRING_VALUE;
+            string resourceName = recievedMessage.ATTRIBUTE;
 
             UI_GameEntity_Descriptor entity = World_Layer.Get_Description_From_Id(id);
             entity.Set_Resource_Percentage(resourceName, percentage);

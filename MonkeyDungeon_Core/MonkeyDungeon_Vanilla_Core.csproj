@@ -42,8 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameFeatures\GameEntities\Abilities\Combat_Ability_Target.cs" />
-    <Compile Include="GameFeatures\GameEntities\GameEntity_Attribute.cs" />
-    <Compile Include="GameFeatures\GameEntities\GameEntity_Quantity.cs" />
+    <Compile Include="GameFeatures\GameEntity_Attribute.cs" />
+    <Compile Include="GameFeatures\GameEntity_EntityField.cs" />
+    <Compile Include="GameFeatures\GameEntity_Quantity.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Damage.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Dodge_Bonus.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Hit_Bonus.cs" />
@@ -61,10 +62,10 @@
     <Compile Include="GameFeatures\GameEntities\StatusEffects\GameEntity_StatusEffect.cs" />
     <Compile Include="GameFeatures\GameEntities\StatusEffects\GameEntity_StatusEffect_Manager.cs" />
     <Compile Include="GameFeatures\GameEntities\Stats\GameEntity_Stat_Manager.cs" />
-    <Compile Include="GameFeatures\GameEntities\GameEntity.cs" />
-    <Compile Include="GameFeatures\GameEntities\GameEntity_Controller.cs" />
-    <Compile Include="GameFeatures\GameEntities\GameEntity_Factory.cs" />
-    <Compile Include="GameFeatures\GameEntities\GameEntity_Roster.cs" />
+    <Compile Include="GameFeatures\GameEntity.cs" />
+    <Compile Include="GameFeatures\GameEntity_Controller.cs" />
+    <Compile Include="GameFeatures\GameEntity_Factory.cs" />
+    <Compile Include="GameFeatures\GameEntity_Roster.cs" />
     <Compile Include="GameFeatures\GameStates\GameState.cs" />
     <Compile Include="GameFeatures\GameState_Machine.cs" />
     <Compile Include="GameFeatures\GameEntities\Abilities\Implemented\Ability_ApeShit.cs" />
@@ -110,7 +111,7 @@
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Dismiss_Entity.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Entity_Death.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Introduce_Entity.cs" />
-    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Set_Entity_Resources.cs" />
+    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Declare_Entity_Resource.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Set_Traveling_State.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Accept_Client.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Announcement.cs" />
@@ -121,7 +122,7 @@
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Ability_Point.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Entity_Abilities.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Entity_Resource.cs" />
-    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Set_Party_UI_Descriptions.cs" />
+    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Declare_Entity_Descriptions.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Entity_UniqueID.cs" />
     <Compile Include="GameFeatures\Multiplayer\Multiplayer_Message_GameStateHandler.cs" />
     <Compile Include="MonkeyDungeon_Server.cs" />

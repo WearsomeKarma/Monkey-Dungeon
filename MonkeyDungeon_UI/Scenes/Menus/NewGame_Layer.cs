@@ -8,6 +8,8 @@ using MonkeyDungeon_UI.Multiplayer.MessageWrappers;
 using MonkeyDungeon_UI.Prefabs.Entities;
 using MonkeyDungeon_UI.Prefabs.UI;
 using MonkeyDungeon_UI.Scenes.GameScenes;
+using MonkeyDungeon_Vanilla_Domain;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using OpenTK;
 using System;
@@ -28,7 +30,7 @@ namespace MonkeyDungeon_UI.Scenes.Menus
         //TODO: Move this to a more centralized area.
         private readonly uint classCount = 6;
         private uint classSelection = 0;
-        private readonly string[] CLASSES = new string[] { "Warrior", "Wizard", "Archer", "Cleric", "Knight", "Monk" };
+        private readonly GameEntity_Attribute_Name[] CLASSES = MD_VANILLA_RACES.CLASSES;
         
         internal NewGame_Layer(MonkeyDungeon_Game_Client monkeyGame, MainMenuScene parentLayer)
             : base(monkeyGame, parentLayer)
@@ -133,18 +135,18 @@ namespace MonkeyDungeon_UI.Scenes.Menus
             MMW_Set_Entity[] setPlayerCommands = new MMW_Set_Entity[]
             {
                 //TODO: Fix non-centralized primitives
-                new MMW_Set_Entity(0, CLASSES[classSelection]),
-                new MMW_Set_Entity(1, "Archer"),
-                new MMW_Set_Entity(2, "Cleric"),
-                new MMW_Set_Entity(3, "Wizard")
+                new MMW_Set_Entity(GameEntity_ID.ID_ZERO, CLASSES[classSelection]),
+                new MMW_Set_Entity(GameEntity_ID.ID_ONE, CLASSES[2]),
+                new MMW_Set_Entity(GameEntity_ID.ID_TWO, CLASSES[3]),
+                new MMW_Set_Entity(GameEntity_ID.ID_THREE, CLASSES[1])
             };
 
             MMW_Set_Entity_Ready[] readyPlayerCommands = new MMW_Set_Entity_Ready[]
             {
-                new MMW_Set_Entity_Ready(0),
-                new MMW_Set_Entity_Ready(1),
-                new MMW_Set_Entity_Ready(2),
-                new MMW_Set_Entity_Ready(3)
+                new MMW_Set_Entity_Ready(GameEntity_ID.ID_ZERO),
+                new MMW_Set_Entity_Ready(GameEntity_ID.ID_ONE),
+                new MMW_Set_Entity_Ready(GameEntity_ID.ID_TWO),
+                new MMW_Set_Entity_Ready(GameEntity_ID.ID_THREE)
             };
 
             //send the set player / ready-up player commands.
@@ -165,7 +167,7 @@ namespace MonkeyDungeon_UI.Scenes.Menus
         protected override void Handle_RenderLayer(RenderService renderService, FrameArgument e)
         {
             base.Handle_RenderLayer(renderService, e);
-            Game.TextDisplayer.DrawText(renderService, CLASSES[classSelection], "font", 9 * CLASSES[classSelection].Length, 50);
+            Game.TextDisplayer.DrawText(renderService, CLASSES[classSelection], "font", 9 * CLASSES[classSelection].NAME.Length, 50);
         }
     }
 }

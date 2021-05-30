@@ -54,9 +54,9 @@
     <Compile Include="Multiplayer\Handlers\MMH_Dismiss_Entity.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Entity_Death.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Introduce_Entity.cs" />
-    <Compile Include="Multiplayer\Handlers\MMH_Set_Entity_Resources.cs" />
+    <Compile Include="Multiplayer\Handlers\MMH_Declare_Entity_Resource.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Set_Melee_Combattants.cs" />
-    <Compile Include="Multiplayer\Handlers\MMH_Set_Party_UI_Descriptions.cs" />
+    <Compile Include="Multiplayer\Handlers\MMH_Declare_Entity_Description.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Begin_Turn.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Invoke_UI_Event.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Set_Ranged_Particle.cs" />

@@ -1,5 +1,4 @@
-﻿using MonkeyDungeon_Core.GameFeatures.GameEntities.Stats;
-using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+﻿using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Resources.Implemented

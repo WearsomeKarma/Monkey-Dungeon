@@ -2,6 +2,7 @@
 using MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities;
 using MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers;
 using MonkeyDungeon_Core.GameFeatures.Multiplayer.MessageWrappers;
+using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using System;
@@ -66,13 +67,13 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
             for(int i=0;i< players.Length;i++)
             {
                 TurnOrder.Add(players[i]);
-                players[i].Scene_GameObject_ID = i;
+                players[i].Scene_GameObject_ID = GameEntity_ID.IDS[MD_PARTY.MAX_PARTY_SIZE + i];
                 players[i].Initative_Position = i;
             }
             for(int i=0;i<enemies.Length;i++)
             {
                 TurnOrder.Add(enemies[i]);
-                enemies[i].Scene_GameObject_ID = MD_PARTY.MAX_PARTY_SIZE + i;
+                enemies[i].Scene_GameObject_ID = GameEntity_ID.IDS[MD_PARTY.MAX_PARTY_SIZE + i];
                 enemies[i].Initative_Position = MD_PARTY.MAX_PARTY_SIZE + i;
             }
         }
@@ -141,9 +142,9 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
                 );
         }
 
-        internal void Act_Melee_Attack(int scene_GameObject_ID1, int scene_GameObject_ID2)
+        internal void Act_Melee_Attack(GameEntity_ID scene_GameObject_ID1, GameEntity_ID scene_GameObject_ID2)
         {
-            int ally, enemy;
+            GameEntity_ID ally, enemy;
             if (scene_GameObject_ID1 < MD_PARTY.MAX_PARTY_SIZE)
             {
                 ally = scene_GameObject_ID1;
@@ -168,7 +169,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
                 );
         }
 
-        internal void Act_Ranged_Attack(int shooterId, int targetId, string particleType)
+        internal void Act_Ranged_Attack(GameEntity_ID shooterId, GameEntity_ID targetId, GameEntity_Attribute_Name particleType)
         {
             GameState_Machine.Broadcast(
                 new MMW_Set_Ranged_Particle(
@@ -195,13 +196,16 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
         protected override void Handle_Begin_State(GameState_Machine gameWorld)
         {
             List<GameEntity> enemies = GenerateNewEnemies(gameWorld);
-            string[] enemyRaces = new string[enemies.Count];
+            GameEntity_Attribute_Name[] enemyRaces = new GameEntity_Attribute_Name[enemies.Count];
             for (int i = 0; i < enemies.Count; i++)
                 enemyRaces[i] = enemies[i].Race;
 
-            GameState_Machine.Broadcast(
-                new MMW_Set_Party_UI_Descriptions(1, enemyRaces)
-                );
+            for (int i = 0; i < enemyRaces.Length; i++)
+            {
+                GameState_Machine.Broadcast(
+                    new MMW_Declare_Entity_Descriptions(GameEntity_ID.IDS[i + MD_PARTY.MAX_PARTY_SIZE], enemyRaces[i])
+                    );
+            }
 
             gameWorld.Set_Enemy_Roster(enemies.ToArray());
 
@@ -238,10 +242,10 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
         {
             return new List<GameEntity>()
             {
-                GameState_Machine.GameEntity_Factory.Create_NewEntity(4, -1, MD_VANILLA_RACES.GOBLIN),
-                GameState_Machine.GameEntity_Factory.Create_NewEntity(5, -1, MD_VANILLA_RACES.GOBLIN),
-                GameState_Machine.GameEntity_Factory.Create_NewEntity(6, -1, MD_VANILLA_RACES.GOBLIN),
-                GameState_Machine.GameEntity_Factory.Create_NewEntity(7, -1, MD_VANILLA_RACES.GOBLIN)
+                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_FOUR, -1, MD_VANILLA_RACES.RACE_GOBLIN),
+                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_FIVE, -1, MD_VANILLA_RACES.RACE_GOBLIN),
+                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_SIX, -1, MD_VANILLA_RACES.RACE_GOBLIN),
+                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_SEVEN, -1, MD_VANILLA_RACES.RACE_GOBLIN)
             };
         }
     }

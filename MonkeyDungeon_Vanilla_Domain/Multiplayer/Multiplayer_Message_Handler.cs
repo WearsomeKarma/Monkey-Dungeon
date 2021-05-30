@@ -30,7 +30,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             Relay.Queue_Message(
                 new Multiplayer_Message(
                     Multiplayer_Message.MM_MESSAGE_INVALID,
-                    0, 0,
+                    GameEntity_ID.ID_ZERO, 0,
                     invalidMessage.Message_ID
                     )
                 );

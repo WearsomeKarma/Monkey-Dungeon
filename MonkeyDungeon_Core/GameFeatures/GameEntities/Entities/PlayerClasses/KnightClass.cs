@@ -42,7 +42,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Entities
 
         public KnightClass(string name, int level, GameEntity_Controller controller)
             : base(
-                  MD_VANILLA_RACES.PLAYER_RACE,
+                  MD_VANILLA_RACES.RACE_MONKEY,
                   name,
                   level,
                   CLASS_ID,

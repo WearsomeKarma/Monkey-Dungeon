@@ -8,6 +8,7 @@ using MonkeyDungeon_UI.Prefabs.Entities;
 using MonkeyDungeon_UI.Prefabs.UI;
 using MonkeyDungeon_UI.Prefabs.UI.EntityData;
 using MonkeyDungeon_UI.UI_Events.Implemented;
+using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using OpenTK;
@@ -43,14 +44,11 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
             => Get_Entity_From_Id(id).Position;
         public UI_GameEntity_Descriptor Get_Description_From_Id(int id)
             => Get_Entity_From_Id(id).EntityDescription;
-        internal void Set_Descriptions(int isPlayerDescriptions, string[] descriptions)
+        internal void Set_Description(GameEntity_ID id, GameEntity_Attribute_Name @class)
         {
-            CreatureGameObject[] creatures = (isPlayerDescriptions == 0) ? Player_LayerObjects : Enemy_LayerObjects;
+            CreatureGameObject[] creatures = (id < MD_PARTY.MAX_PARTY_SIZE) ? Player_LayerObjects : Enemy_LayerObjects;
 
-            for(int i=0;i<descriptions.Length && i < creatures.Length;i++)
-            {
-                creatures[i].EntityDescription = new UI_GameEntity_Descriptor(descriptions[i]);
-            }
+            creatures[id % MD_PARTY.MAX_PARTY_SIZE].Bind_To_Description(new UI_GameEntity_Descriptor(@class));
         }
         public void Set_Unique_ID(int id, uint uid)
         {
@@ -82,10 +80,10 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                 );
 
             for(int i=0;i< MD_PARTY.MAX_PARTY_SIZE;i++)
-                Add_StaticObject(Player_LayerObjects[i] = new CreatureGameObject(this, -positions[i], new UI_GameEntity_Descriptor(MD_VANILLA_RACES.PLAYER_RACE)));
+                Add_StaticObject(Player_LayerObjects[i] = new CreatureGameObject(this, -positions[i], new UI_GameEntity_Descriptor(MD_VANILLA_RACES.RACE_MONKEY)));
             
             for(int i=0;i< MD_PARTY.MAX_PARTY_SIZE; i++)
-                Add_StaticObject(Enemy_LayerObjects[i] = new CreatureGameObject(this, positions[i], new UI_GameEntity_Descriptor(MD_VANILLA_RACES.PLAYER_RACE, true)));
+                Add_StaticObject(Enemy_LayerObjects[i] = new CreatureGameObject(this, positions[i], new UI_GameEntity_Descriptor(MD_VANILLA_RACES.RACE_MONKEY, true)));
 
             Add_StaticObject(Ranged_Particle = new Particle(this, new Vector3(0, 0, 0)));
             Ranged_Particle.Toggle_Sprite(false);
@@ -108,9 +106,9 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
 
             GameScene.MonkeyDungeon_Game_UI.Expectation_Context.Register_Handler(
                 new MMH_Invoke_UI_Event(this),
-                new MMH_Set_Party_UI_Descriptions(this),
+                new MMH_Declare_Entity_Description(this),
                 new MMH_Accept_Client(GameScene.MonkeyDungeon_Game_UI),
-                new MMH_Set_MD_VANILLA_RESOURCES(this),
+                new MMH_Declare_Entity_Resource(this),
                 new MMH_Introduce_Entity(this),
                 new MMH_Dismiss_Entity(this),
                 new MMH_Entity_Death(this),

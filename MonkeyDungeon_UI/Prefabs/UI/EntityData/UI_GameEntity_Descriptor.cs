@@ -1,4 +1,5 @@
-﻿using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+﻿using MonkeyDungeon_Vanilla_Domain;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,9 @@ namespace MonkeyDungeon_UI.Prefabs.UI.EntityData
         private void Set_Dismissed_State(bool state) { isDismissed = state; Entity_Dismissal_State_Changed?.Invoke(this); }
 
         public uint UNIQUE_IDENTIFIER { get; internal set; }
-        public string[] Ability_Names { get; private set; }
+        public readonly GameEntity_Attribute_Name[] ABILITY_NAMES = new GameEntity_Attribute_Name[MD_PARTY.MAX_ABILITY_COUNT];
 
-        public List<UI_GameEntity_Resource> Resources { get; private set; }
+        public readonly List<UI_GameEntity_Resource> RESOURCES = new List<UI_GameEntity_Resource>();
 
         public UI_GameEntity_Resource Level { get; private set; }
         public UI_GameEntity_Resource Ability_Points { get; private set; }
@@ -44,45 +45,30 @@ namespace MonkeyDungeon_UI.Prefabs.UI.EntityData
 
             RACE = race;
             UNIQUE_IDENTIFIER = 0;
-            Set_Abilities(null);
-            Resources = new List<UI_GameEntity_Resource>();
-            Set_Resources(null);
         }
         
-        internal void Set_Abilities(string[] abilityNames)
+        internal void Set_Ability(GameEntity_Ability_Index abilityIndex, GameEntity_Attribute_Name abilityName)
         {
-            Ability_Names = abilityNames ?? new string[] { };
-        }
-
-        internal void Set_Resources(string[] resourceNames)
-        {
-            Dispose_Resources();
-            if (resourceNames == null)
-                return;
-
-            for (int i = 0; i < resourceNames.Length; i++)
-            {
-                Add_Resource(resourceNames[i]);
-            }
+            ABILITY_NAMES[abilityIndex] = abilityName;
         }
 
         internal void Add_Resource(string resourceName, float initalPercentage = 1)
         {
             UI_GameEntity_Resource r;
-            Resources.Add(r = new UI_GameEntity_Resource(resourceName, initalPercentage));
+            RESOURCES.Add(r = new UI_GameEntity_Resource(resourceName, initalPercentage));
             Resource_Added?.Invoke(r);
         }
 
         internal void Set_Resource_Percentage(string resourceName, float percentage)
         {
-            foreach (UI_GameEntity_Resource resource in Resources)
+            foreach (UI_GameEntity_Resource resource in RESOURCES)
                 if (resource.Resource_Name == resourceName)
                     resource.Resource_Percentage = percentage;
         }
 
         internal UI_GameEntity_Resource Get_Resource(string resourceName)
         {
-            foreach (UI_GameEntity_Resource resource in Resources)
+            foreach (UI_GameEntity_Resource resource in RESOURCES)
                 if (resource.Resource_Name == resourceName)
                     return resource;
             return null;
@@ -90,9 +76,9 @@ namespace MonkeyDungeon_UI.Prefabs.UI.EntityData
 
         internal void Dispose_Resources()
         {
-            foreach (UI_GameEntity_Resource resource in Resources)
+            foreach (UI_GameEntity_Resource resource in RESOURCES)
                 resource.Remove_Resource();
-            Resources.Clear();
+            RESOURCES.Clear();
         }
 
         /// <summary>
@@ -103,7 +89,7 @@ namespace MonkeyDungeon_UI.Prefabs.UI.EntityData
         internal void Subscribe_To_Resource_Changes(ResourceBar[] resourceBars)
         {
             foreach (ResourceBar resourceBar in resourceBars)
-                foreach (UI_GameEntity_Resource resource in Resources)
+                foreach (UI_GameEntity_Resource resource in RESOURCES)
                     if (resource.Resource_Name == resourceBar.Resource_Name)
                         resourceBar.Attach_To_Resource(resource);
         }
@@ -116,7 +102,7 @@ namespace MonkeyDungeon_UI.Prefabs.UI.EntityData
         internal void Unsubscribe_To_Resource_Changes(ResourceBar[] resourceBars)
         {
             foreach (ResourceBar resourceBar in resourceBars)
-                foreach (UI_GameEntity_Resource resource in Resources)
+                foreach (UI_GameEntity_Resource resource in RESOURCES)
                     if (resource.Resource_Name == resourceBar.Resource_Name)
                         resourceBar.Attach_To_Resource(null);
         }

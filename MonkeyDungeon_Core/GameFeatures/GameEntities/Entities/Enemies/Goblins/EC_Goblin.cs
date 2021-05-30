@@ -6,13 +6,12 @@ using MonkeyDungeon_Core.GameFeatures.GameEntities.Resources;
 using MonkeyDungeon_Core.GameFeatures.GameEntities.Resources.Implemented;
 using MonkeyDungeon_Core.GameFeatures.GameEntities.Stats;
 using MonkeyDungeon_Core.GameFeatures.GameEntities.Stats.Implemented;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Entities
 {
     public class EC_Goblin : GameEntity
     {
-        public static readonly string DEFAULT_NAME = "Goblin";
-        public static readonly string DEFAULT_RACE_NAME = "Goblin";
         public static readonly int DEFAULT_UNIQUE_ID = 0;
         
         public static readonly float    STAT_BASE_STRENGTH                  =   8       ;
@@ -43,8 +42,8 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Entities
 
         public EC_Goblin(int level) 
             : base(
-                  DEFAULT_RACE_NAME, 
-                  DEFAULT_NAME,
+                  MD_VANILLA_RACES.RACE_GOBLIN,
+                  MD_VANILLA_RACES.RACE_GOBLIN,
                   level,
                   DEFAULT_UNIQUE_ID,
                   new List<GameEntity_Stat>()

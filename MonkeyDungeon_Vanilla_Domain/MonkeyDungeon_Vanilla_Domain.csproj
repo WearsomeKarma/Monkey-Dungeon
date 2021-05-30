@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameEntity_Ability_Index.cs" />
+    <Compile Include="GameEntity_Attribute_Name.cs" />
+    <Compile Include="GameEntity_ID.cs" />
     <Compile Include="GameFeatures\MD_PARTY.cs" />
     <Compile Include="GameFeatures\MD_VANILLA_ABILITYNAMES.cs" />
     <Compile Include="GameFeatures\MD_VANILLA_PARTICLES.cs" />
