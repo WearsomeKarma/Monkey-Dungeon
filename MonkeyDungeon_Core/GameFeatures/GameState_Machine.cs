@@ -146,9 +146,9 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             Server.Broadcast(
                 new MMW_Update_Entity_Resource(
-                    resource.Entity.Scene_GameObject_ID,
-                    (float)(resource.Resource_Value / resource.Max_Value),
-                    resource.Resource_Name
+                    resource.Internal_Parent.Scene_GameObject_ID,
+                    (float)(resource.Value / resource.Max_Quantity),
+                    resource.ATTRIBUTE_NAME
                     )
                 );
         }
@@ -202,7 +202,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         internal void Relay_Entity_Static_Resource(GameEntity_Resource resource)
         {
             Broadcast(
-                new MMW_Update_Ability_Point(resource.Entity.Scene_GameObject_ID, (int)resource.Resource_Value)
+                new MMW_Update_Ability_Point(resource.Internal_Parent.Scene_GameObject_ID, (int)resource.Value)
                 );
         }
 

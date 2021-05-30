@@ -69,23 +69,14 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Entities
                   new List<GameEntity_Resource>()
                   {
                       new Health(
-                          RESOURCE_BASE_HEALTH,
-                          RESOURCE_BASE_HEALTH,
                           0,
-                          RESOURCE_BASE_REGENERATION_HEALTH,
-                          RESOURCE_PROGRESSION_HEALTH
+                          RESOURCE_BASE_HEALTH
                           ),
                       new Stamina(
-                          RESOURCE_BASE_STAMINA,
-                          RESOURCE_BASE_STAMINA,
-                          RESOURCE_BASE_REGENERATION_STAMINA,
-                          RESOURCE_PROGRESSION_STAMINA
+                          RESOURCE_BASE_STAMINA
                           ),
                       new Mana(
-                          RESOURCE_BASE_MANA,
-                          RESOURCE_BASE_MANA,
-                          RESOURCE_BASE_REGENERATION_MANA,
-                          RESOURCE_PROGRESSION_MANA
+                          RESOURCE_BASE_MANA
                           )
                   },
                   new List<GameEntity_Ability>()

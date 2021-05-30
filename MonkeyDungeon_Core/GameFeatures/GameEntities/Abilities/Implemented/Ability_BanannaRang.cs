@@ -3,7 +3,7 @@ using System;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
 {
-    public class Ability_BanannaRang : Ability_Ranged
+    public class Ability_BanannaRang : GameEntity_Ability
     {
         Random rand = new Random();
 
@@ -12,16 +12,17 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
                   MD_VANILLA_ABILITYNAMES.ABILITY_BANNANA_RANG, 
                   MD_VANILLA_RESOURCES.RESOURCE_STAMINA, 
                   MD_VANILLA_STATS.STAT_AGILITY, 
-                  MD_VANILLA_PARTICLES.BANNANA_RANG, 
-                  Combat_Damage_Type.Physical, 
-                  true
+                  Combat_Target_Type.One_Enemy,
+                  Combat_Damage_Type.Physical,
+                  Combat_Assault_Type.Ranged,
+                  MD_VANILLA_PARTICLES.BANNANA_RANG
                   )
         {
         }
 
         protected override double Get_AbilityResourceCost()
         {
-            float cost = 6 - ((Entity.Level > 12) ? 3 : Entity.Level / 4);
+            float cost = 6 - ((Internal_Parent.Level > 12) ? 3 : Internal_Parent.Level / 4);
             return cost;
         }
 

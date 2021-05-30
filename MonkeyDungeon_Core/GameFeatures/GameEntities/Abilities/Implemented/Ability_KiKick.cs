@@ -8,7 +8,10 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
             : base(
                   MD_VANILLA_ABILITYNAMES.ABILITY_KI_KICK, 
                   MD_VANILLA_RESOURCES.RESOURCE_STAMINA, 
-                  MD_VANILLA_STATS.STAT_AGILITY
+                  MD_VANILLA_STATS.STAT_AGILITY,
+                  Combat_Target_Type.One_Enemy,
+                  Combat_Damage_Type.Physical,
+                  Combat_Assault_Type.Melee
                   )
         {
         }

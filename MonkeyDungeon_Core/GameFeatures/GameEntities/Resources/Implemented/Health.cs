@@ -5,24 +5,19 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Resources.Implemented
 {
     public class Health : GameEntity_Resource
     {
-        public Health(double baseValue, double max, double min, double replenishRate, double progressionRate)
-            : base(MD_VANILLA_RESOURCES.RESOURCE_HEALTH, baseValue, max, min, replenishRate, progressionRate)
+        public Health(double min, double max, double? initalValue = null)
+            : base(MD_VANILLA_RESOURCES.RESOURCE_HEALTH, min, max, initalValue)
         {
         }
         
-        protected override void Handle_Depleted()
+        protected override void Handle_Quantity_Depleted()
         {
-            Entity.StatusEffect_Manager.Add_StatusEffect(new StatusEffect_Dead());
-        }
-
-        protected override void Handle_Add_To_Entity(GameEntity_Resource_Manager resource_Manager)
-        {
-            resource_Manager.Add_Resource<Health>(this);
+            Internal_Parent.StatusEffect_Manager.Add_StatusEffect(new StatusEffect_Dead());
         }
 
         public override GameEntity_Resource Clone()
         {
-            return new Health(Get_BaseValue(), Max_Value, Min_Value, Rate_Replenish, Max_Value.Scaling_Rate);
+            return new Health(Min_Quantity, Max_Quantity, Value);
         }
     }
 }

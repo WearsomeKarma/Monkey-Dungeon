@@ -2,15 +2,17 @@
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
 {
-    public class Ability_Punch : Ability_Melee
+    public class Ability_Punch : GameEntity_Ability
     {
         public Ability_Punch() 
             : base(
                   MD_VANILLA_ABILITYNAMES.ABILITY_PUNCH, 
                   MD_VANILLA_RESOURCES.RESOURCE_STAMINA, 
-                  MD_VANILLA_STATS.STAT_STRENGTH, 
-                  Combat_Damage_Type.Physical, 
-                  true)
+                  MD_VANILLA_STATS.STAT_STRENGTH,
+                  Combat_Target_Type.One_Enemy,
+                  Combat_Damage_Type.Physical,
+                  Combat_Assault_Type.Melee
+                  )
         {
         }
 

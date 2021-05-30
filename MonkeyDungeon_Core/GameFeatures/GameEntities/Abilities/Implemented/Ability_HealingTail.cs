@@ -8,7 +8,8 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
             : base(
                   MD_VANILLA_ABILITYNAMES.ABILITY_HEALING_TAIL, 
                   MD_VANILLA_RESOURCES.RESOURCE_MANA, 
-                  MD_VANILLA_STATS.STAT_SMARTYPANTS
+                  MD_VANILLA_STATS.STAT_SMARTYPANTS,
+                  Combat_Target_Type.One_Ally
                   )
         {
         }

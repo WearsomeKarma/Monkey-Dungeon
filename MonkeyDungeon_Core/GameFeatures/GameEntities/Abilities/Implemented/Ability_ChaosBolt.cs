@@ -3,7 +3,7 @@ using System;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
 {
-    public class Ability_ChaosBolt : Ability_Ranged
+    public class Ability_ChaosBolt : GameEntity_Ability
     {
         private Random rand = new Random();
 
@@ -12,9 +12,11 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
                   MD_VANILLA_ABILITYNAMES.ABILITY_CHAOS_BOLT, 
                   MD_VANILLA_RESOURCES.RESOURCE_MANA, 
                   MD_VANILLA_STATS.STAT_SMARTYPANTS,
-                  MD_VANILLA_PARTICLES.CHAOS_BOLT,
-                  Combat_Damage_Type.Magical, 
-                  true)
+                  Combat_Target_Type.One_Enemy,
+                  Combat_Damage_Type.Magical,
+                  Combat_Assault_Type.Ranged,
+                  MD_VANILLA_PARTICLES.CHAOS_BOLT
+                  )
         {
         }
 

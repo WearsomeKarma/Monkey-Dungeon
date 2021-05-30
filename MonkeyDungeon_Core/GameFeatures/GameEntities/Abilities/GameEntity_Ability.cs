@@ -2,53 +2,47 @@
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
 {
-    public class GameEntity_Ability
+    public class GameEntity_Ability : GameEntity_Attribute
     {
-        public string Ability_Name { get; private set; }
+        internal int Entity_Scene_Id => Internal_Parent.Scene_GameObject_ID;
 
-        internal GameEntity Entity { get; private set; }
-        internal int Entity_Scene_Id => Entity.Scene_GameObject_ID;
-
-        internal string Resource_Name { get; private set; }
+        public string Resource_Name { get; private set; }
         public double Cost => Get_AbilityResourceCost();
         public int Cost_Ability_Points => Get_AbilityPointCost();
-        public double Resource_Value => Entity?.Resource_Manager.Get_Resource(Resource_Name)?.Resource_Value ?? throw new Exception("TODO: replace excep");
-        public double Resource_ValueStrict => Entity?.Resource_Manager.Get_Resource(Resource_Name)?.Resource_StrictValue ?? throw new Exception("TODO: replace excep");
+        public double Resource_Value => Internal_Parent?.Resource_Manager.Get_Resource(Resource_Name)?.Value ?? throw new Exception("TODO: replace excep");
+        public double Resource_ValueStrict => Internal_Parent?.Resource_Manager.Get_Resource(Resource_Name)?.Value ?? throw new Exception("TODO: replace excep");
 
         internal string Stat_Name { get; private set; }
-        public double Stat_Value => Entity?.Stat_Manager.Get_Stat(Stat_Name ?? "")?.Resource_Value ?? throw new Exception("TODO: replace excep");
-        public double Stat_StrictValue => Entity?.Stat_Manager.Get_Stat(Stat_Name ?? "")?.Resource_StrictValue ?? throw new Exception("TODO: replace excep");
+        public double Stat_Value => Internal_Parent?.Stat_Manager.Get_Stat(Stat_Name ?? "")?.Value ?? throw new Exception("TODO: replace excep");
+
+        public string Particle_Type { get; protected set; }
 
         public Combat_Ability_Target Target { get; protected set; }
         public Combat_Target_Type Target_Type { get; protected set; }
+        public Combat_Damage_Type Damage_Type { get; protected set; }
+        public Combat_Assault_Type Assault_Type { get; protected set; }
         public bool Has_Strict_Targets { get; protected set; }
 
         public GameEntity_Ability(
             string name,
             string resourceName,
-            string statName
+            string statName,
+            Combat_Target_Type targetType = Combat_Target_Type.Self_Or_No_Target,
+            Combat_Damage_Type damageType = Combat_Damage_Type.Abstract,
+            Combat_Assault_Type assaultType = Combat_Assault_Type.None,
+            string particleType = null
             )
+            : base(name)
         {
-            Ability_Name = name;
             Resource_Name = resourceName;
             Stat_Name = statName;
-        }
 
-        internal void Attach_ToEntity(GameEntity entity)
-        {
-            if (Entity != null)
-                Detach_FromEntity();
-            Entity = entity;
-            Handle_GainingNewEntity();
-        }
-        protected virtual void Handle_GainingNewEntity() { }
+            Target_Type = targetType;
+            Damage_Type = damageType;
+            Assault_Type = assaultType;
 
-        internal void Detach_FromEntity()
-        {
-            Handle_LosingEntity();
-            Entity = null;
+            Particle_Type = particleType;
         }
-        protected virtual void Handle_LosingEntity() { }
 
         protected virtual void Handle_Begin_Resolution          (Combat_Action action) { }
         protected virtual void Handle_Calculate_Hit_Bonus       (Combat_Action action) { }
@@ -56,14 +50,14 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
         protected virtual void Handle_Calculate_Damage          (Combat_Action action) { }
         protected virtual void Handle_Finish_Resolution         (Combat_Action action) { }
 
-        protected virtual double Get_RelevantOutput() => Entity?.Stat_Manager.Get_Stat(Stat_Name)?.Resource_Value ?? 0;
-        protected virtual double Get_AbilityResourceCost() => 1;
-        protected virtual int Get_AbilityPointCost() => 1;
+        protected virtual double Get_RelevantOutput()           => Internal_Parent?.Stat_Manager.Get_Stat(Stat_Name)?.Value ?? 0;
+        protected virtual double Get_AbilityResourceCost()      => 1;
+        protected virtual int Get_AbilityPointCost()            => 1;
 
         public virtual GameEntity_Ability Clone()
         {
             GameEntity_Ability clone = new GameEntity_Ability(
-                Ability_Name,
+                ATTRIBUTE_NAME,
                 Resource_Name,
                 Stat_Name
                 );
@@ -74,7 +68,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
         {
             return string.Format(
                 "Name: {0} \tOutput: {1}",
-                Ability_Name,
+                ATTRIBUTE_NAME,
                 Get_RelevantOutput()
                 );
         }

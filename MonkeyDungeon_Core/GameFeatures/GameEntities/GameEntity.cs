@@ -6,6 +6,7 @@ using MonkeyDungeon_Core.GameFeatures.GameEntities.Stats;
 using MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects;
 using MonkeyDungeon_Core.GameFeatures.GameStates;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+using System;
 using System.Collections.Generic;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities
@@ -28,7 +29,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities
         internal void Set_IncapacitatedState            (bool value = true) { incapacitated = value; if (value) Handle_Incapacitated(); }
 
         private Level level;
-        public int Level                                { get => (level != null) ? (int)level.Get_BaseValue() : 0; set => Set_Level(value); }
+        public int Level                                { get => (level != null) ? (int)level.Value : 0; set => Set_Level(value); }
         
         public GameState_Machine Game                   { get; internal set;    }
 
@@ -85,15 +86,10 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities
         {
             if (this.level == null)
             {
-                this.level = new Level(level, 100, 0, 0, 0);
-                this.level.Attach_ToEntity(this);
+                this.level = new Level(100, level);
+                this.level.Attach_To_Entity(this);
             }
-            this.level.Offset(level - Level);
-        }
-
-        internal double Recover_This<T>(double amount) where T : GameEntity_Resource
-        {
-            return Resource_Manager.Recover<T>(amount);
+            this.level.Force_Offset(level - Level);
         }
 
         internal void Combat_BeginTurn(Combat_GameState combat)
@@ -107,7 +103,8 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities
             if (combat.CombatState == CombatState.FinishCurrentTurn)
                 return;
 
-            Resource_Manager.Combat_BeginTurn(combat);
+            throw new NotImplementedException();
+            //Resource_Manager.Combat_BeginTurn(combat);
 
             if (CheckIf_IsTurnUnplayable(combat))
                 return;
@@ -190,7 +187,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities
         {
             string r = "";
             foreach (GameEntity_Resource re in Resource_Manager.Get_Resources())
-                r += string.Format("[{0}:{1}]", re.Resource_Name, re.Resource_Value);
+                r += string.Format("[{0}:{1}]", re.ATTRIBUTE_NAME, re.Value);
             string ec_s = string.Format(
                 "Name: {0} \tResources: <{1}>",
                 Name,

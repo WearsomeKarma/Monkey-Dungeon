@@ -12,7 +12,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
         protected override double Get_AbilityResourceCost()
         {
             return 0;
-            float cost = 8 - ((Entity.Level > 12) ? 4 : Entity.Level / 3);
+            float cost = 8 - ((Internal_Parent.Level > 12) ? 4 : Internal_Parent.Level / 3);
             return cost;
         }
 
