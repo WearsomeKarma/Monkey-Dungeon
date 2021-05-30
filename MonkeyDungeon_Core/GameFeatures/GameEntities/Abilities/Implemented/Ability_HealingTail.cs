@@ -1,0 +1,21 @@
+﻿using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+
+namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
+{
+    public class Ability_HealingTail : GameEntity_Ability
+    {
+        public Ability_HealingTail() 
+            : base(
+                  MD_VANILLA_ABILITYNAMES.ABILITY_HEALING_TAIL, 
+                  MD_VANILLA_RESOURCES.RESOURCE_MANA, 
+                  MD_VANILLA_STATS.STAT_SMARTYPANTS
+                  )
+        {
+        }
+
+        public override GameEntity_Ability Clone()
+        {
+            return new Ability_HealingTail();
+        }
+    }
+}

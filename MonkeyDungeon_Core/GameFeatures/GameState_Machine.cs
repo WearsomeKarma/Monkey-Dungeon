@@ -1,19 +1,16 @@
-﻿using MonkeyDungeon_Core.GameFeatures.EntityResourceManagement;
-using MonkeyDungeon_Core.GameFeatures.Implemented.GameStates;
+﻿using MonkeyDungeon_Core.GameFeatures.GameEntities;
+using MonkeyDungeon_Core.GameFeatures.GameEntities.Resources;
+using MonkeyDungeon_Core.GameFeatures.GameStates;
 using MonkeyDungeon_Core.GameFeatures.Multiplayer.MessageWrappers;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonkeyDungeon_Core.GameFeatures
 {
     public class GameState_Machine
     {
-        public static readonly int MAX_TEAM_SIZE = 4;
-        
         private readonly List<GameState> gameStates = new List<GameState>();
         private void Add_GameState(GameState gameState) { gameState.Set_GameWorld(this); gameStates.Add(gameState); }
         internal T Get_GameState<T>() where T : GameState 
@@ -32,9 +29,9 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             if (entityScene_Id < 0)
                 return null;
-            if (entityScene_Id < MAX_TEAM_SIZE)
+            if (entityScene_Id < MD_PARTY.MAX_PARTY_SIZE)
                 return PlayerRoster.Entities[entityScene_Id];
-            return EnemyRoster.Entities[entityScene_Id % MAX_TEAM_SIZE];
+            return EnemyRoster.Entities[entityScene_Id % MD_PARTY.MAX_PARTY_SIZE];
         }
         public GameEntity_Controller Get_Entity_Controller(int entityScene_Id)
             => Get_Entity(entityScene_Id).EntityController;
@@ -47,7 +44,7 @@ namespace MonkeyDungeon_Core.GameFeatures
 
             GameEntity entity = GameEntity_Factory.Create_NewEntity(entityScene_Id, relayId, factory_Tag);
 
-            if (entityScene_Id < MAX_TEAM_SIZE)
+            if (entityScene_Id < MD_PARTY.MAX_PARTY_SIZE)
                 return PlayerRoster.Set_Entity(entity);
             return EnemyRoster.Set_Entity(entity);
         }
@@ -69,8 +66,8 @@ namespace MonkeyDungeon_Core.GameFeatures
 
             GameEntity_Factory = new GameEntity_Factory(this);
 
-            PlayerRoster = new GameEntity_Roster(this, new GameEntity[MAX_TEAM_SIZE]);
-            EnemyRoster = new GameEntity_Roster(this, new GameEntity[MAX_TEAM_SIZE]);
+            PlayerRoster = new GameEntity_Roster(this, new GameEntity[MD_PARTY.MAX_PARTY_SIZE]);
+            EnemyRoster = new GameEntity_Roster(this, new GameEntity[MD_PARTY.MAX_PARTY_SIZE]);
             CurrentGameState = gameStates[0];
         }
         
@@ -189,7 +186,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             if (roster == null)
             {
-                for (int i = MAX_TEAM_SIZE; i < MAX_TEAM_SIZE * 2; i++)
+                for (int i = MD_PARTY.MAX_PARTY_SIZE; i < MD_PARTY.MAX_PARTY_SIZE * 2; i++)
                 {
                     Broadcast(
                         new MMW_Dismiss_Entity(i)

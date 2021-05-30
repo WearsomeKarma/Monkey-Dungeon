@@ -28,10 +28,10 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
 
         private GameScene GameScene { get; set; }
 
-        private readonly CreatureGameObject[] Player_LayerObjects = new CreatureGameObject[MonkeyDungeon_Game_Client.MAX_TEAM_SIZE];
-        private readonly CreatureGameObject[] Enemy_LayerObjects = new CreatureGameObject[MonkeyDungeon_Game_Client.MAX_TEAM_SIZE];
-        internal bool CheckIf_TargetId_IsEnemy(int id) => id >= MonkeyDungeon_Game_Client.MAX_TEAM_SIZE;
-        internal int Get_IndexFrom_TargetId(int id) => id % MonkeyDungeon_Game_Client.MAX_TEAM_SIZE;
+        private readonly CreatureGameObject[] Player_LayerObjects = new CreatureGameObject[MD_PARTY.MAX_PARTY_SIZE];
+        private readonly CreatureGameObject[] Enemy_LayerObjects = new CreatureGameObject[MD_PARTY.MAX_PARTY_SIZE];
+        internal bool CheckIf_TargetId_IsEnemy(int id) => id >= MD_PARTY.MAX_PARTY_SIZE;
+        internal int Get_IndexFrom_TargetId(int id) => id % MD_PARTY.MAX_PARTY_SIZE;
         private CreatureGameObject Get_Entity_From_Id(int id)
         {
             bool isEnemy = CheckIf_TargetId_IsEnemy(id);
@@ -81,10 +81,10 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                     Game.SpriteLibrary.ExtractRenderUnit("BridgePath"))
                 );
 
-            for(int i=0;i< MonkeyDungeon_Game_Client.MAX_TEAM_SIZE;i++)
+            for(int i=0;i< MD_PARTY.MAX_PARTY_SIZE;i++)
                 Add_StaticObject(Player_LayerObjects[i] = new CreatureGameObject(this, -positions[i], new UI_GameEntity_Descriptor(MD_VANILLA_RACES.PLAYER_RACE)));
             
-            for(int i=0;i< MonkeyDungeon_Game_Client.MAX_TEAM_SIZE; i++)
+            for(int i=0;i< MD_PARTY.MAX_PARTY_SIZE; i++)
                 Add_StaticObject(Enemy_LayerObjects[i] = new CreatureGameObject(this, positions[i], new UI_GameEntity_Descriptor(MD_VANILLA_RACES.PLAYER_RACE, true)));
 
             Add_StaticObject(Ranged_Particle = new Particle(this, new Vector3(0, 0, 0)));

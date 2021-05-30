@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameFeatures\MD_PARTY.cs" />
     <Compile Include="GameFeatures\MD_VANILLA_ABILITYNAMES.cs" />
     <Compile Include="GameFeatures\MD_VANILLA_PARTICLES.cs" />
     <Compile Include="GameFeatures\MD_VANILLA_RACES.cs" />

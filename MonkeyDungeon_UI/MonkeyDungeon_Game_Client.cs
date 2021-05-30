@@ -4,6 +4,7 @@ using isometricgame.GameEngine.Tools;
 using MonkeyDungeon_UI.Prefabs.Entities;
 using MonkeyDungeon_UI.Scenes.GameScenes;
 using MonkeyDungeon_UI.Scenes.Menus;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using OpenTK;
 using System;
@@ -18,8 +19,6 @@ namespace MonkeyDungeon_UI
     public abstract class MonkeyDungeon_Game_Client : Game
     {
         public readonly string DEFAULT_RACE;
-
-        public static readonly int MAX_TEAM_SIZE = 4;
         internal EventScheduler UI_EventScheduler => EventScheduler;
 
         internal Multiplayer_Expectation_Context Expectation_Context { get; private set; }
