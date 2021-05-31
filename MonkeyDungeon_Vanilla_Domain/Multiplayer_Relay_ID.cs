@@ -1,0 +1,18 @@
+﻿
+namespace MonkeyDungeon_Vanilla_Domain
+{
+    public class Multiplayer_Relay_ID
+    {
+        public static readonly Multiplayer_Relay_ID NULL_ID = new Multiplayer_Relay_ID(-1);
+
+        public readonly int ID;
+
+        internal Multiplayer_Relay_ID(int id)
+        {
+            ID = id;
+        }
+
+        public static implicit operator int(Multiplayer_Relay_ID id)
+            => id.ID;
+    }
+}

@@ -1,5 +1,4 @@
-﻿using MonkeyDungeon_Core.GameFeatures.GameStates;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
@@ -23,10 +22,10 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
             Entity = managedEntity;
         }
 
-        internal void Combat_BeginTurn(Combat_GameState combat)
+        internal void Combat_BeginTurn(GameEntity_EntityField gameField)
         {
             foreach (GameEntity_StatusEffect effect in StatusEffects)
-                effect.Combat_BeginTurn_StatusEffect(combat);
+                effect.Combat_BeginTurn_StatusEffect(gameField);
         }
     }
 }

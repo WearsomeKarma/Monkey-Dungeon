@@ -1,5 +1,4 @@
-﻿using MonkeyDungeon_Core.GameFeatures.GameStates;
-
+﻿
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
 {
     public enum StatusEffectType
@@ -58,20 +57,20 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
         protected virtual void Handle_NewOwner(GameEntity newOwner) { }
         protected virtual void Handle_LoseOwner(GameEntity oldOwner) { }
 
-        internal void Combat_BeginTurn_StatusEffect(Combat_GameState combat)
+        internal void Combat_BeginTurn_StatusEffect(GameEntity_EntityField gameField)
         {
-            HandleCombat_BeginTurn_StatusEffect(combat);
+            HandleCombat_BeginTurn_StatusEffect(gameField);
             ElapsedDuration++;
             if (TurnDuration > -1 && ElapsedDuration >= TurnDuration)
                 EffectedEntity.StatusEffect_Manager.Remove_StatusEffect(this);
         }
 
-        internal void Combat_EndTurn_StatusEffect(Combat_GameState combat)
+        internal void Combat_EndTurn_StatusEffect(GameEntity_EntityField gameField)
         {
-            HandleCombat_EndTurn_StatusEffect(combat);
+            HandleCombat_EndTurn_StatusEffect(gameField);
         }
 
-        protected virtual void HandleCombat_BeginTurn_StatusEffect(Combat_GameState combat) { }
-        protected virtual void HandleCombat_EndTurn_StatusEffect(Combat_GameState combat) { }
+        protected virtual void HandleCombat_BeginTurn_StatusEffect(GameEntity_EntityField gameField) { }
+        protected virtual void HandleCombat_EndTurn_StatusEffect(GameEntity_EntityField gameField) { }
     }
 }

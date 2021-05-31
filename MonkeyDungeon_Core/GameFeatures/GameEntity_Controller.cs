@@ -1,5 +1,6 @@
 ﻿using MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities;
 using MonkeyDungeon_Core.GameFeatures.GameStates;
+using MonkeyDungeon_Vanilla_Domain;
 using System;
 
 namespace MonkeyDungeon_Core.GameFeatures
@@ -15,7 +16,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         public GameEntity Entity { get; private set; }
 
         internal Combat_Action PendingCombatAction { get; private set; }
-        internal void Setup_CombatAction_Ability(string abilityName)
+        internal void Setup_CombatAction_Ability(GameEntity_Attribute_Name abilityName)
         {
             if (!IsAutomonous)
             {
@@ -33,28 +34,27 @@ namespace MonkeyDungeon_Core.GameFeatures
                 PendingCombatAction.Target.Add_Target(index);
             }
         }
-        internal Combat_Action Get_CombatAction(Combat_GameState combat)
+        internal Combat_Action Get_CombatAction(GameEntity_EntityField gameField)
         {
-            if (Entity.CheckIf_IsTurnUnplayable(combat))
-            {
-                return null;
-            }
+            if (!Entity.Has_PlayableMoves())
+                throw new NotImplementedException(); //TODO: send a combat_action which requests EOT.
+                //return null;
 
-            Combat_Action result = Handle_CombatAction_Request(combat);
+            Combat_Action result = Handle_CombatAction_Request(gameField);
             if (result == null)
                 return null;
 
             Combat_Action finishedAction = result.Copy();
             PendingCombatAction = null;
-            return finishedAction;
+            return finishedAction; //TODO: review this stuff too in case this is lousy.
         }
-        protected virtual Combat_Action Handle_CombatAction_Request(Combat_GameState combat)
+        protected virtual Combat_Action Handle_CombatAction_Request(GameEntity_EntityField gameField)
         {
             return null;
         }
 
-        internal void BeginCombat(Combat_GameState combat) => Handle_BeginCombat(combat);
-        protected virtual void Handle_BeginCombat(Combat_GameState combat) { }
+        internal void BeginCombat(GameEntity_EntityField gameField) => Handle_BeginCombat(gameField);
+        protected virtual void Handle_BeginCombat(GameEntity_EntityField gameField) { }
 
         public GameEntity_Controller(bool isAutonomous = false)
         {

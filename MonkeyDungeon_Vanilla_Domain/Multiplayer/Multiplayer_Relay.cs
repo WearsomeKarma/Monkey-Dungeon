@@ -12,7 +12,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
 
         public readonly string ENDPOINT_ADDRESS;
         public readonly int PORT;
-        public int Relay_ID { get; internal set; }
+        public Multiplayer_Relay_ID Relay_ID { get; internal set; }
         public bool Is_Unbound_Relay => Relay_ID == UNBOUND_RELAY_ID;
         
         internal int Message_Count { get; set; }
@@ -46,7 +46,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             ENDPOINT_ADDRESS = endpoint_address;
             PORT = port;
 
-            Relay_ID = -1;
+            Relay_ID = Multiplayer_Relay_ID.NULL_ID;
 
             Message_Reception_Table = new List<Multiplayer_Message_Handler>();
             Message_Reception_Table_Types = new List<string>();

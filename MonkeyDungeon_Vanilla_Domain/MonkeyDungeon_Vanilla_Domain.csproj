@@ -51,13 +51,14 @@
     <Compile Include="GameFeatures\MD_VANILLA_RESOURCES.cs" />
     <Compile Include="GameFeatures\MD_VANILLA_STATS.cs" />
     <Compile Include="Multiplayer\MD_VANILLA_MMH.cs" />
-    <Compile Include="Multiplayer\MD_VANILLA_UI.cs" />
+    <Compile Include="GameFeatures\MD_VANILLA_UI.cs" />
     <Compile Include="Multiplayer\Multiplayer_Expectation_Context.cs" />
     <Compile Include="Multiplayer\Multiplayer_Message.cs" />
     <Compile Include="Multiplayer\Multiplayer_Message_Handler.cs" />
     <Compile Include="Multiplayer\Multiplayer_Message_Wrapper.cs" />
     <Compile Include="Multiplayer\Multiplayer_Relay.cs" />
     <Compile Include="Multiplayer\Multiplayer_Relay_Manager.cs" />
+    <Compile Include="Multiplayer_Relay_ID.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Timer.cs" />
   </ItemGroup>

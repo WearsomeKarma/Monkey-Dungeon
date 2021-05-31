@@ -10,8 +10,8 @@ namespace MonkeyDungeon_Core.GameFeatures
 {
     public class GameEntity_EntityField
     {
-        private readonly GameEntity_Roster PLAYERS;
-        private readonly GameEntity_Roster ENEMIES;
+        internal readonly GameEntity_Roster PLAYERS;
+        internal readonly GameEntity_Roster ENEMIES;
 
         private GameEntity Get_Entity(GameEntity_ID id)
         {
@@ -21,6 +21,12 @@ namespace MonkeyDungeon_Core.GameFeatures
                 return PLAYERS.Entities[id];
             return ENEMIES.Entities[id % MD_PARTY.MAX_PARTY_SIZE];
         }
+
+        internal void Set_Enemies(GameEntity_Roster enemyTeam)
+            => ENEMIES.Set_Entities(enemyTeam.Entities);
+        
+        internal void Set_Players(GameEntity_Roster playerTeam)
+            => PLAYERS.Set_Entities(playerTeam.Entities);
 
         public GameEntity_EntityField(GameState_Machine gameStateMachine)
         {

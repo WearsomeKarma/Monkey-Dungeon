@@ -19,8 +19,8 @@ namespace MonkeyDungeon_Core.GameFeatures
         private int unique_ID                           = 0;
         public int Unique_ID                            { get => unique_ID; internal set => unique_ID = (value >= 0) ? value : 0; }
         
-        public int Relay_ID_Of_Owner                    { get; internal set;    }
-        public GameEntity_ID Scene_GameObject_ID                  { get; internal set;    }
+        public Multiplayer_Relay_ID Relay_ID_Of_Owner   { get; internal set;    }
+        public GameEntity_ID Scene_GameObject_ID        { get; internal set;    }
         public int Initative_Position                   { get; internal set;    }
 
         public GameEntity_Controller EntityController   { get; internal set;    }
@@ -93,63 +93,31 @@ namespace MonkeyDungeon_Core.GameFeatures
             this.level.Force_Offset(level - Level);
         }
 
-        internal void Combat_BeginTurn(Combat_GameState combat)
+        internal void Combat_BeginTurn(GameEntity_EntityField gameField)
         {
-            Handle_Combat_BeginTurn_PreUpkeep(combat);
-            Ability_Manager.Combat_BeginTurn();
+            Handle_Combat_BeginTurn_PreUpkeep(gameField);
 
-            StatusEffect_Manager.Combat_BeginTurn(combat);
+            StatusEffect_Manager.Combat_BeginTurn(gameField);
             
-            //skip as a result of death,stun,petrification, etc.
-            if (combat.CombatState == CombatState.FinishCurrentTurn)
-                return;
-
             throw new NotImplementedException();
             //Resource_Manager.Combat_BeginTurn(combat);
-
-            if (CheckIf_IsTurnUnplayable(combat))
-                return;
-
-            Handle_Combat_BeginTurn_PostUpkeep(combat);
+            
+            Handle_Combat_BeginTurn_PostUpkeep(gameField);
         }
 
-        internal void Combat_EndTurn(Combat_GameState combat)
+        internal void Combat_EndTurn(GameEntity_EntityField gameField)
         {
-            Handle_Combat_EndTurn_Cleanup(combat);
+            Handle_Combat_EndTurn_Cleanup(gameField);
         }
 
-        internal bool CheckIf_IsTurnUnplayable(Combat_GameState combat)
+        internal bool Has_PlayableMoves()
         {
-            bool ret = !Has_PlayableMoves(combat);
-            if (ret)
-                combat.Request_EndOfTurn();
-            return ret;
+            throw new NotImplementedException();
         }
 
-        internal bool Has_PlayableMoves(Combat_GameState combat)
-        {
-            bool ret = combat.CombatState == CombatState.BeginNextTurn || combat.CombatState == CombatState.PlayCurrentTurn;
-
-            if(ret)
-            {
-                ret =
-                    !Ability_Manager.Ability_PointPool_IsDepleted
-                    &&
-                    CheckIf_CanUseAbilities();
-                    ;
-            }
-
-            return ret;
-        }
-
-        private bool CheckIf_CanUseAbilities()
-        {
-            return Ability_Manager.CheckIf_CanUseAbilities();
-        }
-
-        protected virtual void Handle_Combat_BeginTurn_PreUpkeep(Combat_GameState combat) { }
-        protected virtual void Handle_Combat_BeginTurn_PostUpkeep(Combat_GameState combat) { }
-        protected virtual void Handle_Combat_EndTurn_Cleanup(Combat_GameState combat) { }
+        protected virtual void Handle_Combat_BeginTurn_PreUpkeep(GameEntity_EntityField gameField) { }
+        protected virtual void Handle_Combat_BeginTurn_PostUpkeep(GameEntity_EntityField gameField) { }
+        protected virtual void Handle_Combat_EndTurn_Cleanup(GameEntity_EntityField gameField) { }
         protected virtual void Handle_Incapacitated()
         {
             Game.Relay_Death(this);

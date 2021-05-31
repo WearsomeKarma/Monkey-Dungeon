@@ -32,13 +32,15 @@ namespace MonkeyDungeon_Vanilla_Domain
         };
 
         public readonly int ID;
+        public Multiplayer_Relay_ID RELAY_ID { get; internal set; }
 
-        internal GameEntity_ID(int id)
+        internal GameEntity_ID(int id, Multiplayer_Relay_ID rid = null)
         {
             ID = id;
+            RELAY_ID = rid ?? Multiplayer_Relay_ID.NULL_ID;
         }
 
         public static implicit operator int(GameEntity_ID gameEntity_ID)
-            => gameEntity_ID.ID;
+            => gameEntity_ID?.ID ?? ID_NULL.ID;
     }
 }

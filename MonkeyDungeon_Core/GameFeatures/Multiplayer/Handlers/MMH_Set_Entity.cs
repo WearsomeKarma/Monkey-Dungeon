@@ -19,7 +19,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
 
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
-            int relayId = recievedMessage.Relay_ID;
+            Multiplayer_Relay_ID relayId = recievedMessage.Relay_ID;
             GameEntity_ID entityId = recievedMessage.ENTITY_ID;
             GameEntity_Attribute_Name factoryTag = recievedMessage.ATTRIBUTE;
 
@@ -32,18 +32,13 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
             GameEntity e = GameState_Machine.Set_Entity(entityId, relayId, factoryTag);
         }
 
-        private bool IsInvalid_Message(int relayId, GameEntity_ID entityId)
+        private bool IsInvalid_Message(Multiplayer_Relay_ID relayId, GameEntity_ID entityId)
         {
-            GameEntity entity = GameState_Machine.Get_Entity(entityId);
-
             return
                 (entityId >= MD_PARTY.MAX_PARTY_SIZE)
                 ||
-                (
-                entity != null
-                &&
-                entity.Relay_ID_Of_Owner == relayId
-                );
+                entityId.RELAY_ID != relayId
+                ;
         }
     }
 }

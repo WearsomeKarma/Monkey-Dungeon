@@ -1,4 +1,6 @@
 ﻿
+using MonkeyDungeon_Vanilla_Domain;
+
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
 {
     public class Combat_Action
@@ -7,13 +9,13 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
         public GameEntity_Ability Selected_Ability { get; private set; }
         public Combat_Ability_Target Target { get; private set; }
         
-        public string Ability_Name { get; private set; }
+        public GameEntity_Attribute_Name Ability_Name { get; private set; }
         public bool Ability_Set => Selected_Ability != null;
         public bool Requires_Target => Ability_Set && Selected_Ability.Target_Type != Combat_Target_Type.Self_Or_No_Target;
         public bool Has_Targets => Target.Targets_Set() ?? false;
         public bool Targets_Illegal => Target.Targets_Set() == null;
 
-        public bool Set_Ability(string abilityName)
+        public bool Set_Ability(GameEntity_Attribute_Name abilityName)
         {
             Ability_Name = abilityName;
             Selected_Ability = Action_Owner?.Ability_Manager.Get_Ability<GameEntity_Ability>(abilityName);

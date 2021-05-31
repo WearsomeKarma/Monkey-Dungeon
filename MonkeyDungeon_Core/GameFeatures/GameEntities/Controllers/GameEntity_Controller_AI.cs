@@ -1,5 +1,4 @@
 ﻿using MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities;
-using MonkeyDungeon_Core.GameFeatures.GameStates;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 
@@ -11,10 +10,11 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.EntityControllers
             : base(true)
         { }
 
-        protected override Combat_Action Handle_CombatAction_Request(Combat_GameState combat)
+        protected override Combat_Action Handle_CombatAction_Request(GameEntity_EntityField gameField)
         {
             Random rand = new Random();
-            GameEntity[] players = combat.ConsciousPlayers;
+            GameEntity[] players = null;// gameField.ConsciousPlayers;
+            throw new NotImplementedException(); //TODO: fix above.
             int targetId = players[rand.Next(players.Length)].Scene_GameObject_ID;
 
             //TODO: make combat ref GameScene

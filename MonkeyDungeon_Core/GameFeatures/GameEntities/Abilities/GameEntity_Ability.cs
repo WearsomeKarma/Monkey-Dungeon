@@ -16,7 +16,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
         internal GameEntity_Attribute_Name Stat_Name { get; private set; }
         public double Stat_Value => Internal_Parent?.Stat_Manager.Get_Stat(Stat_Name ?? "")?.Value ?? throw new Exception("TODO: replace excep");
 
-        public string Particle_Type { get; protected set; }
+        public GameEntity_Attribute_Name Particle_Type { get; protected set; }
 
         public Combat_Ability_Target Target { get; protected set; }
         public Combat_Target_Type Target_Type { get; protected set; }

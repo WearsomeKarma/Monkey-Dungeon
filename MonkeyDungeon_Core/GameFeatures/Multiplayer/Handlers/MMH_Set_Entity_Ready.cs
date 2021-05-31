@@ -18,18 +18,17 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
 
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
-            int relayId = recievedMessage.Relay_ID;
+            Multiplayer_Relay_ID relayId = recievedMessage.Relay_ID;
             GameEntity_ID entityId = recievedMessage.ENTITY_ID;
             bool state = recievedMessage.INT_VALUE == 0;
             
-            bool validMsg = GameState_Machine.IsMatching_Relay_Id(entityId, relayId);
-            if (!validMsg)
+            if (entityId.RELAY_ID != relayId)
             {
                 Handle_Invalid_Message(recievedMessage);
                 return;
             }
 
-            GameState_Machine.PlayerRoster.Set_Ready_To_Start(entityId, state);
+            GameState_Machine.Player_Roster.Set_Ready_To_Start(entityId, state);
         }
     }
 }

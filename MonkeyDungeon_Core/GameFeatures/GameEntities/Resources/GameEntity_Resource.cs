@@ -1,5 +1,4 @@
-﻿
-using MonkeyDungeon_Vanilla_Domain;
+﻿using MonkeyDungeon_Vanilla_Domain;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Resources
 {

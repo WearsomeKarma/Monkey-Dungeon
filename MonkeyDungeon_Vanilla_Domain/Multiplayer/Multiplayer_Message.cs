@@ -14,11 +14,10 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             MM_MESSAGE_FAIL = new GameEntity_Attribute_Name("MESSAGE_FAIL");
 
         public static readonly Multiplayer_Message MESSAGE_NULL = new Multiplayer_Message();
-        public static int ID_NULL = -1;
 
-        public int Relay_ID { get; internal set; }
+        public Multiplayer_Relay_ID Relay_ID { get; internal set; }
         public int Message_ID { get; internal set; }
-        public bool Is_Unsent_Message => Relay_ID == ID_NULL;
+        public bool Is_Unsent_Message => Relay_ID == Multiplayer_Relay_ID.NULL_ID;
 
         public readonly GameEntity_Attribute_Name MESSAGE_TYPE;
 
@@ -36,8 +35,8 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             GameEntity_Attribute_Name sval = null
             )
         {
-            Relay_ID = ID_NULL;
-            Message_ID = ID_NULL;
+            Relay_ID = Multiplayer_Relay_ID.NULL_ID;
+            Message_ID = -1; //TODO prim wrap
 
             MESSAGE_TYPE = messageType ?? MD_VANILLA_MMH.MMH_DEFAULT;
             ENTITY_ID = entityId ?? GameEntity_ID.ID_ZERO;
@@ -47,7 +46,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
         }
 
         internal Multiplayer_Message(
-            int relayId,
+            Multiplayer_Relay_ID relayId,
             GameEntity_Attribute_Name messageType = null,
             GameEntity_ID entityId = null, 
             float fval = 0, 
@@ -56,7 +55,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             )
         {
             Relay_ID = relayId;
-            Message_ID = ID_NULL;
+            Message_ID = -1;//TODO: prim wrap
 
             MESSAGE_TYPE = messageType ?? MD_VANILLA_MMH.MMH_DEFAULT;
             ENTITY_ID = entityId ?? GameEntity_ID.ID_ZERO;

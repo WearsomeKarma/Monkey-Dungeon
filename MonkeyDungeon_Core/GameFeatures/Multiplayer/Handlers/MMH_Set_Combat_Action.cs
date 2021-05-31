@@ -1,5 +1,6 @@
 ﻿using MonkeyDungeon_Core.GameFeatures.GameEntities;
 using MonkeyDungeon_Core.GameFeatures.GameStates;
+using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
@@ -25,7 +26,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
             }
 
             int targetId = recievedMessage.INT_VALUE;
-            string abilityName = recievedMessage.ATTRIBUTE;
+            GameEntity_Attribute_Name abilityName = recievedMessage.ATTRIBUTE;
 
             GameEntity_Controller controller = 
                 Combat.Entity_OfCurrentTurn.EntityController;

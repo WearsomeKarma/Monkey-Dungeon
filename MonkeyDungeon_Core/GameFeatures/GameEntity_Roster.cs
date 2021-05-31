@@ -1,5 +1,6 @@
 ﻿using MonkeyDungeon_Core.GameFeatures.GameEntities.Resources;
 using MonkeyDungeon_Vanilla_Domain;
+using System;
 using System.Linq;
 
 namespace MonkeyDungeon_Core.GameFeatures
@@ -73,7 +74,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             entities[gameEntity.Scene_GameObject_ID % entities.Length] = gameEntity;
             gameEntity.Game = Game;
             gameEntity.Resource_Manager.Resources_Updated += (e) => Game.Relay_Entity_Resource(e);
-            gameEntity.Ability_Manager.Ability_PointPool.Quantity_Changed += (e) => Game.Relay_Entity_Static_Resource(e as GameEntity_Resource);
+            throw new NotImplementedException(); //TODO: ability point linkage?
             return gameEntity;
         }
         

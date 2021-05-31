@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using isometricgame.GameEngine;
-using isometricgame.GameEngine.Tools;
+﻿using isometricgame.GameEngine.Tools;
 using MonkeyDungeon_UI.Prefabs.Entities;
-using MonkeyDungeon_Vanilla_Domain.Multiplayer;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using OpenTK;
 
 namespace MonkeyDungeon_UI.UI_Events.Implemented

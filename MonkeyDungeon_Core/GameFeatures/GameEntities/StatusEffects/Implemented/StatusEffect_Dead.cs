@@ -1,4 +1,5 @@
 ﻿using MonkeyDungeon_Core.GameFeatures.GameStates;
+using System;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects.Implemented
 {
@@ -20,9 +21,10 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects.Implemented
             target?.Set_IncapacitatedState();
         }
 
-        protected override void HandleCombat_BeginTurn_StatusEffect(Combat_GameState combat)
+        protected override void HandleCombat_BeginTurn_StatusEffect(GameEntity_EntityField gameField)
         {
-            combat.Request_EndOfTurn();
+            //combat.Request_EndOfTurn();
+            throw new NotImplementedException(); //TODO: resolve above.
         }
     }
 }

@@ -21,6 +21,6 @@ namespace MonkeyDungeon_Vanilla_Domain
             => NAME;
 
         public static implicit operator string(GameEntity_Attribute_Name gameEntity_AttributeName)
-            => gameEntity_AttributeName.NAME;
+            => gameEntity_AttributeName.NAME ?? DEFAULT;
     }
 }

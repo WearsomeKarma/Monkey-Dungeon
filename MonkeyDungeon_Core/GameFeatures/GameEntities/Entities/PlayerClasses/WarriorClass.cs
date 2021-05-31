@@ -11,7 +11,6 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Entities
 {
     public class WarriorClass : GameEntity
     {
-        public static readonly string   CLASS_NAME                          =   "Warrior";
         public static readonly int      CLASS_ID                            =   0       ;
 
         public static readonly float    STAT_BASE_STRENGTH                  =   8       ;

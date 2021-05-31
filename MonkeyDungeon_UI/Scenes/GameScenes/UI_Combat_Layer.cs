@@ -7,7 +7,7 @@ using MonkeyDungeon_UI.Prefabs.UI;
 using MonkeyDungeon_UI.Prefabs.UI.EntityData;
 using MonkeyDungeon_UI.UI_Events.Implemented;
 using MonkeyDungeon_Vanilla_Domain;
-using MonkeyDungeon_Vanilla_Domain.Multiplayer;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using OpenTK;
 using System;
 

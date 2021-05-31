@@ -22,29 +22,22 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         public GameEntity_Factory GameEntity_Factory { get; private set; }
 
-        public GameEntity_Roster PlayerRoster { get; internal set; }
-        public GameEntity_Roster EnemyRoster { get; internal set; }
-        internal void Set_Enemy_Roster(GameEntity[] enemyRoster) => EnemyRoster.Set_Entities(enemyRoster);
-        public GameEntity Get_Entity(GameEntity_ID entityId)
-        {
-            if (entityId < MD_PARTY.MAX_PARTY_SIZE)
-                return PlayerRoster.Entities[entityId];
-            return EnemyRoster.Entities[entityId % MD_PARTY.MAX_PARTY_SIZE];
-        }
-        public GameEntity_Controller Get_Entity_Controller(GameEntity_ID entityId)
-            => Get_Entity(entityId).EntityController;
-        public bool IsMatching_Relay_Id(GameEntity_ID entityId, int relayId)
-            => Get_Entity(entityId).Relay_ID_Of_Owner == relayId;
-        public GameEntity Set_Entity(GameEntity_ID entityId, int relayId, GameEntity_Attribute_Name factory_Tag)
+        public readonly GameEntity_EntityField GAME_FIELD;
+        internal GameEntity_Roster Player_Roster => GAME_FIELD.PLAYERS;
+        internal GameEntity_Roster Enemy_Roster => GAME_FIELD.ENEMIES;
+
+        internal void Set_Enemy_Roster(GameEntity[] enemyRoster) => GAME_FIELD.Set_Enemies(new GameEntity_Roster(this, enemyRoster));
+
+        public GameEntity Set_Entity(GameEntity_ID entityId, Multiplayer_Relay_ID relayId, GameEntity_Attribute_Name factory_Tag)
         {
             GameEntity entity = GameEntity_Factory.Create_NewEntity(entityId, relayId, factory_Tag);
 
             if (entityId < MD_PARTY.MAX_PARTY_SIZE)
-                return PlayerRoster.Set_Entity(entity);
-            return EnemyRoster.Set_Entity(entity);
+                return Player_Roster.Set_Entity(entity);
+            return Enemy_Roster.Set_Entity(entity);
         }
         public void Set_Entity_Ready_State(int entityId, bool state)
-            => PlayerRoster.Set_Ready_To_Start(entityId, state);
+            => Player_Roster.Set_Ready_To_Start(entityId, state);
 
         public GameState CurrentGameState { get; private set; }
         public GameState RequestedGameState { get; private set; }
@@ -60,9 +53,8 @@ namespace MonkeyDungeon_Core.GameFeatures
                 Add_GameState(gameState);
 
             GameEntity_Factory = new GameEntity_Factory(this);
+            GAME_FIELD = new GameEntity_EntityField(this);
 
-            PlayerRoster = new GameEntity_Roster(this, new GameEntity[MD_PARTY.MAX_PARTY_SIZE]);
-            EnemyRoster = new GameEntity_Roster(this, new GameEntity[MD_PARTY.MAX_PARTY_SIZE]);
             CurrentGameState = gameStates[0];
         }
         
@@ -72,9 +64,9 @@ namespace MonkeyDungeon_Core.GameFeatures
                 return; //TODO: Warn in log.
             HasStarted = true;
 
-            Declare_Descriptions(0, PlayerRoster.Get_Races());
+            Declare_Descriptions(0, Player_Roster.Get_Races());
 
-            Relay_Roster(PlayerRoster);
+            Relay_Roster(Player_Roster);
             Dismiss_Roster(null);
 
             //TODO: Make a means to send message to specific client, and all clients.
@@ -106,7 +98,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             if (!HasStarted)
             {
-                if (PlayerRoster.CheckIf_Team_Is_Ready())
+                if (Player_Roster.CheckIf_Team_Is_Ready())
                 {
                     Begin_Game();
                 }
@@ -132,7 +124,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         internal void Broadcast(Multiplayer_Message_Wrapper msg)
             => Server.Broadcast(msg);
 
-        internal void Relay(int relayId, Multiplayer_Message_Wrapper msg)
+        internal void Relay(Multiplayer_Relay_ID relayId, Multiplayer_Message_Wrapper msg)
             => Server.Relay(relayId, msg);
 
         internal void Relay_Entity_Resource(GameEntity_Resource resource)

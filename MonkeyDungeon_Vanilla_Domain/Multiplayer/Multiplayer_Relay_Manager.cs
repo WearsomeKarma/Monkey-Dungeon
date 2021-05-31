@@ -11,15 +11,29 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
     /// </summary>
     public class Multiplayer_Relay_Manager
     {
-        private readonly Dictionary<int, Multiplayer_Relay> RELAYS = new Dictionary<int, Multiplayer_Relay>();
-        public Multiplayer_Relay Get_Relay(int id)
+        private readonly Dictionary<Multiplayer_Relay_ID, Multiplayer_Relay> RELAYS = new Dictionary<Multiplayer_Relay_ID, Multiplayer_Relay>();
+        public Multiplayer_Relay Get_Relay(Multiplayer_Relay_ID id)
             => RELAYS[id];
         protected virtual void Add_Relay(Multiplayer_Relay relay)
         {
-            relay.Relay_ID = RELAYS.Count;
+            relay.Relay_ID = new Multiplayer_Relay_ID(RELAYS.Count);
             RELAYS.Add(relay.Relay_ID, relay);
         }
 
+        /// <summary>
+        /// Returns boolean based on bind success.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="rid"></param>
+        /// <returns></returns>
+        public bool Bind_To_Relay(GameEntity_ID id, Multiplayer_Relay_ID rid)
+        {
+            if (!RELAYS.ContainsKey(rid))
+                return false;
+
+            id.RELAY_ID = rid;
+            return true;
+        }
 
         /// <summary>
         /// Relay that interfaces to the local machine of the server.
@@ -45,7 +59,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
                 r.Queue_Message(msg);
         }
 
-        public void Relay(int relayID, Multiplayer_Message msg)
+        public void Relay(Multiplayer_Relay_ID relayID, Multiplayer_Message msg)
             => Get_Relay(relayID).Queue_Message(msg);
 
         protected void Check_Relays()

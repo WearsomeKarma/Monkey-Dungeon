@@ -10,16 +10,16 @@ namespace MonkeyDungeon_Core.GameFeatures
     {
         private readonly GameState_Machine GameState_Machine;
 
-        private readonly Dictionary<string, GameEntity> GameEntity_Catalog = new Dictionary<string, GameEntity>()
+        private readonly Dictionary<GameEntity_Attribute_Name, GameEntity> GameEntity_Catalog = new Dictionary<GameEntity_Attribute_Name, GameEntity>()
         {
             //Players
             { MD_VANILLA_RACES.RACE_MONKEY, new GameEntity() }, //TODO: Fix this awful thing with unique_id
-            { WarriorClass.CLASS_NAME, new WarriorClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 0 } },
-            { WizardClass.CLASS_NAME, new WizardClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 1 } },
-            { ArcherClass.CLASS_NAME, new ArcherClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 2 } },
-            { ClericClass.CLASS_NAME, new ClericClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 3 } },
-            { KnightClass.CLASS_NAME, new KnightClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 4 } },
-            { MonkClass.CLASS_NAME, new MonkClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 5 } },
+            { MD_VANILLA_RACES.CLASS_WARRIOR, new WarriorClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 0 } },
+            { MD_VANILLA_RACES.CLASS_WIZARD, new WizardClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 1 } },
+            { MD_VANILLA_RACES.CLASS_ARCHER, new ArcherClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 2 } },
+            { MD_VANILLA_RACES.CLASS_CLERIC, new ClericClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 3 } },
+            { MD_VANILLA_RACES.CLASS_KNIGHT, new KnightClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 4 } },
+            { MD_VANILLA_RACES.CLASS_MONK, new MonkClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 5 } },
 
             //Merchants
 
@@ -44,10 +44,10 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         public void Add_Template(GameEntity gameEntity)
         {
-            GameEntity_Catalog.Add(gameEntity.Name, gameEntity);
+            GameEntity_Catalog.Add(gameEntity.Race, gameEntity);
         }
 
-        public GameEntity Create_NewEntity(GameEntity_ID entityScene_ID, int relayId, string race)
+        public GameEntity Create_NewEntity(GameEntity_ID entityScene_ID, Multiplayer_Relay_ID relayId, GameEntity_Attribute_Name race)
         {
             GameEntity entity = GameEntity_Catalog[race].Clone();
 
