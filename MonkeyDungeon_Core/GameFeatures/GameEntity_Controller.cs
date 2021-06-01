@@ -21,11 +21,11 @@ namespace MonkeyDungeon_Core.GameFeatures
             if (!IsAutomonous)
             {
                 PendingCombatAction = new Combat_Action();
-                PendingCombatAction.Action_Owner = Entity;
-                PendingCombatAction.Set_Ability(abilityName);
+                PendingCombatAction.Action_Owner = Entity.Scene_GameObject_ID;
+                PendingCombatAction.Selected_Ability = abilityName;
             }
         }
-        internal void Setup_CombatAction_Target(int index)
+        internal void Setup_CombatAction_Target(GameEntity_ID index)
         {
             if (!IsAutomonous)
             {

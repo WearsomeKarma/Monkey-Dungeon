@@ -30,7 +30,6 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat
             while(Resolution_Stage_Index < BASE_PROCEDURE.Length)
             {
                 BASE_PROCEDURE[Resolution_Stage_Index].Begin_Stage(action);
-                BASE_PROCEDURE[Resolution_Stage_Index].End_Stage(action);
                 Resolution_Stage_Index++;
             }
         }

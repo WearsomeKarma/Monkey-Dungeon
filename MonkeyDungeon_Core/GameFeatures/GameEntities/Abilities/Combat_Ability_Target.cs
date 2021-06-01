@@ -1,4 +1,5 @@
-﻿using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+﻿using MonkeyDungeon_Vanilla_Domain;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 using System.Collections.Generic;
 
@@ -6,16 +7,16 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
 {
     public class Combat_Ability_Target
     {
-        private readonly int[] TARGET_POOL = new int[MD_PARTY.MAX_PARTY_SIZE * 2];
-
-        private GameEntity_Ability Selected_Ability { get; set; }
-
+        private readonly GameEntity_ID[] TARGET_POOL = new GameEntity_ID[GameEntity_ID.IDS.Length];
+        
         private int Any_Target_Index { get; set; }
         private int Enemy_Target_Index { get; set; }
         private int Ally_Target_Index { get; set; }
 
-        public Combat_Target_Type Target_Type => Selected_Ability?.Target_Type ?? Combat_Target_Type.Self_Or_No_Target;
-        public bool Has_Strict_Targets => Selected_Ability?.Has_Strict_Targets ?? false;
+        public GameEntity_ID Targeter { get; private set; }
+
+        public Combat_Target_Type Target_Type { get; private set; }
+        public bool Has_Strict_Targets { get; private set; }
 
         public bool Has_Ally_Targets(int requiredCount = -1)
         {
@@ -55,7 +56,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
             if(exclusiveOfSelf)
             {
                 bool breaks = false;
-                Of_All(true, (i) => breaks = i == Selected_Ability.Entity_Scene_Id);
+                Of_All(true, (i) => breaks = i == Targeter);
                 if (breaks)
                     return null;
             }
@@ -91,9 +92,9 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
             return integrityCount > 0;
         }
 
-        public int[] Get_Targets()
+        public GameEntity_ID[] Get_Targets()
         {
-            List<int> targets = new List<int>();
+            List<GameEntity_ID> targets = new List<GameEntity_ID>();
             for (int i = 0; i < TARGET_POOL.Length; i++)
                 if (TARGET_POOL[i] > 0 && !targets.Contains(targets[i]))
                     targets.Add(TARGET_POOL[i]);
@@ -101,9 +102,11 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
             return targets.ToArray();
         }
 
-        internal void Set_Ability(GameEntity_Ability ability)
+        internal void Set_Target_Criteria(GameEntity_ID targeter, Combat_Target_Type targetType, bool targetsAreStrict = false)
         {
-            Selected_Ability = ability;
+            Targeter = targeter;
+            Target_Type = targetType;
+            Has_Strict_Targets = targetsAreStrict;
 
             Any_Target_Index = 0;
             Enemy_Target_Index = MD_PARTY.MAX_PARTY_SIZE;
@@ -114,26 +117,26 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
                 case Combat_Target_Type.Everything:
                 case Combat_Target_Type.All_Enemies:
                 case Combat_Target_Type.All_Friendlies:
-                    Add_Target(0);
+                    Add_Target(GameEntity_ID.ID_NULL);
                     break;
             }
 
             for (int i = 0; i < TARGET_POOL.Length; i++)
-                TARGET_POOL[i] = -1;
+                TARGET_POOL[i] = GameEntity_ID.ID_NULL;
         }
 
-        public void Add_Target(int entityId)
+        public void Add_Target(GameEntity_ID entityId)
         {
             switch(Target_Type)
             {
                 case Combat_Target_Type.Self_Or_No_Target:
                 default:
-                    TARGET_POOL[Selected_Ability.Entity_Scene_Id] = Selected_Ability.Entity_Scene_Id;
+                    Flag_Target(Targeter);
                     break;
                 case Combat_Target_Type.Three_Allies:
                 case Combat_Target_Type.Two_Allies:
                 case Combat_Target_Type.One_Ally:
-                    if (entityId == Selected_Ability.Entity_Scene_Id)
+                    if (entityId == Targeter)
                         return;
                     Add_Ally_Target(entityId, (int)Target_Type);
                     break;
@@ -160,13 +163,13 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
             }
         }
 
-        private void Add_Ally_Target(int entityId, int limit)
+        private void Add_Ally_Target(GameEntity_ID entityId, int limit)
         {
             TARGET_POOL[Ally_Target_Index] = entityId;
             Ally_Target_Index = Increment_Target_Count(Ally_Target_Index, 0, limit);
         }
 
-        private void Add_Enemy_Target(int entityId, int limit)
+        private void Add_Enemy_Target(GameEntity_ID entityId, int limit)
         {
             TARGET_POOL[Enemy_Target_Index] = entityId;
             Enemy_Target_Index = Increment_Target_Count(Enemy_Target_Index, MD_PARTY.MAX_PARTY_SIZE, limit);
@@ -175,12 +178,12 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
         private int Increment_Target_Count(int count, int offset, int limit)
             => ((count + 1) % limit) + offset;
 
-        private void Of_All(bool allySideOrNot, Action<int> operation)
+        private void Of_All(bool allySideOrNot, Action<GameEntity_ID> operation)
         {
             int index = (allySideOrNot) ? 0 : MD_PARTY.MAX_PARTY_SIZE;
 
             for (int i = index; i < index + MD_PARTY.MAX_PARTY_SIZE; i++)
-                operation(i);
+                operation(GameEntity_ID.IDS[i]);
         }
 
         private void Of_All_Set(bool allySideOrNot, Action<int, bool> isSetHandler)
@@ -214,15 +217,15 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
         private void Unflag_Enemies()
             => Of_All(false, Unflag_Target);
 
-        private void Flag_Target(int id)
+        private void Flag_Target(GameEntity_ID id)
             => TARGET_POOL[id] = id;
 
-        private void Unflag_Target(int id)
-            => TARGET_POOL[id] = -1;
+        private void Unflag_Target(GameEntity_ID id)
+            => TARGET_POOL[id] = GameEntity_ID.ID_NULL;
 
         public override string ToString()
         {
-            return string.Format("Target_Ids: [{0}]", string.Join(", ", Get_Targets()));
+            return string.Format("Target_Ids: [{0}]", string.Join< GameEntity_ID>(", ", Get_Targets()));
         }
     }
 }

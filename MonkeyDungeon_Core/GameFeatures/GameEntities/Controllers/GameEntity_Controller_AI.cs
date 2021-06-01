@@ -1,4 +1,5 @@
 ﻿using MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities;
+using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 
@@ -15,13 +16,13 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.EntityControllers
             Random rand = new Random();
             GameEntity[] players = null;// gameField.ConsciousPlayers;
             throw new NotImplementedException(); //TODO: fix above.
-            int targetId = players[rand.Next(players.Length)].Scene_GameObject_ID;
+            GameEntity_ID targetId = players[rand.Next(players.Length)].Scene_GameObject_ID;
 
             //TODO: make combat ref GameScene
             Combat_Action ca = new Combat_Action();
-            ca.Action_Owner = Entity;
+            ca.Action_Owner = Entity.Scene_GameObject_ID;
             ca.Target.Add_Target(targetId);
-            ca.Set_Ability(MD_VANILLA_ABILITYNAMES.ABILITY_PUNCH);
+            ca.Selected_Ability = MD_VANILLA_ABILITYNAMES.ABILITY_PUNCH;
 
             return ca;
         }

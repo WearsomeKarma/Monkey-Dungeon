@@ -13,7 +13,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         internal readonly GameEntity_Roster PLAYERS;
         internal readonly GameEntity_Roster ENEMIES;
 
-        private GameEntity Get_Entity(GameEntity_ID id)
+        internal GameEntity Get_Entity(GameEntity_ID id)
         {
             bool isPlayers = id < MD_PARTY.MAX_PARTY_SIZE;
 

@@ -25,7 +25,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
                 return;
             }
 
-            int targetId = recievedMessage.INT_VALUE;
+            GameEntity_ID targetId = GameEntity_ID.IDS[recievedMessage.INT_VALUE];
             GameEntity_Attribute_Name abilityName = recievedMessage.ATTRIBUTE;
 
             GameEntity_Controller controller = 

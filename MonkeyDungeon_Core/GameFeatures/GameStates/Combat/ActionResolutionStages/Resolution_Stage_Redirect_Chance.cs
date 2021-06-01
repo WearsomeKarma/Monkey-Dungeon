@@ -5,14 +5,13 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
 {
     public class Resolution_Stage_Redirect_Chance : Combat_Action_Resolution_Stage
     {
-        protected override void Handle_Begin_Stage(Combat_Action action)
+        protected override void Handle_Stage(Combat_Action action)
         {
-            throw new NotImplementedException();
-        }
+            GameEntity owner = Get_Entity(action.Action_Owner);
+            GameEntity_Ability ability = owner.Ability_Manager.Get_Ability<GameEntity_Ability>(action.Selected_Ability);
 
-        protected override void Handle_End_Stage(Combat_Action action)
-        {
             throw new NotImplementedException();
+            double percent = ability.Calculate_Redirect_Chance(action);
         }
     }
 }

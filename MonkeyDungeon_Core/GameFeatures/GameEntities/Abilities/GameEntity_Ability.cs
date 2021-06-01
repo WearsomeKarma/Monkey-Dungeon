@@ -5,7 +5,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
 {
     public class GameEntity_Ability : GameEntity_Attribute
     {
-        internal int Entity_Scene_Id => Internal_Parent.Scene_GameObject_ID;
+        internal GameEntity_ID Entity_Scene_Id => Internal_Parent.Scene_GameObject_ID;
 
         public GameEntity_Attribute_Name Resource_Name { get; private set; }
         public double Cost => Get_AbilityResourceCost();
@@ -45,11 +45,17 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
             Particle_Type = particleType;
         }
 
-        protected virtual void Handle_Begin_Resolution          (Combat_Action action) { }
-        protected virtual void Handle_Calculate_Hit_Bonus       (Combat_Action action) { }
+        internal void Cast(Combat_Action action)
+            => Handle_Cast(action);
+        internal double Calculate_Redirect_Chance(Combat_Action action)
+            => throw new NotImplementedException(); //TODO: prim wrap, make stackable-quantity.
+        internal Combat_Damage Calculate_Damage(Combat_Action action)
+            => Handle_Calculate_Damage(action);
+
+        protected virtual void Handle_Cast                      (Combat_Action action) { }
         protected virtual void Handle_Calculate_Redirect_Chance (Combat_Action action) { }
-        protected virtual void Handle_Calculate_Damage          (Combat_Action action) { }
-        protected virtual void Handle_Finish_Resolution         (Combat_Action action) { }
+        protected virtual Combat_Damage Handle_Calculate_Damage (Combat_Action action)
+            => new Combat_Damage(Damage_Type, Get_RelevantOutput());
 
         protected virtual double Get_RelevantOutput()           => Internal_Parent?.Stat_Manager.Get_Stat(Stat_Name)?.Value ?? 0;
         protected virtual double Get_AbilityResourceCost()      => 1;

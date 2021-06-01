@@ -5,14 +5,21 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
 {
     public class Resolution_Stage_Damage : Combat_Action_Resolution_Stage
     {
-        protected override void Handle_Begin_Stage(Combat_Action action)
+        protected override void Handle_Stage(Combat_Action action)
         {
-            throw new NotImplementedException();
-        }
+            GameEntity owner = Get_Entity(action.Action_Owner);
+            GameEntity_Ability ability = owner.Ability_Manager.Get_Ability<GameEntity_Ability>(action.Selected_Ability);
 
-        protected override void Handle_End_Stage(Combat_Action action)
-        {
+            Combat_Damage damage = ability.Calculate_Damage(action);
+
             throw new NotImplementedException();
+            /*
+             
+            GameEntity[] targetedEntities = Get_Targeted_Entities(action.Target);
+            foreach
+                targetedEntities.Damage(damage);
+
+             */
         }
     }
 }
