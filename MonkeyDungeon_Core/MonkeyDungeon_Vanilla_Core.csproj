@@ -41,7 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameFeatures\GameEntities\Abilities\Combat_Ability_Target.cs" />
+    <Compile Include="GameFeatures\Combat_Ability_Target.cs" />
+    <Compile Include="GameFeatures\Combat_Action.cs" />
+    <Compile Include="GameFeatures\Combat_Assault_Type.cs" />
+    <Compile Include="GameFeatures\Combat_Damage_Type.cs" />
+    <Compile Include="GameFeatures\Combat_Finalized_Factor.cs" />
+    <Compile Include="GameFeatures\Combat_Resource_Offset.cs" />
+    <Compile Include="GameFeatures\Combat_Target_Type.cs" />
     <Compile Include="GameFeatures\GameEntity_Attribute.cs" />
     <Compile Include="GameFeatures\GameEntity_EntityField.cs" />
     <Compile Include="GameFeatures\GameEntity_Quantity.cs" />
@@ -50,10 +56,7 @@
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Dodge_Bonus.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Hit_Bonus.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Redirect_Chance.cs" />
-    <Compile Include="GameFeatures\GameEntities\Abilities\Combat_Assault_Type.cs" />
-    <Compile Include="GameFeatures\GameEntities\Abilities\Combat_Action.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Action_Resolution_Stage.cs" />
-    <Compile Include="GameFeatures\GameEntities\Abilities\Combat_Damage.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Action_Resolver.cs" />
     <Compile Include="GameFeatures\GameEntities\Abilities\GameEntity_Ability.cs" />
     <Compile Include="GameFeatures\GameEntities\Abilities\GameEntity_Ability_Manager.cs" />
@@ -96,8 +99,6 @@
     <Compile Include="GameFeatures\GameEntities\Resources\Implemented\Stamina.cs" />
     <Compile Include="GameFeatures\Exceptions\EntityStat_NotFound_Exception.cs" />
     <Compile Include="GameFeatures\Exceptions\Entity_NotBound_Exception.cs" />
-    <Compile Include="GameFeatures\GameEntities\Abilities\Combat_Target_Type.cs" />
-    <Compile Include="GameFeatures\GameEntities\Abilities\Combat_Damage_Type.cs" />
     <Compile Include="GameFeatures\GameStates\Combat_GameState.cs" />
     <Compile Include="GameFeatures\GameStates\GameOver_GameState.cs" />
     <Compile Include="GameFeatures\GameStates\Shopping_GameState.cs" />

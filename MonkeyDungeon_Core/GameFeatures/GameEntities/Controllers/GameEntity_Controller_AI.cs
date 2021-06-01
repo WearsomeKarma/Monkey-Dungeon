@@ -3,7 +3,7 @@ using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 
-namespace MonkeyDungeon_Core.GameFeatures.GameEntities.EntityControllers
+namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Controllers
 {
     public class GameEntity_Controller_AI : GameEntity_Controller
     {

@@ -3,7 +3,7 @@ using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 using System.Collections.Generic;
 
-namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
+namespace MonkeyDungeon_Core.GameFeatures
 {
     public class Combat_Ability_Target
     {

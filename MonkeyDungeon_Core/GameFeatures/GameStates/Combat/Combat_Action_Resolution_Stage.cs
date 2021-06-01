@@ -17,6 +17,12 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat
             Combat = combat;
         }
 
+        protected GameEntity Get_Entity(Combat_Action action)
+            => Get_Entity(action.Action_Owner);
+
+        protected GameEntity_Ability Get_Ability(Combat_Action action)
+            => Get_Entity(action).Ability_Manager.Get_Ability<GameEntity_Ability>(action.Selected_Ability);
+        
         internal void Begin_Stage(Combat_Action action)
         {
             Handle_Stage(action);

@@ -1,7 +1,7 @@
 ﻿using MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities;
 using MonkeyDungeon_Core.GameFeatures.GameStates;
 
-namespace MonkeyDungeon_Core.GameFeatures.GameEntities.EntityControllers
+namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Controllers
 {
     public class GameEntity_Controller_Player : GameEntity_Controller
     {

@@ -1,5 +1,6 @@
 ﻿using MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities;
 using System;
+using MonkeyDungeon_Core.GameFeatures.GameEntities.Stats;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStages
 {
@@ -7,7 +8,17 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
     {
         protected override void Handle_Stage(Combat_Action action)
         {
+            GameEntity owner = Get_Entity(action);
+            GameEntity_Stat scalingStat = owner.Stat_Manager.Get_Stat(action.Stat_Hit_Bonus);
 
+            Combat_Finalized_Factor hitBonus = new Combat_Finalized_Factor(action.Action_Owner);
+
+            hitBonus.Offset_Value(scalingStat);
+            
+            double statusEffectBonuses = owner.StatusEffect_Manager.Get_Hit_Bonuses(action);
+            hitBonus.Offset_Value(statusEffectBonuses);
+
+            action.Finalized_Hit_Bonus = hitBonus;
         }
     }
 }

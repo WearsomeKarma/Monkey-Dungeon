@@ -1,5 +1,5 @@
 ﻿
-namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
+namespace MonkeyDungeon_Core.GameFeatures
 {
     public enum Combat_Damage_Type
     {

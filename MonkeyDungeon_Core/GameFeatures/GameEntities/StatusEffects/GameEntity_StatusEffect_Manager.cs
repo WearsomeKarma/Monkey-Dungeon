@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities;
+using MonkeyDungeon_Vanilla_Domain;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
 {
@@ -26,6 +28,46 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
         {
             foreach (GameEntity_StatusEffect effect in StatusEffects)
                 effect.Combat_BeginTurn_StatusEffect(gameField);
+        }
+
+        internal void React_To_Cast(Combat_Action action)
+        {
+            foreach (GameEntity_StatusEffect effect in StatusEffects)
+            {
+                effect.React_To_Cast(action);
+            }
+        }
+
+        internal double Get_Hit_Bonuses(Combat_Action action)
+        {
+            double ret = 0;
+
+            foreach (GameEntity_StatusEffect effect in StatusEffects)
+                ret += effect.Get_Hit_Bonus(action);
+            
+            return ret;
+        }
+
+        internal double Get_Dodge_Bonuses(Combat_Action action)
+        {
+            double ret = 0;
+
+            foreach (GameEntity_StatusEffect effect in StatusEffects)
+                ret += effect.Get_Dodge_Bonus(action);
+            
+            return ret;
+        }
+
+        internal void React_To_Pre_Resource_Offset(GameEntity_Attribute_Name resource, double finalizedOffset)
+        {
+            foreach (GameEntity_StatusEffect effect in StatusEffects)
+                effect.React_To_Pre_Resource_Offset(resource, finalizedOffset);
+        }
+
+        internal void React_To_Post_Resource_Offset(GameEntity_Attribute_Name resource, double finalizedOffset)
+        {
+            foreach(GameEntity_StatusEffect effect in StatusEffects)
+                effect.React_To_Post_Resource_Offset(resource, finalizedOffset);
         }
     }
 }

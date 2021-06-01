@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities;
 using MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented;
-using MonkeyDungeon_Core.GameFeatures.GameEntities.EntityControllers;
+using MonkeyDungeon_Core.GameFeatures.GameEntities.Controllers;
 using MonkeyDungeon_Core.GameFeatures.GameEntities.Resources;
 using MonkeyDungeon_Core.GameFeatures.GameEntities.Resources.Implemented;
 using MonkeyDungeon_Core.GameFeatures.GameEntities.Stats;

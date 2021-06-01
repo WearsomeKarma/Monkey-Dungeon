@@ -14,7 +14,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
         public double Resource_ValueStrict => Internal_Parent?.Resource_Manager.Get_Resource(Resource_Name)?.Value ?? throw new Exception("TODO: replace excep");
 
         internal GameEntity_Attribute_Name Stat_Name { get; private set; }
-        public double Stat_Value => Internal_Parent?.Stat_Manager.Get_Stat(Stat_Name ?? "")?.Value ?? throw new Exception("TODO: replace excep");
+        public double Stat_Value => Internal_Parent?.Stat_Manager.Get_Stat(Stat_Name ?? GameEntity_Attribute_Name.DEFAULT)?.Value ?? throw new Exception("TODO: replace excep");
 
         public GameEntity_Attribute_Name Particle_Type { get; protected set; }
 
@@ -49,13 +49,13 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
             => Handle_Cast(action);
         internal double Calculate_Redirect_Chance(Combat_Action action)
             => throw new NotImplementedException(); //TODO: prim wrap, make stackable-quantity.
-        internal Combat_Damage Calculate_Damage(Combat_Action action)
+        internal Combat_Resource_Offset Calculate_Damage(Combat_Action action)
             => Handle_Calculate_Damage(action);
 
         protected virtual void Handle_Cast                      (Combat_Action action) { }
         protected virtual void Handle_Calculate_Redirect_Chance (Combat_Action action) { }
-        protected virtual Combat_Damage Handle_Calculate_Damage (Combat_Action action)
-            => new Combat_Damage(Damage_Type, Get_RelevantOutput());
+        protected virtual Combat_Resource_Offset Handle_Calculate_Damage (Combat_Action action)
+            => new Combat_Resource_Offset(Damage_Type, Get_RelevantOutput());
 
         protected virtual double Get_RelevantOutput()           => Internal_Parent?.Stat_Manager.Get_Stat(Stat_Name)?.Value ?? 0;
         protected virtual double Get_AbilityResourceCost()      => 1;

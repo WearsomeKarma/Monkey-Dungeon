@@ -1,4 +1,7 @@
 ﻿
+using MonkeyDungeon_Core.GameFeatures.GameStates.Combat;
+using MonkeyDungeon_Vanilla_Domain;
+
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
 {
     public enum StatusEffectType
@@ -59,18 +62,36 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
 
         internal void Combat_BeginTurn_StatusEffect(GameEntity_EntityField gameField)
         {
-            HandleCombat_BeginTurn_StatusEffect(gameField);
+            Handle_Combat_BeginTurn_StatusEffect(gameField);
             ElapsedDuration++;
             if (TurnDuration > -1 && ElapsedDuration >= TurnDuration)
                 EffectedEntity.StatusEffect_Manager.Remove_StatusEffect(this);
         }
 
         internal void Combat_EndTurn_StatusEffect(GameEntity_EntityField gameField)
-        {
-            HandleCombat_EndTurn_StatusEffect(gameField);
-        }
+            => Handle_Combat_EndTurn_StatusEffect(gameField);
+        internal void React_To_Cast(Combat_Action action)
+            => Handle_React_To_Cast(action);
 
-        protected virtual void HandleCombat_BeginTurn_StatusEffect(GameEntity_EntityField gameField) { }
-        protected virtual void HandleCombat_EndTurn_StatusEffect(GameEntity_EntityField gameField) { }
+        internal double Get_Hit_Bonus(Combat_Action action)
+            => Handle_Get_Hit_Bonus(action);
+
+
+        internal double Get_Dodge_Bonus(Combat_Action action)
+            => Handle_Get_Dodge_Bonus(action);
+
+        internal void React_To_Pre_Resource_Offset(GameEntity_Attribute_Name resource, double finalizedOffset)
+            => Handle_Pre_Resource_Offset(resource, finalizedOffset);
+
+        internal void React_To_Post_Resource_Offset(GameEntity_Attribute_Name resource, double finalizedOffset)
+            => Handle_Post_Resource_Offset(resource, finalizedOffset);
+        
+        protected virtual void Handle_Combat_BeginTurn_StatusEffect(GameEntity_EntityField gameField) { }
+        protected virtual void Handle_Combat_EndTurn_StatusEffect(GameEntity_EntityField gameField) { }
+        protected  virtual void Handle_React_To_Cast(Combat_Action action) { }
+        protected virtual double Handle_Get_Hit_Bonus(Combat_Action action) => 0;
+        protected virtual double Handle_Get_Dodge_Bonus(Combat_Action action) => 0;
+        protected virtual void Handle_Pre_Resource_Offset(GameEntity_Attribute_Name resource, double finalizedOffset) { }
+        protected virtual void Handle_Post_Resource_Offset(GameEntity_Attribute_Name resource, double finalizedOffset) { }
     }
 }

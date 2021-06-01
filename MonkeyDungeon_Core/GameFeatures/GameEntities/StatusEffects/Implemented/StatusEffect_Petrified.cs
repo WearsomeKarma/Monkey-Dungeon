@@ -10,7 +10,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects.Implemented
         {
         }
 
-        protected override void HandleCombat_BeginTurn_StatusEffect(GameEntity_EntityField gameField)
+        protected override void Handle_Combat_BeginTurn_StatusEffect(GameEntity_EntityField gameField)
         {
             //combat.Request_EndOfTurn();
             throw new NotImplementedException(); //TODO: resovle above.

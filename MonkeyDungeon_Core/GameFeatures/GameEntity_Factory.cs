@@ -1,5 +1,5 @@
 ﻿using MonkeyDungeon_Core.GameFeatures.GameEntities.Entities;
-using MonkeyDungeon_Core.GameFeatures.GameEntities.EntityControllers;
+using MonkeyDungeon_Core.GameFeatures.GameEntities.Controllers;
 using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System.Collections.Generic;
