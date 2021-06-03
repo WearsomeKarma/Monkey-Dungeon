@@ -26,7 +26,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         internal GameEntity_Roster Player_Roster => GAME_FIELD.PLAYERS;
         internal GameEntity_Roster Enemy_Roster => GAME_FIELD.ENEMIES;
 
-        internal void Set_Enemy_Roster(GameEntity[] enemyRoster) => GAME_FIELD.Set_Enemies(new GameEntity_Roster(this, enemyRoster));
+        internal void Set_Enemy_Roster(GameEntity[] enemyEntities) => GAME_FIELD.Set_Enemies(enemyEntities);
 
         public GameEntity Set_Entity(GameEntity_ID entityId, Multiplayer_Relay_ID relayId, GameEntity_Attribute_Name factory_Tag)
         {
@@ -36,7 +36,7 @@ namespace MonkeyDungeon_Core.GameFeatures
                 return Player_Roster.Set_Entity(entity);
             return Enemy_Roster.Set_Entity(entity);
         }
-        public void Set_Entity_Ready_State(int entityId, bool state)
+        public void Set_Entity_Ready_State(GameEntity_ID entityId, bool state)
             => Player_Roster.Set_Ready_To_Start(entityId, state);
 
         public GameState CurrentGameState { get; private set; }
@@ -131,7 +131,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             Server.Broadcast(
                 new MMW_Update_Entity_Resource(
-                    resource.Internal_Parent.Scene_GameObject_ID,
+                    resource.Internal_Parent.GameEntity_ID,
                     (float)(resource.Value / resource.Max_Quantity),
                     resource.ATTRIBUTE_NAME
                     )
@@ -145,13 +145,13 @@ namespace MonkeyDungeon_Core.GameFeatures
             for (int i = 0; i < abilities.Length; i++)
             {
                 Broadcast(
-                    new MMW_Update_Entity_Abilities(entity.Scene_GameObject_ID, abilities[i])
+                    new MMW_Update_Entity_Abilities(entity.GameEntity_ID, abilities[i])
                     );
             }
 
             //send uid
             Broadcast(
-                new MMW_Update_Entity_UniqueID(entity.Scene_GameObject_ID, (uint)entity.Unique_ID)
+                new MMW_Update_Entity_UniqueID(entity.GameEntity_ID, (uint)entity.Unique_ID)
                 );
 
             //send resource names
@@ -159,13 +159,13 @@ namespace MonkeyDungeon_Core.GameFeatures
             for(int i=0;i<resources.Length;i++)
             {
                 Broadcast(
-                    new MMW_Declare_Entity_Resource(entity.Scene_GameObject_ID, resources[i])
+                    new MMW_Declare_Entity_Resource(entity.GameEntity_ID, resources[i])
                     );
             }
 
             //introduce the entity to the scene.
             Broadcast(
-                new MMW_Introduce_Entity(entity.Scene_GameObject_ID)
+                new MMW_Introduce_Entity(entity.GameEntity_ID)
                 );
         }
 
@@ -182,8 +182,8 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         internal void Relay_Roster(GameEntity_Roster roster)
         {
-            foreach (GameEntity entity in roster.Entities)
-                Relay_Entity(entity);
+            foreach (GameEntity_RosterEntry rosterEntry in roster.Get_Roster_Entries())
+                Relay_Entity(rosterEntry.Game_Entity);
         }
 
         internal void Dismiss_Roster(GameEntity_Roster roster)
@@ -199,28 +199,28 @@ namespace MonkeyDungeon_Core.GameFeatures
                 return;
             }
 
-            foreach (GameEntity entity in roster.Entities)
-                Relay_Dismissal(entity);
+            foreach (GameEntity_RosterEntry rosterEntry in roster.Get_Roster_Entries())
+                Relay_Dismissal(rosterEntry.Game_Entity);
         }
 
         internal void Relay_Entity_Static_Resource(GameEntity_Resource resource)
         {
             Broadcast(
-                new MMW_Update_Ability_Point(resource.Internal_Parent.Scene_GameObject_ID, (int)resource.Value)
+                new MMW_Update_Ability_Point(resource.Internal_Parent.GameEntity_ID, (int)resource.Value)
                 );
         }
 
         internal void Relay_Death(GameEntity gameEntity)
         {
             Broadcast(
-                new MMW_Entity_Death(gameEntity.Scene_GameObject_ID)
+                new MMW_Entity_Death(gameEntity.GameEntity_ID)
                 );
         }
 
         internal void Relay_Dismissal(GameEntity gameEntity)
         {
             Broadcast(
-                new MMW_Dismiss_Entity(gameEntity.Scene_GameObject_ID)
+                new MMW_Dismiss_Entity(gameEntity.GameEntity_ID)
                 );
         }
     }

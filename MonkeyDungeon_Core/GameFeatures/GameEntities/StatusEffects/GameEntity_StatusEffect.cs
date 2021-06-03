@@ -1,6 +1,8 @@
 ﻿
 using MonkeyDungeon_Core.GameFeatures.GameStates.Combat;
 using MonkeyDungeon_Vanilla_Domain;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
 {
@@ -85,6 +87,23 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
 
         internal void React_To_Post_Resource_Offset(GameEntity_Attribute_Name resource, double finalizedOffset)
             => Handle_Post_Resource_Offset(resource, finalizedOffset);
+
+        internal Combat_Redirection_Chance React_To_Redirect_Chance
+        (
+            Combat_Action action,
+            Combat_Assault_Type assaultType,
+            GameEntity_Position_Type assaulterPositionType,
+            GameEntity_Position_Type targetPositionType,
+            Combat_Redirection_Chance baseChance
+        )
+            => Handle_Redirection_Chance
+                (
+                action, 
+                assaultType,
+                assaulterPositionType,
+                targetPositionType,
+                baseChance
+                );
         
         protected virtual void Handle_Combat_BeginTurn_StatusEffect(GameEntity_EntityField gameField) { }
         protected virtual void Handle_Combat_EndTurn_StatusEffect(GameEntity_EntityField gameField) { }
@@ -93,5 +112,15 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
         protected virtual double Handle_Get_Dodge_Bonus(Combat_Action action) => 0;
         protected virtual void Handle_Pre_Resource_Offset(GameEntity_Attribute_Name resource, double finalizedOffset) { }
         protected virtual void Handle_Post_Resource_Offset(GameEntity_Attribute_Name resource, double finalizedOffset) { }
+
+        protected virtual Combat_Redirection_Chance Handle_Redirection_Chance
+        (
+            Combat_Action action,
+            Combat_Assault_Type assaultType,
+            GameEntity_Position_Type assaulterPositionType,
+            GameEntity_Position_Type targetPositionType,
+            Combat_Redirection_Chance baseChance
+        )
+            => MD_VANILLA_COMBAT.NO_REDIRECT;
     }
 }

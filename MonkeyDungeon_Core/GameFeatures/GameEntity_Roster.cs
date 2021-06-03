@@ -1,69 +1,67 @@
 ﻿using MonkeyDungeon_Core.GameFeatures.GameEntities.Resources;
 using MonkeyDungeon_Vanilla_Domain;
 using System;
-using System.Linq;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 
 namespace MonkeyDungeon_Core.GameFeatures
 {
     public class GameEntity_Roster
     {
+        internal static int ROSTER_COUNT { get; private set; }
         private GameState_Machine Game { get; set; }
 
-        public int EntityCount { get; private set; }
-        private GameEntity[] entities;
-        public GameEntity[] Entities => entities.ToArray();
-        private bool[] readyEntities;
-        public bool CheckIf_Team_Is_Ready()
+        private readonly GameEntity_RosterEntry[] ROSTER_ENTRIES;
+
+        internal GameEntity_RosterEntry[] Get_Roster_Entries()
         {
-            bool ret = true;
-            for (int i = 0; i < readyEntities.Length && ret; i++)
-                ret = readyEntities[i];
-            return ret;
+            GameEntity_RosterEntry[] entities = new GameEntity_RosterEntry[ROSTER_ENTRIES.Length];
+            for (int i = 0; i < ROSTER_ENTRIES.Length; i++)
+                entities[i] = ROSTER_ENTRIES[i];
+            return entities;
         }
 
-        public GameEntity_Roster(GameState_Machine game, GameEntity[] entities)
+        internal GameEntity_ID[] Get_IDs()
         {
+            GameEntity_ID[] ids = new GameEntity_ID[ROSTER_ENTRIES.Length];
+            for (int i = 0; i < ROSTER_ENTRIES.Length; i++)
+                ids[i] = ROSTER_ENTRIES[i].GameEntity_ID;
+            return ids;
+        }
+        
+        internal GameEntity Get_Entity(GameEntity_ID id)
+        {
+            foreach(GameEntity_RosterEntry entry in ROSTER_ENTRIES)
+                if (entry.GameEntity_ID == id)
+                    return entry.Game_Entity;
+            return null;
+        }
+
+        internal GameEntity Get_Entity(GameEntity_Position_Type positionType)
+        {
+            foreach (GameEntity_RosterEntry entry in ROSTER_ENTRIES)
+                if (positionType == (GameEntity_Position_Type) entry.World_Position)
+                    return entry.Game_Entity;
+            return null;
+        }
+        
+        internal readonly int ROSTER_ID;
+
+        public bool Is_On_Team(GameEntity_ID id)
+            => id.Roster_ID == ROSTER_ID;
+        
+        internal GameEntity_Roster(GameState_Machine game, GameEntity[] entities)
+        {
+            ROSTER_ID = ROSTER_COUNT;
+            ROSTER_COUNT++;
             Game = game;
-            this.entities = new GameEntity[entities.Length];
+            this.ROSTER_ENTRIES = new GameEntity_RosterEntry[entities.Length];
             foreach (GameEntity entity in entities)
                 Set_Entity(entity);
-            readyEntities = new bool[entities.Length];
-            EntityCount = entities.Length-1;
         }
 
-        public void ToggleAllEntities(bool state)
+        internal void Set_Ready_To_Start(GameEntity_ID entityId, bool state = true)
         {
-            while (ToggleEntity(state) > 0) ;
-        }
-
-        /// <summary>
-        /// State 0: ready | !0: not ready.
-        /// </summary>
-        /// <param name="entityId"></param>
-        /// <param name="state"></param>
-        internal void Set_Ready_To_Start(int entityId, bool state = true)
-        {
-            readyEntities[entityId] = state;
-        }
-
-        /// <summary>
-        /// Returns index of toggled entity.
-        /// </summary>
-        /// <param name="state"></param>
-        /// <returns></returns>
-        public int ToggleEntity(bool state)
-        {
-            int ret;
-            if ((state && EntityCount >= entities.Length)
-                ||
-                (!state && EntityCount <= 0))
-                return -1;
-
-            ret = EntityCount;
-            //throw new NotImplementedException();
-            //entities[EntityCount].ParentObject?.SpriteComponent.Toggle(state);
-            EntityCount += (state) ? 1 : -1;
-            return ret;
+            ROSTER_ENTRIES[entityId % MD_PARTY.MAX_PARTY_SIZE].Is_Ready = true;
         }
 
         public GameEntity Set_Entity(GameEntity gameEntity)
@@ -71,14 +69,14 @@ namespace MonkeyDungeon_Core.GameFeatures
             if (gameEntity == null)
                 return null;
 
-            entities[gameEntity.Scene_GameObject_ID % entities.Length] = gameEntity;
+            ROSTER_ENTRIES[gameEntity.GameEntity_ID % ROSTER_ENTRIES.Length].Game_Entity = gameEntity;
             gameEntity.Game = Game;
             gameEntity.Resource_Manager.Resources_Updated += (e) => Game.Relay_Entity_Resource(e);
             throw new NotImplementedException(); //TODO: ability point linkage?
             return gameEntity;
         }
         
-        public GameEntity[] Set_Entities(GameEntity[] gameEntities)
+        internal GameEntity[] Set_Entities(GameEntity[] gameEntities)
         {
             foreach (GameEntity gameEntity in gameEntities)
                 Set_Entity(gameEntity);
@@ -87,10 +85,18 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         internal GameEntity_Attribute_Name[] Get_Races()
         {
-            GameEntity_Attribute_Name[] races = new GameEntity_Attribute_Name[entities.Length];
-            for (int i = 0; i < entities.Length; i++)
-                races[i] = entities[i].Race;
+            GameEntity_Attribute_Name[] races = new GameEntity_Attribute_Name[ROSTER_ENTRIES.Length];
+            for (int i = 0; i < ROSTER_ENTRIES.Length; i++)
+                races[i] = ROSTER_ENTRIES[i].Game_Entity.Race;
             return races;
+        }
+
+        internal bool CheckIf_Team_Is_Ready()
+        {
+            foreach (GameEntity_RosterEntry entry in ROSTER_ENTRIES)
+                if (!entry.Is_Ready)
+                    return false;
+            return true;
         }
     }
 }

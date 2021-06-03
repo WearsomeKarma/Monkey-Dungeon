@@ -1,6 +1,7 @@
 ﻿using MonkeyDungeon_Vanilla_Domain;
 using System.Collections.Generic;
 using System.Linq;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
 {

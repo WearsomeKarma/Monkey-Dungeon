@@ -2,102 +2,124 @@
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 using System.Collections.Generic;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat;
 
 namespace MonkeyDungeon_Core.GameFeatures
 {
     public class Combat_Ability_Target
     {
-        private readonly GameEntity_ID[] TARGET_POOL = new GameEntity_ID[GameEntity_ID.IDS.Length];
+        private readonly GameEntity_ID[] LOW_IDs = new GameEntity_ID[MD_PARTY.MAX_PARTY_SIZE];
+        private readonly GameEntity_ID[] HIGH_IDs = new GameEntity_ID[MD_PARTY.MAX_PARTY_SIZE];
         
-        private int Any_Target_Index { get; set; }
-        private int Enemy_Target_Index { get; set; }
-        private int Ally_Target_Index { get; set; }
+        public bool Is_Target_Melee(GameEntity_ID id)
+            => id % MD_PARTY.MAX_PARTY_SIZE < (MD_PARTY.MAX_PARTY_SIZE / 2);
+
+        public bool Is_Target_Range(GameEntity_ID id)
+            => id % MD_PARTY.MAX_PARTY_SIZE >= (MD_PARTY.MAX_PARTY_SIZE / 2);
+
+        private GameEntity_ID[] Get_Team_By_Targeter_Perspective(bool getAllyTeam)
+            => ((GameEntity_ID.ID_ONE.Roster_ID == Targeter.Roster_ID) == getAllyTeam) ? LOW_IDs : HIGH_IDs;
+
+        private void Reset_Field(GameEntity_ID[] ids)
+        {
+            for(int i=0;i<ids.Length;i++)
+                ids[i] = GameEntity_ID.ID_NULL;
+        }
+        
+        private void Reset()
+        {
+            Reset_Field(LOW_IDs);
+            Reset_Field(HIGH_IDs);
+        }
+        
+        private int Count(GameEntity_ID[] ids)
+        {
+            int ret = 0;
+
+            for(int i=0;i<ids.Length;i++)
+                if (ids[i] != GameEntity_ID.ID_NULL)
+                    ret++;
+            
+            return ret;
+        }
+
+        public int Ally_Target_Count
+            => Count(Get_Team_By_Targeter_Perspective(true));
+
+        public int Enemy_Target_Count
+            => Count(Get_Team_By_Targeter_Perspective(false));
+        
+        private void Flag(int index, GameEntity_ID id)
+        {
+            if (index > MD_PARTY.MAX_PARTY_SIZE)
+            {
+                HIGH_IDs[index % MD_PARTY.MAX_PARTY_SIZE] = id;
+                return;
+            }
+
+            LOW_IDs[index] = id;
+        }
+        
+        internal void Flag_Target(GameEntity_ID id)
+        {
+            Flag(id, id);
+        }
+
+        internal void Unflag_Target(GameEntity_ID id)
+        {
+            Flag(id, GameEntity_ID.ID_NULL);
+        }
 
         public GameEntity_ID Targeter { get; private set; }
 
         public Combat_Target_Type Target_Type { get; private set; }
         public bool Has_Strict_Targets { get; private set; }
 
-        public bool Has_Ally_Targets(int requiredCount = -1)
+        internal bool Has_Valid_Targets()
         {
-            int count = Of_All_Set_Count(true);
-            return Matches_Count(count, requiredCount);
-        }
+            int allyCount = Ally_Target_Count;
+            int enemyCount = Enemy_Target_Count;
+            int totalCount = allyCount + enemyCount;
 
-        public bool Has_Enemy_Targets(int requiredCount = -1)
-        {
-            int count = Of_All_Set_Count(false);
-            return Matches_Count(count, requiredCount);
-        }
-
-        /// <summary>
-        /// If null, this means an invalid target state has occured and a reset is required.
-        /// </summary>
-        /// <returns></returns>
-        public bool? Targets_Set()
-            => Has_Valid_Targets(Has_Strict_Targets, Of_All_Set_Count(true), Of_All_Set_Count(false));
-
-        private bool? Has_Valid_Targets(bool isStrict, int allyCount, int enemyCount)
-        {
-            if (Target_Type == Combat_Target_Type.Self_Or_No_Target)
-                return true;
-
-            int requiredCount = (int)Target_Type % MD_PARTY.MAX_PARTY_SIZE;
-            requiredCount++;
-
-            int anti_integrityCount = -1;
-            int integrityCount = -1;
-
-            bool exclusiveOfSelf =
-                Target_Type != Combat_Target_Type.Self_Or_No_Target
-                &&
-                (int)Target_Type < 4;
-            
-            if(exclusiveOfSelf)
+            int strictCount, requiredCount;
+            switch (Target_Type)
             {
-                bool breaks = false;
-                Of_All(true, (i) => breaks = i == Targeter);
-                if (breaks)
-                    return null;
-            }
-
-            switch(Target_Type)
-            {
-                case Combat_Target_Type.All_Enemies:
-                case Combat_Target_Type.Three_Enemies:
-                case Combat_Target_Type.Two_Enemies:
-                case Combat_Target_Type.One_Enemy:
-                    anti_integrityCount = allyCount;
-                    integrityCount = enemyCount;
-                    break;
-                case Combat_Target_Type.All_Friendlies:
-                case Combat_Target_Type.One_Ally:
-                case Combat_Target_Type.Two_Allies:
-                case Combat_Target_Type.Three_Allies:
+                default:
+                    return true;
                 case Combat_Target_Type.One_Friendly:
                 case Combat_Target_Type.Two_Friendlies:
                 case Combat_Target_Type.Three_Friendlies:
-                    anti_integrityCount = enemyCount;
-                    integrityCount = allyCount;
+                case Combat_Target_Type.One_Ally:
+                case Combat_Target_Type.Two_Allies:
+                case Combat_Target_Type.Three_Allies:
+                    strictCount = allyCount;
+                    requiredCount = (int) Target_Type % MD_PARTY.MAX_PARTY_SIZE + ((int) Target_Type/(MD_PARTY.MAX_PARTY_SIZE*2));
                     break;
-                case Combat_Target_Type.Everything:
-                    return allyCount + enemyCount == TARGET_POOL.Length;
+                case Combat_Target_Type.One_Enemy:
+                case Combat_Target_Type.Two_Enemies:
+                case Combat_Target_Type.Three_Enemies:
+                    strictCount = enemyCount;
+                    requiredCount = ((int) Target_Type % MD_PARTY.MAX_PARTY_SIZE) + 1;
+                    break;
             }
 
-            if (anti_integrityCount != 0)
-                return null;
-
-            if (isStrict)
-                return integrityCount == requiredCount;
-            return integrityCount > 0;
+            if (Has_Strict_Targets)
+                return strictCount == requiredCount;
+            return !MathHelper.Breaks_Clampd(strictCount, 1, requiredCount);
         }
 
+        private void Get_Targets_From_Field(List<GameEntity_ID> list, GameEntity_ID[] ids)
+        {
+            foreach (GameEntity_ID t in ids)
+                if (t != GameEntity_ID.ID_NULL)
+                    list.Add(t);
+        }
+        
         public GameEntity_ID[] Get_Targets()
         {
             List<GameEntity_ID> targets = new List<GameEntity_ID>();
-            for (int i = 0; i < TARGET_POOL.Length; i++)
-                if (TARGET_POOL[i] > 0 && !targets.Contains(targets[i]))
-                    targets.Add(TARGET_POOL[i]);
+            Get_Targets_From_Field(targets, LOW_IDs);
+            Get_Targets_From_Field(targets, HIGH_IDs);
 
             return targets.ToArray();
         }
@@ -107,72 +129,55 @@ namespace MonkeyDungeon_Core.GameFeatures
             Targeter = targeter;
             Target_Type = targetType;
             Has_Strict_Targets = targetsAreStrict;
+            
+            Reset();
 
-            Any_Target_Index = 0;
-            Enemy_Target_Index = MD_PARTY.MAX_PARTY_SIZE;
-            Ally_Target_Index = 0;
-
-            switch(Target_Type)
-            {
-                case Combat_Target_Type.Everything:
-                case Combat_Target_Type.All_Enemies:
-                case Combat_Target_Type.All_Friendlies:
-                    Add_Target(GameEntity_ID.ID_NULL);
-                    break;
-            }
-
-            for (int i = 0; i < TARGET_POOL.Length; i++)
-                TARGET_POOL[i] = GameEntity_ID.ID_NULL;
-        }
-
-        public void Add_Target(GameEntity_ID entityId)
-        {
             switch(Target_Type)
             {
                 case Combat_Target_Type.Self_Or_No_Target:
-                default:
                     Flag_Target(Targeter);
                     break;
+                case Combat_Target_Type.Everything:
+                    Flag_Allies();
+                    Flag_Enemies();
+                    break;
+                case Combat_Target_Type.All_Enemies:
+                    Flag_Enemies();
+                    break;
+                case Combat_Target_Type.All_Friendlies:
+                    Flag_Allies();
+                    break;
+            }
+        }
+
+        public bool Add_Target(GameEntity_ID entityId)
+        {
+            switch(Target_Type)
+            {
                 case Combat_Target_Type.Three_Allies:
                 case Combat_Target_Type.Two_Allies:
                 case Combat_Target_Type.One_Ally:
-                    if (entityId == Targeter)
-                        return;
-                    Add_Ally_Target(entityId, (int)Target_Type);
+                    if (entityId == Targeter || entityId.Roster_ID != Targeter.Roster_ID)
+                        return false;
                     break;
                 case Combat_Target_Type.Three_Enemies:
                 case Combat_Target_Type.Two_Enemies:
                 case Combat_Target_Type.One_Enemy:
-                    Add_Enemy_Target(entityId, (int)Target_Type);
+                    if (entityId.Roster_ID == Targeter.Roster_ID)
+                        return false;
                     break;
                 case Combat_Target_Type.Three_Friendlies:
                 case Combat_Target_Type.Two_Friendlies:
                 case Combat_Target_Type.One_Friendly:
-                    Add_Ally_Target(entityId, (((int)Target_Type) % MD_PARTY.MAX_PARTY_SIZE) + 1);
+                    if (entityId.Roster_ID != Targeter.Roster_ID)
+                        return false;
                     break;
-                case Combat_Target_Type.All_Enemies:
-                    Flag_Enemies();
-                    break;
-                case Combat_Target_Type.All_Friendlies:
-                    Flag_Allies();
-                    break;
-                case Combat_Target_Type.Everything:
-                    Flag_Enemies();
-                    Flag_Allies();
-                    break;
+                default:
+                    return false;
             }
-        }
 
-        private void Add_Ally_Target(GameEntity_ID entityId, int limit)
-        {
-            TARGET_POOL[Ally_Target_Index] = entityId;
-            Ally_Target_Index = Increment_Target_Count(Ally_Target_Index, 0, limit);
-        }
-
-        private void Add_Enemy_Target(GameEntity_ID entityId, int limit)
-        {
-            TARGET_POOL[Enemy_Target_Index] = entityId;
-            Enemy_Target_Index = Increment_Target_Count(Enemy_Target_Index, MD_PARTY.MAX_PARTY_SIZE, limit);
+            Flag_Target(entityId);
+            return true;
         }
 
         private int Increment_Target_Count(int count, int offset, int limit)
@@ -180,29 +185,13 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         private void Of_All(bool allySideOrNot, Action<GameEntity_ID> operation)
         {
-            int index = (allySideOrNot) ? 0 : MD_PARTY.MAX_PARTY_SIZE;
-
-            for (int i = index; i < index + MD_PARTY.MAX_PARTY_SIZE; i++)
-                operation(GameEntity_ID.IDS[i]);
-        }
-
-        private void Of_All_Set(bool allySideOrNot, Action<int, bool> isSetHandler)
-        {
-            Of_All(allySideOrNot, (i) => isSetHandler(i, TARGET_POOL[i] > 0));
-        }
-
-        private int Of_All_Set_Count(bool allySideOrNot)
-        {
-            int instanceCount = 0;
-            Of_All_Set(allySideOrNot, (i, b) => instanceCount += (b) ? 1 : 0);
-            return instanceCount;
-        }
-
-        private bool Matches_Count(int count, int requiredCount)
-        {
-            if (requiredCount < 0)
-                return count > 0;
-            return count == requiredCount;
+            GameEntity_ID[] inspectedField = Get_Team_By_Targeter_Perspective(allySideOrNot);
+            
+            foreach(GameEntity_ID id in inspectedField)
+                if (
+                    id != GameEntity_ID.ID_NULL
+                    )
+                    operation(id);
         }
 
         private void Flag_Allies()
@@ -210,18 +199,6 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         private void Flag_Enemies()
             => Of_All(false, Unflag_Target);
-        
-        private void Unflag_Allies()
-            => Of_All(true, Flag_Target);
-        
-        private void Unflag_Enemies()
-            => Of_All(false, Unflag_Target);
-
-        private void Flag_Target(GameEntity_ID id)
-            => TARGET_POOL[id] = id;
-
-        private void Unflag_Target(GameEntity_ID id)
-            => TARGET_POOL[id] = GameEntity_ID.ID_NULL;
 
         public override string ToString()
         {

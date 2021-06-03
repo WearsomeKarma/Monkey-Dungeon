@@ -2,6 +2,8 @@
 using System.Linq;
 using MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities;
 using MonkeyDungeon_Vanilla_Domain;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
 {
@@ -68,6 +70,36 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
         {
             foreach(GameEntity_StatusEffect effect in StatusEffects)
                 effect.React_To_Post_Resource_Offset(resource, finalizedOffset);
+        }
+
+        internal Combat_Redirection_Chance[] React_To_Redirect_Chance
+            (
+            Combat_Action action, 
+            Combat_Assault_Type assaultType, 
+            GameEntity_Position_Type assaulterPositionType, 
+            GameEntity_Position_Type targetPositionType, 
+            Combat_Redirection_Chance baseChance
+            )
+        {
+            List<Combat_Redirection_Chance> chancesFromStatusEffects = new List<Combat_Redirection_Chance>();
+            Combat_Redirection_Chance chance;
+            
+            foreach (GameEntity_StatusEffect effect in StatusEffects)
+            {
+                chance = effect.React_To_Redirect_Chance
+                (
+                    action,
+                    assaultType,
+                    assaulterPositionType,
+                    targetPositionType,
+                    baseChance
+                );
+                
+                if (chance != MD_VANILLA_COMBAT.NO_REDIRECT)
+                    chancesFromStatusEffects.Add(chance);
+            }
+
+            return chancesFromStatusEffects.ToArray();
         }
     }
 }

@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 
 namespace MonkeyDungeon_UI.Scenes.GameScenes
 {

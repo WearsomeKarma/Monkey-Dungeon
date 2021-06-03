@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using isometricgame.GameEngine.Tools;
 using MonkeyDungeon_UI.Prefabs.Entities;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using OpenTK;
 

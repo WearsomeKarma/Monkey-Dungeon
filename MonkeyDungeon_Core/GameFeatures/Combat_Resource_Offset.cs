@@ -1,5 +1,7 @@
 ﻿
 using MonkeyDungeon_Vanilla_Domain;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat;
 
 namespace MonkeyDungeon_Core.GameFeatures
 {

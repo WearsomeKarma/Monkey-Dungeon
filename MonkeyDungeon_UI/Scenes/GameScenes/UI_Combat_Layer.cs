@@ -10,6 +10,7 @@ using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using OpenTK;
 using System;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 
 namespace MonkeyDungeon_UI.Scenes.GameScenes
 {

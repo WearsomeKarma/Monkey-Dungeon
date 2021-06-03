@@ -3,6 +3,8 @@ using MonkeyDungeon_Core.GameFeatures.GameEntities.Controllers;
 using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System.Collections.Generic;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
+using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_Core.GameFeatures
 {
@@ -51,8 +53,8 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             GameEntity entity = GameEntity_Catalog[race].Clone();
 
-            entity.Scene_GameObject_ID = entityScene_ID;
-            entity.Relay_ID_Of_Owner = relayId;
+            entity.GameEntity_ID = entityScene_ID;
+            entity.Multiplayer_Relay_ID = relayId;
 
             return entity;
         }

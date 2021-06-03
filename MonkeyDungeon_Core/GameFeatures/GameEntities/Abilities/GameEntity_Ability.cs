@@ -1,11 +1,13 @@
 ﻿using MonkeyDungeon_Vanilla_Domain;
 using System;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
 {
     public class GameEntity_Ability : GameEntity_Attribute
     {
-        internal GameEntity_ID Entity_Scene_Id => Internal_Parent.Scene_GameObject_ID;
+        internal GameEntity_ID Entity_Scene_Id => Internal_Parent.GameEntity_ID;
 
         public GameEntity_Attribute_Name Resource_Name { get; private set; }
         public double Cost => Get_AbilityResourceCost();
@@ -47,8 +49,15 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
 
         internal void Cast(Combat_Action action)
             => Handle_Cast(action);
-        internal double Calculate_Redirect_Chance(Combat_Action action)
-            => throw new NotImplementedException(); //TODO: prim wrap, make stackable-quantity.
+
+        internal Combat_Redirection_Chance Calculate_Redirect_Chance
+        (
+            Combat_Action action,
+            GameEntity_Position_Type ownerPositionType,
+            GameEntity_Position_Type targetPositionType,
+            Combat_Redirection_Chance baseChance
+        )
+            => MD_VANILLA_COMBAT.NO_REDIRECT;
         internal Combat_Resource_Offset Calculate_Damage(Combat_Action action)
             => Handle_Calculate_Damage(action);
 

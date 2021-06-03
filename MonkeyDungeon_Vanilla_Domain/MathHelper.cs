@@ -1,5 +1,5 @@
 ﻿
-namespace MonkeyDungeon_Core.GameFeatures
+namespace MonkeyDungeon_Vanilla_Domain
 {
     public static class MathHelper
     {

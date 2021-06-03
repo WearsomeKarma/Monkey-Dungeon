@@ -1,4 +1,5 @@
 using MonkeyDungeon_Vanilla_Domain;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 
 namespace MonkeyDungeon_Core.GameFeatures
 {

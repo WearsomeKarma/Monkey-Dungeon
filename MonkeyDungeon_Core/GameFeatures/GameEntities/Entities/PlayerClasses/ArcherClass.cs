@@ -6,6 +6,7 @@ using MonkeyDungeon_Core.GameFeatures.GameEntities.Stats;
 using MonkeyDungeon_Core.GameFeatures.GameEntities.Stats.Implemented;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System.Collections.Generic;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Entities
 {

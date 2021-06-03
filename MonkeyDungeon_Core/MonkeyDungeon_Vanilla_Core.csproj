@@ -43,14 +43,12 @@
   <ItemGroup>
     <Compile Include="GameFeatures\Combat_Ability_Target.cs" />
     <Compile Include="GameFeatures\Combat_Action.cs" />
-    <Compile Include="GameFeatures\Combat_Assault_Type.cs" />
-    <Compile Include="GameFeatures\Combat_Damage_Type.cs" />
     <Compile Include="GameFeatures\Combat_Finalized_Factor.cs" />
     <Compile Include="GameFeatures\Combat_Resource_Offset.cs" />
-    <Compile Include="GameFeatures\Combat_Target_Type.cs" />
     <Compile Include="GameFeatures\GameEntity_Attribute.cs" />
     <Compile Include="GameFeatures\GameEntity_EntityField.cs" />
     <Compile Include="GameFeatures\GameEntity_Quantity.cs" />
+    <Compile Include="GameFeatures\GameEntity_RosterEntry.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Cast.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Damage.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Dodge_Bonus.cs" />
@@ -105,7 +103,6 @@
     <Compile Include="GameFeatures\GameStates\Traveling_GameState.cs" />
     <Compile Include="GameFeatures\GameEntities\StatusEffects\Implemented\StatusEffect_Dead.cs" />
     <Compile Include="GameFeatures\GameEntities\StatusEffects\Implemented\StatusEffect_Petrified.cs" />
-    <Compile Include="GameFeatures\MathHelper.cs" />
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Request_EndTurn.cs" />
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Combat_Action.cs" />
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Entity.cs" />

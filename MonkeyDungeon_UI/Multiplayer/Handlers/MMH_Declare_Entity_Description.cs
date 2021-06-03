@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using isometricgame.GameEngine.Scenes;
 using MonkeyDungeon_UI.Scenes.GameScenes;
 using MonkeyDungeon_Vanilla_Domain;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_UI.Multiplayer.Handlers

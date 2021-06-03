@@ -3,6 +3,7 @@ using MonkeyDungeon.GameFeatures.Multiplayer;
 using MonkeyDungeon.GameFeatures.Multiplayer.Local_Recievers;
 using MonkeyDungeon_UI;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using OpenTK;
 

@@ -1,5 +1,5 @@
 ﻿
-namespace MonkeyDungeon_Vanilla_Domain
+namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
 {
     public class Multiplayer_Relay_ID
     {

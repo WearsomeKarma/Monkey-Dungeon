@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MonkeyDungeon_Vanilla_Domain
+﻿namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 {
     public class GameEntity_Ability_Index
     {

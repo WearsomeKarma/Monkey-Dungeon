@@ -1,6 +1,7 @@
 ﻿using isometricgame.GameEngine.Tools;
 using MonkeyDungeon_UI.Prefabs.Entities;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 using OpenTK;
 
 namespace MonkeyDungeon_UI.UI_Events.Implemented

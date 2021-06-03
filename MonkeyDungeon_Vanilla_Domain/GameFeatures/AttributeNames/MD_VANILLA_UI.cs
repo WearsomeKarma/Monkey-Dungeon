@@ -1,5 +1,5 @@
 ﻿
-namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
+namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames
 {
     public static class MD_VANILLA_UI
     {

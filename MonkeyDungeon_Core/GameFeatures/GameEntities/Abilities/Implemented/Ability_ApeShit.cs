@@ -1,4 +1,5 @@
 ﻿using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
 {

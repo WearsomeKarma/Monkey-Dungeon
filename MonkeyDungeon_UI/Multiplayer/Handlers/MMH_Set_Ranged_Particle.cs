@@ -1,5 +1,6 @@
 ﻿using MonkeyDungeon_UI.Scenes.GameScenes;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using OpenTK;
 

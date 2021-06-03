@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
+﻿namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames
 {
     public static class MD_VANILLA_ABILITYNAMES
     {

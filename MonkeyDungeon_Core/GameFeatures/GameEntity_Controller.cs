@@ -2,6 +2,7 @@
 using MonkeyDungeon_Core.GameFeatures.GameStates;
 using MonkeyDungeon_Vanilla_Domain;
 using System;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 
 namespace MonkeyDungeon_Core.GameFeatures
 {
@@ -21,7 +22,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             if (!IsAutomonous)
             {
                 PendingCombatAction = new Combat_Action();
-                PendingCombatAction.Action_Owner = Entity.Scene_GameObject_ID;
+                PendingCombatAction.Action_Owner = Entity.GameEntity_ID;
                 PendingCombatAction.Selected_Ability = abilityName;
             }
         }

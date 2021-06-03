@@ -1,5 +1,7 @@
 ﻿
 using MonkeyDungeon_Vanilla_Domain;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat;
 
 namespace MonkeyDungeon_Core.GameFeatures
 {
@@ -38,8 +40,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         
         public bool Ability_Set => Selected_Ability != null;
         public bool Requires_Target => (Target != null) ? (Target?.Target_Type != Combat_Target_Type.Self_Or_No_Target) : false;
-        public bool Has_Targets => Target?.Targets_Set() ?? false;
-        public bool Targets_Illegal => Target?.Targets_Set() == null;
+        public bool Has_Targets => Target?.Has_Valid_Targets() ?? false;
 
         public bool IsSetupComplete => 
             Action_Owner != null

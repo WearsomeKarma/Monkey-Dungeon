@@ -9,6 +9,8 @@ using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 using System.Collections.Generic;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
+using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_Core.GameFeatures
 {
@@ -19,9 +21,8 @@ namespace MonkeyDungeon_Core.GameFeatures
         private int unique_ID                           = 0;
         public int Unique_ID                            { get => unique_ID; internal set => unique_ID = (value >= 0) ? value : 0; }
         
-        public Multiplayer_Relay_ID Relay_ID_Of_Owner   { get; internal set;    }
-        public GameEntity_ID Scene_GameObject_ID        { get; internal set;    }
-        public int Initative_Position                   { get; internal set;    }
+        public Multiplayer_Relay_ID Multiplayer_Relay_ID   { get; internal set;    }
+        public GameEntity_ID GameEntity_ID        { get; internal set;    }
 
         public GameEntity_Controller EntityController   { get; internal set;    }
         public void Set_ActingEntity                    (GameEntity_Controller newEntity) { EntityController?.LoseControl(); newEntity?.GainControl(this); }

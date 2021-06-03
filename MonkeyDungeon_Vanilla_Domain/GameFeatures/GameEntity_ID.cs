@@ -1,11 +1,6 @@
-﻿using MonkeyDungeon_Vanilla_Domain.GameFeatures;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
-namespace MonkeyDungeon_Vanilla_Domain
+namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 {
     public class GameEntity_ID
     {
@@ -32,6 +27,7 @@ namespace MonkeyDungeon_Vanilla_Domain
         };
 
         public readonly int ID;
+        public int Roster_ID => ID / MD_PARTY.MAX_PARTY_SIZE;
         public Multiplayer_Relay_ID RELAY_ID { get; internal set; }
 
         internal GameEntity_ID(int id, Multiplayer_Relay_ID rid = null)
