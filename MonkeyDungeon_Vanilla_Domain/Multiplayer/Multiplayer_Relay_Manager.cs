@@ -29,10 +29,10 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
         /// <returns></returns>
         public bool Bind_To_Relay(GameEntity_ID id, Multiplayer_Relay_ID rid)
         {
-            if (!RELAYS.ContainsKey(rid))
+            if (!RELAYS.ContainsKey(rid) || id == GameEntity_ID.ID_NULL)
                 return false;
 
-            id.RELAY_ID = rid;
+            id.Relay_ID = rid;
             return true;
         }
 

@@ -27,7 +27,7 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
         {
             GameEntity_Attribute_Name resourceName = recievedMessage.ATTRIBUTE;
 
-            UI_GameEntity_Descriptor entity = World_Layer.Get_Description_From_Id(recievedMessage.ENTITY_ID);
+            UI_GameEntity_Descriptor entity = World_Layer.Get_Description_From_Id(recievedMessage.Local_Entity_ID);
 
             entity.Add_Resource(resourceName);
         }

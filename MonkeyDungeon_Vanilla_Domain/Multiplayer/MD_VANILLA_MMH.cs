@@ -27,7 +27,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
         /// Context for beginning the game. INT: Party Size. STRING: FactoryTags seperated by spaces.
         /// </summary>
         public static readonly GameEntity_Attribute_Name MMH_DECLARE_ENTITY_DESCRIPTION 
-            = new GameEntity_Attribute_Name("MMH_Set_Party_UI_Descriptions");
+            = new GameEntity_Attribute_Name("MMH_Declare_Entity_Description");
 
         /// <summary>
         /// Context for sending an announcement to the client. 
@@ -94,8 +94,8 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
         /// ENTITY_ID,
         /// STRING: all the abilities sperated by a comma.
         /// </summary>
-        public static readonly GameEntity_Attribute_Name MMH_UPDATE_ENTITY_ABILITIES 
-            = new GameEntity_Attribute_Name("MMH_Update_Entity_Abilities");
+        public static readonly GameEntity_Attribute_Name MMH_UPDATE_ENTITY_ABILITY 
+            = new GameEntity_Attribute_Name("MMH_Update_Entity_Ability");
         /// <summary>
         /// Context for updating to the client side - the uid of an entity. 
         /// Important for visual appearance.
@@ -127,6 +127,9 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
         /// </summary>
         public static readonly GameEntity_Attribute_Name MMH_SET_COMBAT_ACTION 
             = new GameEntity_Attribute_Name("MMH_Set_Combat_Action");
+
+        public static readonly GameEntity_Attribute_Name MMH_SET_COMBAT_TARGET
+            = new GameEntity_Attribute_Name("MMH_Set_Combat_Target");
         /// <summary>
         /// Context for relaying to client side - the entities involved in the melee event.
         /// ENTITY_ID: the ally side entity.
@@ -170,7 +173,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             MMH_ENTITY_DEATH,
             MMH_DECLARE_ENTITY_RESOURCE,
             MMH_UPDATE_ENTITY_RESOURCE,
-            MMH_UPDATE_ENTITY_ABILITIES,
+            MMH_UPDATE_ENTITY_ABILITY,
             MMH_UPDATE_ENTITY_UNIQUEID,
 
             //state

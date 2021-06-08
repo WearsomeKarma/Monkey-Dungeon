@@ -22,7 +22,10 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
 
         public readonly GameEntity_Attribute_Name MESSAGE_TYPE;
 
-        public readonly GameEntity_ID ENTITY_ID;
+        private readonly int ID_INDEX;
+
+        public GameEntity_ID Local_Entity_ID
+            => GameEntity_ID.IDS[ID_INDEX];
 
         public readonly float FLOAT_VALUE;
         public readonly int INT_VALUE;
@@ -40,7 +43,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             Message_ID = -1; //TODO prim wrap
 
             MESSAGE_TYPE = messageType ?? MD_VANILLA_MMH.MMH_DEFAULT;
-            ENTITY_ID = entityId ?? GameEntity_ID.ID_ZERO;
+            ID_INDEX = entityId ?? GameEntity_ID.ID_ZERO;
             FLOAT_VALUE = fval;
             INT_VALUE = ival;
             ATTRIBUTE = sval ?? GameEntity_Attribute_Name.DEFAULT;
@@ -59,7 +62,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             Message_ID = -1;//TODO: prim wrap
 
             MESSAGE_TYPE = messageType ?? MD_VANILLA_MMH.MMH_DEFAULT;
-            ENTITY_ID = entityId ?? GameEntity_ID.ID_ZERO;
+            ID_INDEX = entityId ?? GameEntity_ID.ID_ZERO;
             FLOAT_VALUE = fval;
             INT_VALUE = ival;
             ATTRIBUTE = sval ?? GameEntity_Attribute_Name.DEFAULT;
@@ -69,7 +72,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
         {
             return (
                 MESSAGE_TYPE == m.MESSAGE_TYPE &&
-                ENTITY_ID == m.ENTITY_ID &&
+                Local_Entity_ID == m.Local_Entity_ID &&
                 FLOAT_VALUE == m.FLOAT_VALUE &&
                 INT_VALUE == m.INT_VALUE &&
                 ATTRIBUTE == m.ATTRIBUTE
@@ -85,7 +88,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
                 "\n\tFLOAT_VALUE: {3}" +
                 "\n\tSTRING_VALUE: {4}",
                   MESSAGE_TYPE,
-                  ENTITY_ID,
+                  Local_Entity_ID,
                   INT_VALUE,
                   FLOAT_VALUE,
                   ATTRIBUTE

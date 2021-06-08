@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 
 namespace MonkeyDungeon_UI.Multiplayer
 {
@@ -12,7 +13,7 @@ namespace MonkeyDungeon_UI.Multiplayer
     {
         protected SceneLayer SceneLayer { get; private set; }
 
-        public Multiplayer_Message_UI_Handler(SceneLayer sceneLayer, params string[] acceptedTypes)
+        public Multiplayer_Message_UI_Handler(SceneLayer sceneLayer, params GameEntity_Attribute_Name[] acceptedTypes)
             : base(acceptedTypes)
         {
             SceneLayer = sceneLayer;

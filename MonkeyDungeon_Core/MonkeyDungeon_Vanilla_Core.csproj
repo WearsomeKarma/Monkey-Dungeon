@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameFeatures\Combat_Ability_Target.cs" />
     <Compile Include="GameFeatures\Combat_Action.cs" />
     <Compile Include="GameFeatures\Combat_Finalized_Factor.cs" />
     <Compile Include="GameFeatures\Combat_Resource_Offset.cs" />
@@ -105,6 +104,7 @@
     <Compile Include="GameFeatures\GameEntities\StatusEffects\Implemented\StatusEffect_Petrified.cs" />
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Request_EndTurn.cs" />
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Combat_Action.cs" />
+    <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Combat_Target.cs" />
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Entity.cs" />
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Entity_Ready.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Dismiss_Entity.cs" />
@@ -119,11 +119,12 @@
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Set_Melee_Combattants.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Set_Ranged_Particle.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Ability_Point.cs" />
-    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Entity_Abilities.cs" />
+    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Entity_Ability.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Entity_Resource.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Declare_Entity_Descriptions.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Entity_UniqueID.cs" />
-    <Compile Include="GameFeatures\Multiplayer\Multiplayer_Message_GameStateHandler.cs" />
+    <Compile Include="GameFeatures\Multiplayer\Multiplayer_Message_CombatState_Handler.cs" />
+    <Compile Include="GameFeatures\Multiplayer\Multiplayer_Message_GameState_Handler.cs" />
     <Compile Include="MonkeyDungeon_Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

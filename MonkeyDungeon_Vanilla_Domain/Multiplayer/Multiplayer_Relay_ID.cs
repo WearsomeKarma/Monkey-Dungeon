@@ -12,6 +12,11 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             ID = id;
         }
 
+        public override string ToString()
+        {
+            return ID.ToString();
+        }
+
         public static implicit operator int(Multiplayer_Relay_ID id)
             => id.ID;
     }

@@ -20,12 +20,12 @@ namespace MonkeyDungeon_Core.GameFeatures
         public GameEntity_Attribute_Name Race                  { get; internal set;    }
         private int unique_ID                           = 0;
         public int Unique_ID                            { get => unique_ID; internal set => unique_ID = (value >= 0) ? value : 0; }
-        
-        public Multiplayer_Relay_ID Multiplayer_Relay_ID   { get; internal set;    }
+
         public GameEntity_ID GameEntity_ID        { get; internal set;    }
+        public Multiplayer_Relay_ID Multiplayer_Relay_ID => GameEntity_ID.Relay_ID;
 
         public GameEntity_Controller EntityController   { get; internal set;    }
-        public void Set_ActingEntity                    (GameEntity_Controller newEntity) { EntityController?.LoseControl(); newEntity?.GainControl(this); }
+        public void Set_ActingEntity                    (GameEntity_Controller newEntity) { EntityController?.Lose_Control(); newEntity?.Gain_Control(this); }
         private bool incapacitated                      = false;
         public bool IsIncapacitated                     { get => incapacitated; internal set => Set_IncapacitatedState(value); }
         internal void Set_IncapacitatedState            (bool value = true) { incapacitated = value; if (value) Handle_Incapacitated(); }
@@ -99,9 +99,9 @@ namespace MonkeyDungeon_Core.GameFeatures
             Handle_Combat_BeginTurn_PreUpkeep(gameField);
 
             StatusEffect_Manager.Combat_BeginTurn(gameField);
-            
-            throw new NotImplementedException();
-            //Resource_Manager.Combat_BeginTurn(combat);
+
+            //TODO: improve on this.
+            Ability_Manager.Ability_Point_Pool.Set_Value(2);
             
             Handle_Combat_BeginTurn_PostUpkeep(gameField);
         }
@@ -113,7 +113,7 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         internal bool Has_PlayableMoves()
         {
-            throw new NotImplementedException();
+            return !Ability_Manager.Ability_Point_Pool.IsDepleted;
         }
 
         protected virtual void Handle_Combat_BeginTurn_PreUpkeep(GameEntity_EntityField gameField) { }
@@ -124,7 +124,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             Game.Relay_Death(this);
         }
 
-        public GameEntity Clone()
+        public GameEntity Clone(GameEntity_ID gameEntityId)
         {
             List<GameEntity_Stat> clonedStats = new List<GameEntity_Stat>();
             List<GameEntity_Resource> clonedResources = new List<GameEntity_Resource>();
@@ -140,7 +140,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             //foreach (GameEntity_Resistance resistance in Resistance_Manager.Get_Resistances())
             //    clonedResistances.Add(resistance.Clone());
 
-            return new GameEntity
+            GameEntity entity = new GameEntity
                 (Race,
                 Name,
                 Level,
@@ -149,8 +149,13 @@ namespace MonkeyDungeon_Core.GameFeatures
                 clonedResources,
                 clonedAbilities,
                 //clonedResistances,
-                EntityController.Clone()
-                );
+                null
+                ) { GameEntity_ID = gameEntityId};
+
+            //TODO: fix
+            EntityController.Clone().Gain_Control(entity);
+            
+            return entity;
         }
 
         public override string ToString()

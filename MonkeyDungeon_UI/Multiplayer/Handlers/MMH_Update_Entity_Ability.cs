@@ -13,19 +13,19 @@ using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_UI.Multiplayer.Handlers
 {
-    public class MMH_Update_Entity_Abilities : Multiplayer_Message_UI_Handler
+    public class MMH_Update_Entity_Ability : Multiplayer_Message_UI_Handler
     {
         private World_Layer World_Layer { get; set; }
 
-        public MMH_Update_Entity_Abilities(World_Layer sceneLayer) 
-            : base(sceneLayer, MD_VANILLA_MMH.MMH_UPDATE_ENTITY_ABILITIES)
+        public MMH_Update_Entity_Ability(World_Layer sceneLayer) 
+            : base(sceneLayer, MD_VANILLA_MMH.MMH_UPDATE_ENTITY_ABILITY)
         {
             World_Layer = sceneLayer;
         }
 
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
-            GameEntity_ID entity_id = recievedMessage.ENTITY_ID;
+            GameEntity_ID entity_id = recievedMessage.Local_Entity_ID;
             GameEntity_Ability_Index abilityIndex = GameEntity_Ability_Index.INDICES[recievedMessage.INT_VALUE];
             GameEntity_Attribute_Name abilityName = recievedMessage.ATTRIBUTE;
 

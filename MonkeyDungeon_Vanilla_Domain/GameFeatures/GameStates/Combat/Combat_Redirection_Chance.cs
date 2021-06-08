@@ -29,6 +29,27 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
             MODIFICATION_TYPE = Quantity_Modification_Type.None;
         }
 
+        public static GameEntity_Position Redirect(GameEntity_Position position, Combat_Redirect_Type redirectType)
+        {
+            GameEntity_Position newPos;
+
+            switch (redirectType)
+            {
+                default:
+                    return position;
+                case Combat_Redirect_Type.Redirect_Diagonal:
+                    newPos = position.Get_Horizontal_Swap();
+                    newPos = newPos.Get_Vertical_Swap();
+                    return newPos;
+                case Combat_Redirect_Type.Redirect_Horizontal:
+                    return newPos = position.Get_Horizontal_Swap();
+                case Combat_Redirect_Type.Redirect_Vertical:
+                    return newPos = position.Get_Vertical_Swap();
+                case Combat_Redirect_Type.Redirect_Null:
+                    return GameEntity_Position.NULL_POSITION;
+            }
+        }
+        
         /// <summary>
         /// Non commutative. Returns a new Combat_Redirection_Chance as:
         /// chanceTwo.REDIRECTION, combined-chance, chanceOne.MODIFICATION_TYPE.

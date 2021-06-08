@@ -7,7 +7,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
 {
     public class GameEntity_Ability : GameEntity_Attribute
     {
-        internal GameEntity_ID Entity_Scene_Id => Internal_Parent.GameEntity_ID;
+        internal GameEntity_ID Owner_ID => Internal_Parent.GameEntity_ID;
 
         public GameEntity_Attribute_Name Resource_Name { get; private set; }
         public double Cost => Get_AbilityResourceCost();
@@ -57,12 +57,20 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
             GameEntity_Position_Type targetPositionType,
             Combat_Redirection_Chance baseChance
         )
-            => MD_VANILLA_COMBAT.NO_REDIRECT;
+            => Handle_Calculate_Redirect_Chance(action, ownerPositionType, targetPositionType, baseChance);
         internal Combat_Resource_Offset Calculate_Damage(Combat_Action action)
             => Handle_Calculate_Damage(action);
 
         protected virtual void Handle_Cast                      (Combat_Action action) { }
-        protected virtual void Handle_Calculate_Redirect_Chance (Combat_Action action) { }
+
+        protected virtual Combat_Redirection_Chance Handle_Calculate_Redirect_Chance
+            (
+            Combat_Action action,
+            GameEntity_Position_Type ownerPositionType,
+            GameEntity_Position_Type targetPositionType,
+            Combat_Redirection_Chance baseChance
+            )
+            => MD_VANILLA_COMBAT.NO_REDIRECT;
         protected virtual Combat_Resource_Offset Handle_Calculate_Damage (Combat_Action action)
             => new Combat_Resource_Offset(Damage_Type, Get_RelevantOutput());
 

@@ -9,11 +9,11 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
 {
     public abstract class Multiplayer_Message_Handler
     {
-        internal readonly string[] ACCEPTED_MESSAGE_TYPES;
+        internal readonly GameEntity_Attribute_Name[] ACCEPTED_MESSAGE_TYPES;
      
         internal Multiplayer_Relay Relay { get; set; }
         
-        public Multiplayer_Message_Handler(params string[] acceptedMessageTypes)
+        public Multiplayer_Message_Handler(params GameEntity_Attribute_Name[] acceptedMessageTypes)
         {
             ACCEPTED_MESSAGE_TYPES = acceptedMessageTypes.ToArray();
         }
@@ -31,7 +31,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             Relay.Queue_Message(
                 new Multiplayer_Message(
                     Multiplayer_Message.MM_MESSAGE_INVALID,
-                    GameEntity_ID.ID_ZERO, 0,
+                    invalidMessage.Local_Entity_ID, 0,
                     invalidMessage.Message_ID
                     )
                 );

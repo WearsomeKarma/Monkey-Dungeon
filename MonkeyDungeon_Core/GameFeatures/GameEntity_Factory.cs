@@ -51,11 +51,7 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         public GameEntity Create_NewEntity(GameEntity_ID entityScene_ID, Multiplayer_Relay_ID relayId, GameEntity_Attribute_Name race)
         {
-            GameEntity entity = GameEntity_Catalog[race].Clone();
-
-            entity.GameEntity_ID = entityScene_ID;
-            entity.Multiplayer_Relay_ID = relayId;
-
+            GameEntity entity = GameEntity_Catalog[race].Clone(entityScene_ID);
             return entity;
         }
     }

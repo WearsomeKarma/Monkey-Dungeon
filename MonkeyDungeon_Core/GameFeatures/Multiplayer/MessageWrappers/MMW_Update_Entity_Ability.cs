@@ -9,10 +9,10 @@ using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 
 namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.MessageWrappers
 {
-    public class MMW_Update_Entity_Abilities : Multiplayer_Message_Wrapper
+    public class MMW_Update_Entity_Ability : Multiplayer_Message_Wrapper
     {
-        public MMW_Update_Entity_Abilities(GameEntity_ID entityId, GameEntity_Attribute_Name abilityName) 
-            : base(MD_VANILLA_MMH.MMH_UPDATE_ENTITY_ABILITIES, entityId, 0, 0, abilityName)
+        public MMW_Update_Entity_Ability(GameEntity_ID entityId, GameEntity_Ability_Index abilityIndex, GameEntity_Attribute_Name abilityName) 
+            : base(MD_VANILLA_MMH.MMH_UPDATE_ENTITY_ABILITY, entityId, 0, abilityIndex, abilityName)
         {
         }
     }

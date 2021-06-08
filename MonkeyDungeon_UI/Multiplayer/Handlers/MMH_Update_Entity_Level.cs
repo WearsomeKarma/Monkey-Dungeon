@@ -11,7 +11,7 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
     public class MMH_Update_Entity_Level : Multiplayer_Message_UI_Handler
     {
         public MMH_Update_Entity_Level(SceneLayer sceneLayer) 
-            : base(sceneLayer, "not-implemented")
+            : base(sceneLayer) //TODO: fix by adding param.
         {
         }
 

@@ -6,7 +6,7 @@ using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
 {
-    public class MMH_Set_Combat_Action : Multiplayer_Message_GameStateHandler
+    public class MMH_Set_Combat_Action : Multiplayer_Message_GameState_Handler
     {
         Combat_GameState Combat { get; set; }
 
@@ -31,10 +31,12 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
 
             //TODO: remove player controller honestly, just make players not have controllers. Or rethink the system.
             GameEntity_Controller controller = 
-                Combat.Game_Field.Get_Entity(recievedMessage.ENTITY_ID).Game_Entity.EntityController;
-            
-            controller.Setup_CombatAction_Ability(abilityName);
-            controller.Setup_CombatAction_Target(targetId);
+                Combat.Game_Field.Get_Entity(recievedMessage.Local_Entity_ID).Game_Entity.EntityController;
+
+            //TODO: fix
+            controller.PendingCombatAction.Action_Owner = Combat.Entity_ID_Of_Current_Turn;
+            controller.Setup_Combat_Action_Ability(abilityName);
+            controller.Setup_Combat_Action_Target(targetId);
         }
     }
 }

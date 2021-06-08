@@ -60,6 +60,8 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
             EntityDescription.Entity_Died += Entity_Died;
             EntityDescription.Entity_Dismissal_State_Changed += Entity_Dismissal_State_Changed;
             Entity_Dismissal_State_Changed(entity);
+            
+            Set_Race(EntityDescription);
         }
         
         private void Unbind_To_Description()

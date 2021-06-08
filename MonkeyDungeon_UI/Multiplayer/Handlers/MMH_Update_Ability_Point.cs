@@ -24,7 +24,7 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
         {
             int abilityPointCount = recievedMessage.INT_VALUE;
 
-            UI_GameEntity_Descriptor entity = World_Layer.Get_Description_From_Id(recievedMessage.ENTITY_ID);
+            UI_GameEntity_Descriptor entity = World_Layer.Get_Description_From_Id(recievedMessage.Local_Entity_ID);
 
             entity.Ability_Points.Resource_Percentage = abilityPointCount;
         }

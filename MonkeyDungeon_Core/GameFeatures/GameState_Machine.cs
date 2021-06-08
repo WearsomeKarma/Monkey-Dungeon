@@ -1,4 +1,5 @@
-﻿using MonkeyDungeon_Core.GameFeatures.GameEntities.Resources;
+﻿using System;
+using MonkeyDungeon_Core.GameFeatures.GameEntities.Resources;
 using MonkeyDungeon_Core.GameFeatures.GameStates;
 using MonkeyDungeon_Core.GameFeatures.Multiplayer.MessageWrappers;
 using MonkeyDungeon_Vanilla_Domain;
@@ -30,6 +31,8 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         public GameEntity Set_Entity(GameEntity_ID entityId, Multiplayer_Relay_ID relayId, GameEntity_Attribute_Name factory_Tag)
         {
+            System.Console.WriteLine(">> BIND >> " + entityId);
+            Server.Bind_To_Relay(entityId, relayId);
             GameEntity entity = GameEntity_Factory.Create_NewEntity(entityId, relayId, factory_Tag);
 
             if (entityId < MD_PARTY.MAX_PARTY_SIZE)
@@ -145,7 +148,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             for (int i = 0; i < abilities.Length; i++)
             {
                 Broadcast(
-                    new MMW_Update_Entity_Abilities(entity.GameEntity_ID, abilities[i])
+                    new MMW_Update_Entity_Ability(entity.GameEntity_ID, GameEntity_Ability_Index.INDICES[i], abilities[i])
                     );
             }
 

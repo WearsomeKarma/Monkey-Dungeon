@@ -16,7 +16,6 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Controllers
         {
             Random rand = new Random();
             GameEntity[] players = null;// gameField.ConsciousPlayers;
-            throw new NotImplementedException(); //TODO: fix above.
             GameEntity_ID targetId = players[rand.Next(players.Length)].GameEntity_ID;
 
             //TODO: make combat ref GameScene

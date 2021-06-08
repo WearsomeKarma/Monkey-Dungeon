@@ -3,7 +3,7 @@ using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
 {
-    public class MMH_Request_EndTurn : Multiplayer_Message_GameStateHandler
+    public class MMH_Request_EndTurn : Multiplayer_Message_GameState_Handler
     {
         Combat_GameState Combat { get; set; }
 

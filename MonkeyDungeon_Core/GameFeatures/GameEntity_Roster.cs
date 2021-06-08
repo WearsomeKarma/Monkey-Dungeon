@@ -54,9 +54,12 @@ namespace MonkeyDungeon_Core.GameFeatures
             ROSTER_ID = ROSTER_COUNT;
             ROSTER_COUNT++;
             Game = game;
-            this.ROSTER_ENTRIES = new GameEntity_RosterEntry[entities.Length];
-            foreach (GameEntity entity in entities)
-                Set_Entity(entity);
+            ROSTER_ENTRIES = new GameEntity_RosterEntry[entities.Length];
+
+            for (int i = 0; i < ROSTER_ENTRIES.Length; i++)
+                ROSTER_ENTRIES[i] = new GameEntity_RosterEntry(entities[i]);
+            
+            Set_Entities(entities);
         }
 
         internal void Set_Ready_To_Start(GameEntity_ID entityId, bool state = true)
@@ -69,10 +72,13 @@ namespace MonkeyDungeon_Core.GameFeatures
             if (gameEntity == null)
                 return null;
 
-            ROSTER_ENTRIES[gameEntity.GameEntity_ID % ROSTER_ENTRIES.Length].Game_Entity = gameEntity;
+            ROSTER_ENTRIES[gameEntity.GameEntity_ID % MD_PARTY.MAX_PARTY_SIZE].Game_Entity = gameEntity;
             gameEntity.Game = Game;
             gameEntity.Resource_Manager.Resources_Updated += (e) => Game.Relay_Entity_Resource(e);
-            throw new NotImplementedException(); //TODO: ability point linkage?
+
+            //TODO: make this better.
+            gameEntity.Ability_Manager.Ability_Point_Pool.Quantity_Changed +=
+                (e) => Game.Relay_Entity_Static_Resource(e as GameEntity_Resource);
             return gameEntity;
         }
         
@@ -94,7 +100,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         internal bool CheckIf_Team_Is_Ready()
         {
             foreach (GameEntity_RosterEntry entry in ROSTER_ENTRIES)
-                if (!entry.Is_Ready)
+                if (!(entry?.Is_Ready) ?? true)
                     return false;
             return true;
         }

@@ -1,4 +1,5 @@
-﻿using MonkeyDungeon_Vanilla_Domain.Multiplayer;
+﻿using System;
+using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 {
@@ -28,12 +29,18 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 
         public readonly int ID;
         public int Roster_ID => ID / MD_PARTY.MAX_PARTY_SIZE;
-        public Multiplayer_Relay_ID RELAY_ID { get; internal set; }
+        public Multiplayer_Relay_ID Relay_ID { get; internal set; }
+        public bool IsRelay_Bound => Relay_ID != Multiplayer_Relay_ID.NULL_ID;
 
         internal GameEntity_ID(int id, Multiplayer_Relay_ID rid = null)
         {
             ID = id;
-            RELAY_ID = rid ?? Multiplayer_Relay_ID.NULL_ID;
+            Relay_ID = rid ?? Multiplayer_Relay_ID.NULL_ID;
+        }
+
+        public override string ToString()
+        {
+            return String.Format("{0}  R:{1}", ID, Relay_ID);
         }
 
         public static implicit operator int(GameEntity_ID gameEntity_ID)

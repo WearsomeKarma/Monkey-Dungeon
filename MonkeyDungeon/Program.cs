@@ -14,7 +14,7 @@ namespace MonkeyDungeon_Core
             string dir = AppDomain.CurrentDomain.BaseDirectory;
             MonkeyDungeon_Game game = new MonkeyDungeon_Game(
                 dir,
-                Path.Combine(dir, "Assets\\")
+                Path.Combine(dir, "Assets" + Path.DirectorySeparatorChar)
                 );
             game.Run();
         }

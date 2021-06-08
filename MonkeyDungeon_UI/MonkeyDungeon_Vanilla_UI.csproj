@@ -62,12 +62,13 @@
     <Compile Include="Multiplayer\Handlers\MMH_Set_Ranged_Particle.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Set_Traveling_State.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Update_Ability_Point.cs" />
-    <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_Abilities.cs" />
+    <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_Ability.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_Level.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_Resource.cs" />
     <Compile Include="Multiplayer\Handlers\MMH_Update_Entity_UniqueID.cs" />
     <Compile Include="Multiplayer\MessageWrappers\MMW_Request_EndTurn.cs" />
     <Compile Include="Multiplayer\MessageWrappers\MMW_Set_Combat_Action.cs" />
+    <Compile Include="Multiplayer\MessageWrappers\MMW_Set_Combat_Target.cs" />
     <Compile Include="Multiplayer\MessageWrappers\MMW_Set_Entity.cs" />
     <Compile Include="Multiplayer\MessageWrappers\MMW_Set_Entity_Ready.cs" />
     <Compile Include="Multiplayer\Multiplayer_Message_UI_Handler.cs" />

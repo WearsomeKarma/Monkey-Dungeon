@@ -17,16 +17,15 @@ namespace MonkeyDungeon_Core.GameFeatures
         public GameEntity Entity { get; private set; }
 
         internal Combat_Action PendingCombatAction { get; private set; }
-        internal void Setup_CombatAction_Ability(GameEntity_Attribute_Name abilityName)
+        internal void Setup_Combat_Action_Ability(GameEntity_Attribute_Name abilityName)
         {
             if (!IsAutomonous)
             {
-                PendingCombatAction = new Combat_Action();
-                PendingCombatAction.Action_Owner = Entity.GameEntity_ID;
+                Reset_Action();
                 PendingCombatAction.Selected_Ability = abilityName;
             }
         }
-        internal void Setup_CombatAction_Target(GameEntity_ID index)
+        internal void Setup_Combat_Action_Target(GameEntity_ID index)
         {
             if (!IsAutomonous)
             {
@@ -35,11 +34,12 @@ namespace MonkeyDungeon_Core.GameFeatures
                 PendingCombatAction.Target.Add_Target(index);
             }
         }
-        internal Combat_Action Get_CombatAction(GameEntity_EntityField gameField)
+        internal Combat_Action Get_Combat_Action(GameEntity_EntityField gameField)
         {
             if (!Entity.Has_PlayableMoves())
-                throw new NotImplementedException(); //TODO: send a combat_action which requests EOT.
-                //return null;
+            {
+                return new Combat_Action() {Action_Owner = Entity.GameEntity_ID, Action_Ends_Turn = true};
+            }
 
             Combat_Action result = Handle_CombatAction_Request(gameField);
             if (result == null)
@@ -60,23 +60,34 @@ namespace MonkeyDungeon_Core.GameFeatures
         public GameEntity_Controller(bool isAutonomous = false)
         {
             IsAutomonous = isAutonomous;
+            Reset_Action();
         }
 
-        internal void GainControl(GameEntity newEntity)
+        internal void Gain_Control(GameEntity newEntity)
         {
             if (Entity != null)
-                LoseControl();
+                Lose_Control();
             Handle_Control_NewEntity(newEntity);
             Entity = newEntity;
+            //TODO: remove this
             Entity.EntityController = this;
+
+            Reset_Action();
         }
         
-        internal void LoseControl()
+        internal void Lose_Control()
         {
             Handle_Control_LoseEntity();
             Entity = null;
+            
+            Reset_Action();
         }
 
+        private void Reset_Action()
+        {
+            PendingCombatAction = new Combat_Action {Action_Owner = Entity?.GameEntity_ID ?? GameEntity_ID.ID_NULL};
+        }
+        
         protected virtual void Handle_Control_NewEntity(GameEntity newEntity) { }
         protected virtual void Handle_Control_LoseEntity() { }
         public virtual GameEntity_Controller Clone()

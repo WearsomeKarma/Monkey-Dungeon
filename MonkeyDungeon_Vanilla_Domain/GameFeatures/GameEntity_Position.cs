@@ -2,6 +2,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 {
     public class GameEntity_Position
     {
+        public static GameEntity_Position NULL_POSITION = new GameEntity_Position(-1);
         public static GameEntity_Position FRONT_RIGHT = new GameEntity_Position(0);
         public static GameEntity_Position FRONT_LEFT = new GameEntity_Position(1);
         public static GameEntity_Position REAR_RIGHT = new GameEntity_Position(2);
@@ -31,12 +32,21 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 
         public GameEntity_Position Get_Horizontal_Swap()
         {
+            if (this == NULL_POSITION)
+                return this;
             return POSITIONS[Horizontal_Adjacent_Position];
         }
 
         public GameEntity_Position Get_Vertical_Swap()
         {
+            if (this == NULL_POSITION)
+                return this;
             return POSITIONS[Vertical_Adjacent_Position];
+        }
+
+        public override string ToString()
+        {
+            return ((GameEntity_Position_Type) World_Position).ToString();
         }
 
         public static explicit operator GameEntity_Position(GameEntity_Position_Type type)
@@ -46,6 +56,6 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
             => (GameEntity_Position_Type) (position.World_Position);
 
         public static explicit operator GameEntity_Position(GameEntity_ID id)
-            => POSITIONS[id % MD_PARTY.MAX_PARTY_SIZE];
+            => POSITIONS[(id > -1) ? id % MD_PARTY.MAX_PARTY_SIZE : 0];
     }
 }

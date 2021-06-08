@@ -115,7 +115,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                 new MMH_Entity_Death(this),
                 new MMH_Update_Entity_Level(this),
                 new MMH_Update_Entity_Resource(this),
-                new MMH_Update_Entity_Abilities(this),
+                new MMH_Update_Entity_Ability(this),
                 new MMH_Update_Entity_UniqueID(this),
                 new MMH_Update_Ability_Point(this),
                 new MMH_Set_Melee_Combattants(this),

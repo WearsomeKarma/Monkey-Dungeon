@@ -22,6 +22,18 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
         {
         }
 
+        protected override Combat_Redirection_Chance Handle_Calculate_Redirect_Chance(Combat_Action action,
+            GameEntity_Position_Type ownerPositionType, GameEntity_Position_Type targetPositionType,
+            Combat_Redirection_Chance baseChance)
+        {
+            return new Combat_Redirection_Chance((Combat_Redirect_Type)(rand.Next(2)+ 1), 0.25);
+        }
+
+        protected override Combat_Resource_Offset Handle_Calculate_Damage(Combat_Action action)
+        {
+            return new Combat_Resource_Offset(Combat_Damage_Type.Magical, Get_RelevantOutput() * 1.25);
+        }
+
         public override GameEntity_Ability Clone()
         {
             return new Ability_ChaosBolt();

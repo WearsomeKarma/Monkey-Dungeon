@@ -7,6 +7,7 @@ using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using System;
 using System.Collections.Generic;
+using MonkeyDungeon_Core.GameFeatures.GameStates.Combat;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameStates
@@ -23,6 +24,8 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
     public class Combat_GameState : GameState
     {
         public CombatState CombatState { get; private set; }
+
+        private readonly Combat_Action_Resolver ACTION_RESOLVER;
         
         /// <summary>
         /// The current turn of the entities.
@@ -47,6 +50,8 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
         public Combat_GameState()
         {
             TurnOffset = 1;
+
+            ACTION_RESOLVER = new Combat_Action_Resolver(this);
         }
 
         protected override void Handle_AcquiredWorld()
@@ -94,22 +99,18 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
                         GameState_Machine.Request_Transition_ToState<GameOver_GameState>();
                         break;
                     }
-                    Combat_Action action = Entity_Of_Current_Turn.EntityController.Get_CombatAction(Game_Field);
+                    Combat_Action action = Entity_Of_Current_Turn.EntityController.Get_Combat_Action(Game_Field);
                     if (action != null)
                     {
-                        throw new NotImplementedException();
-                        /*
-                        if (action.Conduct_Action(this))
+                        if (action.Action_Ends_Turn)
                         {
-                            GameState_Machine.Broadcast(
-                                new MMW_Announcement(action.CombatAction_Ability_Name)
-                                );
+                            Request_EndOfTurn();
+                            break;
                         }
-                        else
-                        {
-                            //TODO: implement.
-                        }
-                        */
+                        GameState_Machine.Broadcast(
+                            new MMW_Announcement(action.Selected_Ability)
+                        );
+                        ACTION_RESOLVER.Resolve_Action(action);
                     }
                     break;
                 case CombatState.FinishCurrentTurn:

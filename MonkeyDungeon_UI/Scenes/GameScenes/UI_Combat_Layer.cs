@@ -32,15 +32,14 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
         private StatusBar statusBar;
 
         private GameEntity_Attribute_Name[] abilityNames;
-        private void Set_Ability_Names(GameEntity_Attribute_Name[] abilityNames)
+        //TODO: prim wrap
+        private void Set_Ability_Names(GameEntity_Attribute_Name[] newAbilityNames)
         {
             for (int i = 0; i < abilityButtons.Length; i++)
             {
-                bool state = this.abilityNames.Length > i;
-                if (state)
-                {
-                    abilityButtons[i].Text = this.abilityNames[i];
-                }
+                bool state = newAbilityNames[i] != null && newAbilityNames.Length > i;
+            
+                abilityButtons[i].Text = state ? newAbilityNames[i] : GameEntity_Attribute_Name.DEFAULT;
                 abilityButtons[i].Enabled = state;
                 abilityButtons[i].SpriteComponent.Enabled = state;
             }
@@ -192,12 +191,13 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
             Focus_Entity(clientPlayer);
         }
 
-        internal void BeginTurn(int entityId)
+        internal void BeginTurn(GameEntity_ID entityId)
         {
             endTurnButton.RefreshButton();
             Reset_Selections();
             UI_GameEntity_Descriptor entity = World_Layer.Get_Description_From_Id(entityId);
-            Set_Ability_Names(entity.ABILITY_NAMES);
+            abilityNames = entity.ABILITY_NAMES;
+            Set_Ability_Names(abilityNames);
             Focus_Entity(entity);
         }
 

@@ -6,6 +6,7 @@ namespace MonkeyDungeon_Core.GameFeatures
     public class GameEntity_RosterEntry
     {
         public GameEntity Game_Entity { get; internal set; }
+        public GameEntity_Controller Controller => Game_Entity.EntityController;
         public GameEntity_ID GameEntity_ID => Game_Entity.GameEntity_ID;
         public Multiplayer_Relay_ID Multiplayer_Relay_ID => Game_Entity.Multiplayer_Relay_ID;
         public GameEntity_Position World_Position { get; private set; }
@@ -17,7 +18,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         internal GameEntity_RosterEntry(GameEntity boundEntity)
         {
             Game_Entity = boundEntity;
-            World_Position = (GameEntity_Position) boundEntity.GameEntity_ID;
+            World_Position = ((GameEntity_Position)boundEntity?.GameEntity_ID) ?? GameEntity_Position.FRONT_RIGHT;
 
             Is_Ready = false;
             Is_Incapacitated = false;

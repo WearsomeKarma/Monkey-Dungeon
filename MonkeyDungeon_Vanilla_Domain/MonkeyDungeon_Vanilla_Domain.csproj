@@ -49,9 +49,12 @@
     <Compile Include="GameFeatures\AttributeNames\MD_VANILLA_UI.cs" />
     <Compile Include="GameFeatures\GameEntity_Ability_Index.cs" />
     <Compile Include="GameFeatures\GameEntity_Attribute_Name.cs" />
+    <Compile Include="GameFeatures\GameEntity_Target_Field.cs" />
     <Compile Include="GameFeatures\GameEntity_ID.cs" />
     <Compile Include="GameFeatures\GameEntity_Position.cs" />
     <Compile Include="GameFeatures\GameEntity_Position_Type.cs" />
+    <Compile Include="GameFeatures\GameEntity_Roster_Id.cs" />
+    <Compile Include="GameFeatures\GameStates\Combat\Combat_Ability_Target.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Assault_Type.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Damage_Type.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Redirection_Chance.cs" />
