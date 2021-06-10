@@ -58,14 +58,13 @@ namespace MonkeyDungeon_Core.GameFeatures
             Action_Owner = GameEntity_ID.ID_NULL;
         }
 
-        internal void Finalized_Action(GameEntity_Field_RosterEntry fieldRosterEntry)
+        internal void Finalized_Action(GameEntity_ServerSide_Roster field)
         {
             System.Console.WriteLine(this);
-            GameEntity_RosterEntry owner = fieldRosterEntry.Get_Entity(Action_Owner);
-            GameEntity ownerEntity = owner.Entity;
-            GameEntity_Ability ability = ownerEntity.Ability_Manager.Get_Ability<GameEntity_Ability>(Selected_Ability);
+            GameEntity_ServerSide owner = field.Get_Entity(Action_Owner);
+            GameEntity_Ability ability = owner.Ability_Manager.Get_Ability<GameEntity_Ability>(Selected_Ability);
             
-            Target.Bind_To_Owner(owner.World_Position, owner.Roster_ID);
+            Target.Bind_To_Owner(owner.GameEntity_Position, owner.GameEntity_Team_ID);
         }
         
         public Combat_Action Copy()

@@ -12,7 +12,7 @@ using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Entities
 {
-    public class EC_Goblin : GameEntity
+    public class EC_Goblin : GameEntity_ServerSide
     {
         public static readonly int DEFAULT_UNIQUE_ID = 0;
         

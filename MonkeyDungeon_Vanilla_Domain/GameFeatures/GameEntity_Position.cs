@@ -4,21 +4,21 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 {
     public class GameEntity_Position
     {
-        public static readonly GameEntity_Position __NULL____POSITION    = new GameEntity_Position(-1, GameEntity_Roster_Id.__NULL____ROSTER_ID);
+        public static readonly GameEntity_Position ID_NULL    = new GameEntity_Position(-1, GameEntity_Team_ID.ID_NULL);
         
-        public static readonly GameEntity_Position TEAM_ONE__FRONT_RIGHT = new GameEntity_Position( 0, GameEntity_Roster_Id.TEAM_ONE__ROSTER_ID);
-        public static readonly GameEntity_Position TEAM_ONE__FRONT_LEFT  = new GameEntity_Position( 1, GameEntity_Roster_Id.TEAM_ONE__ROSTER_ID);
-        public static readonly GameEntity_Position TEAM_ONE__REAR_RIGHT  = new GameEntity_Position( 2, GameEntity_Roster_Id.TEAM_ONE__ROSTER_ID);
-        public static readonly GameEntity_Position TEAM_ONE__REAR_LEFT   = new GameEntity_Position( 3, GameEntity_Roster_Id.TEAM_ONE__ROSTER_ID);
+        public static readonly GameEntity_Position TEAM_ONE__FRONT_RIGHT = new GameEntity_Position( 0, GameEntity_Team_ID.TEAM_ONE_ID);
+        public static readonly GameEntity_Position TEAM_ONE__FRONT_LEFT  = new GameEntity_Position( 1, GameEntity_Team_ID.TEAM_ONE_ID);
+        public static readonly GameEntity_Position TEAM_ONE__REAR_RIGHT  = new GameEntity_Position( 2, GameEntity_Team_ID.TEAM_ONE_ID);
+        public static readonly GameEntity_Position TEAM_ONE__REAR_LEFT   = new GameEntity_Position( 3, GameEntity_Team_ID.TEAM_ONE_ID);
 
-        public static readonly GameEntity_Position TEAM_TWO__FRONT_RIGHT = new GameEntity_Position( 0, GameEntity_Roster_Id.TEAM_TWO__ROSTER_ID);
-        public static readonly GameEntity_Position TEAM_TWO__FRONT_LEFT  = new GameEntity_Position( 1, GameEntity_Roster_Id.TEAM_TWO__ROSTER_ID);
-        public static readonly GameEntity_Position TEAM_TWO__REAR_RIGHT  = new GameEntity_Position( 2, GameEntity_Roster_Id.TEAM_TWO__ROSTER_ID);
-        public static readonly GameEntity_Position TEAM_TWO__REAR_LEFT   = new GameEntity_Position( 3, GameEntity_Roster_Id.TEAM_TWO__ROSTER_ID);
+        public static readonly GameEntity_Position TEAM_TWO__FRONT_RIGHT = new GameEntity_Position( 0, GameEntity_Team_ID.TEAM_TWO_ID);
+        public static readonly GameEntity_Position TEAM_TWO__FRONT_LEFT  = new GameEntity_Position( 1, GameEntity_Team_ID.TEAM_TWO_ID);
+        public static readonly GameEntity_Position TEAM_TWO__REAR_RIGHT  = new GameEntity_Position( 2, GameEntity_Team_ID.TEAM_TWO_ID);
+        public static readonly GameEntity_Position TEAM_TWO__REAR_LEFT   = new GameEntity_Position( 3, GameEntity_Team_ID.TEAM_TWO_ID);
 
         public static readonly GameEntity_Position[] TEAM_NULL_POSITIONS = new GameEntity_Position[]
         {
-            __NULL____POSITION
+            ID_NULL
         };
         
         public static readonly GameEntity_Position[] TEAM_ONE__POSITIONS = new GameEntity_Position[]
@@ -55,45 +55,45 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
             TEAM_TWO__POSITIONS
         };
 
-        public static GameEntity_Position[] Get_Legal_Positions_By_RosterID(GameEntity_Roster_Id rosterID)
+        public static GameEntity_Position[] Get_Legal_Positions_By_RosterID(GameEntity_Team_ID teamId)
         {
             //constraint null
-            rosterID = rosterID ?? GameEntity_Roster_Id.__NULL____ROSTER_ID;
+            teamId = teamId ?? GameEntity_Team_ID.ID_NULL;
             
-            if (rosterID == GameEntity_Roster_Id.__NULL____ROSTER_ID)
+            if (teamId == GameEntity_Team_ID.ID_NULL)
                 return TEAM_NULL_POSITIONS;
-            return POSITIONS_BY_ROSTER[rosterID];
+            return POSITIONS_BY_ROSTER[teamId];
         }
 
         public static GameEntity_Position Get_Default_Position_From_EntityID(GameEntity_ID id, GameEntity_Position nullPosition = null)
         {
             //constraint null
             id = id ?? GameEntity_ID.ID_NULL;
-            nullPosition = nullPosition ?? __NULL____POSITION;
+            nullPosition = nullPosition ?? ID_NULL;
             
-            if (id == GameEntity_ID.ID_NULL || id.Roster_ID == GameEntity_Roster_Id.__NULL____ROSTER_ID)
+            if (id == GameEntity_ID.ID_NULL || id.Team_Id == GameEntity_Team_ID.ID_NULL)
                 return nullPosition;
 
-            return Get_Legal_Positions_By_RosterID(id.Roster_ID)[id % MD_PARTY.MAX_PARTY_SIZE];
+            return Get_Legal_Positions_By_RosterID(id.Team_Id)[id % MD_PARTY.MAX_PARTY_SIZE];
         }
 
         public static GameEntity_Position Get_Position_From_Type
         (
             GameEntity_Position_Type positionType,
-            GameEntity_Roster_Id rosterID,
+            GameEntity_Team_ID teamId,
             GameEntity_Position nullPosition = null
             )
         {
-            nullPosition = nullPosition ?? __NULL____POSITION;
+            nullPosition = nullPosition ?? ID_NULL;
             
-            if (rosterID == null || rosterID == GameEntity_Roster_Id.__NULL____ROSTER_ID)
+            if (teamId == null || teamId == GameEntity_Team_ID.ID_NULL)
                 return nullPosition;
             
-            return POSITIONS_BY_ROSTER[rosterID][(int) positionType];
+            return POSITIONS_BY_ROSTER[teamId][(int) positionType];
         }
         
         public readonly int WORLD_POSITION;
-        public readonly GameEntity_Roster_Id ROSTER_ID; 
+        public readonly GameEntity_Team_ID TeamId; 
         
         private int Modulo_Position => WORLD_POSITION / 2; //0 or 1
         private int Modulo_Position_Low => (Modulo_Position) * MD_PARTY.MAX_PARTY_SIZE_HALF;
@@ -102,24 +102,24 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         public int Horizontal_Adjacent_Position => (Modulo_Position_Low) + ((WORLD_POSITION + 1) % MD_PARTY.MAX_PARTY_SIZE_HALF);
         public int Vertical_Adjacent_Position => (WORLD_POSITION + MD_PARTY.MAX_PARTY_SIZE_3_2) % MD_PARTY.MAX_PARTY_SIZE;
         
-        internal GameEntity_Position(int initalPosition, GameEntity_Roster_Id rosterID)
+        internal GameEntity_Position(int initalPosition, GameEntity_Team_ID teamId)
         {
             WORLD_POSITION = initalPosition;
-            ROSTER_ID = rosterID;
+            TeamId = teamId;
         }
 
         public GameEntity_Position Get_Horizontal_Swap()
         {
-            if (this == __NULL____POSITION)
+            if (this == ID_NULL)
                 return this;
-            return Get_Legal_Positions_By_RosterID(ROSTER_ID)[Horizontal_Adjacent_Position];
+            return Get_Legal_Positions_By_RosterID(TeamId)[Horizontal_Adjacent_Position];
         }
 
         public GameEntity_Position Get_Vertical_Swap()
         {
-            if (this == __NULL____POSITION)
+            if (this == ID_NULL)
                 return this;
-            return Get_Legal_Positions_By_RosterID(ROSTER_ID)[Vertical_Adjacent_Position];
+            return Get_Legal_Positions_By_RosterID(TeamId)[Vertical_Adjacent_Position];
         }
 
         public override string ToString()
@@ -132,5 +132,8 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 
         public static explicit operator GameEntity_Position_Type(GameEntity_Position position)
             => (GameEntity_Position_Type) (position.WORLD_POSITION);
+
+        public static bool Validate(GameEntity_Position position)
+            => (position != null) || (position != ID_NULL);
     }
 }

@@ -8,7 +8,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Resources
 {
     public class GameEntity_Resource_Manager
     {
-        private readonly GameEntity MANAGED_ENTITY;
+        private readonly GameEntity_ServerSide _managedEntityServerSide;
 
         public event Action<GameEntity_Resource> Resources_Updated;
 
@@ -29,21 +29,21 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Resources
             resource.Quantity_Changed += 
                 (e) => Resources_Updated?.Invoke(e as GameEntity_Resource);
             RESOURCES.Add(resource);
-            resource.Attach_To_Entity(MANAGED_ENTITY);
+            resource.Attach_To_Entity(_managedEntityServerSide);
         }
         public void Remove_Resources<T>                         () where T : GameEntity_Resource { foreach (T resource in RESOURCES.ToArray()) RESOURCES.Remove(resource); }
         public void Replace_Resource<T>                         (T resource) where T : GameEntity_Resource { Remove_Resources<T>(); Add_Resource(resource); }
 
-        public GameEntity_Resource_Manager(GameEntity managedEntity, List<GameEntity_Resource> resources = null)
+        public GameEntity_Resource_Manager(GameEntity_ServerSide managedEntityServerSide, List<GameEntity_Resource> resources = null)
         {
-            MANAGED_ENTITY = managedEntity;
+            _managedEntityServerSide = managedEntityServerSide;
 
             if (resources != null)
             {
                 foreach (GameEntity_Resource resource in resources)
                 {
                     RESOURCES.Add(resource);
-                    resource.Attach_To_Entity(MANAGED_ENTITY);
+                    resource.Attach_To_Entity(_managedEntityServerSide);
                 }
             }
         }

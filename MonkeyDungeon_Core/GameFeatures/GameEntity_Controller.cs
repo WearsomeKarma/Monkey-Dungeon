@@ -14,7 +14,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         public bool IsAutomonous { get; private set; }
 
         protected GameState_Machine GameWorld { get; private set; }
-        public GameEntity Entity { get; private set; }
+        public GameEntity_ServerSide EntityServerSide { get; private set; }
 
         internal Combat_Action PendingCombatAction { get; private set; }
         internal void Setup_Combat_Action_Ability(GameEntity_Attribute_Name abilityName)
@@ -34,14 +34,14 @@ namespace MonkeyDungeon_Core.GameFeatures
                 PendingCombatAction.Target.Add_Target(position);
             }
         }
-        internal Combat_Action Get_Combat_Action(GameEntity_Field_RosterEntry gameFieldRosterEntry)
+        internal Combat_Action Get_Combat_Action(GameEntity_ServerSide_Roster gameField)
         {
-            if (!Entity.Has_PlayableMoves())
+            if (!EntityServerSide.Has_PlayableMoves())
             {
-                return new Combat_Action() {Action_Owner = Entity.GameEntity_ID, Action_Ends_Turn = true};
+                return new Combat_Action() {Action_Owner = EntityServerSide.GameEntity_ID, Action_Ends_Turn = true};
             }
 
-            Combat_Action result = Handle_CombatAction_Request(gameFieldRosterEntry);
+            Combat_Action result = Handle_CombatAction_Request(gameField);
             if (result == null)
                 return null;
 
@@ -49,13 +49,13 @@ namespace MonkeyDungeon_Core.GameFeatures
             PendingCombatAction = null;
             return finishedAction; //TODO: review this stuff too in case this is lousy.
         }
-        protected virtual Combat_Action Handle_CombatAction_Request(GameEntity_Field_RosterEntry gameFieldRosterEntry)
+        protected virtual Combat_Action Handle_CombatAction_Request(GameEntity_ServerSide_Roster gameField)
         {
             return null;
         }
 
-        internal void BeginCombat(GameEntity_Field_RosterEntry gameFieldRosterEntry) => Handle_BeginCombat(gameFieldRosterEntry);
-        protected virtual void Handle_BeginCombat(GameEntity_Field_RosterEntry gameFieldRosterEntry) { }
+        internal void BeginCombat(GameEntity_ServerSide_Roster gameField) => Handle_BeginCombat(gameField);
+        protected virtual void Handle_BeginCombat(GameEntity_ServerSide_Roster gameField) { }
 
         public GameEntity_Controller(bool isAutonomous = false)
         {
@@ -63,14 +63,14 @@ namespace MonkeyDungeon_Core.GameFeatures
             Reset_Action();
         }
 
-        internal void Gain_Control(GameEntity newEntity)
+        internal void Gain_Control(GameEntity_ServerSide newEntityServerSide)
         {
-            if (Entity != null)
+            if (EntityServerSide != null)
                 Lose_Control();
-            Handle_Control_NewEntity(newEntity);
-            Entity = newEntity;
+            Handle_Control_NewEntity(newEntityServerSide);
+            EntityServerSide = newEntityServerSide;
             //TODO: remove this
-            Entity.EntityController = this;
+            EntityServerSide.EntityController = this;
 
             Reset_Action();
         }
@@ -78,17 +78,17 @@ namespace MonkeyDungeon_Core.GameFeatures
         internal void Lose_Control()
         {
             Handle_Control_LoseEntity();
-            Entity = null;
+            EntityServerSide = null;
             
             Reset_Action();
         }
 
         private void Reset_Action()
         {
-            PendingCombatAction = new Combat_Action {Action_Owner = Entity?.GameEntity_ID ?? GameEntity_ID.ID_NULL};
+            PendingCombatAction = new Combat_Action {Action_Owner = EntityServerSide?.GameEntity_ID ?? GameEntity_ID.ID_NULL};
         }
         
-        protected virtual void Handle_Control_NewEntity(GameEntity newEntity) { }
+        protected virtual void Handle_Control_NewEntity(GameEntity_ServerSide newEntityServerSide) { }
         protected virtual void Handle_Control_LoseEntity() { }
         public virtual GameEntity_Controller Clone()
             => new GameEntity_Controller(IsAutomonous);

@@ -29,7 +29,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
                 return;
             }
 
-            GameState_Machine.Player_Roster.Set_Ready_To_Start(entityId, state);
+            GameState_Machine.GameField.Set_Player_As_Ready(entityId, state);
         }
     }
 }

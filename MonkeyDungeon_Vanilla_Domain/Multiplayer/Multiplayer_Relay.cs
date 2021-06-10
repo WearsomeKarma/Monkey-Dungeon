@@ -46,7 +46,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             ENDPOINT_ADDRESS = endpoint_address;
             PORT = port;
 
-            Relay_ID = Multiplayer_Relay_ID.NULL_ID;
+            Relay_ID = Multiplayer_Relay_ID.ID_NULL;
 
             Message_Reception_Table = new List<Multiplayer_Message_Handler>();
             Message_Reception_Table_Types = new List<string>();

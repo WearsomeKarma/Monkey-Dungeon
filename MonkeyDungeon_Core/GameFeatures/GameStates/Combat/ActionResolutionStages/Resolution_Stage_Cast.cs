@@ -12,25 +12,25 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
     {
         protected override void Handle_Stage(Combat_Action action)
         {
-            GameEntity entity = Get_Owner_Entity_Of_Action(action).Entity;
+            GameEntity_ServerSide entityServerSide = Get_Entity(action);
 
-            GameEntity_Ability ability = entity.Ability_Manager.Get_Ability<GameEntity_Ability>(action.Selected_Ability);
+            GameEntity_Ability ability = entityServerSide.Ability_Manager.Get_Ability<GameEntity_Ability>(action.Selected_Ability);
             Combat_Assault_Type assaultType = ability.Assault_Type;
 
             //TOOD: fix
             switch (assaultType)
             {
                 case Combat_Assault_Type.Melee:
-                    Resolver.Combat.Act_Melee_Attack(entity.GameEntity_ID, ability.Target.Get_Targets()[0]);
+                    Resolver.Combat.Act_Melee_Attack(entityServerSide.GameEntity_ID, Get_Entities(ability.Target.Get_Reduced_Fields())[0].GameEntity_ID);
                     break;
                 case Combat_Assault_Type.Ranged:
-                    Resolver.Combat.Act_Ranged_Attack(entity.GameEntity_ID, ability.Target.Get_Targets()[0], ability.Particle_Type);
+                    Resolver.Combat.Act_Ranged_Attack(entityServerSide.GameEntity_ID, Get_Entities(ability.Target.Get_Reduced_Fields())[0].GameEntity_ID, ability.Particle_Type);
                     break;
             }
 
             ability.Cast(action);
 
-            entity.StatusEffect_Manager.React_To_Cast(action);
+            entityServerSide.StatusEffect_Manager.React_To_Cast(action);
         }
     }
 }

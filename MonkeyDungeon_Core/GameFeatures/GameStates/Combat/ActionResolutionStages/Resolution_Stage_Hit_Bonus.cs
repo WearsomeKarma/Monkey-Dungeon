@@ -8,7 +8,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
     {
         protected override void Handle_Stage(Combat_Action action)
         {
-            GameEntity owner = Get_Owner_Entity_Of_Action(action).Entity;
+            GameEntity_ServerSide owner = Get_Entity(action);
             GameEntity_Stat scalingStat = owner.Stat_Manager.Get_Stat(action.Stat_Hit_Bonus);
 
             Combat_Finalized_Factor hitBonus = new Combat_Finalized_Factor(action.Action_Owner);

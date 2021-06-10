@@ -24,7 +24,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
             double damage = Get_RelevantOutput() * 0.5;
             double heal = damage * 0.15;
 
-            Parent_Entity.Resource_Manager.Get_Resource(MD_VANILLA_RESOURCES.RESOURCE_HEALTH).Offset_Value(heal);
+            Parent_EntityServerSide.Resource_Manager.Get_Resource(MD_VANILLA_RESOURCES.RESOURCE_HEALTH).Offset_Value(heal);
 
             return new Combat_Resource_Offset(Combat_Damage_Type.Magical, damage);
         }

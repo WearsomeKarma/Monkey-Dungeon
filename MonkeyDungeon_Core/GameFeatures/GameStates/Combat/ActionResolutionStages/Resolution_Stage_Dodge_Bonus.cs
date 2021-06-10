@@ -10,13 +10,13 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
     {
         protected override void Handle_Stage(Combat_Action action)
         {
-            GameEntity_ID[] targetIDs = action.Target.Get_Targets();
-            GameEntity targetedEntity;
+            GameEntity_Position[] targetPositions = action.Target.Get_Reduced_Fields();
+            GameEntity_ServerSide targetedEntityServerSide;
             
-            Combat_Finalized_Factor[] dodgeBonuses = new Combat_Finalized_Factor[targetIDs.Length];
-            for (int i = 0; i < targetIDs.Length; i++)
+            Combat_Finalized_Factor[] dodgeBonuses = new Combat_Finalized_Factor[targetPositions.Length];
+            for (int i = 0; i < targetPositions.Length; i++)
             {
-                targetedEntity = Get_Owner_Entity_Of_Action(targetIDs[i]).Entity;
+                targetedEntityServerSide = Get_Entity(targetPositions[i]);
 
                 if (action.Stat_Dodge_Bonus == GameEntity_Attribute_Name.DEFAULT)
                 {
@@ -24,13 +24,13 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
                     continue;
                 }
                 
-                dodgeBonuses[i] = new Combat_Finalized_Factor(targetIDs[i]);
+                dodgeBonuses[i] = new Combat_Finalized_Factor(Get_Entity(targetPositions[i]).GameEntity_ID);
                 
-                GameEntity_Stat dodgeStat = targetedEntity.Stat_Manager.Get_Stat(action.Stat_Dodge_Bonus);
+                GameEntity_Stat dodgeStat = targetedEntityServerSide.Stat_Manager.Get_Stat(action.Stat_Dodge_Bonus);
 
                 dodgeBonuses[i].Offset_Value(dodgeStat);
 
-                dodgeBonuses[i].Offset_Value(targetedEntity.StatusEffect_Manager.Get_Dodge_Bonuses(action));
+                dodgeBonuses[i].Offset_Value(targetedEntityServerSide.StatusEffect_Manager.Get_Dodge_Bonuses(action));
             }
 
             action.Finalized_Dodge_Bonuses = dodgeBonuses;

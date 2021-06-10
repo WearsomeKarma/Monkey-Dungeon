@@ -13,10 +13,10 @@ namespace MonkeyDungeon_Core.GameFeatures
     {
         private readonly GameState_Machine GameState_Machine;
 
-        private readonly Dictionary<GameEntity_Attribute_Name, GameEntity> GameEntity_Catalog = new Dictionary<GameEntity_Attribute_Name, GameEntity>()
+        private readonly Dictionary<GameEntity_Attribute_Name, GameEntity_ServerSide> GameEntity_Catalog = new Dictionary<GameEntity_Attribute_Name, GameEntity_ServerSide>()
         {
             //Players
-            { MD_VANILLA_RACES.RACE_MONKEY, new GameEntity() }, //TODO: Fix this awful thing with unique_id
+            { MD_VANILLA_RACES.RACE_MONKEY, new GameEntity_ServerSide() }, //TODO: Fix this awful thing with unique_id
             { MD_VANILLA_RACES.CLASS_WARRIOR, new WarriorClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 0 } },
             { MD_VANILLA_RACES.CLASS_WIZARD, new WizardClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 1 } },
             { MD_VANILLA_RACES.CLASS_ARCHER, new ArcherClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 2 } },
@@ -33,9 +33,9 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             List<string> ret = new List<string>();
 
-            foreach (GameEntity entitiy in GameEntity_Catalog.Values)
-                if (!ret.Contains(entitiy.Race))
-                    ret.Add(entitiy.Race);
+            foreach (GameEntity_ServerSide entitiy in GameEntity_Catalog.Values)
+                if (!ret.Contains(entitiy.GameEntity_Race))
+                    ret.Add(entitiy.GameEntity_Race);
 
             return ret.ToArray();
         }
@@ -45,15 +45,15 @@ namespace MonkeyDungeon_Core.GameFeatures
             GameState_Machine = gameState_Machine;
         }
 
-        public void Add_Template(GameEntity gameEntity)
+        public void Add_Template(GameEntity_ServerSide gameEntityServerSide)
         {
-            GameEntity_Catalog.Add(gameEntity.Race, gameEntity);
+            GameEntity_Catalog.Add(gameEntityServerSide.GameEntity_Race, gameEntityServerSide);
         }
 
-        public GameEntity Create_NewEntity(GameEntity_ID entityScene_ID, Multiplayer_Relay_ID relayId, GameEntity_Attribute_Name race)
+        public GameEntity_ServerSide Create_NewEntity(GameEntity_ID entityScene_ID, Multiplayer_Relay_ID relayId, GameEntity_Attribute_Name race)
         {
-            GameEntity entity = GameEntity_Catalog[race].Clone(entityScene_ID);
-            return entity;
+            GameEntity_ServerSide entityServerSide = GameEntity_Catalog[race].Clone(entityScene_ID);
+            return entityServerSide;
         }
     }
 }

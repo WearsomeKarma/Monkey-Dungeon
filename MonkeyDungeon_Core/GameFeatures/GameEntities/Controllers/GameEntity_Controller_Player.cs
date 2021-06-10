@@ -5,7 +5,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Controllers
 {
     public class GameEntity_Controller_Player : GameEntity_Controller
     {
-        protected override Combat_Action Handle_CombatAction_Request(GameEntity_Field_RosterEntry gameFieldRosterEntry)
+        protected override Combat_Action Handle_CombatAction_Request(GameEntity_ServerSide_Roster gameField)
         {
             if (PendingCombatAction?.IsSetupComplete ?? false)
                 return PendingCombatAction;

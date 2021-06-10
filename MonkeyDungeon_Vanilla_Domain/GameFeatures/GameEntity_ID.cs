@@ -28,14 +28,14 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         };
 
         public readonly int ID;
-        public GameEntity_Roster_Id Roster_ID => GameEntity_Roster_Id.ROSTER_IDS[ID / MD_PARTY.MAX_PARTY_SIZE];
+        public GameEntity_Team_ID Team_Id => GameEntity_Team_ID.TEAM_IDS[ID / MD_PARTY.MAX_PARTY_SIZE];
         public Multiplayer_Relay_ID Relay_ID { get; internal set; }
-        public bool IsRelay_Bound => Relay_ID != Multiplayer_Relay_ID.NULL_ID;
+        public bool IsRelay_Bound => Relay_ID != Multiplayer_Relay_ID.ID_NULL;
 
         internal GameEntity_ID(int id, Multiplayer_Relay_ID rid = null)
         {
             ID = id;
-            Relay_ID = rid ?? Multiplayer_Relay_ID.NULL_ID;
+            Relay_ID = rid ?? Multiplayer_Relay_ID.ID_NULL;
         }
 
         public override string ToString()
@@ -45,5 +45,8 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 
         public static implicit operator int(GameEntity_ID gameEntity_ID)
             => gameEntity_ID?.ID ?? ID_NULL.ID;
+
+        public static bool Validate(GameEntity_ID id)
+            => id != null || id == ID_NULL;
     }
 }

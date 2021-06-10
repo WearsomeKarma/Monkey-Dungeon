@@ -1,37 +1,63 @@
+﻿using MonkeyDungeon_Vanilla_Domain;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
+namespace MonkeyDungeon_Core.GameFeatures
 {
-    public class GameEntity_Field<T>
+    public class GameEntity_Field<T> : GameEntity_Survey<T> where T : GameEntity
     {
-        protected readonly Dictionary<GameEntity_Position, T> FIELD;
-        
-        public T Get_Entry_From_Position(GameEntity_Position position)
+        public T Get_Entity(GameEntity_ID id)
         {
-            //constraint null
-            if (position == null || position == GameEntity_Position.__NULL____POSITION)
-                return Get_Default_Return();
+            if (!GameEntity_ID.Validate(id))
+                return DEFAULT_VALUE;
+            
+            T entity;
 
-            return FIELD[position];
-        }
-
-        protected GameEntity_Field(T defaultValue)
-        {
-            FIELD = new Dictionary<GameEntity_Position, T>()
+            foreach (GameEntity_Position position in FIELD.Keys)
             {
-                { GameEntity_Position.TEAM_ONE__FRONT_RIGHT, defaultValue },
-                { GameEntity_Position.TEAM_ONE__FRONT_LEFT, defaultValue },
-                { GameEntity_Position.TEAM_ONE__REAR_RIGHT, defaultValue },
-                { GameEntity_Position.TEAM_ONE__REAR_LEFT, defaultValue },
-                
-                { GameEntity_Position.TEAM_ONE__FRONT_RIGHT, defaultValue },
-                { GameEntity_Position.TEAM_ONE__FRONT_LEFT, defaultValue },
-                { GameEntity_Position.TEAM_ONE__REAR_RIGHT, defaultValue },
-                { GameEntity_Position.TEAM_ONE__REAR_LEFT, defaultValue }
-            };
+                entity = FIELD[position];
+                if (GameEntity.Validate(entity))
+                    return entity;
+            }
+            
+            return DEFAULT_VALUE;
+        }
+
+        public T Get_Entity(GameEntity_Position position)
+            => Get_Entry_From_Position(position);
+
+        public GameEntity_ID[] Get_Entity_Ids(bool isPlayers)
+        {
+            GameEntity[] rosterEntries = Get_Reduced_Field();
+
+            List<GameEntity_ID> ids = new List<GameEntity_ID>();
+            for (int i = 0; i < MD_PARTY.MAX_PARTY_SIZE; i++)
+                ids.Add(rosterEntries[i].GameEntity_ID);
+
+            return ids.ToArray();
+        }
+
+        public void Set_Entity(T entity)
+        {
+            if (GameEntity.Validate(entity))
+            {
+                FIELD[entity.GameEntity_Position] = entity;
+                return;
+            }
         }
         
-        protected virtual T Get_Default_Return()
-            => default(T);
+        public void Set_Entities(T[] entities)
+        {
+            foreach(T entity in entities)
+                Set_Entity(entity);
+        }
+        
+        public GameEntity_Field()
+            : base(GameEntity.NULL_ENTITY as T)
+        {}
     }
 }

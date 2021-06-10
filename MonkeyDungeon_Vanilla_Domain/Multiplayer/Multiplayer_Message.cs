@@ -18,7 +18,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
 
         public Multiplayer_Relay_ID Relay_ID { get; internal set; }
         public int Message_ID { get; internal set; }
-        public bool Is_Unsent_Message => Relay_ID == Multiplayer_Relay_ID.NULL_ID;
+        public bool Is_Unsent_Message => Relay_ID == Multiplayer_Relay_ID.ID_NULL;
 
         public readonly GameEntity_Attribute_Name MESSAGE_TYPE;
 
@@ -39,7 +39,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             GameEntity_Attribute_Name sval = null
             )
         {
-            Relay_ID = Multiplayer_Relay_ID.NULL_ID;
+            Relay_ID = Multiplayer_Relay_ID.ID_NULL;
             Message_ID = -1; //TODO prim wrap
 
             MESSAGE_TYPE = messageType ?? MD_VANILLA_MMH.MMH_DEFAULT;

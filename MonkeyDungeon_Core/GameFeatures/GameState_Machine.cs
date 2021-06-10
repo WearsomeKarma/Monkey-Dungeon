@@ -23,24 +23,19 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         public GameEntity_Factory GameEntity_Factory { get; private set; }
 
-        public readonly GameEntity_Field_RosterEntry GameFieldRosterEntry;
-        internal GameEntity_Roster Player_Roster => GameFieldRosterEntry.PLAYERS;
-        internal GameEntity_Roster Enemy_Roster => GameFieldRosterEntry.ENEMIES;
+        public readonly GameEntity_ServerSide_Roster GameField;
 
-        internal void Set_Enemy_Roster(GameEntity[] enemyEntities) => GameFieldRosterEntry.Set_Enemies(enemyEntities);
+        internal void Set_Enemy_Roster(GameEntity_ServerSide[] enemyEntities) => GameField.Set_Entities(enemyEntities);
 
-        public GameEntity Set_Entity(GameEntity_ID entityId, Multiplayer_Relay_ID relayId, GameEntity_Attribute_Name factory_Tag)
+        public GameEntity_ServerSide Set_Entity(GameEntity_ID entityId, Multiplayer_Relay_ID relayId, GameEntity_Attribute_Name factory_Tag)
         {
-            System.Console.WriteLine(">> BIND >> " + entityId);
             Server.Bind_To_Relay(entityId, relayId);
-            GameEntity entity = GameEntity_Factory.Create_NewEntity(entityId, relayId, factory_Tag);
+            GameEntity_ServerSide entityServerSide = GameEntity_Factory.Create_NewEntity(entityId, relayId, factory_Tag);
 
-            if (entityId < MD_PARTY.MAX_PARTY_SIZE)
-                return Player_Roster.Set_Entity(entity);
-            return Enemy_Roster.Set_Entity(entity);
+            GameField.Set_Entity(entityServerSide);
+
+            return entityServerSide;
         }
-        public void Set_Entity_Ready_State(GameEntity_ID entityId, bool state)
-            => Player_Roster.Set_Ready_To_Start(entityId, state);
 
         public GameState CurrentGameState { get; private set; }
         public GameState RequestedGameState { get; private set; }
@@ -56,7 +51,7 @@ namespace MonkeyDungeon_Core.GameFeatures
                 Add_GameState(gameState);
 
             GameEntity_Factory = new GameEntity_Factory(this);
-            GameFieldRosterEntry = new GameEntity_Field_RosterEntry(this);
+            GameField = new GameEntity_ServerSide_Roster();
 
             CurrentGameState = gameStates[0];
         }
@@ -67,10 +62,10 @@ namespace MonkeyDungeon_Core.GameFeatures
                 return; //TODO: Warn in log.
             HasStarted = true;
 
-            Declare_Descriptions(0, Player_Roster.Get_Races());
+            Declare_Descriptions(0, GameField.Get_Races());
 
-            Relay_Roster(Player_Roster);
-            Dismiss_Roster(null);
+            Relay_Team(GameEntity_Team_ID.TEAM_ONE_ID);
+            Dismiss_Team(GameEntity_Team_ID.TEAM_TWO_ID);
 
             //TODO: Make a means to send message to specific client, and all clients.
             Broadcast(
@@ -101,7 +96,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             if (!HasStarted)
             {
-                if (Player_Roster.CheckIf_Team_Is_Ready())
+                if (GameField.Check_If_Players_Are_Ready())
                 {
                     Begin_Game();
                 }
@@ -141,34 +136,34 @@ namespace MonkeyDungeon_Core.GameFeatures
                 );
         }
 
-        internal void Relay_Entity(GameEntity entity)
+        internal void Relay_Entity(GameEntity_ServerSide entityServerSide)
         {
             //send abilities
-            GameEntity_Attribute_Name[] abilities = entity.Ability_Manager.Get_Ability_Names();
+            GameEntity_Attribute_Name[] abilities = entityServerSide.Ability_Manager.Get_Ability_Names();
             for (int i = 0; i < abilities.Length; i++)
             {
                 Broadcast(
-                    new MMW_Update_Entity_Ability(entity.GameEntity_ID, GameEntity_Ability_Index.INDICES[i], abilities[i])
+                    new MMW_Update_Entity_Ability(entityServerSide.GameEntity_ID, GameEntity_Ability_Index.INDICES[i], abilities[i])
                     );
             }
 
             //send uid
             Broadcast(
-                new MMW_Update_Entity_UniqueID(entity.GameEntity_ID, (uint)entity.Unique_ID)
+                new MMW_Update_Entity_UniqueID(entityServerSide.GameEntity_ID, (uint)entityServerSide.Unique_ID)
                 );
 
             //send resource names
-            GameEntity_Attribute_Name[] resources = entity.Resource_Manager.Get_Resource_Names();
+            GameEntity_Attribute_Name[] resources = entityServerSide.Resource_Manager.Get_Resource_Names();
             for(int i=0;i<resources.Length;i++)
             {
                 Broadcast(
-                    new MMW_Declare_Entity_Resource(entity.GameEntity_ID, resources[i])
+                    new MMW_Declare_Entity_Resource(entityServerSide.GameEntity_ID, resources[i])
                     );
             }
 
             //introduce the entity to the scene.
             Broadcast(
-                new MMW_Introduce_Entity(entity.GameEntity_ID)
+                new MMW_Introduce_Entity(entityServerSide.GameEntity_ID)
                 );
         }
 
@@ -183,27 +178,18 @@ namespace MonkeyDungeon_Core.GameFeatures
             }
         }
 
-        internal void Relay_Roster(GameEntity_Roster roster)
+        internal void Relay_Team(GameEntity_Team_ID teamID)
         {
-            foreach (GameEntity_RosterEntry rosterEntry in roster.Get_Roster_Entries())
-                Relay_Entity(rosterEntry.Entity);
+            foreach (GameEntity_ServerSide entity in GameField.Get_Entities(teamID))
+                Relay_Entity(entity);
         }
 
-        internal void Dismiss_Roster(GameEntity_Roster roster)
+        internal void Dismiss_Team(GameEntity_Team_ID teamID)
         {
-            if (roster == null)
-            {
-                for (int i = MD_PARTY.MAX_PARTY_SIZE; i < MD_PARTY.MAX_PARTY_SIZE * 2; i++)
-                {
-                    Broadcast(
-                        new MMW_Dismiss_Entity(GameEntity_ID.IDS[i])
-                        );
-                }
-                return;
-            }
+            //internal, do not constraint argument.
 
-            foreach (GameEntity_RosterEntry rosterEntry in roster.Get_Roster_Entries())
-                Relay_Dismissal(rosterEntry.Entity);
+            foreach (GameEntity_ServerSide entity in GameField.Get_Entities(teamID))
+                Relay_Dismissal(entity);
         }
 
         internal void Relay_Entity_Static_Resource(GameEntity_Resource resource)
@@ -213,17 +199,17 @@ namespace MonkeyDungeon_Core.GameFeatures
                 );
         }
 
-        internal void Relay_Death(GameEntity gameEntity)
+        internal void Relay_Death(GameEntity_ServerSide gameEntityServerSide)
         {
             Broadcast(
-                new MMW_Entity_Death(gameEntity.GameEntity_ID)
+                new MMW_Entity_Death(gameEntityServerSide.GameEntity_ID)
                 );
         }
 
-        internal void Relay_Dismissal(GameEntity gameEntity)
+        internal void Relay_Dismissal(GameEntity_ServerSide gameEntityServerSide)
         {
             Broadcast(
-                new MMW_Dismiss_Entity(gameEntity.GameEntity_ID)
+                new MMW_Dismiss_Entity(gameEntityServerSide.GameEntity_ID)
                 );
         }
     }

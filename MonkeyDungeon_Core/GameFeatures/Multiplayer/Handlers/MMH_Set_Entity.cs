@@ -29,7 +29,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
                 return;
             }
 
-            GameEntity e = GameState_Machine.Set_Entity(messageEntityID, relayId, factoryTag);
+            GameEntity_ServerSide e = GameState_Machine.Set_Entity(messageEntityID, relayId, factoryTag);
         }
         
         private bool IsInvalid_Message(Multiplayer_Relay_ID relayId, GameEntity_ID entityId)

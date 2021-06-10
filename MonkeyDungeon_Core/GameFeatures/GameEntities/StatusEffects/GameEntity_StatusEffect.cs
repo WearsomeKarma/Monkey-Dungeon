@@ -19,7 +19,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
         public readonly StatusEffectType StatusEffectType;
         public int TurnDuration { get; private set; }
         public int ElapsedDuration { get; set; }
-        public GameEntity EffectedEntity { get; private set; }
+        public GameEntity_ServerSide EffectedEntityServerSide { get; private set; }
         public bool Enabled { get; private set; }
 
         public GameEntity_StatusEffect(StatusEffectType type, int duration)
@@ -50,28 +50,28 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
         }
 
         internal void Remove_Owner(bool enabled = false) => Set_NewOwner(null, enabled);
-        internal void Set_NewOwner(GameEntity target, bool enabled = true)
+        internal void Set_NewOwner(GameEntity_ServerSide target, bool enabled = true)
         {
-            if (EffectedEntity != null)
-                Handle_LoseOwner(EffectedEntity);
-            EffectedEntity = target;
+            if (EffectedEntityServerSide != null)
+                Handle_LoseOwner(EffectedEntityServerSide);
+            EffectedEntityServerSide = target;
             Toggle_ThisEffect(enabled);
             Handle_NewOwner(target);
         }
 
-        protected virtual void Handle_NewOwner(GameEntity newOwner) { }
-        protected virtual void Handle_LoseOwner(GameEntity oldOwner) { }
+        protected virtual void Handle_NewOwner(GameEntity_ServerSide newOwner) { }
+        protected virtual void Handle_LoseOwner(GameEntity_ServerSide oldOwner) { }
 
-        internal void Combat_BeginTurn_StatusEffect(GameEntity_Field_RosterEntry gameFieldRosterEntry)
+        internal void Combat_BeginTurn_StatusEffect(GameEntity_ServerSide_Roster gameField)
         {
-            Handle_Combat_BeginTurn_StatusEffect(gameFieldRosterEntry);
+            Handle_Combat_BeginTurn_StatusEffect(gameField);
             ElapsedDuration++;
             if (TurnDuration > -1 && ElapsedDuration >= TurnDuration)
-                EffectedEntity.StatusEffect_Manager.Remove_StatusEffect(this);
+                EffectedEntityServerSide.StatusEffect_Manager.Remove_StatusEffect(this);
         }
 
-        internal void Combat_EndTurn_StatusEffect(GameEntity_Field_RosterEntry gameFieldRosterEntry)
-            => Handle_Combat_EndTurn_StatusEffect(gameFieldRosterEntry);
+        internal void Combat_EndTurn_StatusEffect(GameEntity_ServerSide_Roster gameField)
+            => Handle_Combat_EndTurn_StatusEffect(gameField);
         internal void React_To_Cast(Combat_Action action)
             => Handle_React_To_Cast(action);
 
@@ -105,8 +105,8 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
                 baseChance
                 );
         
-        protected virtual void Handle_Combat_BeginTurn_StatusEffect(GameEntity_Field_RosterEntry gameFieldRosterEntry) { }
-        protected virtual void Handle_Combat_EndTurn_StatusEffect(GameEntity_Field_RosterEntry gameFieldRosterEntry) { }
+        protected virtual void Handle_Combat_BeginTurn_StatusEffect(GameEntity_ServerSide_Roster gameField) { }
+        protected virtual void Handle_Combat_EndTurn_StatusEffect(GameEntity_ServerSide_Roster gameField) { }
         protected  virtual void Handle_React_To_Cast(Combat_Action action) { }
         protected virtual double Handle_Get_Hit_Bonus(Combat_Action action) => 0;
         protected virtual double Handle_Get_Dodge_Bonus(Combat_Action action) => 0;

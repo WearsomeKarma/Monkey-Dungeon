@@ -6,18 +6,18 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
 {
     public class Combat_Ability_Target
     {
-        private readonly GameEntity_Field_Target FIELD = new GameEntity_Field_Target();
+        private readonly GameEntity_Survey_Target SURVEY = new GameEntity_Survey_Target();
 
-        public GameEntity_Position[] Get_Reduced_Fields(GameEntity_Roster_Id rosterID = null)
-            => FIELD.Get_Reduced_Field(rosterID ?? GameEntity_Roster_Id.__NULL____ROSTER_ID);
+        public GameEntity_Position[] Get_Reduced_Fields(GameEntity_Team_ID teamId = null)
+            => SURVEY.Get_Reduced_Field(teamId ?? GameEntity_Team_ID.ID_NULL);
 
         private GameEntity_Position Owner_Position;
-        private GameEntity_Roster_Id Owner_Roster_ID;
+        private GameEntity_Team_ID _ownerTeamId;
 
-        public void Bind_To_Owner(GameEntity_Position ownerPosition, GameEntity_Roster_Id ownerRosterID)
+        public void Bind_To_Owner(GameEntity_Position ownerPosition, GameEntity_Team_ID ownerTeamId)
         {
             Owner_Position = ownerPosition;
-            Owner_Roster_ID = ownerRosterID;
+            _ownerTeamId = ownerTeamId;
             Reset();
         }
 
@@ -66,9 +66,9 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
         private bool Check_Legal_Targets_For_Field()
         {
             int requiredCountInField = MD_PARTY.MAX_PARTY_SIZE;
-            GameEntity_Position ownerPosition = GameEntity_Position.__NULL____POSITION;
+            GameEntity_Position ownerPosition = GameEntity_Position.ID_NULL;
             bool invertRosterTarget = false;
-            GameEntity_Roster_Id target_RosterID = Owner_Roster_ID;
+            GameEntity_Team_ID targetTeamId = _ownerTeamId;
             
             switch (Target_Type)
             {
@@ -77,13 +77,13 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
                     return true;
                 case Combat_Target_Type.Everything:
                     requiredCountInField = MD_PARTY.MAX_PARTY_SIZE * 2;
-                    target_RosterID = GameEntity_Roster_Id.__NULL____ROSTER_ID;
+                    targetTeamId = GameEntity_Team_ID.ID_NULL;
                     break;
                 case Combat_Target_Type.All_Enemies:
                     invertRosterTarget = true;
                     break;
                 case Combat_Target_Type.All_Friendlies:
-                    target_RosterID = Owner_Roster_ID;
+                    targetTeamId = _ownerTeamId;
                     break;
                 case Combat_Target_Type.One_Ally:
                 case Combat_Target_Type.Two_Allies:
@@ -97,7 +97,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
             }
 
             return requiredCountInField ==
-                   FIELD.Get_Selected_Count(Owner_Position, target_RosterID, invertRosterTarget);
+                   SURVEY.Get_Selected_Count(Owner_Position, targetTeamId, invertRosterTarget);
         }
 
         /// <summary>
@@ -108,14 +108,14 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
         public bool Add_Target(GameEntity_Position targetPosition)
         {
             //constraint null
-            if (targetPosition == null || targetPosition == GameEntity_Position.__NULL____POSITION)
+            if (targetPosition == null || targetPosition == GameEntity_Position.ID_NULL)
                 return false;
 
             //Check if the position is already added.
-            if (FIELD.Get_Entry_From_Position(targetPosition))
+            if (SURVEY.Get_State_By_Position(targetPosition))
                 return true;
             
-            bool isEnemyPosition = targetPosition.ROSTER_ID != Owner_Roster_ID;
+            bool isEnemyPosition = targetPosition.TeamId != _ownerTeamId;
             
             //Validate target type. IE, make sure its not an enemy position if we can only target allies. Vice Versa.
             switch (Target_Type)
@@ -168,12 +168,12 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
             }
 
             bool additionDoesNotExceedCount = 
-                requiredCount == FIELD.Get_Selected_Count(Owner_Position, Owner_Roster_ID, isEnemyPosition);
+                requiredCount == SURVEY.Get_Selected_Count(Owner_Position, _ownerTeamId, isEnemyPosition);
 
             if (!additionDoesNotExceedCount)
                 return false;
             
-            FIELD.Flag_Position(targetPosition);
+            SURVEY.Flag_Position(targetPosition);
             
             return true;
         }
@@ -186,7 +186,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
         public bool Remove_Target(GameEntity_Position targetPosition)
         {
             //constraint null
-            if (targetPosition == null || targetPosition == GameEntity_Position.__NULL____POSITION)
+            if (targetPosition == null || targetPosition == GameEntity_Position.ID_NULL)
                 return false;
             
             //Make sure a target can be removed.
@@ -199,30 +199,30 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
                 case Combat_Target_Type.Self_Or_No_Target:    
                     return false;
                 default:
-                    if (FIELD.Get_Selected_Count() <= 0)
+                    if (SURVEY.Get_Selected_Count() <= 0)
                         return false;
-                    if (!FIELD.Get_Entry_From_Position(targetPosition))
+                    if (!SURVEY.Get_Entry_From_Position(targetPosition))
                         return false;
                     break;
             }
             
-            FIELD.Unflag_Position(targetPosition);
+            SURVEY.Unflag_Position(targetPosition);
             return true;
         }
         
-        private void Reset(GameEntity_Roster_Id rosterID)
+        private void Reset(GameEntity_Team_ID teamId)
         {
             foreach (GameEntity_Position position in GameEntity_Position.ALL_NON_NULL__POSITIONS)
             {
-                FIELD.Unflag_Position(position);
+                SURVEY.Unflag_Position(position);
             }
         }
         
         public void Reset_Ally_Targets()
-            => Reset(GameEntity_Roster_Id.TEAM_ONE__ROSTER_ID);
+            => Reset(GameEntity_Team_ID.TEAM_ONE_ID);
 
         public void Reset_Enemy_Targets()
-            => Reset(GameEntity_Roster_Id.TEAM_TWO__ROSTER_ID);
+            => Reset(GameEntity_Team_ID.TEAM_TWO_ID);
         
         public void Reset()
         {

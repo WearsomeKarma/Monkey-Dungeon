@@ -15,21 +15,17 @@ using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_Core.GameFeatures
 {
-    public class GameEntity
+    public class GameEntity_ServerSide : GameEntity
     {
+        public void Set_Ready_State(bool state)         => IsReady = state;
+        public void Set_Incapacitated_State(bool state) => IsIncapacitated = state;
+        
         public string Name                              { get; set;             }
-        public GameEntity_Attribute_Name Race                  { get; internal set;    }
         private int unique_ID                           = 0;
         public int Unique_ID                            { get => unique_ID; internal set => unique_ID = (value >= 0) ? value : 0; }
 
-        public GameEntity_ID GameEntity_ID        { get; internal set;    }
-        public Multiplayer_Relay_ID Multiplayer_Relay_ID => GameEntity_ID.Relay_ID;
-
         public GameEntity_Controller EntityController   { get; internal set;    }
         public void Set_ActingEntity                    (GameEntity_Controller newEntity) { EntityController?.Lose_Control(); newEntity?.Gain_Control(this); }
-        private bool incapacitated                      = false;
-        public bool IsIncapacitated                     { get => incapacitated; internal set => Set_IncapacitatedState(value); }
-        internal void Set_IncapacitatedState            (bool value = true) { incapacitated = value; if (value) Handle_Incapacitated(); }
 
         private Level level;
         public int Level                                { get => (level != null) ? (int)level.Value : 0; set => Set_Level(value); }
@@ -42,9 +38,9 @@ namespace MonkeyDungeon_Core.GameFeatures
         public readonly GameEntity_Ability_Manager      Ability_Manager;
         public readonly GameEntity_StatusEffect_Manager StatusEffect_Manager;
 
-        public GameEntity(
+        public GameEntity_ServerSide(
 
-            GameEntity_Attribute_Name race,
+            GameEntity_Attribute_Name_Race race,
             string  name,
             int     level,
             int     unique_ID,
@@ -57,7 +53,7 @@ namespace MonkeyDungeon_Core.GameFeatures
 
             )
         {
-            Race                    = race;
+            GameEntity_Race         = race;
             Name                    = name;
             Unique_ID               = unique_ID;
 
@@ -71,9 +67,9 @@ namespace MonkeyDungeon_Core.GameFeatures
             Set_Level               (level);
         }
 
-        public GameEntity(GameEntity_Attribute_Name race = null)
+        public GameEntity_ServerSide(GameEntity_Attribute_Name_Race race = null)
         {
-            Race                    = race ?? MD_VANILLA_RACES.RACE_MONKEY;
+            GameEntity_Race         = race ?? MD_VANILLA_RACES.RACE_MONKEY;
             
             Stat_Manager            = new GameEntity_Stat_Manager           (this);
             Resource_Manager        = new GameEntity_Resource_Manager       (this);
@@ -95,21 +91,21 @@ namespace MonkeyDungeon_Core.GameFeatures
             this.level.Force_Offset(level - Level);
         }
 
-        internal void Combat_BeginTurn(GameEntity_Field_RosterEntry gameFieldRosterEntry)
+        internal void Combat_BeginTurn(GameEntity_ServerSide_Roster gameField)
         {
-            Handle_Combat_BeginTurn_PreUpkeep(gameFieldRosterEntry);
+            Handle_Combat_BeginTurn_PreUpkeep(gameField);
 
-            StatusEffect_Manager.Combat_BeginTurn(gameFieldRosterEntry);
+            StatusEffect_Manager.Combat_BeginTurn(gameField);
 
             //TODO: improve on this.
             Ability_Manager.Ability_Point_Pool.Set_Value(2);
             
-            Handle_Combat_BeginTurn_PostUpkeep(gameFieldRosterEntry);
+            Handle_Combat_BeginTurn_PostUpkeep(gameField);
         }
 
-        internal void Combat_EndTurn(GameEntity_Field_RosterEntry gameFieldRosterEntry)
+        internal void Combat_EndTurn(GameEntity_ServerSide_Roster gameField)
         {
-            Handle_Combat_EndTurn_Cleanup(gameFieldRosterEntry);
+            Handle_Combat_EndTurn_Cleanup(gameField);
         }
 
         internal bool Has_PlayableMoves()
@@ -117,15 +113,15 @@ namespace MonkeyDungeon_Core.GameFeatures
             return !Ability_Manager.Ability_Point_Pool.IsDepleted;
         }
 
-        protected virtual void Handle_Combat_BeginTurn_PreUpkeep(GameEntity_Field_RosterEntry gameFieldRosterEntry) { }
-        protected virtual void Handle_Combat_BeginTurn_PostUpkeep(GameEntity_Field_RosterEntry gameFieldRosterEntry) { }
-        protected virtual void Handle_Combat_EndTurn_Cleanup(GameEntity_Field_RosterEntry gameFieldRosterEntry) { }
+        protected virtual void Handle_Combat_BeginTurn_PreUpkeep(GameEntity_ServerSide_Roster gameField) { }
+        protected virtual void Handle_Combat_BeginTurn_PostUpkeep(GameEntity_ServerSide_Roster gameField) { }
+        protected virtual void Handle_Combat_EndTurn_Cleanup(GameEntity_ServerSide_Roster gameField) { }
         protected virtual void Handle_Incapacitated()
         {
             Game.Relay_Death(this);
         }
 
-        public GameEntity Clone(GameEntity_ID gameEntityId)
+        public GameEntity_ServerSide Clone(GameEntity_ID gameEntityId)
         {
             List<GameEntity_Stat> clonedStats = new List<GameEntity_Stat>();
             List<GameEntity_Resource> clonedResources = new List<GameEntity_Resource>();
@@ -141,8 +137,9 @@ namespace MonkeyDungeon_Core.GameFeatures
             //foreach (GameEntity_Resistance resistance in Resistance_Manager.Get_Resistances())
             //    clonedResistances.Add(resistance.Clone());
 
-            GameEntity entity = new GameEntity
-                (Race,
+            GameEntity_ServerSide entityServerSide = new GameEntity_ServerSide
+                (
+                GameEntity_Race,
                 Name,
                 Level,
                 Unique_ID,
@@ -151,12 +148,13 @@ namespace MonkeyDungeon_Core.GameFeatures
                 clonedAbilities,
                 //clonedResistances,
                 null
-                ) { GameEntity_ID = gameEntityId};
+                ) 
+                { GameEntity_ID = gameEntityId};
 
             //TODO: fix
-            EntityController.Clone().Gain_Control(entity);
+            EntityController.Clone().Gain_Control(entityServerSide);
             
-            return entity;
+            return entityServerSide;
         }
 
         public override string ToString()

@@ -31,7 +31,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
 
             //TODO: remove player controller honestly, just make players not have controllers. Or rethink the system.
             GameEntity_Controller controller = 
-                Combat.Game_FieldRosterEntry.Get_Entity(recievedMessage.Local_Entity_ID).Game_Entity.EntityController;
+                Combat.Game_Field.Get_Entity(recievedMessage.Local_Entity_ID).EntityController;
 
             //TODO: fix
             controller.PendingCombatAction.Action_Owner = Combat.Entity_ID_Of_Current_Turn;

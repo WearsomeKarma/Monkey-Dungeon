@@ -8,20 +8,20 @@ namespace MonkeyDungeon_Core.GameFeatures
     {
         public readonly GameEntity_Attribute_Name ATTRIBUTE_NAME;
 
-        internal GameEntity Internal_Parent { get; private set; }
-        protected GameEntity Parent_Entity => Internal_Parent;
+        internal GameEntity_ServerSide Internal_Parent { get; private set; }
+        protected GameEntity_ServerSide Parent_EntityServerSide => Internal_Parent;
 
         public GameEntity_Attribute(GameEntity_Attribute_Name attributeName)
         {
             ATTRIBUTE_NAME = attributeName;
         }
 
-        internal void Attach_To_Entity(GameEntity newEntity)
+        internal void Attach_To_Entity(GameEntity_ServerSide newEntityServerSide)
         {
             if (Internal_Parent != null)
                 Detach_From_Entity();
 
-            Internal_Parent = newEntity;
+            Internal_Parent = newEntityServerSide;
             Handle_Attach_To_Entity(Internal_Parent);
         }
 
@@ -31,7 +31,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             Internal_Parent = null;
         }
 
-        protected virtual void Handle_Attach_To_Entity(GameEntity newEntity) { }
-        protected virtual void Handle_Detach_From_Entity(GameEntity oldEntity) { }
+        protected virtual void Handle_Attach_To_Entity(GameEntity_ServerSide newEntityServerSide) { }
+        protected virtual void Handle_Detach_From_Entity(GameEntity_ServerSide oldEntityServerSide) { }
     }
 }

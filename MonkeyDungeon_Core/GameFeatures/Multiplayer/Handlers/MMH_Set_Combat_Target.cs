@@ -17,10 +17,10 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
             if (IsValid_Message(recievedMessage))
                 return;
 
-            GameEntity_RosterEntry entityEntry =
-                GameState_Machine.GameFieldRosterEntry.Get_Entity(recievedMessage.Local_Entity_ID);
+            GameEntity_ServerSide entityEntry =
+                GameState_Machine.GameField.Get_Entity(recievedMessage.Local_Entity_ID);
 
-            entityEntry.Controller.PendingCombatAction.Target.Add_Target(GameEntity_Position.ALL_NON_NULL__POSITIONS[recievedMessage.INT_VALUE]);
+            entityEntry.EntityController.PendingCombatAction.Target.Add_Target(GameEntity_Position.ALL_NON_NULL__POSITIONS[recievedMessage.INT_VALUE]);
         }
     }
 }

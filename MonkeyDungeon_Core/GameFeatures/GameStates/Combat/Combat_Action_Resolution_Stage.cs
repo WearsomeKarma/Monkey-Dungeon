@@ -1,4 +1,5 @@
-﻿using MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities;
+﻿using System.Collections.Generic;
+using MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities;
 using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 
@@ -7,10 +8,16 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat
     public abstract class Combat_Action_Resolution_Stage
     {
         private Combat_GameState Combat { get; set; }
-        protected GameEntity_Field_RosterEntry Entity_FieldRosterEntry => Combat.Game_FieldRosterEntry;
-        protected GameEntity_RosterEntry Get_Owner_Entity_Of_Action(GameEntity_ID id)
-            => Entity_FieldRosterEntry.Get_Entity(id);
+        protected GameEntity_ServerSide_Roster Entity_Field => Combat.Game_Field;
+        protected GameEntity_ServerSide Get_Entity(GameEntity_ID id)
+            => Entity_Field.Get_Entity(id);
 
+        protected GameEntity_ServerSide Get_Entity(GameEntity_Position position)
+            => Entity_Field.Get_Entry_From_Position(position);
+
+        protected GameEntity_ServerSide[] Get_Entities(GameEntity_Position[] positions)
+            => Entity_Field.Get_Entities(positions);
+        
         protected Combat_Action_Resolver Resolver { get; set; }
         internal void Bind_To_Resolver(Combat_Action_Resolver resolver, Combat_GameState combat)
         {
@@ -18,11 +25,11 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat
             Combat = combat;
         }
 
-        protected GameEntity_RosterEntry Get_Owner_Entity_Of_Action(Combat_Action action)
-            => Get_Owner_Entity_Of_Action(action.Action_Owner);
+        protected GameEntity_ServerSide Get_Entity(Combat_Action action)
+            => Get_Entity(action.Action_Owner);
 
         protected GameEntity_Ability Get_Ability(Combat_Action action)
-            => Get_Owner_Entity_Of_Action(action).Entity.Ability_Manager.Get_Ability<GameEntity_Ability>(action.Selected_Ability);
+            => Get_Entity(action).Ability_Manager.Get_Ability<GameEntity_Ability>(action.Selected_Ability);
         
         internal void Begin_Stage(Combat_Action action)
         {

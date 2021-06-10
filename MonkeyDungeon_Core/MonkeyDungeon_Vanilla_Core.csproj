@@ -61,10 +61,10 @@
     <Compile Include="GameFeatures\GameEntities\StatusEffects\GameEntity_StatusEffect.cs" />
     <Compile Include="GameFeatures\GameEntities\StatusEffects\GameEntity_StatusEffect_Manager.cs" />
     <Compile Include="GameFeatures\GameEntities\Stats\GameEntity_Stat_Manager.cs" />
-    <Compile Include="GameFeatures\GameEntity.cs" />
+    <Compile Include="GameFeatures\GameEntity_ServerSide.cs" />
     <Compile Include="GameFeatures\GameEntity_Controller.cs" />
     <Compile Include="GameFeatures\GameEntity_Factory.cs" />
-    <Compile Include="GameFeatures\GameEntity_Roster.cs" />
+    <Compile Include="GameFeatures\GameEntity_ServerSide_Roster.cs" />
     <Compile Include="GameFeatures\GameStates\GameState.cs" />
     <Compile Include="GameFeatures\GameState_Machine.cs" />
     <Compile Include="GameFeatures\GameEntities\Abilities\Implemented\Ability_ApeShit.cs" />

@@ -13,15 +13,15 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Controllers
             : base(true)
         { }
 
-        protected override Combat_Action Handle_CombatAction_Request(GameEntity_Field_RosterEntry gameFieldRosterEntry)
+        protected override Combat_Action Handle_CombatAction_Request(GameEntity_ServerSide_Roster gameField)
         {
             Random rand = new Random();
-            GameEntity[] players = null;// gameField.ConsciousPlayers;
-            GameEntity_ID targetId = players[rand.Next(players.Length)].GameEntity_ID;
+            GameEntity_ServerSide[] players = gameField.Get_Entities(GameEntity_Team_ID.TEAM_ONE_ID, true);
+            GameEntity_Position targetId = players[rand.Next(players.Length)].GameEntity_Position;
 
             //TODO: make combat ref GameScene
             Combat_Action ca = new Combat_Action();
-            ca.Action_Owner = Entity.GameEntity_ID;
+            ca.Action_Owner = EntityServerSide.GameEntity_ID;
             ca.Target.Add_Target(targetId);
             ca.Selected_Ability = MD_VANILLA_ABILITYNAMES.ABILITY_PUNCH;
 

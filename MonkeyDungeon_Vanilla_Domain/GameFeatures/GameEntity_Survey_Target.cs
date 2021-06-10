@@ -4,36 +4,39 @@ using MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates;
 
 namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 {
-    public class GameEntity_Field_Target : GameEntity_Field<bool>
+    public class GameEntity_Survey_Target : GameEntity_Survey<bool>
     {
-        private bool Position_Is_Of_Roster(GameEntity_Position position, GameEntity_Roster_Id rosterID)
+        public bool Get_State_By_Position(GameEntity_Position position)
+            => Get_Entry_From_Position(position);
+        
+        private bool Position_Is_Of_Roster(GameEntity_Position position, GameEntity_Team_ID teamId)
         {
             //private function, no restraint needed.
             
             return FIELD[position]
                 &&
                 (
-                rosterID == GameEntity_Roster_Id.__NULL____ROSTER_ID
+                teamId == GameEntity_Team_ID.ID_NULL
                 ||
-                rosterID == position.ROSTER_ID
+                teamId == position.TeamId
                 );
         }
         
-        public GameEntity_Position[] Get_Reduced_Field(GameEntity_Roster_Id rosterID)
+        public GameEntity_Position[] Get_Reduced_Field(GameEntity_Team_ID teamId)
         {
             //constaint null
-            rosterID = rosterID ?? GameEntity_Roster_Id.__NULL____ROSTER_ID;
+            teamId = teamId ?? GameEntity_Team_ID.ID_NULL;
             
             List<GameEntity_Position> positions = new List<GameEntity_Position>();
             
             foreach(GameEntity_Position pos in FIELD.Keys)
-                if (Position_Is_Of_Roster(pos, rosterID))
+                if (Position_Is_Of_Roster(pos, teamId))
                     positions.Add(pos);
 
             return positions.ToArray();
         }
 
-        public GameEntity_Field_Target()
+        public GameEntity_Survey_Target()
             : base (false)
         {
         }
@@ -42,15 +45,15 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
             (
             GameEntity_Position position_In_Question,
             GameEntity_Position ownerPosition, 
-            GameEntity_Roster_Id rosterID_Target,
+            GameEntity_Team_ID teamIdTarget,
             bool invertRosterTarget
             )
         {
             bool ret = FIELD[position_In_Question];
             
-            bool ownerPositionExclusive = ownerPosition != GameEntity_Position.__NULL____POSITION;
+            bool ownerPositionExclusive = ownerPosition != GameEntity_Position.ID_NULL;
 
-            bool rosterDependent = rosterID_Target != GameEntity_Roster_Id.__NULL____ROSTER_ID;
+            bool rosterDependent = teamIdTarget != GameEntity_Team_ID.ID_NULL;
 
             if (ownerPositionExclusive && ret)
                 ret = position_In_Question != ownerPosition;
@@ -58,25 +61,25 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
             if (rosterDependent && ret)
             {
                 ret =
-                    (position_In_Question.ROSTER_ID == rosterID_Target)
+                    (position_In_Question.TeamId == teamIdTarget)
                     ||
-                    (position_In_Question.ROSTER_ID != rosterID_Target && invertRosterTarget);
+                    (position_In_Question.TeamId != teamIdTarget && invertRosterTarget);
             }
             
             return ret;
         }
         
-        public int Get_Selected_Count(GameEntity_Position ownerPosition = null, GameEntity_Roster_Id rosterID_Target = null, bool invertRosterTarget = false)
+        public int Get_Selected_Count(GameEntity_Position ownerPosition = null, GameEntity_Team_ID teamIdTarget = null, bool invertRosterTarget = false)
         {
             //constraint null
-            ownerPosition = ownerPosition ?? GameEntity_Position.__NULL____POSITION;
-            rosterID_Target = rosterID_Target ?? GameEntity_Roster_Id.__NULL____ROSTER_ID; 
+            ownerPosition = ownerPosition ?? GameEntity_Position.ID_NULL;
+            teamIdTarget = teamIdTarget ?? GameEntity_Team_ID.ID_NULL; 
             
             int count = 0;
             
             foreach (GameEntity_Position position in GameEntity_Position.ALL_NON_NULL__POSITIONS)
             {
-                if (IsValid_For_Count(position, ownerPosition, rosterID_Target, invertRosterTarget))
+                if (IsValid_For_Count(position, ownerPosition, teamIdTarget, invertRosterTarget))
                 {
                     count++;
                     continue;
@@ -90,7 +93,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 
         private void Set_Position(GameEntity_Position position, bool value)
         {
-            if (position == GameEntity_Position.__NULL____POSITION)
+            if (position == GameEntity_Position.ID_NULL)
                 return;
             
             FIELD[position] = value;

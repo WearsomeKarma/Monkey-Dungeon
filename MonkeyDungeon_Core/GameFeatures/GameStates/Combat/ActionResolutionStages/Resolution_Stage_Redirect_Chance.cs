@@ -9,8 +9,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
     {
         protected override void Handle_Stage(Combat_Action action)
         {
-            GameEntity_RosterEntry ownerEntry = Get_Owner_Entity_Of_Action(action.Action_Owner);
-            GameEntity owner = ownerEntry.Entity;
+            GameEntity_ServerSide owner = Get_Entity(action.Action_Owner);
             GameEntity_Ability ability = owner.Ability_Manager.Get_Ability<GameEntity_Ability>(action.Selected_Ability);
 
             GameEntity_Position[] targets = action.Target.Get_Reduced_Fields();
@@ -19,7 +18,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
                 action,
                 targets,
                 ability,
-                (GameEntity_Position_Type)ownerEntry.World_Position
+                (GameEntity_Position_Type)owner.GameEntity_Position
             );
         }
 
@@ -38,7 +37,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
             Combat_Assault_Type assaultType = usedAbility.Assault_Type;
             GameEntity_Position_Type targetPositionType;
             
-            GameEntity_RosterEntry target;
+            GameEntity_ServerSide target;
             Combat_Redirection_Chance[] chances = new Combat_Redirection_Chance[targets.Length];
 
             Combat_Redirection_Chance abilityChance;
@@ -46,8 +45,8 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
             
             for (int i = 0; i < targets.Length; i++)
             {
-                target = Entity_FieldRosterEntry.Get_Entity(targets[i]);
-                targetPositionType = (GameEntity_Position_Type) target.World_Position;
+                target = Entity_Field.Get_Entity(targets[i]);
+                targetPositionType = (GameEntity_Position_Type) target.GameEntity_Position;
                 chances[i] = MD_VANILLA_COMBAT.Base_Redirection_Chance(assaultType, ownerPositionType, targetPositionType);
 
                 abilityChance = usedAbility.Calculate_Redirect_Chance
@@ -60,7 +59,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
 
                 chances[i] = Combat_Redirection_Chance.Combine(chances[i], abilityChance);
                 
-                statusEffectChances = target.Entity.StatusEffect_Manager.React_To_Redirect_Chance
+                statusEffectChances = target.StatusEffect_Manager.React_To_Redirect_Chance
                 (
                     action,
                     assaultType,

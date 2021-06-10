@@ -11,7 +11,7 @@ using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Entities
 {
-    public class WarriorClass : GameEntity
+    public class WarriorClass : GameEntity_ServerSide
     {
         public static readonly int      CLASS_ID                            =   0       ;
 

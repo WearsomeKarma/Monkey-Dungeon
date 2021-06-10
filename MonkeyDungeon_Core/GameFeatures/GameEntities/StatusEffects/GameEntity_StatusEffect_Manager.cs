@@ -9,27 +9,27 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
 {
     public class GameEntity_StatusEffect_Manager
     {
-        private readonly GameEntity Entity;
+        private readonly GameEntity_ServerSide _entityServerSide;
 
         //TODO: filter by detremental
         private List<GameEntity_StatusEffect> StatusEffects         = new List<GameEntity_StatusEffect>();
         public GameEntity_StatusEffect[] Get_StatusEffects          () => StatusEffects.ToArray();
-        public void Add_StatusEffect                                (GameEntity_StatusEffect effect) { effect.Set_NewOwner(Entity); StatusEffects.Add(effect);  }
+        public void Add_StatusEffect                                (GameEntity_StatusEffect effect) { effect.Set_NewOwner(_entityServerSide); StatusEffects.Add(effect);  }
         public void Remove_StatusEffect                             (GameEntity_StatusEffect effect) { if (!StatusEffects.Contains(effect)) return; StatusEffects.Remove(effect); effect.Remove_Owner(); }
         public void Remove_All_StatusEffects                        () { foreach (GameEntity_StatusEffect effect in StatusEffects.ToList()) Remove_StatusEffect(effect); }
         public void Remove_All_StatusEffects_Except<T>              () where T : GameEntity_StatusEffect { foreach (GameEntity_StatusEffect effect in StatusEffects.ToList()) if (effect is T) Remove_StatusEffect(effect); }
         public void Disable_StatusEffects<T>                        () where T : GameEntity_StatusEffect { foreach (GameEntity_StatusEffect effect in StatusEffects.ToList()) if (effect is T) effect.Toggle_ThisEffect(false); }
         public void Disable_StatusEffect                            (GameEntity_StatusEffect effect) { foreach (GameEntity_StatusEffect subEffect in StatusEffects.ToList()) if (subEffect == effect) effect.Toggle_ThisEffect(false); }
 
-        public GameEntity_StatusEffect_Manager(GameEntity managedEntity)
+        public GameEntity_StatusEffect_Manager(GameEntity_ServerSide managedEntityServerSide)
         {
-            Entity = managedEntity;
+            _entityServerSide = managedEntityServerSide;
         }
 
-        internal void Combat_BeginTurn(GameEntity_Field_RosterEntry gameFieldRosterEntry)
+        internal void Combat_BeginTurn(GameEntity_ServerSide_Roster gameField)
         {
             foreach (GameEntity_StatusEffect effect in StatusEffects)
-                effect.Combat_BeginTurn_StatusEffect(gameFieldRosterEntry);
+                effect.Combat_BeginTurn_StatusEffect(gameField);
         }
 
         internal void React_To_Cast(Combat_Action action)

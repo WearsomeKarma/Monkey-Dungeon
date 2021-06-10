@@ -3,7 +3,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
 {
     public class Multiplayer_Relay_ID
     {
-        public static readonly Multiplayer_Relay_ID NULL_ID = new Multiplayer_Relay_ID(-1);
+        public static readonly Multiplayer_Relay_ID ID_NULL = new Multiplayer_Relay_ID(-1);
 
         public readonly int ID;
 
