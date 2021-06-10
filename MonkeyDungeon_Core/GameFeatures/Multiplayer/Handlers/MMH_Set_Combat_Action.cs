@@ -26,17 +26,17 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
                 return;
             }
 
-            GameEntity_ID targetId = GameEntity_ID.IDS[recievedMessage.INT_VALUE];
+            GameEntity_Position targetPosition = GameEntity_Position.ALL_NON_NULL__POSITIONS[recievedMessage.INT_VALUE];
             GameEntity_Attribute_Name abilityName = recievedMessage.ATTRIBUTE;
 
             //TODO: remove player controller honestly, just make players not have controllers. Or rethink the system.
             GameEntity_Controller controller = 
-                Combat.Game_Field.Get_Entity(recievedMessage.Local_Entity_ID).Game_Entity.EntityController;
+                Combat.Game_FieldRosterEntry.Get_Entity(recievedMessage.Local_Entity_ID).Game_Entity.EntityController;
 
             //TODO: fix
             controller.PendingCombatAction.Action_Owner = Combat.Entity_ID_Of_Current_Turn;
             controller.Setup_Combat_Action_Ability(abilityName);
-            controller.Setup_Combat_Action_Target(targetId);
+            controller.Setup_Combat_Action_Target(targetPosition);
         }
     }
 }

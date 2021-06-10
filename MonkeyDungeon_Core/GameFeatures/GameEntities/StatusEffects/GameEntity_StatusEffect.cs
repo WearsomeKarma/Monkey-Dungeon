@@ -62,16 +62,16 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
         protected virtual void Handle_NewOwner(GameEntity newOwner) { }
         protected virtual void Handle_LoseOwner(GameEntity oldOwner) { }
 
-        internal void Combat_BeginTurn_StatusEffect(GameEntity_EntityField gameField)
+        internal void Combat_BeginTurn_StatusEffect(GameEntity_Field_RosterEntry gameFieldRosterEntry)
         {
-            Handle_Combat_BeginTurn_StatusEffect(gameField);
+            Handle_Combat_BeginTurn_StatusEffect(gameFieldRosterEntry);
             ElapsedDuration++;
             if (TurnDuration > -1 && ElapsedDuration >= TurnDuration)
                 EffectedEntity.StatusEffect_Manager.Remove_StatusEffect(this);
         }
 
-        internal void Combat_EndTurn_StatusEffect(GameEntity_EntityField gameField)
-            => Handle_Combat_EndTurn_StatusEffect(gameField);
+        internal void Combat_EndTurn_StatusEffect(GameEntity_Field_RosterEntry gameFieldRosterEntry)
+            => Handle_Combat_EndTurn_StatusEffect(gameFieldRosterEntry);
         internal void React_To_Cast(Combat_Action action)
             => Handle_React_To_Cast(action);
 
@@ -105,8 +105,8 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
                 baseChance
                 );
         
-        protected virtual void Handle_Combat_BeginTurn_StatusEffect(GameEntity_EntityField gameField) { }
-        protected virtual void Handle_Combat_EndTurn_StatusEffect(GameEntity_EntityField gameField) { }
+        protected virtual void Handle_Combat_BeginTurn_StatusEffect(GameEntity_Field_RosterEntry gameFieldRosterEntry) { }
+        protected virtual void Handle_Combat_EndTurn_StatusEffect(GameEntity_Field_RosterEntry gameFieldRosterEntry) { }
         protected  virtual void Handle_React_To_Cast(Combat_Action action) { }
         protected virtual double Handle_Get_Hit_Bonus(Combat_Action action) => 0;
         protected virtual double Handle_Get_Dodge_Bonus(Combat_Action action) => 0;

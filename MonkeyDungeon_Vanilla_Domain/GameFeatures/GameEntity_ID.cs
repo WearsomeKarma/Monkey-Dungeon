@@ -28,7 +28,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         };
 
         public readonly int ID;
-        public int Roster_ID => ID / MD_PARTY.MAX_PARTY_SIZE;
+        public GameEntity_Roster_Id Roster_ID => GameEntity_Roster_Id.ROSTER_IDS[ID / MD_PARTY.MAX_PARTY_SIZE];
         public Multiplayer_Relay_ID Relay_ID { get; internal set; }
         public bool IsRelay_Bound => Relay_ID != Multiplayer_Relay_ID.NULL_ID;
 

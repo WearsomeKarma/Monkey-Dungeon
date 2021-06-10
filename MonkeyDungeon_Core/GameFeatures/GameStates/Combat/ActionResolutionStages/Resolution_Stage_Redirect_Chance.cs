@@ -10,10 +10,10 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
         protected override void Handle_Stage(Combat_Action action)
         {
             GameEntity_RosterEntry ownerEntry = Get_Owner_Entity_Of_Action(action.Action_Owner);
-            GameEntity owner = ownerEntry.Game_Entity;
+            GameEntity owner = ownerEntry.Entity;
             GameEntity_Ability ability = owner.Ability_Manager.Get_Ability<GameEntity_Ability>(action.Selected_Ability);
 
-            GameEntity_ID[] targets = action.Target.Get_Targets();
+            GameEntity_Position[] targets = action.Target.Get_Reduced_Fields();
 
             Combat_Redirection_Chance[] chances = Get_Chances_For_Each_Target(
                 action,
@@ -30,7 +30,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
         
         private Combat_Redirection_Chance[] Get_Chances_For_Each_Target(
             Combat_Action action,
-            GameEntity_ID[] targets, 
+            GameEntity_Position[] targets, 
             GameEntity_Ability usedAbility, 
             GameEntity_Position_Type ownerPositionType
             )
@@ -46,7 +46,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
             
             for (int i = 0; i < targets.Length; i++)
             {
-                target = Entity_Field.Get_Entity(targets[i]);
+                target = Entity_FieldRosterEntry.Get_Entity(targets[i]);
                 targetPositionType = (GameEntity_Position_Type) target.World_Position;
                 chances[i] = MD_VANILLA_COMBAT.Base_Redirection_Chance(assaultType, ownerPositionType, targetPositionType);
 
@@ -60,7 +60,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
 
                 chances[i] = Combat_Redirection_Chance.Combine(chances[i], abilityChance);
                 
-                statusEffectChances = target.Game_Entity.StatusEffect_Manager.React_To_Redirect_Chance
+                statusEffectChances = target.Entity.StatusEffect_Manager.React_To_Redirect_Chance
                 (
                     action,
                     assaultType,

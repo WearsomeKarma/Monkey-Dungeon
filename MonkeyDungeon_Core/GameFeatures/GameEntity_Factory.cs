@@ -4,6 +4,7 @@ using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System.Collections.Generic;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_Core.GameFeatures

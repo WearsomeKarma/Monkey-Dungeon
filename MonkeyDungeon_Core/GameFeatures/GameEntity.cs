@@ -10,6 +10,7 @@ using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 using System.Collections.Generic;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_Core.GameFeatures
@@ -94,21 +95,21 @@ namespace MonkeyDungeon_Core.GameFeatures
             this.level.Force_Offset(level - Level);
         }
 
-        internal void Combat_BeginTurn(GameEntity_EntityField gameField)
+        internal void Combat_BeginTurn(GameEntity_Field_RosterEntry gameFieldRosterEntry)
         {
-            Handle_Combat_BeginTurn_PreUpkeep(gameField);
+            Handle_Combat_BeginTurn_PreUpkeep(gameFieldRosterEntry);
 
-            StatusEffect_Manager.Combat_BeginTurn(gameField);
+            StatusEffect_Manager.Combat_BeginTurn(gameFieldRosterEntry);
 
             //TODO: improve on this.
             Ability_Manager.Ability_Point_Pool.Set_Value(2);
             
-            Handle_Combat_BeginTurn_PostUpkeep(gameField);
+            Handle_Combat_BeginTurn_PostUpkeep(gameFieldRosterEntry);
         }
 
-        internal void Combat_EndTurn(GameEntity_EntityField gameField)
+        internal void Combat_EndTurn(GameEntity_Field_RosterEntry gameFieldRosterEntry)
         {
-            Handle_Combat_EndTurn_Cleanup(gameField);
+            Handle_Combat_EndTurn_Cleanup(gameFieldRosterEntry);
         }
 
         internal bool Has_PlayableMoves()
@@ -116,9 +117,9 @@ namespace MonkeyDungeon_Core.GameFeatures
             return !Ability_Manager.Ability_Point_Pool.IsDepleted;
         }
 
-        protected virtual void Handle_Combat_BeginTurn_PreUpkeep(GameEntity_EntityField gameField) { }
-        protected virtual void Handle_Combat_BeginTurn_PostUpkeep(GameEntity_EntityField gameField) { }
-        protected virtual void Handle_Combat_EndTurn_Cleanup(GameEntity_EntityField gameField) { }
+        protected virtual void Handle_Combat_BeginTurn_PreUpkeep(GameEntity_Field_RosterEntry gameFieldRosterEntry) { }
+        protected virtual void Handle_Combat_BeginTurn_PostUpkeep(GameEntity_Field_RosterEntry gameFieldRosterEntry) { }
+        protected virtual void Handle_Combat_EndTurn_Cleanup(GameEntity_Field_RosterEntry gameFieldRosterEntry) { }
         protected virtual void Handle_Incapacitated()
         {
             Game.Relay_Death(this);

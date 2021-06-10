@@ -41,18 +41,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameFeatures\AttributeNames\MD_VANILLA_ABILITYNAMES.cs" />
-    <Compile Include="GameFeatures\AttributeNames\MD_VANILLA_PARTICLES.cs" />
-    <Compile Include="GameFeatures\AttributeNames\MD_VANILLA_RACES.cs" />
-    <Compile Include="GameFeatures\AttributeNames\MD_VANILLA_RESOURCES.cs" />
-    <Compile Include="GameFeatures\AttributeNames\MD_VANILLA_STATS.cs" />
-    <Compile Include="GameFeatures\AttributeNames\MD_VANILLA_UI.cs" />
+    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_ABILITYNAMES.cs" />
+    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_PARTICLES.cs" />
+    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_RACES.cs" />
+    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_RESOURCES.cs" />
+    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_STATS.cs" />
+    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_UI_EVENTS.cs" />
+    <Compile Include="GameFeatures\AttributeNames\GameEntity_Attribute_Name_Ability.cs" />
+    <Compile Include="GameFeatures\AttributeNames\GameEntity_Attribute_Name_Particle.cs" />
+    <Compile Include="GameFeatures\AttributeNames\GameEntity_Attribute_Name_Race.cs" />
+    <Compile Include="GameFeatures\AttributeNames\GameEntity_Attribute_Name_Resource.cs" />
+    <Compile Include="GameFeatures\AttributeNames\GameEntity_Attribute_Name_Stat.cs" />
+    <Compile Include="GameFeatures\AttributeNames\GameEntity_Attribute_Name_UI_Event.cs" />
     <Compile Include="GameFeatures\GameEntity_Ability_Index.cs" />
     <Compile Include="GameFeatures\GameEntity_Attribute_Name.cs" />
-    <Compile Include="GameFeatures\GameEntity_Target_Field.cs" />
+    <Compile Include="GameFeatures\GameEntity_Description.cs" />
+    <Compile Include="GameFeatures\GameEntity_Field.cs" />
+    <Compile Include="GameFeatures\GameEntity_Field_RosterEntry.cs" />
+    <Compile Include="GameFeatures\GameEntity_Field_Target.cs" />
     <Compile Include="GameFeatures\GameEntity_ID.cs" />
     <Compile Include="GameFeatures\GameEntity_Position.cs" />
     <Compile Include="GameFeatures\GameEntity_Position_Type.cs" />
+    <Compile Include="GameFeatures\GameEntity_RosterEntry.cs" />
     <Compile Include="GameFeatures\GameEntity_Roster_Id.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Ability_Target.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Assault_Type.cs" />

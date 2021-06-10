@@ -23,11 +23,11 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         public GameEntity_Factory GameEntity_Factory { get; private set; }
 
-        public readonly GameEntity_EntityField GAME_FIELD;
-        internal GameEntity_Roster Player_Roster => GAME_FIELD.PLAYERS;
-        internal GameEntity_Roster Enemy_Roster => GAME_FIELD.ENEMIES;
+        public readonly GameEntity_Field_RosterEntry GameFieldRosterEntry;
+        internal GameEntity_Roster Player_Roster => GameFieldRosterEntry.PLAYERS;
+        internal GameEntity_Roster Enemy_Roster => GameFieldRosterEntry.ENEMIES;
 
-        internal void Set_Enemy_Roster(GameEntity[] enemyEntities) => GAME_FIELD.Set_Enemies(enemyEntities);
+        internal void Set_Enemy_Roster(GameEntity[] enemyEntities) => GameFieldRosterEntry.Set_Enemies(enemyEntities);
 
         public GameEntity Set_Entity(GameEntity_ID entityId, Multiplayer_Relay_ID relayId, GameEntity_Attribute_Name factory_Tag)
         {
@@ -56,7 +56,7 @@ namespace MonkeyDungeon_Core.GameFeatures
                 Add_GameState(gameState);
 
             GameEntity_Factory = new GameEntity_Factory(this);
-            GAME_FIELD = new GameEntity_EntityField(this);
+            GameFieldRosterEntry = new GameEntity_Field_RosterEntry(this);
 
             CurrentGameState = gameStates[0];
         }
@@ -186,7 +186,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         internal void Relay_Roster(GameEntity_Roster roster)
         {
             foreach (GameEntity_RosterEntry rosterEntry in roster.Get_Roster_Entries())
-                Relay_Entity(rosterEntry.Game_Entity);
+                Relay_Entity(rosterEntry.Entity);
         }
 
         internal void Dismiss_Roster(GameEntity_Roster roster)
@@ -203,7 +203,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             }
 
             foreach (GameEntity_RosterEntry rosterEntry in roster.Get_Roster_Entries())
-                Relay_Dismissal(rosterEntry.Game_Entity);
+                Relay_Dismissal(rosterEntry.Entity);
         }
 
         internal void Relay_Entity_Static_Resource(GameEntity_Resource resource)

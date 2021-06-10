@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using MonkeyDungeon_Core.GameFeatures.GameStates.Combat;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameStates
 {
@@ -38,14 +39,14 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
         public int TurnOffset { get; private set; }
 
         public List<GameEntity_ID> TurnOrder { get; private set; }
-        public GameEntity_RosterEntry Entity_Roster_Entry_Of_Current_Turn => Game_Field.Get_Entity(TurnOrder[TurnIndex]);
-        public GameEntity Entity_Of_Current_Turn => Entity_Roster_Entry_Of_Current_Turn.Game_Entity;
+        public GameEntity_RosterEntry Entity_Roster_Entry_Of_Current_Turn => Game_FieldRosterEntry.Get_Entity(TurnOrder[TurnIndex]);
+        public GameEntity Entity_Of_Current_Turn => Entity_Roster_Entry_Of_Current_Turn.Entity;
         public GameEntity_ID Entity_ID_Of_Current_Turn => Entity_Of_Current_Turn.GameEntity_ID;
         public Multiplayer_Relay_ID Entity_Of_Current_Turn_Relay_Id => Entity_Of_Current_Turn.Multiplayer_Relay_ID;
 
-        public GameEntity_EntityField Game_Field => GameState_Machine.GAME_FIELD;
-        internal GameEntity_Roster Players => Game_Field.PLAYERS;
-        internal GameEntity_Roster Enemies => Game_Field.ENEMIES;
+        public GameEntity_Field_RosterEntry Game_FieldRosterEntry => GameState_Machine.GameFieldRosterEntry;
+        internal GameEntity_Roster Players => Game_FieldRosterEntry.PLAYERS;
+        internal GameEntity_Roster Enemies => Game_FieldRosterEntry.ENEMIES;
 
         public Combat_GameState()
         {
@@ -99,7 +100,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
                         GameState_Machine.Request_Transition_ToState<GameOver_GameState>();
                         break;
                     }
-                    Combat_Action action = Entity_Of_Current_Turn.EntityController.Get_Combat_Action(Game_Field);
+                    Combat_Action action = Entity_Of_Current_Turn.EntityController.Get_Combat_Action(Game_FieldRosterEntry);
                     if (action != null)
                     {
                         if (action.Action_Ends_Turn)
@@ -114,7 +115,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
                     }
                     break;
                 case CombatState.FinishCurrentTurn:
-                    Entity_Of_Current_Turn.Combat_EndTurn(Game_Field);
+                    Entity_Of_Current_Turn.Combat_EndTurn(Game_FieldRosterEntry);
                     Progress_TurnOrder();
                     CombatState = CombatState.BeginNextTurn;
                     break;
@@ -130,7 +131,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
         private void BeginTurn()
         {
             CombatState = CombatState.PlayCurrentTurn;
-            Entity_Of_Current_Turn.Combat_BeginTurn(Game_Field);
+            Entity_Of_Current_Turn.Combat_BeginTurn(Game_FieldRosterEntry);
 
             if (Entity_Of_Current_Turn_Relay_Id < 0)
                 return;
@@ -163,7 +164,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
 
             GameState_Machine.Broadcast(
                 new MMW_Invoke_UI_Event(
-                    MD_VANILLA_UI.UI_EVENT_MELEE
+                    MD_VANILLA_UI_EVENTS.UI_EVENT_MELEE
                     )
                 );
         }
@@ -224,7 +225,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
         {
             bool ret = true;
             foreach (GameEntity_RosterEntry enemyRosterEntry in roster.Get_Roster_Entries())
-                ret = ret && enemyRosterEntry.Game_Entity.IsIncapacitated;
+                ret = ret && enemyRosterEntry.Entity.IsIncapacitated;
             return ret;
         }
 

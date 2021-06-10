@@ -11,6 +11,7 @@ using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using OpenTK;
 using System;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
 
 namespace MonkeyDungeon_UI.Scenes.GameScenes
 {
@@ -209,7 +210,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
         internal void Announce_Action(string combatAction_Ability_Name)
         {
             announcementMessage.Set_Announcement(combatAction_Ability_Name);
-            EventScheduler.Invoke_Event(MD_VANILLA_UI.UI_EVENT_ANNOUNCEMENT);
+            EventScheduler.Invoke_Event(MD_VANILLA_UI_EVENTS.UI_EVENT_ANNOUNCEMENT);
         }
 
         internal void Focus_Entity(UI_GameEntity_Descriptor entityDescription)

@@ -3,6 +3,7 @@ using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using System;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Controllers
 {
@@ -12,7 +13,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Controllers
             : base(true)
         { }
 
-        protected override Combat_Action Handle_CombatAction_Request(GameEntity_EntityField gameField)
+        protected override Combat_Action Handle_CombatAction_Request(GameEntity_Field_RosterEntry gameFieldRosterEntry)
         {
             Random rand = new Random();
             GameEntity[] players = null;// gameField.ConsciousPlayers;

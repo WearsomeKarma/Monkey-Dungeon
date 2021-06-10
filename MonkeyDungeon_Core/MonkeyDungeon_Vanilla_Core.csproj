@@ -45,9 +45,7 @@
     <Compile Include="GameFeatures\Combat_Finalized_Factor.cs" />
     <Compile Include="GameFeatures\Combat_Resource_Offset.cs" />
     <Compile Include="GameFeatures\GameEntity_Attribute.cs" />
-    <Compile Include="GameFeatures\GameEntity_EntityField.cs" />
     <Compile Include="GameFeatures\GameEntity_Quantity.cs" />
-    <Compile Include="GameFeatures\GameEntity_RosterEntry.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Cast.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Damage.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Dodge_Bonus.cs" />

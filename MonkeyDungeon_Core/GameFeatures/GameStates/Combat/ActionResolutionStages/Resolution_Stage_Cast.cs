@@ -12,7 +12,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
     {
         protected override void Handle_Stage(Combat_Action action)
         {
-            GameEntity entity = Get_Owner_Entity_Of_Action(action).Game_Entity;
+            GameEntity entity = Get_Owner_Entity_Of_Action(action).Entity;
 
             GameEntity_Ability ability = entity.Ability_Manager.Get_Ability<GameEntity_Ability>(action.Selected_Ability);
             Combat_Assault_Type assaultType = ability.Assault_Type;

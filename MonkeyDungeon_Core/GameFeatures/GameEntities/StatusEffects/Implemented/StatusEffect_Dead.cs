@@ -21,7 +21,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects.Implemented
             target?.Set_IncapacitatedState();
         }
 
-        protected override void Handle_Combat_BeginTurn_StatusEffect(GameEntity_EntityField gameField)
+        protected override void Handle_Combat_BeginTurn_StatusEffect(GameEntity_Field_RosterEntry gameFieldRosterEntry)
         {
             //combat.Request_EndOfTurn();
             throw new NotImplementedException(); //TODO: resolve above.

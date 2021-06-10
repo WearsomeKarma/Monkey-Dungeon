@@ -28,7 +28,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat
 
         public void Resolve_Action(Combat_Action action)
         {
-            action.Finalized_Action(Combat.Game_Field);
+            action.Finalized_Action(Combat.Game_FieldRosterEntry);
             
             Resolution_Stage_Index = 0;
             while(Resolution_Stage_Index < BASE_PROCEDURE.Length)

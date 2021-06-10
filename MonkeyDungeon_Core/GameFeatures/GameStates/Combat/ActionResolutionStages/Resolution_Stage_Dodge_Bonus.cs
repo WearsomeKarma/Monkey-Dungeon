@@ -16,7 +16,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
             Combat_Finalized_Factor[] dodgeBonuses = new Combat_Finalized_Factor[targetIDs.Length];
             for (int i = 0; i < targetIDs.Length; i++)
             {
-                targetedEntity = Get_Owner_Entity_Of_Action(targetIDs[i]).Game_Entity;
+                targetedEntity = Get_Owner_Entity_Of_Action(targetIDs[i]).Entity;
 
                 if (action.Stat_Dodge_Bonus == GameEntity_Attribute_Name.DEFAULT)
                 {

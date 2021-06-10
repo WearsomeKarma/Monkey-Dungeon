@@ -1,6 +1,7 @@
 ﻿using MonkeyDungeon_UI.Scenes.GameScenes;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using OpenTK;
 
@@ -29,7 +30,7 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
             World_Layer.UI_Ranged_Particle_Event.Inital_Position = shooterPos;
             World_Layer.UI_Ranged_Particle_Event.Target_Position = targetPos;
 
-            World_Layer.EventScheduler.Invoke_Event(MD_VANILLA_UI.UI_EVENT_RANGED_ATTACK);
+            World_Layer.EventScheduler.Invoke_Event(MD_VANILLA_UI_EVENTS.UI_EVENT_RANGED_ATTACK);
         }
     }
 }

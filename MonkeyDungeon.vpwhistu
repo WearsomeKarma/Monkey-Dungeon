@@ -1,0 +1,172 @@
+[ProjectDates]
+MonkeyDungeon/MonkeyDungeon.csproj=20210601090709321
+MonkeyDungeon_Core/MonkeyDungeon_Vanilla_Core.csproj=20210607163551197
+MonkeyDungeon_UI/MonkeyDungeon_Vanilla_UI.csproj=20210606234250467
+MonkeyDungeon_Vanilla_Domain/MonkeyDungeon_Vanilla_Domain.csproj=20210607222435764
+[Global]
+CurrentProject=MonkeyDungeon/MonkeyDungeon.vpj
+ActiveSolutionConfig=Debug|Any CPU
+[ActiveConfig]
+MonkeyDungeon/MonkeyDungeon.vpj=,Debug|AnyCPU
+MonkeyDungeon_Core/MonkeyDungeon_Vanilla_Core.vpj=,Debug|AnyCPU
+MonkeyDungeon_UI/MonkeyDungeon_Vanilla_UI.vpj=,Debug|AnyCPU
+MonkeyDungeon_Vanilla_Domain/MonkeyDungeon_Vanilla_Domain.vpj=,Debug|AnyCPU
+[TreeExpansion2]
++@ MonkeyDungeon/MonkeyDungeon.csproj
+  + ..
+    + ..
+      + isometricgame
+        + isometricgame
+          + bin
+            + Debug
+    + packages
+      + OpenTK.3.2
+        + lib
+          + net20
+  + Assets
+    + Shaders
+  + GameFeatures
+    + Multiplayer
+      + Local_Recievers
+  + Properties
++@ MonkeyDungeon_Core/MonkeyDungeon_Vanilla_Core.csproj
++@ MonkeyDungeon_Vanilla_Domain/MonkeyDungeon_Vanilla_Domain.csproj
++@ MonkeyDungeon_UI/MonkeyDungeon_Vanilla_UI.csproj
+scroll:0
+[State]
+MONITOR_CONFIGS: 129
+MONITOR_CONFIG: 127 0 0 1600 900
+SCREEN: 1600 900 200 61 1201 742 0 0 M 0 0 0 0 1156 457 0
+MDISTATE: 1
+AAAAAwAAAAIAAAAB2gAAAAIAMAAAAAAAAAA3AAAGPwAAAyUAAAAAAAAAAAAABj8AAANfAAAAAuoAAAAWAAAAAvsAAAAAAAAAAPsAAAAAAAAAAAAAAAA=
+STANDARD_LAYOUT: 61 1 44 12 4 M 0
+_tbbufftabs_form F=11
+_tbprojects_form F=8
+_tbdebug_watches_form F=64
+_tbbaseclasses_form F=40
+_tbdeltasave_form F=0
+_tbdebug_regs_form F=64
+_tbFTPOpen_form F=0
+_tbdebug_threads_form F=64
+_tbclipboard_form F=44
+_tbopen_form F=40
+_tbterminal_form F=8
+_tbdebug_exceptions_form F=384
+_tbdebug_classes_form F=64
+_tbtagwin_form F=8
+_tbdebug_autovars_form F=64
+_tbsymbolcallers_form F=40
+_tbFTPClient_form F=0
+_tbtagrefs_form F=8
+_tbfind_symbol_form F=32
+_tbdebug_locals_form F=64
+_tbdebug_members_form F=64
+_tbdebug_memory_form F=64
+_tbsymbol_args_form F=8
+_tbdebug_stack_form F=64
+_tbsymbolcalls_form F=40
+_tbsymbol_props_form F=8
+_tbfilelist_form F=44
+_tboutputwin_form F=8
+_tbclass_form F=8
+_tbunittest_form F=0
+_tbfind_form F=36
+_tbmessages_browser_form F=8
+_tbannotations_browser_form F=0
+_tbdebug_breakpoints_form F=384
+_tbnotification_form F=36
+_tbinteractive_form F=8
+_tbproctree_form F=8
+_tbbookmarks_form F=8
+_tbregex_form F=40
+_tbslickc_stack_form F=8
+_tbderivedclasses_form F=40
+_tbshell_form F=8
+_tbcbrowser_form F=8
+_tbsearch_form F=8
+_tbcbrowser_form T=0
+_tbproctree_form T=0
+_tbmessages_browser_form T=0
+_tbsearch_form T=0
+_tbshell_form T=0
+_tbterminal_form T=0
+_tbopen_form T=0
+_tbprojects_form T=0
+_tbtagrefs_form T=0
+_tboutputwin_form T=0
+_tbtagwin_form T=0
+_tbclass_form T=0
+AAAAAwAAAAEAAAAB2gAAAAIAMAAAAAAAAAA3AAAGPwAAAyUAAAAAAAAAAAAABj8AAANfAAAAAesAAAS6AAAAAPsAAAACAAAAAgAAAAAAAAAB+wAAAAIAAAACAAAAAAAAAAH9AAABoQAAAAAaADoAOgA6AC8AdgBEAG8AYwBrAEEAcgBlAGEBAAAAAbYAAQAAAAL7AAAABQAAAAUAAAAAAAAAAQAAAAIAAAADAAAABPsAAAAFAAAABQAAAAAAAAABAAAAAgAAAAMAAAAE/AAAAD0AAAAAKAAwADoAOgA6AF8AdABiAHAAcgBvAGoAZQBjAHQAcwBfAGYAbwByAG0BAP////8AAf///////////AAAAD0AAAAAKAAwADoAOgA6AF8AdABiAHAAcgBvAGMAdAByAGUAZQBfAGYAbwByAG0AAP////8AAP///////////AAAADcAAAAAIgAwADoAOgA6AF8AdABiAGMAbABhAHMAcwBfAGYAbwByAG0AAP////8AAP///////////AAAAD0AAAAAKAAwADoAOgA6AF8AdABiAGMAYgByAG8AdwBzAGUAcgBfAGYAbwByAG0AAP////8AAP///////////AAAADUAAAAAIAAwADoAOgA6AF8AdABiAG8AcABlAG4AXwBmAG8AcgBtAAD/////AAD///////////0AAALFAAAAABoAOgA6ADoALwB2AEQAbwBjAGsAQQByAGUAYQEAAAAC+gAAAAAAAfsAAAACAAAAAgAAAAAAAAAB+wAAAAIAAAACAAAAAQAAAAD8AAAAKQAAAAAcADoAOgA6AE0ARABJAEEAUgBFAEEAVABJAEwARQEAAAACkQAA/QAAAkUAAAAAGgA6ADoAOgAvAHYARABvAGMAawBBAHIAZQBhAQAAAAEgAAAAAAAC+wAAAAcAAAAHAAAAAwAAAAAAAAABAAAAAgAAAAQAAAAFAAAABvsAAAAHAAAABwAAAAAAAAABAAAAAgAAAAMAAAAEAAAABQAAAAb8AAAAOQAAAAAkADAAOgA6ADoAXwB0AGIAcwBlAGEAcgBjAGgAXwBmAG8AcgBtAAD/////AAD///////////wAAAA5AAAAACQAMAA6ADoAOgBfAHQAYgB0AGEAZwB3AGkAbgBfAGYAbwByAG0AAP////8AAP///////////AAAADsAAAAAJgAwADoAOgA6AF8AdABiAHQAYQBnAHIAZQBmAHMAXwBmAG8AcgBtAAD/////AAD///////////wAAAA3AAAAACIAMAA6ADoAOgBfAHQAYgBzAGgAZQBsAGwAXwBmAG8AcgBtAQD/////AAD///////////wAAABNAAAAADgAMAA6ADoAOgBfAHQAYgBtAGUAcwBzAGEAZwBlAHMAXwBiAHIAbwB3AHMAZQByAF8AZgBvAHIAbQAA/////wAA///////////8AAAAPQAAAAAoADAAOgA6ADoAXwB0AGIAdABlAHIAbQBpAG4AYQBsAF8AZgBvAHIAbQAA/////wAA///////////8AAAAPwAAAAAqADAAOgA6ADoAXwB0AGIAbwB1AHQAcAB1AHQAdwBpAG4AXwBmAG8AcgBtAAD/////AAD//////////wAAAADbAAAAAAAAAALbAAAAAAAAAAHbAAAAAAAAAAPbAAAAAAAAAAA=
+QTOOLBAR 2 0
+AAAA/wAAAAD9AAAAAAAABkAAAALvAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAIAAAAQAFMAdABhAG4AZABhAHIAZAEAAAAA/////wAAAAAAAAAAAAAAHgBDAHUAcgByAGUAbgB0ACAAQwBvAG4AdABlAHgAdAEAAAJw/////wAAAAAAAAAA
+_tbstandard_form 1
+_tbcontext_form 1
+APP_LAYOUT: 61 1 44 12 4 M 0
+_tbbufftabs_form F=11
+_tbprojects_form F=8
+_tbdebug_watches_form F=64
+_tbbaseclasses_form F=40
+_tbdeltasave_form F=0
+_tbdebug_regs_form F=64
+_tbFTPOpen_form F=0
+_tbdebug_threads_form F=64
+_tbclipboard_form F=44
+_tbopen_form F=40
+_tbterminal_form F=8
+_tbdebug_exceptions_form F=384
+_tbdebug_classes_form F=64
+_tbtagwin_form F=8
+_tbdebug_autovars_form F=64
+_tbsymbolcallers_form F=40
+_tbFTPClient_form F=0
+_tbtagrefs_form F=8
+_tbfind_symbol_form F=32
+_tbdebug_locals_form F=64
+_tbdebug_members_form F=64
+_tbdebug_memory_form F=64
+_tbsymbol_args_form F=8
+_tbdebug_stack_form F=64
+_tbsymbolcalls_form F=40
+_tbsymbol_props_form F=8
+_tbfilelist_form F=44
+_tboutputwin_form F=8
+_tbclass_form F=8
+_tbunittest_form F=0
+_tbfind_form F=36
+_tbmessages_browser_form F=8
+_tbannotations_browser_form F=0
+_tbdebug_breakpoints_form F=384
+_tbnotification_form F=36
+_tbinteractive_form F=8
+_tbproctree_form F=8
+_tbbookmarks_form F=8
+_tbregex_form F=40
+_tbslickc_stack_form F=8
+_tbderivedclasses_form F=40
+_tbshell_form F=8
+_tbcbrowser_form F=8
+_tbsearch_form F=8
+_tbcbrowser_form T=0
+_tbproctree_form T=0
+_tbmessages_browser_form T=0
+_tbsearch_form T=0
+_tbshell_form T=0
+_tbterminal_form T=0
+_tbopen_form T=0
+_tbprojects_form T=0
+_tbtagrefs_form T=0
+_tboutputwin_form T=0
+_tbtagwin_form T=0
+_tbclass_form T=0
+AAAAAwAAAAEAAAAB2gAAAAIAMAAAAAAAAAA3AAAGPwAAAyUAAAAAAAAAAAAABj8AAANfAAAAAesAAAS6AAAAAPsAAAACAAAAAgAAAAAAAAAB+wAAAAIAAAACAAAAAAAAAAH9AAABoQAAAAAaADoAOgA6AC8AdgBEAG8AYwBrAEEAcgBlAGEBAAAAAbYAAQAAAAL7AAAABQAAAAUAAAAAAAAAAQAAAAIAAAADAAAABPsAAAAFAAAABQAAAAAAAAABAAAAAgAAAAMAAAAE/AAAAD0AAAAAKAAwADoAOgA6AF8AdABiAHAAcgBvAGoAZQBjAHQAcwBfAGYAbwByAG0BAP////8AAf///////////AAAAD0AAAAAKAAwADoAOgA6AF8AdABiAHAAcgBvAGMAdAByAGUAZQBfAGYAbwByAG0AAP////8AAP///////////AAAADcAAAAAIgAwADoAOgA6AF8AdABiAGMAbABhAHMAcwBfAGYAbwByAG0AAP////8AAP///////////AAAAD0AAAAAKAAwADoAOgA6AF8AdABiAGMAYgByAG8AdwBzAGUAcgBfAGYAbwByAG0AAP////8AAP///////////AAAADUAAAAAIAAwADoAOgA6AF8AdABiAG8AcABlAG4AXwBmAG8AcgBtAAD/////AAD///////////0AAALFAAAAABoAOgA6ADoALwB2AEQAbwBjAGsAQQByAGUAYQEAAAAC+gAAAAAAAfsAAAACAAAAAgAAAAAAAAAB+wAAAAIAAAACAAAAAQAAAAD8AAAAKQAAAAAcADoAOgA6AE0ARABJAEEAUgBFAEEAVABJAEwARQEAAAACkQAA/QAAAkUAAAAAGgA6ADoAOgAvAHYARABvAGMAawBBAHIAZQBhAQAAAAEgAAAAAAAC+wAAAAcAAAAHAAAAAwAAAAAAAAABAAAAAgAAAAQAAAAFAAAABvsAAAAHAAAABwAAAAAAAAABAAAAAgAAAAMAAAAEAAAABQAAAAb8AAAAOQAAAAAkADAAOgA6ADoAXwB0AGIAcwBlAGEAcgBjAGgAXwBmAG8AcgBtAAD/////AAD///////////wAAAA5AAAAACQAMAA6ADoAOgBfAHQAYgB0AGEAZwB3AGkAbgBfAGYAbwByAG0AAP////8AAP///////////AAAADsAAAAAJgAwADoAOgA6AF8AdABiAHQAYQBnAHIAZQBmAHMAXwBmAG8AcgBtAAD/////AAD///////////wAAAA3AAAAACIAMAA6ADoAOgBfAHQAYgBzAGgAZQBsAGwAXwBmAG8AcgBtAQD/////AAD///////////wAAABNAAAAADgAMAA6ADoAOgBfAHQAYgBtAGUAcwBzAGEAZwBlAHMAXwBiAHIAbwB3AHMAZQByAF8AZgBvAHIAbQAA/////wAA///////////8AAAAPQAAAAAoADAAOgA6ADoAXwB0AGIAdABlAHIAbQBpAG4AYQBsAF8AZgBvAHIAbQAA/////wAA///////////8AAAAPwAAAAAqADAAOgA6ADoAXwB0AGIAbwB1AHQAcAB1AHQAdwBpAG4AXwBmAG8AcgBtAAD/////AAD//////////wAAAADbAAAAAAAAAALbAAAAAAAAAAHbAAAAAAAAAAPbAAAAAAAAAAA=
+QTOOLBAR 2 0
+AAAA/wAAAAD9AAAAAAAABkAAAALvAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAIAAAAQAFMAdABhAG4AZABhAHIAZAEAAAAA/////wAAAAAAAAAAAAAAHgBDAHUAcgByAGUAbgB0ACAAQwBvAG4AdABlAHgAdAEAAAJw/////wAAAAAAAAAA
+_tbstandard_form 1
+_tbcontext_form 1
+END_MONITOR_CONFIGS:
+CWD: MonkeyDungeon/
+FILEHIST: 1
+MonkeyDungeon.sln
+ALLFILEHIST: 1
+MonkeyDungeon.sln
+TBCLASS: 0 0

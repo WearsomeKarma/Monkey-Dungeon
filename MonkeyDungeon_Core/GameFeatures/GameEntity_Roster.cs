@@ -32,7 +32,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             foreach(GameEntity_RosterEntry entry in ROSTER_ENTRIES)
                 if (entry.GameEntity_ID == id)
-                    return entry.Game_Entity;
+                    return entry.Entity;
             return null;
         }
 
@@ -40,24 +40,25 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             foreach (GameEntity_RosterEntry entry in ROSTER_ENTRIES)
                 if (positionType == (GameEntity_Position_Type) entry.World_Position)
-                    return entry.Game_Entity;
+                    return entry.Entity;
             return null;
         }
         
-        internal readonly int ROSTER_ID;
+        internal readonly GameEntity_Roster_Id ROSTER_ID;
 
         public bool Is_On_Team(GameEntity_ID id)
             => id.Roster_ID == ROSTER_ID;
         
         internal GameEntity_Roster(GameState_Machine game, GameEntity[] entities)
         {
-            ROSTER_ID = ROSTER_COUNT;
+            //TODO: constraint this index overflow.
+            ROSTER_ID = GameEntity_Roster_Id.ROSTER_IDS[ROSTER_COUNT];
             ROSTER_COUNT++;
             Game = game;
             ROSTER_ENTRIES = new GameEntity_RosterEntry[entities.Length];
 
             for (int i = 0; i < ROSTER_ENTRIES.Length; i++)
-                ROSTER_ENTRIES[i] = new GameEntity_RosterEntry(entities[i]);
+                ROSTER_ENTRIES[i] = new GameEntity_RosterEntry(entities[i], ROSTER_ID);
             
             Set_Entities(entities);
         }
@@ -72,7 +73,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             if (gameEntity == null)
                 return null;
 
-            ROSTER_ENTRIES[gameEntity.GameEntity_ID % MD_PARTY.MAX_PARTY_SIZE].Game_Entity = gameEntity;
+            ROSTER_ENTRIES[gameEntity.GameEntity_ID % MD_PARTY.MAX_PARTY_SIZE].Entity = gameEntity;
             gameEntity.Game = Game;
             gameEntity.Resource_Manager.Resources_Updated += (e) => Game.Relay_Entity_Resource(e);
 
@@ -93,7 +94,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             GameEntity_Attribute_Name[] races = new GameEntity_Attribute_Name[ROSTER_ENTRIES.Length];
             for (int i = 0; i < ROSTER_ENTRIES.Length; i++)
-                races[i] = ROSTER_ENTRIES[i].Game_Entity.Race;
+                races[i] = ROSTER_ENTRIES[i].Entity.Race;
             return races;
         }
 

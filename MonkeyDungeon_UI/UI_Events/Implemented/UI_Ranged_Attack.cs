@@ -2,6 +2,7 @@
 using MonkeyDungeon_UI.Prefabs.Entities;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
 using OpenTK;
 
 namespace MonkeyDungeon_UI.UI_Events.Implemented
@@ -11,7 +12,7 @@ namespace MonkeyDungeon_UI.UI_Events.Implemented
         private Particle Ranged_Particle { get; set; }
 
         internal UI_Ranged_Attack(EventScheduler eventScheduler, Particle rangedParticle, Vector3 initalPos, double duration = 1) 
-            : base(eventScheduler, MD_VANILLA_UI.UI_EVENT_RANGED_ATTACK, rangedParticle, initalPos, duration)
+            : base(eventScheduler, MD_VANILLA_UI_EVENTS.UI_EVENT_RANGED_ATTACK, rangedParticle, initalPos, duration)
         {
             Ranged_Particle = rangedParticle;
         }

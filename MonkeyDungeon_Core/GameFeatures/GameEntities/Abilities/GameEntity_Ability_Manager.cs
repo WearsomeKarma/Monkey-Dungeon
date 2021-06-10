@@ -4,6 +4,7 @@ using System.Linq;
 using MonkeyDungeon_Core.GameFeatures.GameEntities.Resources;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
 {

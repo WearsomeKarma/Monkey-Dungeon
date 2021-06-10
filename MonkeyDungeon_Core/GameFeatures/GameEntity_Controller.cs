@@ -25,23 +25,23 @@ namespace MonkeyDungeon_Core.GameFeatures
                 PendingCombatAction.Selected_Ability = abilityName;
             }
         }
-        internal void Setup_Combat_Action_Target(GameEntity_ID index)
+        internal void Setup_Combat_Action_Target(GameEntity_Position position)
         {
             if (!IsAutomonous)
             {
                 if (PendingCombatAction == null)
                     throw new InvalidOperationException("Ability is null.");
-                PendingCombatAction.Target.Add_Target(index);
+                PendingCombatAction.Target.Add_Target(position);
             }
         }
-        internal Combat_Action Get_Combat_Action(GameEntity_EntityField gameField)
+        internal Combat_Action Get_Combat_Action(GameEntity_Field_RosterEntry gameFieldRosterEntry)
         {
             if (!Entity.Has_PlayableMoves())
             {
                 return new Combat_Action() {Action_Owner = Entity.GameEntity_ID, Action_Ends_Turn = true};
             }
 
-            Combat_Action result = Handle_CombatAction_Request(gameField);
+            Combat_Action result = Handle_CombatAction_Request(gameFieldRosterEntry);
             if (result == null)
                 return null;
 
@@ -49,13 +49,13 @@ namespace MonkeyDungeon_Core.GameFeatures
             PendingCombatAction = null;
             return finishedAction; //TODO: review this stuff too in case this is lousy.
         }
-        protected virtual Combat_Action Handle_CombatAction_Request(GameEntity_EntityField gameField)
+        protected virtual Combat_Action Handle_CombatAction_Request(GameEntity_Field_RosterEntry gameFieldRosterEntry)
         {
             return null;
         }
 
-        internal void BeginCombat(GameEntity_EntityField gameField) => Handle_BeginCombat(gameField);
-        protected virtual void Handle_BeginCombat(GameEntity_EntityField gameField) { }
+        internal void BeginCombat(GameEntity_Field_RosterEntry gameFieldRosterEntry) => Handle_BeginCombat(gameFieldRosterEntry);
+        protected virtual void Handle_BeginCombat(GameEntity_Field_RosterEntry gameFieldRosterEntry) { }
 
         public GameEntity_Controller(bool isAutonomous = false)
         {

@@ -12,7 +12,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
         {
             GameEntity_Attribute_Name effectedResource = action.Target_Affected_Resource;
             
-            GameEntity owner = Get_Owner_Entity_Of_Action(action.Action_Owner).Game_Entity;
+            GameEntity owner = Get_Owner_Entity_Of_Action(action.Action_Owner).Entity;
             GameEntity effectedEntity;
             GameEntity_Ability ability = owner.Ability_Manager.Get_Ability<GameEntity_Ability>(action.Selected_Ability);
 
@@ -24,7 +24,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
                 finalizedOffset =
                     new Combat_Resource_Offset(baseOffset.DamageType, baseOffset * action.Finalized_Hit_Bonus/ finalizedDodgeValue);
 
-                effectedEntity = Get_Owner_Entity_Of_Action(finalizedDodgeValue.FACTOR_OWNER).Game_Entity;
+                effectedEntity = Get_Owner_Entity_Of_Action(finalizedDodgeValue.FACTOR_OWNER).Entity;
 
                 GameEntity_Resource affectedResource =
                     effectedEntity.Resource_Manager.Get_Resource(action.Target_Affected_Resource);

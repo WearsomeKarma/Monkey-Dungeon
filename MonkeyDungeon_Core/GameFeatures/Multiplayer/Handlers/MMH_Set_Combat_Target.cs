@@ -18,9 +18,9 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
                 return;
 
             GameEntity_RosterEntry entityEntry =
-                GameState_Machine.GAME_FIELD.Get_Entity(recievedMessage.Local_Entity_ID);
+                GameState_Machine.GameFieldRosterEntry.Get_Entity(recievedMessage.Local_Entity_ID);
 
-            entityEntry.Controller.PendingCombatAction.Target.Add_Target(GameEntity_ID.IDS[recievedMessage.INT_VALUE]);
+            entityEntry.Controller.PendingCombatAction.Target.Add_Target(GameEntity_Position.ALL_NON_NULL__POSITIONS[recievedMessage.INT_VALUE]);
         }
     }
 }

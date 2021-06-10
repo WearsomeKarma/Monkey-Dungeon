@@ -42,7 +42,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         
         public bool Ability_Set => Selected_Ability != null;
         public bool Requires_Target => (Target != null) ? (Target?.Target_Type != Combat_Target_Type.Self_Or_No_Target) : false;
-        public bool Has_Targets => Target?.Has_Valid_Targets() ?? false;
+        public bool Has_Targets => Target?.Has_Legal_Targets() ?? false;
         public bool Action_Ends_Turn { get; set; }
 
         public bool IsSetupComplete => 
@@ -58,14 +58,14 @@ namespace MonkeyDungeon_Core.GameFeatures
             Action_Owner = GameEntity_ID.ID_NULL;
         }
 
-        internal void Finalized_Action(GameEntity_EntityField field)
+        internal void Finalized_Action(GameEntity_Field_RosterEntry fieldRosterEntry)
         {
             System.Console.WriteLine(this);
-            GameEntity_RosterEntry owner = field.Get_Entity(Action_Owner);
-            GameEntity ownerEntity = owner.Game_Entity;
+            GameEntity_RosterEntry owner = fieldRosterEntry.Get_Entity(Action_Owner);
+            GameEntity ownerEntity = owner.Entity;
             GameEntity_Ability ability = ownerEntity.Ability_Manager.Get_Ability<GameEntity_Ability>(Selected_Ability);
             
-            Target.Bind_To_Fields(ability.Owner_ID, ability.Target_Type, ability.Has_Strict_Targets);
+            Target.Bind_To_Owner(owner.World_Position, owner.Roster_ID);
         }
         
         public Combat_Action Copy()

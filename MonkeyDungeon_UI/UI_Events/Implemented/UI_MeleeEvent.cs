@@ -7,6 +7,7 @@ using isometricgame.GameEngine.Tools;
 using MonkeyDungeon_UI.Prefabs.Entities;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using OpenTK;
 
@@ -32,7 +33,7 @@ namespace MonkeyDungeon_UI.UI_Events.Implemented
             Vector3 enemySide, 
             CreatureGameObject[] players,
             CreatureGameObject[] enemies)
-            : base(eventScheduler, MD_VANILLA_UI.UI_EVENT_MELEE, duration)
+            : base(eventScheduler, MD_VANILLA_UI_EVENTS.UI_EVENT_MELEE, duration)
         {
             Players = players;
             Enemies = enemies;

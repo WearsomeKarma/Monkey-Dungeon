@@ -46,7 +46,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
                 case Combat_Redirect_Type.Redirect_Vertical:
                     return newPos = position.Get_Vertical_Swap();
                 case Combat_Redirect_Type.Redirect_Null:
-                    return GameEntity_Position.NULL_POSITION;
+                    return GameEntity_Position.__NULL____POSITION;
             }
         }
         

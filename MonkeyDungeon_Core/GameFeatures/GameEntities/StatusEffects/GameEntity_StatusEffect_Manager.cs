@@ -26,10 +26,10 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects
             Entity = managedEntity;
         }
 
-        internal void Combat_BeginTurn(GameEntity_EntityField gameField)
+        internal void Combat_BeginTurn(GameEntity_Field_RosterEntry gameFieldRosterEntry)
         {
             foreach (GameEntity_StatusEffect effect in StatusEffects)
-                effect.Combat_BeginTurn_StatusEffect(gameField);
+                effect.Combat_BeginTurn_StatusEffect(gameFieldRosterEntry);
         }
 
         internal void React_To_Cast(Combat_Action action)

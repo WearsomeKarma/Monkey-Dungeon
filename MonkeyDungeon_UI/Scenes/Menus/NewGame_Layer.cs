@@ -18,6 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
 
 namespace MonkeyDungeon_UI.Scenes.Menus
 {
