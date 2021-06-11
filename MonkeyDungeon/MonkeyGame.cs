@@ -16,7 +16,7 @@ namespace MonkeyDungeon_Core
         internal Local_Reciever Client { get; private set; }
         
         public MonkeyDungeon_Game(string GAME_DIR = "", string GAME_DIR_ASSETS = "", string GAME_DIR_WORLDS = "") 
-            : base(MD_VANILLA_RACES.RACE_MONKEY, GAME_DIR, GAME_DIR_ASSETS, GAME_DIR_WORLDS)
+            : base(MD_VANILLA_RACE_NAMES.RACE_MONKEY, GAME_DIR, GAME_DIR_ASSETS, GAME_DIR_WORLDS)
         {
         }
 
@@ -29,9 +29,9 @@ namespace MonkeyDungeon_Core
         
         protected override void Handle_Load_Entities()
         {
-            foreach (string race in MD_VANILLA_RACES.STRINGS)
+            foreach (string race in MD_VANILLA_RACE_NAMES.STRINGS)
                 LoadEntity(race);
-            foreach (string particle in MD_VANILLA_PARTICLES.STRINGS)
+            foreach (string particle in MD_VANILLA_PARTICLE_NAMES.STRINGS)
                 LoadSprite(particle, 4, 32, 32);
         }
 

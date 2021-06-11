@@ -163,7 +163,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
 
             GameState_Machine.Broadcast(
                 new MMW_Invoke_UI_Event(
-                    MD_VANILLA_UI_EVENTS.UI_EVENT_MELEE
+                    MD_VANILLA_UI_EVENT_NAMES.UI_EVENT_MELEE
                     )
                 );
         }
@@ -233,10 +233,10 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
         {
             return new List<GameEntity_ServerSide>()
             {
-                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_FOUR,  Multiplayer_Relay_ID.ID_NULL, MD_VANILLA_RACES.RACE_GOBLIN),
-                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_FIVE,  Multiplayer_Relay_ID.ID_NULL, MD_VANILLA_RACES.RACE_GOBLIN),
-                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_SIX,   Multiplayer_Relay_ID.ID_NULL, MD_VANILLA_RACES.RACE_GOBLIN),
-                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_SEVEN, Multiplayer_Relay_ID.ID_NULL, MD_VANILLA_RACES.RACE_GOBLIN)
+                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_FOUR,  Multiplayer_Relay_ID.ID_NULL, MD_VANILLA_RACE_NAMES.RACE_GOBLIN),
+                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_FIVE,  Multiplayer_Relay_ID.ID_NULL, MD_VANILLA_RACE_NAMES.RACE_GOBLIN),
+                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_SIX,   Multiplayer_Relay_ID.ID_NULL, MD_VANILLA_RACE_NAMES.RACE_GOBLIN),
+                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_SEVEN, Multiplayer_Relay_ID.ID_NULL, MD_VANILLA_RACE_NAMES.RACE_GOBLIN)
             };
         }
     }

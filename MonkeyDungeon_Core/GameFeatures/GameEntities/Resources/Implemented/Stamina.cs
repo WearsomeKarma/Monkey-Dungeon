@@ -7,7 +7,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Resources.Implemented
     public class Stamina : GameEntity_Resource
     {
         public Stamina(double max, double? initalValue = null) 
-            : base(MD_VANILLA_RESOURCES.RESOURCE_STAMINA, 0, max, initalValue)
+            : base(MD_VANILLA_RESOURCE_NAMES.RESOURCE_STAMINA, 0, max, initalValue)
         {
         }
 

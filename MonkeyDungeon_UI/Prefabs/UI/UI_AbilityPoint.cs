@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 namespace MonkeyDungeon_UI.Prefabs.UI
 {
-    public class AbilityPoint : GameObject
+    public class UI_AbilityPoint : GameObject
     {
         private AnimationComponent AnimationComponent { get; set; }
 
-        public AbilityPoint(SceneLayer sceneLayer, Vector3 position) 
+        public UI_AbilityPoint(SceneLayer sceneLayer, Vector3 position) 
             : base(sceneLayer, position)
         {
             AnimationSchematic schem = new AnimationSchematic(4, 0.05);

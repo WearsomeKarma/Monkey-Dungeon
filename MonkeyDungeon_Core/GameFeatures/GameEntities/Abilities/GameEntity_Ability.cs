@@ -16,7 +16,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
         public double Resource_ValueStrict => Internal_Parent?.Resource_Manager.Get_Resource(Resource_Name)?.Value ?? throw new Exception("TODO: replace excep");
 
         internal GameEntity_Attribute_Name Stat_Name { get; private set; }
-        public double Stat_Value => Internal_Parent?.Stat_Manager.Get_Stat(Stat_Name ?? GameEntity_Attribute_Name.DEFAULT)?.Value ?? throw new Exception("TODO: replace excep");
+        public double Stat_Value => Internal_Parent?.Stat_Manager.Get_Stat(Stat_Name ?? GameEntity_Attribute_Name.NULL_ATTRIBUTE_NAME)?.Value ?? throw new Exception("TODO: replace excep");
 
         public GameEntity_Attribute_Name Particle_Type { get; protected set; }
 

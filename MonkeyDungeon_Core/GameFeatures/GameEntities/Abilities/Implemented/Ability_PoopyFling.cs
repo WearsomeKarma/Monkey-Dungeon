@@ -9,13 +9,13 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
     {
         public Ability_PoopyFling() 
             : base(
-                  MD_VANILLA_ABILITYNAMES.ABILITY_POOPY_FLING, 
-                  MD_VANILLA_RESOURCES.RESOURCE_HEALTH, 
-                  MD_VANILLA_STATS.STAT_STINKINESS,
+                  MD_VANILLA_ABILITY_NAMES.ABILITY_POOPY_FLING, 
+                  MD_VANILLA_RESOURCE_NAMES.RESOURCE_HEALTH, 
+                  MD_VANILLA_STAT_NAMES.STAT_STINKINESS,
                   Combat_Target_Type.One_Enemy,
                   Combat_Damage_Type.Poison,
                   Combat_Assault_Type.Ranged,
-                  MD_VANILLA_PARTICLES.POOPY_FLING
+                  MD_VANILLA_PARTICLE_NAMES.POOPY_FLING
                   )
         {
         }

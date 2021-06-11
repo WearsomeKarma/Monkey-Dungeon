@@ -8,7 +8,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Resources.Implemented
     public class Level : GameEntity_Resource
     {
         public Level(double max, double? initalValue=null) 
-            : base(MD_VANILLA_RESOURCES.RESOURCE_LEVEL, 1, max, initalValue)
+            : base(MD_VANILLA_RESOURCE_NAMES.RESOURCE_LEVEL, 1, max, initalValue)
         {
         }
 

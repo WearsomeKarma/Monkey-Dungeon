@@ -7,7 +7,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
     public class Ability_ApeShit : GameEntity_Ability
     {
         public Ability_ApeShit() 
-            : base(MD_VANILLA_ABILITYNAMES.ABILITY_APE_SHIT, MD_VANILLA_RESOURCES.RESOURCE_STAMINA, MD_VANILLA_STATS.STAT_STRENGTH)
+            : base(MD_VANILLA_ABILITY_NAMES.ABILITY_APE_SHIT, MD_VANILLA_RESOURCE_NAMES.RESOURCE_STAMINA, MD_VANILLA_STAT_NAMES.STAT_STRENGTH)
         {
         }
 

@@ -15,14 +15,14 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
     {
         private EventScheduler EventScheduler { get; set; }
 
-        internal AnnouncementMessage announcement;
+        internal UI_AnnouncementMessage UiAnnouncement;
 
         internal UI_PauseMenu_Layer(GameScene parentScene) 
             : base(parentScene)
         {
             EventScheduler = parentScene.EventScheduler;
 
-            Add_StaticObject(announcement = new AnnouncementMessage(this, new Vector3(-Game.Width / 2 - 310, Game.Height / 4, 0)));
+            Add_StaticObject(UiAnnouncement = new UI_AnnouncementMessage(this, new Vector3(-Game.Width / 2 - 310, Game.Height / 4, 0)));
         }
     }
 }

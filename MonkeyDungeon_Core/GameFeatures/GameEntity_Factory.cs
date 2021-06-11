@@ -16,18 +16,18 @@ namespace MonkeyDungeon_Core.GameFeatures
         private readonly Dictionary<GameEntity_Attribute_Name, GameEntity_ServerSide> GameEntity_Catalog = new Dictionary<GameEntity_Attribute_Name, GameEntity_ServerSide>()
         {
             //Players
-            { MD_VANILLA_RACES.RACE_MONKEY, new GameEntity_ServerSide() }, //TODO: Fix this awful thing with unique_id
-            { MD_VANILLA_RACES.CLASS_WARRIOR, new WarriorClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 0 } },
-            { MD_VANILLA_RACES.CLASS_WIZARD, new WizardClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 1 } },
-            { MD_VANILLA_RACES.CLASS_ARCHER, new ArcherClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 2 } },
-            { MD_VANILLA_RACES.CLASS_CLERIC, new ClericClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 3 } },
-            { MD_VANILLA_RACES.CLASS_KNIGHT, new KnightClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 4 } },
-            { MD_VANILLA_RACES.CLASS_MONK, new MonkClass(MD_VANILLA_RACES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 5 } },
+            { MD_VANILLA_RACE_NAMES.RACE_MONKEY, new GameEntity_ServerSide() }, //TODO: Fix this awful thing with unique_id
+            { MD_VANILLA_RACE_NAMES.CLASS_WARRIOR, new WarriorClass(MD_VANILLA_RACE_NAMES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 0 } },
+            { MD_VANILLA_RACE_NAMES.CLASS_WIZARD, new WizardClass(MD_VANILLA_RACE_NAMES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 1 } },
+            { MD_VANILLA_RACE_NAMES.CLASS_ARCHER, new ArcherClass(MD_VANILLA_RACE_NAMES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 2 } },
+            { MD_VANILLA_RACE_NAMES.CLASS_CLERIC, new ClericClass(MD_VANILLA_RACE_NAMES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 3 } },
+            { MD_VANILLA_RACE_NAMES.CLASS_KNIGHT, new KnightClass(MD_VANILLA_RACE_NAMES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 4 } },
+            { MD_VANILLA_RACE_NAMES.CLASS_MONK, new MonkClass(MD_VANILLA_RACE_NAMES.RACE_MONKEY, 1, new GameEntity_Controller_Player()) { Unique_ID = 5 } },
 
             //Merchants
 
             //Enemies
-            { MD_VANILLA_RACES.RACE_GOBLIN, new EC_Goblin(1) }
+            { MD_VANILLA_RACE_NAMES.RACE_GOBLIN, new EC_Goblin(1) }
         };
         public string[] Get_Races()
         {

@@ -18,7 +18,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
             {
                 targetedEntityServerSide = Get_Entity(targetPositions[i]);
 
-                if (action.Stat_Dodge_Bonus == GameEntity_Attribute_Name.DEFAULT)
+                if (action.Stat_Dodge_Bonus == GameEntity_Attribute_Name.NULL_ATTRIBUTE_NAME)
                 {
                     dodgeBonuses[i] = action.Finalized_Hit_Bonus; // results in 1/1 in resource offset calculation.
                     continue;

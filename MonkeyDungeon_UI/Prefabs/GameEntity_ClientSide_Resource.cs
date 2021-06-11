@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 
-namespace MonkeyDungeon_UI.Prefabs.UI.EntityData
+namespace MonkeyDungeon_UI.Prefabs
 {
-    public class UI_GameEntity_Resource
+    public class GameEntity_ClientSide_Resource
     {
-        public event Action<UI_GameEntity_Resource> Resource_Removed;
+        public event Action<GameEntity_ClientSide_Resource> Resource_Removed;
 
         public event Action<float> Resource_Updated;
         private float resource_Percentage;
@@ -20,9 +17,9 @@ namespace MonkeyDungeon_UI.Prefabs.UI.EntityData
             }
         }
 
-        public string Resource_Name { get; private set; }
+        public GameEntity_Attribute_Name_Resource Resource_Name { get; private set; }
 
-        public UI_GameEntity_Resource(string name, float initalPercentage=1)
+        public GameEntity_ClientSide_Resource(GameEntity_Attribute_Name_Resource name, float initalPercentage=1)
         {
             Resource_Percentage = initalPercentage;
             Resource_Name = name;

@@ -1,6 +1,6 @@
 ﻿namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions
 {
-    public static class MD_VANILLA_RESOURCES
+    public static class MD_VANILLA_RESOURCE_NAMES
     {
         public static readonly GameEntity_Attribute_Name_Resource RESOURCE_LEVEL = new GameEntity_Attribute_Name_Resource("Level");
         public static readonly GameEntity_Attribute_Name_Resource RESOURCE_ABILITYPOINTS = new GameEntity_Attribute_Name_Resource("Ability Points");

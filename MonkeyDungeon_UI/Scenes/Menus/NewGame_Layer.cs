@@ -24,15 +24,15 @@ namespace MonkeyDungeon_UI.Scenes.Menus
 {
     public class NewGame_Layer : MainMenu_Layer
     {
-        CreatureGameObject player;
+        UI_EntityObject player;
         GameScene gameScene;
-        TextField playerName;
+        UI_TextField playerName;
         MonkeyDungeon_Game_Client monkeyGame;
 
         //TODO: Move this to a more centralized area.
         private readonly uint classCount = 6;
         private uint classSelection = 0;
-        private readonly GameEntity_Attribute_Name[] CLASSES = MD_VANILLA_RACES.CLASSES;
+        private readonly GameEntity_Attribute_Name[] CLASSES = MD_VANILLA_RACE_NAMES.CLASSES;
         
         internal NewGame_Layer(MonkeyDungeon_Game_Client monkeyGame, MainMenuScene parentLayer)
             : base(monkeyGame, parentLayer)
@@ -45,7 +45,7 @@ namespace MonkeyDungeon_UI.Scenes.Menus
                 );
 
             Add_StaticObject(
-                playerName = new TextField(
+                playerName = new UI_TextField(
                     this,
                     new Vector3(-Game.Width / 2 + 20, Game.Height / 2 - 160, 0),
                     new Vector2(200, 100),
@@ -55,7 +55,7 @@ namespace MonkeyDungeon_UI.Scenes.Menus
                 );
 
             Add_StaticObject(
-                new Button(
+                new UI_Button(
                     this,
                     new Vector3(-Game.Width / 4, 0, 0),
                     new Vector2(200, 100),
@@ -66,7 +66,7 @@ namespace MonkeyDungeon_UI.Scenes.Menus
                 );
 
             Add_StaticObject(
-                new Button(
+                new UI_Button(
                     this,
                     new Vector3(Game.Width / 4, 0, 0),
                     new Vector2(200, 100),
@@ -78,7 +78,7 @@ namespace MonkeyDungeon_UI.Scenes.Menus
 
 
             Add_StaticObject(
-                new Button(
+                new UI_Button(
                     this,
                     new Vector3(-Game.Width / 2 + 20, -Game.Height / 2 + 20, 0),
                     new Vector2(200, 100),
@@ -90,7 +90,7 @@ namespace MonkeyDungeon_UI.Scenes.Menus
 
 
             Add_StaticObject(
-                new Button(
+                new UI_Button(
                     this,
                     new Vector3(Game.Width / 2 - 220, -Game.Height / 2 + 20, 0),
                     new Vector2(200, 100),
@@ -102,7 +102,7 @@ namespace MonkeyDungeon_UI.Scenes.Menus
 
             //throw new NotImplementedException();
             Add_StaticObject(
-                player = new CreatureGameObject(
+                player = new UI_EntityObject(
                     this,
                     new Vector3(0, Game.Height / 4, 0)
                     )

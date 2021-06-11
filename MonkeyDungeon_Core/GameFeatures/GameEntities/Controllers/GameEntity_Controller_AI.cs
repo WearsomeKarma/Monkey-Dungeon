@@ -23,7 +23,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Controllers
             Combat_Action ca = new Combat_Action();
             ca.Action_Owner = EntityServerSide.GameEntity_ID;
             ca.Target.Add_Target(targetId);
-            ca.Selected_Ability = MD_VANILLA_ABILITYNAMES.ABILITY_PUNCH;
+            ca.Selected_Ability = MD_VANILLA_ABILITY_NAMES.ABILITY_PUNCH;
 
             return ca;
         }

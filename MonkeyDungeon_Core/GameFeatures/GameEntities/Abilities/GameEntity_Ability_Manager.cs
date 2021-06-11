@@ -21,7 +21,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
 
         //TODO: think about doing this differently.
         internal readonly GameEntity_Resource Ability_Point_Pool =
-            new GameEntity_Resource(MD_VANILLA_RESOURCES.RESOURCE_ABILITYPOINTS, 0, 2);
+            new GameEntity_Resource(MD_VANILLA_RESOURCE_NAMES.RESOURCE_ABILITYPOINTS, 0, 2);
         
         public GameEntity_Ability_Manager(GameEntity_ServerSide managingEntityServerSide, List<GameEntity_Ability> abilities = null)
         {

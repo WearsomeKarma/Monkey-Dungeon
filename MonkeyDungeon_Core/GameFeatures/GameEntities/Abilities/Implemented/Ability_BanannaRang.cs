@@ -12,13 +12,13 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
 
         public Ability_BanannaRang() 
             : base(
-                  MD_VANILLA_ABILITYNAMES.ABILITY_BANNANA_RANG, 
-                  MD_VANILLA_RESOURCES.RESOURCE_STAMINA, 
-                  MD_VANILLA_STATS.STAT_AGILITY, 
+                  MD_VANILLA_ABILITY_NAMES.ABILITY_BANNANA_RANG, 
+                  MD_VANILLA_RESOURCE_NAMES.RESOURCE_STAMINA, 
+                  MD_VANILLA_STAT_NAMES.STAT_AGILITY, 
                   Combat_Target_Type.One_Enemy,
                   Combat_Damage_Type.Physical,
                   Combat_Assault_Type.Ranged,
-                  MD_VANILLA_PARTICLES.BANNANA_RANG
+                  MD_VANILLA_PARTICLE_NAMES.BANNANA_RANG
                   )
         {
         }

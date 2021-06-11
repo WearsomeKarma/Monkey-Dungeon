@@ -1,12 +1,6 @@
-﻿using MonkeyDungeon_Vanilla_Domain;
-using MonkeyDungeon_Vanilla_Domain.GameFeatures;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace MonkeyDungeon_Core.GameFeatures
+namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 {
     public class GameEntity_Field<T> : GameEntity_Survey<T> where T : GameEntity
     {
@@ -30,6 +24,9 @@ namespace MonkeyDungeon_Core.GameFeatures
         public T Get_Entity(GameEntity_Position position)
             => Get_Entry_From_Position(position);
 
+        public GameEntity_Position Get_Position_From_Id(GameEntity_ID id)
+            => Get_Entity(id).GameEntity_Position;
+        
         public GameEntity_ID[] Get_Entity_Ids(bool isPlayers)
         {
             GameEntity[] rosterEntries = Get_Reduced_Field();
@@ -56,7 +53,12 @@ namespace MonkeyDungeon_Core.GameFeatures
                 Set_Entity(entity);
         }
         
-        public GameEntity_Field()
+        public void Swap_Positions(GameEntity_Position position, GameEntity_Position_Swap_Type swapType)
+        {
+            Swap_Entries(position, swapType);
+        }
+        
+        protected GameEntity_Field()
             : base(GameEntity.NULL_ENTITY as T)
         {}
     }

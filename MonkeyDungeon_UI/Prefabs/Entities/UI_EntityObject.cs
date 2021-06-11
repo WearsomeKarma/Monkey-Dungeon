@@ -6,7 +6,6 @@ using isometricgame.GameEngine.Rendering.Animation;
 using isometricgame.GameEngine.Scenes;
 using isometricgame.GameEngine.Systems.Rendering;
 using MonkeyDungeon_UI.Prefabs.UI;
-using MonkeyDungeon_UI.Prefabs.UI.EntityData;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using OpenTK;
 using System;
@@ -20,7 +19,7 @@ using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
 
 namespace MonkeyDungeon_UI.Prefabs.Entities
 {
-    public class CreatureGameObject : GameObject
+    public class UI_EntityObject : GameObject
     {
         public static readonly string Suffix_Unique = "Unique", Suffix_Body = "Body", Suffix_Head = "Head";
 
@@ -33,10 +32,10 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
         public bool Has_UniqueIdentifier { get; private set; }
         protected RenderUnit Body;
 
-        private ResourceBar healthBar;
+        private UI_ResourceBar healthBar;
 
-        private UI_GameEntity_Descriptor entityDescription;
-        internal UI_GameEntity_Descriptor EntityDescription
+        private GameEntity_ClientSide entityDescription;
+        internal GameEntity_ClientSide EntityDescription
         {
             get => entityDescription; set
             {
@@ -44,7 +43,7 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
             }
         }
 
-        private void Change_Entity(UI_GameEntity_Descriptor entity)
+        private void Change_Entity(GameEntity_ClientSide entity)
         {
             Unbind_To_Description();
             Bind_To_Description(entity);
@@ -52,7 +51,7 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
             AnimationComponent.Play(0);
         }
 
-        public void Bind_To_Description(UI_GameEntity_Descriptor entity)
+        public void Bind_To_Description(GameEntity_ClientSide entity)
         {
             entityDescription = entity;
             if (entity == null)
@@ -75,14 +74,14 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
             entityDescription = null;
         }
 
-        private void Resource_Added(UI_GameEntity_Resource resource)
+        private void Resource_Added(GameEntity_ClientSide_Resource clientSideResource)
         {
-            if (resource.Resource_Name == healthBar.Resource_Name)
+            if (clientSideResource.Resource_Name == healthBar.Resource_Name)
             {
-                resource.Resource_Removed += (e) => e.Resource_Updated -= Check_Health;
-                resource.Resource_Updated += Check_Health;
+                clientSideResource.Resource_Removed += (e) => e.Resource_Updated -= Check_Health;
+                clientSideResource.Resource_Updated += Check_Health;
 
-                healthBar.Attach_To_Resource(resource);
+                healthBar.Attach_To_Resource(clientSideResource);
             }
         }
 
@@ -98,30 +97,30 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
                 AnimationComponent.SetNode(3);
         }
 
-        private void Entity_Died(UI_GameEntity_Descriptor entity)
+        private void Entity_Died(GameEntity_ClientSide entity)
         {
             AnimationComponent.Play(4);
         }
 
-        private void Entity_Dismissal_State_Changed(UI_GameEntity_Descriptor obj)
+        private void Entity_Dismissal_State_Changed(GameEntity_ClientSide obj)
         {
             AnimationComponent.Enabled = !obj.IsDismissed;
         }
 
-        public string UI_Race => EntityDescription.RACE;
+        public string UI_Race => EntityDescription.GameEntity_Race;
 
         private AnimationComponent AnimationComponent;
         public Vector3 Inital_Position { get; private set; }
 
-        public CreatureGameObject(SceneLayer sceneLayer, Vector3 position, UI_GameEntity_Descriptor entity = null, int animRow = 8, int animCol = 8)
+        public UI_EntityObject(SceneLayer sceneLayer, Vector3 position, GameEntity_ClientSide entity = null, int animRow = 8, int animCol = 8)
             : base(sceneLayer, position)
         {
             Inital_Position = position;
-            healthBar = new ResourceBar(
+            healthBar = new UI_ResourceBar(
                 sceneLayer,
                 position + new Vector3(0, -35, 0),
                 isometricgame.GameEngine.Systems.MathHelper.Color_To_Vec4(Color.Red),
-                MD_VANILLA_RESOURCES.RESOURCE_HEALTH
+                MD_VANILLA_RESOURCE_NAMES.RESOURCE_HEALTH
                 );
 
             //head anim
@@ -145,11 +144,11 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
             EntityDescription = entity;
         }
 
-        internal void Set_Race(UI_GameEntity_Descriptor entity)
+        internal void Set_Race(GameEntity_ClientSide entity)
         {
             //TODO: Centralize primitives.
-            string race = entity?.RACE ?? "Monkey";
-            uint uniqueIdentifier = entity?.UNIQUE_IDENTIFIER ?? 0;
+            string race = entity?.GameEntity_Race ?? "Monkey";
+            uint uniqueIdentifier = entity?.GameEntity_Cosmetic_ID ?? 0;
 
             string h = race + Suffix_Head;
             string b = race + Suffix_Body;
@@ -158,7 +157,7 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
             if (!SceneLayer.Game.SpriteLibrary.HasSprite(h))
                 throw new ArgumentException();
 
-            Race = entity?.RACE ?? "Monkey";
+            Race = entity?.GameEntity_Race ?? "Monkey";
 
             SpriteComponent.SetSprite(h);
             Body = SceneLayer.Game.SpriteLibrary.ExtractRenderUnit(b);
@@ -173,7 +172,7 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
         internal void Set_Unique_ID(uint uid)
         {
             UniqueIdentifier.VAO_Index = uid;
-            EntityDescription.UNIQUE_IDENTIFIER = uid;
+            EntityDescription.Set_Cosmetic_Id(uid);
         }
 
         protected override void HandleDraw(RenderService renderService)

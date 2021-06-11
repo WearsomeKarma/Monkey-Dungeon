@@ -12,7 +12,7 @@ namespace MonkeyDungeon_UI.Multiplayer.MessageWrappers
     public class MMW_Request_EndTurn : Multiplayer_Message_Wrapper
     {
         public MMW_Request_EndTurn() 
-            : base(MD_VANILLA_MMH.MMH_REQUEST_ENDTURN, GameEntity_ID.ID_ZERO, 0, 0, GameEntity_Attribute_Name.DEFAULT)
+            : base(MD_VANILLA_MMH.MMH_REQUEST_ENDTURN, GameEntity_ID.ID_ZERO, 0, 0, GameEntity_Attribute_Name.NULL_ATTRIBUTE_NAME)
         {
         }
     }

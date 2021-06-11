@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace MonkeyDungeon_UI.Prefabs.Entities
 {
-    public class Particle : GameObject
+    public class UI_ParticleObject : GameObject
     {
-        public Particle(SceneLayer sceneLayer, Vector3 position) 
+        public UI_ParticleObject(SceneLayer sceneLayer, Vector3 position) 
             : base(sceneLayer, position)
         {
             AnimationSchematic schem = new AnimationSchematic(1, 0.05);

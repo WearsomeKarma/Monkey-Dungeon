@@ -9,9 +9,9 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
     {
         public Ability_Punch() 
             : base(
-                  MD_VANILLA_ABILITYNAMES.ABILITY_PUNCH, 
-                  MD_VANILLA_RESOURCES.RESOURCE_STAMINA, 
-                  MD_VANILLA_STATS.STAT_STRENGTH,
+                  MD_VANILLA_ABILITY_NAMES.ABILITY_PUNCH, 
+                  MD_VANILLA_RESOURCE_NAMES.RESOURCE_STAMINA, 
+                  MD_VANILLA_STAT_NAMES.STAT_STRENGTH,
                   Combat_Target_Type.One_Enemy,
                   Combat_Damage_Type.Physical,
                   Combat_Assault_Type.Melee

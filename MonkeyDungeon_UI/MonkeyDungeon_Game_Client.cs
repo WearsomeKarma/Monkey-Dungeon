@@ -13,18 +13,19 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 
 namespace MonkeyDungeon_UI
 {
     public abstract class MonkeyDungeon_Game_Client : Game
     {
-        public readonly string DEFAULT_RACE;
+        public readonly GameEntity_Attribute_Name_Race DEFAULT_RACE;
         internal EventScheduler UI_EventScheduler => EventScheduler;
 
         internal Multiplayer_Expectation_Context Expectation_Context { get; private set; }
         internal Multiplayer_Relay Client_RecieverEndpoint_UI { get; private set; }
         
-        public MonkeyDungeon_Game_Client(string defaultRace, string GAME_DIR = "", string GAME_DIR_ASSETS = "", string GAME_DIR_WORLDS = "") 
+        public MonkeyDungeon_Game_Client(GameEntity_Attribute_Name_Race defaultRace, string GAME_DIR = "", string GAME_DIR_ASSETS = "", string GAME_DIR_WORLDS = "") 
             : base(1000, 600, "Monkey Dungeon", GAME_DIR, GAME_DIR_ASSETS, GAME_DIR_WORLDS)
         {
             DEFAULT_RACE = defaultRace;
@@ -85,11 +86,11 @@ namespace MonkeyDungeon_UI
 
         protected void LoadEntity(string name)
         {
-            LoadSprite(String.Format("{0}{1}", name, CreatureGameObject.Suffix_Head), 4, 32, 32);
+            LoadSprite(String.Format("{0}{1}", name, UI_EntityObject.Suffix_Head), 4, 32, 32);
 
-            LoadSprite(String.Format("{0}{1}", name, CreatureGameObject.Suffix_Body), 4, 32, 32);
+            LoadSprite(String.Format("{0}{1}", name, UI_EntityObject.Suffix_Body), 4, 32, 32);
 
-            LoadSprite(String.Format("{0}{1}", name, CreatureGameObject.Suffix_Unique), 4, 32, 32, false);
+            LoadSprite(String.Format("{0}{1}", name, UI_EntityObject.Suffix_Unique), 4, 32, 32, false);
         }
 
         protected void LoadSprite(string spriteName, float scale, int width, int height, bool throwIf_NotExists = true, string savedName = null)

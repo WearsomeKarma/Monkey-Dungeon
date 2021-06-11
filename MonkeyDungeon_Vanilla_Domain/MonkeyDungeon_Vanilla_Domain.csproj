@@ -41,12 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_ABILITYNAMES.cs" />
-    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_PARTICLES.cs" />
-    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_RACES.cs" />
-    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_RESOURCES.cs" />
-    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_STATS.cs" />
-    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_UI_EVENTS.cs" />
+    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_ABILITY_NAMES.cs" />
+    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_PARTICLE_NAMES.cs" />
+    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_RACE_NAMES.cs" />
+    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_RESOURCE_NAMES.cs" />
+    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_STAT_NAMES.cs" />
+    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_UI_EVENT_NAMES.cs" />
     <Compile Include="GameFeatures\AttributeNames\GameEntity_Attribute_Name_Ability.cs" />
     <Compile Include="GameFeatures\AttributeNames\GameEntity_Attribute_Name_Particle.cs" />
     <Compile Include="GameFeatures\AttributeNames\GameEntity_Attribute_Name_Race.cs" />
@@ -56,6 +56,8 @@
     <Compile Include="GameFeatures\GameEntity_Ability_Index.cs" />
     <Compile Include="GameFeatures\GameEntity_Attribute_Name.cs" />
     <Compile Include="GameFeatures\GameEntity.cs" />
+    <Compile Include="GameFeatures\GameEntity_Attribute_Type.cs" />
+    <Compile Include="GameFeatures\GameEntity_Position_Swap_Type.cs" />
     <Compile Include="GameFeatures\GameEntity_Survey.cs" />
     <Compile Include="GameFeatures\GameEntity_Field.cs" />
     <Compile Include="GameFeatures\GameEntity_Survey_Target.cs" />
@@ -67,7 +69,6 @@
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Assault_Type.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Damage_Type.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Redirection_Chance.cs" />
-    <Compile Include="GameFeatures\GameStates\Combat\Combat_Redirect_Type.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Target_Type.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\MD_VANILLA_COMBAT.cs" />
     <Compile Include="GameFeatures\Quantity_Modification_Type.cs" />

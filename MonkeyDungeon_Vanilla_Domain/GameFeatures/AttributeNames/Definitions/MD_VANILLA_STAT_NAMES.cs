@@ -1,6 +1,6 @@
 ﻿namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions
 {
-    public static class MD_VANILLA_STATS
+    public static class MD_VANILLA_STAT_NAMES
     {
         public static readonly GameEntity_Attribute_Name_Stat STAT_STRENGTH     = new GameEntity_Attribute_Name_Stat("Strength");
         public static readonly GameEntity_Attribute_Name_Stat STAT_AGILITY      = new GameEntity_Attribute_Name_Stat("Agility");

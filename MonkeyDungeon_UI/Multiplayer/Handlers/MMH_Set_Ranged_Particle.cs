@@ -19,18 +19,18 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
 
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
-            int shootingEntity = recievedMessage.Local_Entity_ID;
-            int shootingTarget = recievedMessage.INT_VALUE;
+            GameEntity_ID shootingEntity = recievedMessage.Local_Entity_ID;
+            GameEntity_ID shootingTarget = GameEntity_ID.IDS[recievedMessage.INT_VALUE];
             string particleType = recievedMessage.ATTRIBUTE;
 
             Vector3 shooterPos = World_Layer.Get_Position_From_Id(shootingEntity);
             Vector3 targetPos = World_Layer.Get_Position_From_Id(shootingTarget);
 
-            World_Layer.Ranged_Particle.Set_Particle(particleType);
+            World_Layer.Ranged_UiParticleObject.Set_Particle(particleType);
             World_Layer.UI_Ranged_Particle_Event.Inital_Position = shooterPos;
             World_Layer.UI_Ranged_Particle_Event.Target_Position = targetPos;
 
-            World_Layer.EventScheduler.Invoke_Event(MD_VANILLA_UI_EVENTS.UI_EVENT_RANGED_ATTACK);
+            World_Layer.EventScheduler.Invoke_Event(MD_VANILLA_UI_EVENT_NAMES.UI_EVENT_RANGED_ATTACK);
         }
     }
 }

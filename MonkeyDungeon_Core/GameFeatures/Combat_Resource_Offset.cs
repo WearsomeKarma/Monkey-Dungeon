@@ -14,7 +14,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             DamageType = damageType;
             //TODO: change to damage instead of DEFAULT.
-            Amount = new GameEntity_Quantity(GameEntity_Attribute_Name.DEFAULT, 0, amount);
+            Amount = new GameEntity_Quantity(GameEntity_Attribute_Name.NULL_ATTRIBUTE_NAME, 0, amount);
         }
 
         public static implicit operator double(Combat_Resource_Offset offset)

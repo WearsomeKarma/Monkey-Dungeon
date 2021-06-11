@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using isometricgame.GameEngine.Scenes;
 using MonkeyDungeon_UI.Scenes.GameScenes;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_UI.Multiplayer.Handlers
@@ -21,11 +22,11 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
 
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
-            int ally = recievedMessage.Local_Entity_ID;
-            int enemy = recievedMessage.INT_VALUE;
+            GameEntity_ID ally = recievedMessage.Local_Entity_ID;
+            GameEntity_ID enemy = GameEntity_ID.IDS[recievedMessage.INT_VALUE];
 
             World_Layer.UI_MeleeEvent.Ally_Id = ally;
-            World_Layer.UI_MeleeEvent.Enemy_Id = enemy % 4; //TODO: centralize consts.
+            World_Layer.UI_MeleeEvent.Enemy_Id = enemy;
         }
     }
 }

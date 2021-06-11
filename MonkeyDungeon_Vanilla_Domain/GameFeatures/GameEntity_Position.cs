@@ -1,10 +1,11 @@
+using System;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 {
     public class GameEntity_Position
     {
-        public static readonly GameEntity_Position ID_NULL    = new GameEntity_Position(-1, GameEntity_Team_ID.ID_NULL);
+        public static readonly GameEntity_Position NULL_POSITION         = new GameEntity_Position(-1, GameEntity_Team_ID.ID_NULL);
         
         public static readonly GameEntity_Position TEAM_ONE__FRONT_RIGHT = new GameEntity_Position( 0, GameEntity_Team_ID.TEAM_ONE_ID);
         public static readonly GameEntity_Position TEAM_ONE__FRONT_LEFT  = new GameEntity_Position( 1, GameEntity_Team_ID.TEAM_ONE_ID);
@@ -18,7 +19,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 
         public static readonly GameEntity_Position[] TEAM_NULL_POSITIONS = new GameEntity_Position[]
         {
-            ID_NULL
+            NULL_POSITION
         };
         
         public static readonly GameEntity_Position[] TEAM_ONE__POSITIONS = new GameEntity_Position[]
@@ -69,7 +70,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         {
             //constraint null
             id = id ?? GameEntity_ID.ID_NULL;
-            nullPosition = nullPosition ?? ID_NULL;
+            nullPosition = nullPosition ?? NULL_POSITION;
             
             if (id == GameEntity_ID.ID_NULL || id.Team_Id == GameEntity_Team_ID.ID_NULL)
                 return nullPosition;
@@ -84,7 +85,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
             GameEntity_Position nullPosition = null
             )
         {
-            nullPosition = nullPosition ?? ID_NULL;
+            nullPosition = nullPosition ?? NULL_POSITION;
             
             if (teamId == null || teamId == GameEntity_Team_ID.ID_NULL)
                 return nullPosition;
@@ -110,16 +111,33 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 
         public GameEntity_Position Get_Horizontal_Swap()
         {
-            if (this == ID_NULL)
+            if (this == NULL_POSITION)
                 return this;
             return Get_Legal_Positions_By_RosterID(TeamId)[Horizontal_Adjacent_Position];
         }
 
         public GameEntity_Position Get_Vertical_Swap()
         {
-            if (this == ID_NULL)
+            if (this == NULL_POSITION)
                 return this;
             return Get_Legal_Positions_By_RosterID(TeamId)[Vertical_Adjacent_Position];
+        }
+
+        public GameEntity_Position Get_Swap(GameEntity_Position_Swap_Type swapType)
+        {
+            switch (swapType)
+            {
+                case GameEntity_Position_Swap_Type.No_Swap:
+                    return this;
+                case GameEntity_Position_Swap_Type.Swap_Horizontal:
+                    return Get_Horizontal_Swap();
+                case GameEntity_Position_Swap_Type.Swap_Vertical:
+                    return Get_Vertical_Swap();
+                case GameEntity_Position_Swap_Type.Swap_Diagonal:
+                    return Get_Horizontal_Swap().Get_Vertical_Swap();
+                default:
+                    return NULL_POSITION;
+            }
         }
 
         public override string ToString()
@@ -133,7 +151,24 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         public static explicit operator GameEntity_Position_Type(GameEntity_Position position)
             => (GameEntity_Position_Type) (position.WORLD_POSITION);
 
+        /// <summary>
+        /// General foreach wrapper function that will operate over team specific positions, or all positions (teamID=ID_NULL)
+        /// </summary>
+        /// <param name="teamID"></param>
+        /// <param name="action"></param>
+        public static void For_Each_Position(GameEntity_Team_ID teamID, Action<GameEntity_Position> action)
+        {
+            //function off of possible null!
+            GameEntity_Position[] positionField = 
+                teamID == null || teamID == GameEntity_Team_ID.ID_NULL 
+                    ? ALL_NON_NULL__POSITIONS 
+                    : POSITIONS_BY_ROSTER[teamID];
+            
+            foreach (GameEntity_Position position in positionField)
+                action(position);
+        }
+        
         public static bool Validate(GameEntity_Position position)
-            => (position != null) || (position != ID_NULL);
+            => (position != null) || (position != NULL_POSITION);
     }
 }

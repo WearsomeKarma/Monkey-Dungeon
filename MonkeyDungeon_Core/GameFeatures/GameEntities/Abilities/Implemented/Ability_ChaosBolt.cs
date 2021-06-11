@@ -12,13 +12,13 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
 
         public Ability_ChaosBolt() 
             : base(
-                  MD_VANILLA_ABILITYNAMES.ABILITY_CHAOS_BOLT, 
-                  MD_VANILLA_RESOURCES.RESOURCE_MANA, 
-                  MD_VANILLA_STATS.STAT_SMARTYPANTS,
+                  MD_VANILLA_ABILITY_NAMES.ABILITY_CHAOS_BOLT, 
+                  MD_VANILLA_RESOURCE_NAMES.RESOURCE_MANA, 
+                  MD_VANILLA_STAT_NAMES.STAT_SMARTYPANTS,
                   Combat_Target_Type.One_Enemy,
                   Combat_Damage_Type.Magical,
                   Combat_Assault_Type.Ranged,
-                  MD_VANILLA_PARTICLES.CHAOS_BOLT
+                  MD_VANILLA_PARTICLE_NAMES.CHAOS_BOLT
                   )
         {
         }
@@ -27,7 +27,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
             GameEntity_Position_Type ownerPositionType, GameEntity_Position_Type targetPositionType,
             Combat_Redirection_Chance baseChance)
         {
-            return new Combat_Redirection_Chance((Combat_Redirect_Type)(rand.Next(2)+ 1), 0.25);
+            return new Combat_Redirection_Chance((GameEntity_Position_Swap_Type)(rand.Next(2)+ 1), 0.25);
         }
 
         protected override Combat_Resource_Offset Handle_Calculate_Damage(Combat_Action action)

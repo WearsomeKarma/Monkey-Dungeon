@@ -1,6 +1,8 @@
-﻿namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions
+﻿using System.Linq;
+
+namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions
 {
-    public static class MD_VANILLA_ABILITYNAMES
+    public static class MD_VANILLA_ABILITY_NAMES
     {
         public static readonly GameEntity_Attribute_Name_Ability ABILITY_PUNCH 
             = new GameEntity_Attribute_Name_Ability("Punch");
@@ -19,7 +21,7 @@
         public static readonly GameEntity_Attribute_Name_Ability ABILITY_STAND_GUARD 
             = new GameEntity_Attribute_Name_Ability("Stand Guard");
 
-        public static readonly GameEntity_Attribute_Name_Ability[] STRINGS = new GameEntity_Attribute_Name_Ability[]
+        public static readonly GameEntity_Attribute_Name[] STRINGS = new GameEntity_Attribute_Name[]
         {
             ABILITY_PUNCH,
             ABILITY_POOPY_FLING,
@@ -30,5 +32,8 @@
             ABILITY_KI_KICK,
             ABILITY_STAND_GUARD,
         };
+
+        public static readonly GameEntity_Attribute_Name_Ability[] STRINGS_AS_ABILITY =
+            STRINGS.Cast<GameEntity_Attribute_Name_Ability>().ToArray();
     }
 }

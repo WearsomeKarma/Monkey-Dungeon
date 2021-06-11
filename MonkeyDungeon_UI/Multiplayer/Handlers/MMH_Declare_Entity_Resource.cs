@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using isometricgame.GameEngine.Scenes;
-using MonkeyDungeon_UI.Prefabs.UI.EntityData;
+using MonkeyDungeon_UI.Prefabs;
 using MonkeyDungeon_UI.Scenes.GameScenes;
 using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_UI.Multiplayer.Handlers
@@ -27,9 +28,10 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
         {
             GameEntity_Attribute_Name resourceName = recievedMessage.ATTRIBUTE;
 
-            UI_GameEntity_Descriptor entity = World_Layer.Get_Description_From_Id(recievedMessage.Local_Entity_ID);
+            GameEntity_ClientSide entity = World_Layer.Get_GameEntity(recievedMessage.Local_Entity_ID);
 
-            entity.Add_Resource(resourceName);
+            //I hate this code and TODO: change it.
+            entity.Add_Resource(GameEntity_Attribute_Name.Cast<GameEntity_Attribute_Name_Resource>(resourceName, GameEntity_Attribute_Type.RESOURCE_NAMES));
         }
     }
 }

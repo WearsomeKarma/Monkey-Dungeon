@@ -51,7 +51,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         {
             bool ret = FIELD[position_In_Question];
             
-            bool ownerPositionExclusive = ownerPosition != GameEntity_Position.ID_NULL;
+            bool ownerPositionExclusive = ownerPosition != GameEntity_Position.NULL_POSITION;
 
             bool rosterDependent = teamIdTarget != GameEntity_Team_ID.ID_NULL;
 
@@ -72,7 +72,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         public int Get_Selected_Count(GameEntity_Position ownerPosition = null, GameEntity_Team_ID teamIdTarget = null, bool invertRosterTarget = false)
         {
             //constraint null
-            ownerPosition = ownerPosition ?? GameEntity_Position.ID_NULL;
+            ownerPosition = ownerPosition ?? GameEntity_Position.NULL_POSITION;
             teamIdTarget = teamIdTarget ?? GameEntity_Team_ID.ID_NULL; 
             
             int count = 0;
@@ -93,7 +93,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 
         private void Set_Position(GameEntity_Position position, bool value)
         {
-            if (position == GameEntity_Position.ID_NULL)
+            if (position == GameEntity_Position.NULL_POSITION)
                 return;
             
             FIELD[position] = value;

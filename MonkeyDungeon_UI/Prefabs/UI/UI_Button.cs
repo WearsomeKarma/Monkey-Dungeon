@@ -17,15 +17,15 @@ using System.Threading.Tasks;
 
 namespace MonkeyDungeon_UI.Prefabs.UI
 {
-    public class Button : GameObject
+    public class UI_Button : GameObject
     {
         public static InputHandler mouseInputHandler;
-        private Action<Button> buttonClickHandler;
+        private Action<UI_Button> buttonClickHandler;
         private PrimitiveHitbox hitbox;
         public string Text { get; set; }
         public bool Enabled { get; set; }
 
-        public Button(SceneLayer sceneLayer, Vector3 position, Vector2 size, Action<Button> buttonClickHandler, RenderUnit buttonVisual, string text = "") 
+        public UI_Button(SceneLayer sceneLayer, Vector3 position, Vector2 size, Action<UI_Button> buttonClickHandler, RenderUnit buttonVisual, string text = "") 
             : base(sceneLayer, position)
         {
             if (mouseInputHandler == null)

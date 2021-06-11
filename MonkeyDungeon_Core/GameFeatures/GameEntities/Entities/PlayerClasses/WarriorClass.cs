@@ -43,7 +43,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Entities
 
         public WarriorClass(string name, int level, GameEntity_Controller controller)
             : base(
-                  MD_VANILLA_RACES.RACE_MONKEY,
+                  MD_VANILLA_RACE_NAMES.RACE_MONKEY,
                   name,
                   level,
                   CLASS_ID,

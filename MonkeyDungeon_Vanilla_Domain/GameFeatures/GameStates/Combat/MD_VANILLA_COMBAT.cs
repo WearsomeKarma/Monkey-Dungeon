@@ -8,37 +8,37 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
         /// 70% chance to redirect to the front.
         /// </summary>
         public static Combat_Redirection_Chance FRONT_MELEE_ONTO_REAR
-            = new Combat_Redirection_Chance(Combat_Redirect_Type.Redirect_Vertical, 0.7);
+            = new Combat_Redirection_Chance(GameEntity_Position_Swap_Type.Swap_Vertical, 0.7);
 
         /// <summary>
         /// 30% chance to miss.
         /// </summary>
         public static Combat_Redirection_Chance FRONT_RANGED_ONTO_MELEE
-            = new Combat_Redirection_Chance(Combat_Redirect_Type.Redirect_Null, 0.3);
+            = new Combat_Redirection_Chance(GameEntity_Position_Swap_Type.Swap_Null, 0.3);
 
         /// <summary>
         /// 30% chance to miss.
         /// </summary>
         public static Combat_Redirection_Chance REAR_MELEE_ONTO_FRONT
-            = new Combat_Redirection_Chance(Combat_Redirect_Type.Redirect_Null, 0.3);
+            = new Combat_Redirection_Chance(GameEntity_Position_Swap_Type.Swap_Null, 0.3);
 
         /// <summary>
         /// 70% chance to miss.
         /// </summary>
         public static Combat_Redirection_Chance REAR_MELEE_ONTO_REAR
-            = new Combat_Redirection_Chance(Combat_Redirect_Type.Redirect_Null, 0.7);
+            = new Combat_Redirection_Chance(GameEntity_Position_Swap_Type.Swap_Null, 0.7);
         
         /// <summary>
         /// 30% chance to redirect to the front.
         /// </summary>
         public static Combat_Redirection_Chance REAR_RANGED_ONTO_REAR
-            = new Combat_Redirection_Chance(Combat_Redirect_Type.Redirect_Vertical, 0.3);
+            = new Combat_Redirection_Chance(GameEntity_Position_Swap_Type.Swap_Vertical, 0.3);
 
         /// <summary>
         /// 100% to cause no redirection.
         /// </summary>
         public static Combat_Redirection_Chance NO_REDIRECT
-            = new Combat_Redirection_Chance(Combat_Redirect_Type.No_Redirect, 1);
+            = new Combat_Redirection_Chance(GameEntity_Position_Swap_Type.No_Swap, 1);
 
         public static Combat_Redirection_Chance Base_Redirection_Chance
             (

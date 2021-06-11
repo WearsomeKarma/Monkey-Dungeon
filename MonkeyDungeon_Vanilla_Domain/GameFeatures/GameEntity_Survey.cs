@@ -9,7 +9,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         
         protected readonly Dictionary<GameEntity_Position, T> FIELD;
         
-        public T Get_Entry_From_Position(GameEntity_Position position)
+        protected T Get_Entry_From_Position(GameEntity_Position position)
         {
             //constraint null
             if (GameEntity_Position.Validate(position))
@@ -33,6 +33,17 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         {
             if (GameEntity_Position.Validate(position))
                 FIELD[position] = value;
+        }
+
+        protected void Swap_Entries(GameEntity_Position position, GameEntity_Position_Swap_Type swapType)
+        {
+            GameEntity_Position positionSwap = position.Get_Swap(swapType);
+            
+            T entryOne = FIELD[position];
+            T entryTwo = FIELD[positionSwap];
+
+            FIELD[positionSwap] = entryOne;
+            FIELD[position] = entryTwo;
         }
         
         protected GameEntity_Survey(T defaultValue)

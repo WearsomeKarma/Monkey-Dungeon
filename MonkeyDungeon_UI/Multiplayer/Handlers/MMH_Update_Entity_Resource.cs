@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using isometricgame.GameEngine.Scenes;
-using MonkeyDungeon_UI.Prefabs.UI.EntityData;
+using MonkeyDungeon_UI.Prefabs;
 using MonkeyDungeon_UI.Scenes.GameScenes;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_UI.Multiplayer.Handlers
@@ -22,11 +23,11 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
 
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
-            int id = recievedMessage.Local_Entity_ID;
+            GameEntity_ID id = recievedMessage.Local_Entity_ID;
             float percentage = recievedMessage.FLOAT_VALUE;
             string resourceName = recievedMessage.ATTRIBUTE;
 
-            UI_GameEntity_Descriptor entity = World_Layer.Get_Description_From_Id(id);
+            GameEntity_ClientSide entity = World_Layer.Get_GameEntity(id);
             entity.Set_Resource_Percentage(resourceName, percentage);
         }
     }

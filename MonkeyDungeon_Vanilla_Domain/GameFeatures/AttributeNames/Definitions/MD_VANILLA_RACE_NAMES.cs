@@ -1,6 +1,6 @@
 ﻿namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions
 {
-    public static class MD_VANILLA_RACES
+    public static class MD_VANILLA_RACE_NAMES
     {
         public static readonly GameEntity_Attribute_Name_Race RACE_MONKEY = new GameEntity_Attribute_Name_Race("Monkey");
         public static readonly GameEntity_Attribute_Name_Race RACE_GOBLIN = new GameEntity_Attribute_Name_Race("Goblin");

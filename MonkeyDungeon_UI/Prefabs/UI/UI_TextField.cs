@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace MonkeyDungeon_UI.Prefabs.UI
 {
-    public class TextField : Button
+    public class UI_TextField : UI_Button
     {
         public static InputHandler QWERTY_KeyboardInputHandler;
         public static readonly string BLANK = "____";
@@ -44,7 +44,7 @@ namespace MonkeyDungeon_UI.Prefabs.UI
         string label = "Text Field";
         public bool caps = false;
 
-        public TextField(SceneLayer sceneLayer, Vector3 position, Vector2 size, RenderUnit buttonVisual, string label="Text Field:") 
+        public UI_TextField(SceneLayer sceneLayer, Vector3 position, Vector2 size, RenderUnit buttonVisual, string label="Text Field:") 
             : base(sceneLayer, position, size, (b) => { }, buttonVisual, "")
         {
             this.label = label;

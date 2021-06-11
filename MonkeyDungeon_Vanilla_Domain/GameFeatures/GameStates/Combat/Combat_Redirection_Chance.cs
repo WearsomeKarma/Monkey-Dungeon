@@ -5,7 +5,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
         public static readonly double MAX_CHANCE = 1;
         public static readonly double MIN_CHANCE = 0;
         
-        public readonly Combat_Redirect_Type REDIRECTION;
+        public readonly GameEntity_Position_Swap_Type REDIRECTION;
         public readonly double CHANCE;
 
         /// <summary>
@@ -14,14 +14,14 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
         public readonly bool IS_BASE_CHANCE;
         public readonly Quantity_Modification_Type MODIFICATION_TYPE;
         
-        public Combat_Redirection_Chance(Combat_Redirect_Type redirection, double chance, Quantity_Modification_Type modificationType = Quantity_Modification_Type.Additive)
+        public Combat_Redirection_Chance(GameEntity_Position_Swap_Type redirection, double chance, Quantity_Modification_Type modificationType = Quantity_Modification_Type.Additive)
         {
             REDIRECTION = redirection;
             CHANCE = MathHelper.Clampd(chance, MIN_CHANCE, MAX_CHANCE);
             MODIFICATION_TYPE = modificationType;
         }
 
-        internal Combat_Redirection_Chance(Combat_Redirect_Type redirectType, double chance)
+        internal Combat_Redirection_Chance(GameEntity_Position_Swap_Type redirectType, double chance)
         {
             REDIRECTION = redirectType;
             CHANCE = MathHelper.Clampd(chance, MIN_CHANCE, MAX_CHANCE);
@@ -29,7 +29,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
             MODIFICATION_TYPE = Quantity_Modification_Type.None;
         }
 
-        public static GameEntity_Position Redirect(GameEntity_Position position, Combat_Redirect_Type redirectType)
+        public static GameEntity_Position Redirect(GameEntity_Position position, GameEntity_Position_Swap_Type redirectType)
         {
             GameEntity_Position newPos;
 
@@ -37,16 +37,16 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
             {
                 default:
                     return position;
-                case Combat_Redirect_Type.Redirect_Diagonal:
+                case GameEntity_Position_Swap_Type.Swap_Diagonal:
                     newPos = position.Get_Horizontal_Swap();
                     newPos = newPos.Get_Vertical_Swap();
                     return newPos;
-                case Combat_Redirect_Type.Redirect_Horizontal:
+                case GameEntity_Position_Swap_Type.Swap_Horizontal:
                     return newPos = position.Get_Horizontal_Swap();
-                case Combat_Redirect_Type.Redirect_Vertical:
+                case GameEntity_Position_Swap_Type.Swap_Vertical:
                     return newPos = position.Get_Vertical_Swap();
-                case Combat_Redirect_Type.Redirect_Null:
-                    return GameEntity_Position.ID_NULL;
+                case GameEntity_Position_Swap_Type.Swap_Null:
+                    return GameEntity_Position.NULL_POSITION;
             }
         }
         
@@ -80,7 +80,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
             return new Combat_Redirection_Chance(chanceTwo.REDIRECTION, newChance, chanceOne.MODIFICATION_TYPE);
         }
         
-        public static explicit operator Combat_Redirect_Type(Combat_Redirection_Chance redirectionChance)
+        public static explicit operator GameEntity_Position_Swap_Type(Combat_Redirection_Chance redirectionChance)
             => redirectionChance.REDIRECTION;
         public static explicit operator double(Combat_Redirection_Chance redirectionChance)
             => redirectionChance.CHANCE;

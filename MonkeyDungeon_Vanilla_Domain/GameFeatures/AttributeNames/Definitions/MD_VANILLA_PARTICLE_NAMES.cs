@@ -1,6 +1,6 @@
 ﻿namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions
 {
-    public static class MD_VANILLA_PARTICLES
+    public static class MD_VANILLA_PARTICLE_NAMES
     {
         public static readonly GameEntity_Attribute_Name_Particle CHAOS_BOLT = new GameEntity_Attribute_Name_Particle("Chaos_Bolt");
         public static readonly GameEntity_Attribute_Name_Particle POOPY_FLING = new GameEntity_Attribute_Name_Particle("Poopy_Fling");

@@ -12,7 +12,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         public readonly GameEntity_ID FACTOR_OWNER;
 
         public Combat_Finalized_Factor(GameEntity_ID factorOwner)
-        : base (GameEntity_Attribute_Name.DEFAULT, double.MinValue, double.MaxValue)
+        : base (GameEntity_Attribute_Name.NULL_ATTRIBUTE_NAME, double.MinValue, double.MaxValue)
         {
             FACTOR_OWNER = factorOwner;
         }

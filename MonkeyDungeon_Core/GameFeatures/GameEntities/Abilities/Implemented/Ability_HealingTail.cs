@@ -9,9 +9,9 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
     {
         public Ability_HealingTail() 
             : base(
-                  MD_VANILLA_ABILITYNAMES.ABILITY_HEALING_TAIL, 
-                  MD_VANILLA_RESOURCES.RESOURCE_MANA, 
-                  MD_VANILLA_STATS.STAT_SMARTYPANTS,
+                  MD_VANILLA_ABILITY_NAMES.ABILITY_HEALING_TAIL, 
+                  MD_VANILLA_RESOURCE_NAMES.RESOURCE_MANA, 
+                  MD_VANILLA_STAT_NAMES.STAT_SMARTYPANTS,
                   Combat_Target_Type.One_Enemy,
                   Combat_Damage_Type.Magical,
                   Combat_Assault_Type.Melee
@@ -24,7 +24,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
             double damage = Get_RelevantOutput() * 0.5;
             double heal = damage * 0.15;
 
-            Parent_EntityServerSide.Resource_Manager.Get_Resource(MD_VANILLA_RESOURCES.RESOURCE_HEALTH).Offset_Value(heal);
+            Parent_EntityServerSide.Resource_Manager.Get_Resource(MD_VANILLA_RESOURCE_NAMES.RESOURCE_HEALTH).Offset_Value(heal);
 
             return new Combat_Resource_Offset(Combat_Damage_Type.Magical, damage);
         }

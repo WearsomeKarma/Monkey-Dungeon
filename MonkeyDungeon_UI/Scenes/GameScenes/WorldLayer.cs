@@ -6,7 +6,6 @@ using isometricgame.GameEngine.Tools;
 using MonkeyDungeon_UI.Multiplayer.Handlers;
 using MonkeyDungeon_UI.Prefabs.Entities;
 using MonkeyDungeon_UI.Prefabs.UI;
-using MonkeyDungeon_UI.Prefabs.UI.EntityData;
 using MonkeyDungeon_UI.UI_Events.Implemented;
 using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
@@ -17,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonkeyDungeon_UI.Prefabs;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
 
@@ -27,38 +27,36 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
         internal UI_MeleeEvent UI_MeleeEvent { get; private set; }
         internal UI_Ranged_Attack UI_Ranged_Particle_Event { get; private set; }
 
-        private readonly string DEFAULT_RACE;
+        private readonly GameEntity_Attribute_Name_Race DEFAULT_RACE;
 
         private GameScene GameScene { get; set; }
 
-        private readonly CreatureGameObject[] Player_LayerObjects = new CreatureGameObject[MD_PARTY.MAX_PARTY_SIZE];
-        private readonly CreatureGameObject[] Enemy_LayerObjects = new CreatureGameObject[MD_PARTY.MAX_PARTY_SIZE];
-        internal bool CheckIf_TargetId_IsEnemy(int id) => id >= MD_PARTY.MAX_PARTY_SIZE;
-        internal int Get_IndexFrom_TargetId(int id) => id % MD_PARTY.MAX_PARTY_SIZE;
-        private CreatureGameObject Get_Entity_From_Id(int id)
-        {
-            bool isEnemy = CheckIf_TargetId_IsEnemy(id);
-            return isEnemy
-                ? Enemy_LayerObjects[Get_IndexFrom_TargetId(id)]
-                : Player_LayerObjects[Get_IndexFrom_TargetId(id)];
-        }
-        public Vector3 Get_Position_From_Id(int id)
-            => Get_Entity_From_Id(id).Position;
-        public UI_GameEntity_Descriptor Get_Description_From_Id(int id)
-            => Get_Entity_From_Id(id).EntityDescription;
-        internal void Set_Description(GameEntity_ID id, GameEntity_Attribute_Name @class)
-        {
-            CreatureGameObject[] creatures = (id < MD_PARTY.MAX_PARTY_SIZE) ? Player_LayerObjects : Enemy_LayerObjects;
+        private readonly GameEntity_WorldLayer_Roster WorldLayer_Roster;
 
-            creatures[id % MD_PARTY.MAX_PARTY_SIZE].Bind_To_Description(new UI_GameEntity_Descriptor(@class));
-        }
-        public void Set_Unique_ID(int id, uint uid)
+        public GameEntity_ClientSide Get_GameEntity(GameEntity_Position position)
+            => WorldLayer_Roster.Get_GameEntity(position);
+        public GameEntity_ClientSide Get_GameEntity(GameEntity_ID id)
+            => WorldLayer_Roster.Get_GameEntity(id);
+        
+        public UI_EntityObject Get_UI_EntityObject(GameEntity_Position position)
+            => WorldLayer_Roster.Get_UI_EntityObject(position);
+
+        public UI_EntityObject Get_UI_EntityObject(GameEntity_ID id)
+            => WorldLayer_Roster.Get_UI_EntityObject(id);
+        
+        public Vector3 Get_Position_From_Id(GameEntity_ID id)
+            => Get_UI_EntityObject(id).Position;
+        internal void Set_Description(GameEntity_ID id, GameEntity_Attribute_Name_Race @class)
         {
-            Get_Entity_From_Id(id).Set_Unique_ID(uid);
+            WorldLayer_Roster.Bind_To_Description(id, @class);
+        }
+        public void Set_Unique_ID(GameEntity_ID id, uint uid)
+        {
+            Get_GameEntity(id).Set_Cosmetic_Id(uid);
         }
 
-        internal Particle Ranged_Particle { get; set; }
-        internal DungeonBridge DungeonBridge { get; set; }
+        internal UI_ParticleObject Ranged_UiParticleObject { get; set; }
+        internal UI_DungeonBridge UiDungeonBridge { get; set; }
 
         internal bool IsTraveling { get; set; }
 
@@ -68,42 +66,40 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
             DEFAULT_RACE = parentScene.MonkeyDungeon_Game_UI.DEFAULT_RACE;
 
             GameScene = parentScene;
-            
-            Vector3[] positionVectors = UI_Combat_Layer.Get_UI_TargetPositions(Game);
-            
-            Vector3[] positions = UI_Combat_Layer.Get_UI_TargetPositions(Game);
+
+            WorldLayer_Roster = new GameEntity_WorldLayer_Roster(this, UI_Combat_Layer.Get_UI_TargetPositions(Game));
 
             Add_StaticObject(
-                DungeonBridge = new DungeonBridge(
+                UiDungeonBridge = new UI_DungeonBridge(
                     this, 
                     new Vector3(50,-50,0),
                     Game.Width, 
                     Game.SpriteLibrary.ExtractRenderUnit("BridgePath"))
                 );
 
-            for(int i=0;i< MD_PARTY.MAX_PARTY_SIZE;i++)
-                Add_StaticObject(Player_LayerObjects[i] = new CreatureGameObject(this, -positions[i], new UI_GameEntity_Descriptor(MD_VANILLA_RACES.RACE_MONKEY)));
+            GameEntity_Position.For_Each_Position(GameEntity_Team_ID.ID_NULL,
+                (p) =>
+                {
+                    WorldLayer_Roster.Set_Entity(p, MD_VANILLA_RACE_NAMES.RACE_MONKEY, p.TeamId == GameEntity_Team_ID.TEAM_ONE_ID);
+                }
+            );
             
-            for(int i=0;i< MD_PARTY.MAX_PARTY_SIZE; i++)
-                Add_StaticObject(Enemy_LayerObjects[i] = new CreatureGameObject(this, positions[i], new UI_GameEntity_Descriptor(MD_VANILLA_RACES.RACE_MONKEY, true)));
-
-            Add_StaticObject(Ranged_Particle = new Particle(this, new Vector3(0, 0, 0)));
-            Ranged_Particle.Toggle_Sprite(false);
-            Ranged_Particle.Set_Particle(MD_VANILLA_PARTICLES.CHAOS_BOLT);
+            Add_StaticObject(Ranged_UiParticleObject = new UI_ParticleObject(this, new Vector3(0, 0, 0)));
+            Ranged_UiParticleObject.Toggle_Sprite(false);
+            Ranged_UiParticleObject.Set_Particle(MD_VANILLA_PARTICLE_NAMES.CHAOS_BOLT);
 
             UI_MeleeEvent = new UI_MeleeEvent(
                 EventScheduler,
                 1, 
                 new Vector3(-20, -20, 0), 
                 new Vector3(20, 20, 0),
-                Player_LayerObjects,
-                Enemy_LayerObjects
+                WorldLayer_Roster
                 );
 
             UI_Ranged_Particle_Event = new UI_Ranged_Attack(
                 EventScheduler,
-                Ranged_Particle,
-                Ranged_Particle.Position
+                Ranged_UiParticleObject,
+                Ranged_UiParticleObject.Position
                 );
 
             GameScene.MonkeyDungeon_Game_UI.Expectation_Context.Register_Handler(
@@ -129,7 +125,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
         {
             base.Handle_UpdateLayer(e);
             if (IsTraveling)
-                DungeonBridge.Scroll_Bridge(-200, (float)e.DeltaTime);
+                UiDungeonBridge.Scroll_Bridge(-200, (float)e.DeltaTime);
         }
     }
 }

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using isometricgame.GameEngine;
 using isometricgame.GameEngine.Scenes;
 using MonkeyDungeon_UI.Scenes.GameScenes;
 using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_UI.Multiplayer.Handlers
@@ -26,7 +28,7 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
             GameEntity_ID id = recievedMessage.Local_Entity_ID;
             GameEntity_Attribute_Name @class = recievedMessage.ATTRIBUTE;
 
-            World_Layer.Set_Description(id, @class);
+            World_Layer.Set_Description(id, GameEntity_Attribute_Name.Cast<GameEntity_Attribute_Name_Race>(@class, GameEntity_Attribute_Type.RACE_NAMES));
         }
     }
 }

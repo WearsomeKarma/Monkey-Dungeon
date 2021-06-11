@@ -13,7 +13,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat
             => Entity_Field.Get_Entity(id);
 
         protected GameEntity_ServerSide Get_Entity(GameEntity_Position position)
-            => Entity_Field.Get_Entry_From_Position(position);
+            => Entity_Field.Get_Entity(position);
 
         protected GameEntity_ServerSide[] Get_Entities(GameEntity_Position[] positions)
             => Entity_Field.Get_Entities(positions);

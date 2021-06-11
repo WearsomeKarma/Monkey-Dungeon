@@ -24,7 +24,7 @@ namespace MonkeyDungeon_UI.Scenes.Menus
                 );
 
             Add_StaticObject(
-                new Button(
+                new UI_Button(
                     this,
                     new Vector3(-100, -100, 0),
                     new Vector2(200, 100),
@@ -33,7 +33,7 @@ namespace MonkeyDungeon_UI.Scenes.Menus
                     "Create Game"
                     ));
             Add_StaticObject(
-                new Button(
+                new UI_Button(
                     this,
                     new Vector3(-100, -250,0),
                     new Vector2(200,100),
@@ -42,7 +42,7 @@ namespace MonkeyDungeon_UI.Scenes.Menus
                     "Multiplayer"
                     ));
             Add_StaticObject(
-                new Button(
+                new UI_Button(
                     this,
                     new Vector3(-100, -400, 0),
                     new Vector2(200, 100),

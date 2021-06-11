@@ -15,10 +15,11 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         
         public GameEntity_Attribute_Name_Race GameEntity_Race { get; protected set; }
         
-        public int GameEntity_Cosmetic_ID { get; protected set; }
+        public uint GameEntity_Cosmetic_ID { get; protected set; }
         
         public bool IsIncapacitated { get; protected set; }
         public bool IsReady { get; protected set; }
+        public bool IsDismissed { get; protected set; }
         
         public GameEntity
         (
@@ -27,16 +28,16 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 
             GameEntity_Attribute_Name_Race race = null,
 
-            int gameEntityCosmeticId = 0,
+            uint gameEntityCosmeticId = 0,
 
             bool isIncapacitated = false,
             bool isReady = false
         )
         {
             GameEntity_ID        = gameEntityID  ??  GameEntity_ID.ID_NULL;
-            GameEntity_Position  = position      ??  GameEntity_Position.ID_NULL;
+            GameEntity_Position  = position      ??  GameEntity_Position.NULL_POSITION;
  
-            GameEntity_Race      = race          ??  MD_VANILLA_RACES.RACE_MONKEY;
+            GameEntity_Race      = race          ??  MD_VANILLA_RACE_NAMES.RACE_MONKEY;
 
             GameEntity_Cosmetic_ID = gameEntityCosmeticId;
 

@@ -66,7 +66,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
         private bool Check_Legal_Targets_For_Field()
         {
             int requiredCountInField = MD_PARTY.MAX_PARTY_SIZE;
-            GameEntity_Position ownerPosition = GameEntity_Position.ID_NULL;
+            GameEntity_Position ownerPosition = GameEntity_Position.NULL_POSITION;
             bool invertRosterTarget = false;
             GameEntity_Team_ID targetTeamId = _ownerTeamId;
             
@@ -108,7 +108,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
         public bool Add_Target(GameEntity_Position targetPosition)
         {
             //constraint null
-            if (targetPosition == null || targetPosition == GameEntity_Position.ID_NULL)
+            if (targetPosition == null || targetPosition == GameEntity_Position.NULL_POSITION)
                 return false;
 
             //Check if the position is already added.
@@ -186,7 +186,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
         public bool Remove_Target(GameEntity_Position targetPosition)
         {
             //constraint null
-            if (targetPosition == null || targetPosition == GameEntity_Position.ID_NULL)
+            if (targetPosition == null || targetPosition == GameEntity_Position.NULL_POSITION)
                 return false;
             
             //Make sure a target can be removed.
@@ -201,7 +201,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
                 default:
                     if (SURVEY.Get_Selected_Count() <= 0)
                         return false;
-                    if (!SURVEY.Get_Entry_From_Position(targetPosition))
+                    if (!SURVEY.Get_State_By_Position(targetPosition))
                         return false;
                     break;
             }

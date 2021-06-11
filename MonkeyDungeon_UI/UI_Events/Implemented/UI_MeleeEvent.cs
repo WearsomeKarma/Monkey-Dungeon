@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using isometricgame.GameEngine.Tools;
+using MonkeyDungeon_UI.Prefabs;
 using MonkeyDungeon_UI.Prefabs.Entities;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
@@ -15,45 +16,41 @@ namespace MonkeyDungeon_UI.UI_Events.Implemented
 {
     public class UI_MeleeEvent : UI_GameEvent
     {
-        private CreatureGameObject[] Players { get; set; }
-        private CreatureGameObject[] Enemies { get; set; }
+        private GameEntity_WorldLayer_Roster WorldLayer_Roster { get; set; }
 
-        private CreatureGameObject ally, enemy;
+        private UI_EntityObject ally, enemy;
 
-        internal int Ally_Id { get; set; }
-        internal int Enemy_Id { get; set; }
+        internal GameEntity_ID Ally_Id { get; set; }
+        internal GameEntity_ID Enemy_Id { get; set; }
 
         private Vector3 Ally_Side_Position { get; set; }
         private Vector3 Enemy_Side_Position { get; set; }
 
-        internal UI_MeleeEvent(
+        internal UI_MeleeEvent
+            (
             EventScheduler eventScheduler, 
             double duration, 
             Vector3 allySide, 
             Vector3 enemySide, 
-            CreatureGameObject[] players,
-            CreatureGameObject[] enemies)
-            : base(eventScheduler, MD_VANILLA_UI_EVENTS.UI_EVENT_MELEE, duration)
+            GameEntity_WorldLayer_Roster worldLayer_Roster
+            )
+            : base(eventScheduler, MD_VANILLA_UI_EVENT_NAMES.UI_EVENT_MELEE, duration)
         {
-            Players = players;
-            Enemies = enemies;
+            WorldLayer_Roster = worldLayer_Roster;
         }
 
 
 
         protected override void Callback_Reset(double newDuration)
         {
-            ally = Players[Ally_Id];
-            enemy = Enemies[Enemy_Id];
+            ally = WorldLayer_Roster.Get_UI_EntityObject(Ally_Id);
+            enemy = WorldLayer_Roster.Get_UI_EntityObject(Enemy_Id);
         }
 
         protected override void Callback_DeltaTime(Timer timer)
         {
             float duration = (float)Duration;
             float deltaTime = (float)timer.Frame_DeltaTime;
-
-            CreatureGameObject ally = Players[Ally_Id];
-            CreatureGameObject enemy = Enemies[Enemy_Id];
 
             if (timer.TimeElapsed < Duration / 3)
             {
@@ -70,8 +67,8 @@ namespace MonkeyDungeon_UI.UI_Events.Implemented
 
         protected override void Callback_Elapsed()
         {
-            Players[Ally_Id].Position = Players[Ally_Id].Inital_Position;
-            Enemies[Enemy_Id].Position = Enemies[Enemy_Id].Inital_Position;
+            ally.Position = ally.Inital_Position;
+            enemy.Position = enemy.Inital_Position;
         }
     }
 }

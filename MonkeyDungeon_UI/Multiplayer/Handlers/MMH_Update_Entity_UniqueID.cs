@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using isometricgame.GameEngine.Scenes;
 using MonkeyDungeon_UI.Scenes.GameScenes;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_UI.Multiplayer.Handlers
@@ -21,7 +22,7 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
 
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
-            int entity_id = recievedMessage.Local_Entity_ID;
+            GameEntity_ID entity_id = recievedMessage.Local_Entity_ID;
             int unique_id = recievedMessage.INT_VALUE;
 
             World_Layer.Set_Unique_ID(entity_id, (uint)unique_id);

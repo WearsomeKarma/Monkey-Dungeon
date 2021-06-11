@@ -44,8 +44,8 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Entities
 
         public EC_Goblin(int level) 
             : base(
-                  MD_VANILLA_RACES.RACE_GOBLIN,
-                  MD_VANILLA_RACES.RACE_GOBLIN,
+                  MD_VANILLA_RACE_NAMES.RACE_GOBLIN,
+                  MD_VANILLA_RACE_NAMES.RACE_GOBLIN,
                   level,
                   DEFAULT_UNIQUE_ID,
                   new List<GameEntity_Stat>()

@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 
 namespace MonkeyDungeon_UI.Prefabs.UI
 {
-    public class AnnouncementMessage : GameObject
+    public class UI_AnnouncementMessage : GameObject
     {
         private string announcement;
 
-        public AnnouncementMessage(SceneLayer sceneLayer, Vector3 position) 
+        public UI_AnnouncementMessage(SceneLayer sceneLayer, Vector3 position) 
             : base(sceneLayer, position, "announcement")
         {
         }

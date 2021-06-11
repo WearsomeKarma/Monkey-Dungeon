@@ -69,7 +69,7 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         public GameEntity_ServerSide(GameEntity_Attribute_Name_Race race = null)
         {
-            GameEntity_Race         = race ?? MD_VANILLA_RACES.RACE_MONKEY;
+            GameEntity_Race         = race ?? MD_VANILLA_RACE_NAMES.RACE_MONKEY;
             
             Stat_Manager            = new GameEntity_Stat_Manager           (this);
             Resource_Manager        = new GameEntity_Resource_Manager       (this);

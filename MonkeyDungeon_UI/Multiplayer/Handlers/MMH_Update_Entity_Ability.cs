@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using isometricgame.GameEngine.Scenes;
+using MonkeyDungeon_UI.Prefabs;
 using MonkeyDungeon_UI.Prefabs.UI;
-using MonkeyDungeon_UI.Prefabs.UI.EntityData;
 using MonkeyDungeon_UI.Scenes.GameScenes;
 using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
@@ -29,7 +29,7 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
             GameEntity_Ability_Index abilityIndex = GameEntity_Ability_Index.INDICES[recievedMessage.INT_VALUE];
             GameEntity_Attribute_Name abilityName = recievedMessage.ATTRIBUTE;
 
-            UI_GameEntity_Descriptor entity = World_Layer.Get_Description_From_Id(entity_id);
+            GameEntity_ClientSide entity = World_Layer.Get_GameEntity(entity_id);
             entity.Set_Ability(abilityIndex, abilityName);
         }
     }

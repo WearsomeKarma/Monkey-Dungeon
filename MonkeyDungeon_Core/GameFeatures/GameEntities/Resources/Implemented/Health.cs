@@ -8,7 +8,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Resources.Implemented
     public class Health : GameEntity_Resource
     {
         public Health(double min, double max, double? initalValue = null)
-            : base(MD_VANILLA_RESOURCES.RESOURCE_HEALTH, min, max, initalValue)
+            : base(MD_VANILLA_RESOURCE_NAMES.RESOURCE_HEALTH, min, max, initalValue)
         {
         }
         

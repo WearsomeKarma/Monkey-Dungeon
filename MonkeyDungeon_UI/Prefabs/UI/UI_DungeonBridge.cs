@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MonkeyDungeon_UI.Prefabs.UI
 {
-    public class DungeonBridge : GameObject
+    public class UI_DungeonBridge : GameObject
     {
         static float X_CUTOFF = -300;
 
@@ -22,7 +22,7 @@ namespace MonkeyDungeon_UI.Prefabs.UI
         int leading_piece_index = 4;
         int trailing_piece_index = 0;
         
-        public DungeonBridge(SceneLayer sceneLayer, Vector3 position, float windowWidth, RenderUnit bridgePiece) 
+        public UI_DungeonBridge(SceneLayer sceneLayer, Vector3 position, float windowWidth, RenderUnit bridgePiece) 
             : base(sceneLayer, position)
         {
             X_CUTOFF = -windowWidth - hopVector.X;

@@ -13,7 +13,7 @@ namespace MonkeyDungeon_UI.Scenes.Menus
 {
     public class FindGame_Layer : MainMenu_Layer
     {
-        TextField serverAddress;
+        UI_TextField serverAddress;
         GameScene gameScene;
 
         internal FindGame_Layer(MonkeyDungeon_Game_Client monkeyGame, MainMenuScene parentScene) 
@@ -22,7 +22,7 @@ namespace MonkeyDungeon_UI.Scenes.Menus
             gameScene = (GameScene)Game.SceneManagementService.GetScene("gameScene");
 
             Add_StaticObject(
-                new Button(
+                new UI_Button(
                     this,
                     new Vector3(-Game.Width / 2 + 20, -Game.Height / 2 + 20, 0),
                     new Vector2(200, 100),
@@ -34,7 +34,7 @@ namespace MonkeyDungeon_UI.Scenes.Menus
 
 
             Add_StaticObject(
-                new Button(
+                new UI_Button(
                     this,
                     new Vector3(Game.Width / 2 - 220, -Game.Height / 2 + 20, 0),
                     new Vector2(200, 100),
@@ -45,7 +45,7 @@ namespace MonkeyDungeon_UI.Scenes.Menus
                 );
 
             Add_StaticObject(
-                new Button(
+                new UI_Button(
                     this,
                     new Vector3(-Game.Width / 2 + 20, Game.Height / 2 - 120, 0),
                     new Vector2(200, 100),
@@ -56,7 +56,7 @@ namespace MonkeyDungeon_UI.Scenes.Menus
                 );
 
             Add_StaticObject(
-                serverAddress = new TextField(
+                serverAddress = new UI_TextField(
                     this,
                     new Vector3(-100,-50,0),
                     new Vector2(200,100),

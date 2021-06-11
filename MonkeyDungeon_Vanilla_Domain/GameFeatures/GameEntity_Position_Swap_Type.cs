@@ -1,26 +1,26 @@
-namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
+namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 {
-    public enum Combat_Redirect_Type
+    public enum GameEntity_Position_Swap_Type
     {
         /// <summary>
         /// Causes no redirection.
         /// </summary>
-        No_Redirect = 0,
+        No_Swap = 0,
         /// <summary>
         /// Up and down the battle field.
         /// </summary>
-        Redirect_Vertical = 1,
+        Swap_Vertical = 1,
         /// <summary>
         /// Left and right of the battlefield.
         /// </summary>
-        Redirect_Horizontal = 2,
+        Swap_Horizontal = 2,
         /// <summary>
         /// Both Vertical and Horizontal redirection at the same time.
         /// </summary>
-        Redirect_Diagonal = 3,
+        Swap_Diagonal = 3,
         /// <summary>
-        /// Redirects to no target - potentially resulting in ability termination.
+        /// Redirects to no target - potentially resulting in termination of action or swapped object.
         /// </summary>
-        Redirect_Null = -1
+        Swap_Null = -1
     }
 }
