@@ -7,6 +7,7 @@ using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 using System.Collections.Generic;
 using System.Linq;
+using MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities;
 
 namespace MonkeyDungeon_Core.GameFeatures
 {
@@ -30,7 +31,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         public GameEntity_ServerSide Set_Entity(GameEntity_ID entityId, Multiplayer_Relay_ID relayId, GameEntity_Attribute_Name factory_Tag)
         {
             Server.Bind_To_Relay(entityId, relayId);
-            GameEntity_ServerSide entityServerSide = GameEntity_Factory.Create_NewEntity(entityId, relayId, factory_Tag);
+            GameEntity_ServerSide entityServerSide = GameEntity_Factory.Create_NewEntity(entityId, relayId, GameEntity_Position.ALL_NON_NULL__POSITIONS[entityId],  factory_Tag);
 
             GameField.Set_Entity(entityServerSide);
 
@@ -100,6 +101,8 @@ namespace MonkeyDungeon_Core.GameFeatures
                 {
                     Begin_Game();
                 }
+
+                return;
             }
 
             if (CurrentGameState.TransitionState == TransitionState.Finished)
@@ -139,11 +142,19 @@ namespace MonkeyDungeon_Core.GameFeatures
         internal void Relay_Entity(GameEntity_ServerSide entityServerSide)
         {
             //send abilities
-            GameEntity_Attribute_Name[] abilities = entityServerSide.Ability_Manager.Get_Ability_Names();
+            GameEntity_Ability[] abilities = entityServerSide.Ability_Manager.Get_Abilities();
             for (int i = 0; i < abilities.Length; i++)
             {
                 Broadcast(
-                    new MMW_Update_Entity_Ability(entityServerSide.GameEntity_ID, GameEntity_Ability_Index.INDICES[i], abilities[i])
+                    new MMW_Update_Entity_Ability(entityServerSide.GameEntity_ID, GameEntity_Ability_Index.INDICES[i], abilities[i].ATTRIBUTE_NAME)
+                    );
+                
+                Broadcast(
+                    new MMW_Update_Entity_Ability_Target_Type(
+                        entityServerSide.GameEntity_ID,
+                        abilities[i].Target_Type,
+                        abilities[i].ATTRIBUTE_NAME
+                        )
                     );
             }
 

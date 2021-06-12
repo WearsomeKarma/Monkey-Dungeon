@@ -72,6 +72,7 @@ namespace MonkeyDungeon_Core.GameFeatures
 
             foreach (GameEntity_ServerSide entity in Get_Reduced_Field())
             {
+                Console.WriteLine("{0} -- isReady: {1}", entity, entity.IsReady);
                 if (entity.GameEntity_Team_ID == GameEntity_Team_ID.TEAM_ONE_ID)
                     ret = entity.IsReady;
                 if (!ret)

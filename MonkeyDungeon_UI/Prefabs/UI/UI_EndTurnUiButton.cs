@@ -13,14 +13,14 @@ using System.Threading.Tasks;
 
 namespace MonkeyDungeon_UI.Prefabs.UI
 {
-    public class Ui_EndTurnUiButton : UI_Button
+    public class UI_EndTurnUiButton : UI_Button
     {
         private AnimationComponent AnimationComponent { get; set; }
         private UI_Combat_Layer UI_Combat_Layer { get; set; }
 
         private bool clicked = false;
 
-        public Ui_EndTurnUiButton(
+        public UI_EndTurnUiButton(
             UI_Combat_Layer sceneLayer, 
             Vector3 position) 
             : base(sceneLayer, position, new Vector2(128, 128), null, new RenderUnit(), "")

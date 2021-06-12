@@ -46,6 +46,6 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         }
 
         public static bool Validate(GameEntity entity)
-            => entity != null || entity != NULL_ENTITY;
+            => entity != null && entity != NULL_ENTITY;
     }
 }

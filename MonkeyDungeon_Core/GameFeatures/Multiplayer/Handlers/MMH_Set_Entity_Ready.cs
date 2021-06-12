@@ -1,4 +1,5 @@
-﻿using MonkeyDungeon_Core.GameFeatures.GameStates;
+﻿using System;
+using MonkeyDungeon_Core.GameFeatures.GameStates;
 using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
@@ -28,7 +29,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
                 Handle_Invalid_Message(recievedMessage);
                 return;
             }
-
+            
             GameState_Machine.GameField.Set_Player_As_Ready(entityId, state);
         }
     }

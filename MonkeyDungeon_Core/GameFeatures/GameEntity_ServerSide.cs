@@ -15,10 +15,14 @@ using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_Core.GameFeatures
 {
+    //TODO: seal this.
     public class GameEntity_ServerSide : GameEntity
     {
         public void Set_Ready_State(bool state)         => IsReady = state;
         public void Set_Incapacitated_State(bool state) => IsIncapacitated = state;
+
+        public void Set_Position(GameEntity_Position position)
+            => GameEntity_Position = position;
         
         public string Name                              { get; set;             }
         private int unique_ID                           = 0;

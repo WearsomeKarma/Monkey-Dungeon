@@ -96,6 +96,9 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
         /// </summary>
         public static readonly GameEntity_Attribute_Name MMH_UPDATE_ENTITY_ABILITY 
             = new GameEntity_Attribute_Name("MMH_Update_Entity_Ability");
+
+        public static readonly GameEntity_Attribute_Name MMH_UPDATE_ENTITY_ABILITY_TARGET_TYPE
+            = new GameEntity_Attribute_Name("MMH_Update_Entity_Ability_Target_Type");
         /// <summary>
         /// Context for updating to the client side - the uid of an entity. 
         /// Important for visual appearance.
@@ -125,7 +128,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
         /// INT: the target.
         /// STRING: the ability.
         /// </summary>
-        public static readonly GameEntity_Attribute_Name MMH_SET_COMBAT_ACTION 
+        public static readonly GameEntity_Attribute_Name MMH_COMBAT_SET_SELECTED_ABILITY 
             = new GameEntity_Attribute_Name("MMH_Set_Combat_Action");
 
         public static readonly GameEntity_Attribute_Name MMH_SET_COMBAT_TARGET
@@ -174,13 +177,14 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             MMH_DECLARE_ENTITY_RESOURCE,
             MMH_UPDATE_ENTITY_RESOURCE,
             MMH_UPDATE_ENTITY_ABILITY,
+            MMH_UPDATE_ENTITY_ABILITY_TARGET_TYPE,
             MMH_UPDATE_ENTITY_UNIQUEID,
 
             //state
             MMH_SET_TRAVELING_STATE,
 
             //COMBAT
-            MMH_SET_COMBAT_ACTION,
+            MMH_COMBAT_SET_SELECTED_ABILITY,
             MMH_SET_MELEE_COMBATTANTS,
             MMH_SET_RANGED_PARTICLE,
             //UI CLIENT EVENTS

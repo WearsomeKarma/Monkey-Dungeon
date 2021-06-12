@@ -20,6 +20,11 @@
             INDEX = index;
         }
 
+        public override string ToString()
+        {
+            return INDEX.ToString();
+        }
+
         public static implicit operator int(GameEntity_Ability_Index index)
             => index.INDEX;
     }

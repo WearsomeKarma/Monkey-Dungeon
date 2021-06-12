@@ -11,7 +11,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
         Combat_GameState Combat { get; set; }
 
         public MMH_Set_Combat_Action(Combat_GameState gameState) 
-            : base(gameState, MD_VANILLA_MMH.MMH_SET_COMBAT_ACTION)
+            : base(gameState, MD_VANILLA_MMH.MMH_COMBAT_SET_SELECTED_ABILITY)
         {
             Combat = gameState;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Schema;
+using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
 {
@@ -46,25 +47,6 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
 
         public bool Has_Legal_Targets()
         {
-            bool isValid;
-            switch (Target_Type)
-            {
-                case Combat_Target_Type.Everything:
-                    isValid = Check_Legal_Targets_For_Field();
-                    isValid = isValid && Check_Legal_Targets_For_Field();
-                    return isValid;
-                case Combat_Target_Type.All_Enemies:
-                case Combat_Target_Type.One_Enemy:
-                case Combat_Target_Type.Two_Enemies:
-                case Combat_Target_Type.Three_Enemies:
-                    return Check_Legal_Targets_For_Field();
-                default:
-                    return Check_Legal_Targets_For_Field();
-            }
-        }
-
-        private bool Check_Legal_Targets_For_Field()
-        {
             int requiredCountInField = MD_PARTY.MAX_PARTY_SIZE;
             GameEntity_Position ownerPosition = GameEntity_Position.NULL_POSITION;
             bool invertRosterTarget = false;
@@ -82,6 +64,12 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
                 case Combat_Target_Type.All_Enemies:
                     invertRosterTarget = true;
                     break;
+                case Combat_Target_Type.One_Enemy:    
+                case Combat_Target_Type.Two_Enemies:
+                case Combat_Target_Type.Three_Enemies: 
+                    invertRosterTarget = true;
+                    requiredCountInField = ((int) Target_Type % MD_PARTY.MAX_PARTY_SIZE) + 1;
+                    break;
                 case Combat_Target_Type.All_Friendlies:
                     targetTeamId = _ownerTeamId;
                     break;
@@ -97,7 +85,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
             }
 
             return requiredCountInField ==
-                   SURVEY.Get_Selected_Count(Owner_Position, targetTeamId, invertRosterTarget);
+                   SURVEY.Get_Selected_Count(ownerPosition, targetTeamId, invertRosterTarget);
         }
 
         /// <summary>
@@ -108,9 +96,9 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
         public bool Add_Target(GameEntity_Position targetPosition)
         {
             //constraint null
-            if (targetPosition == null || targetPosition == GameEntity_Position.NULL_POSITION)
+            if (!GameEntity_Position.Validate(targetPosition))
                 return false;
-
+            
             //Check if the position is already added.
             if (SURVEY.Get_State_By_Position(targetPosition))
                 return true;
@@ -142,7 +130,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
                 case Combat_Target_Type.One_Ally:
                 case Combat_Target_Type.Two_Allies:
                 case Combat_Target_Type.Three_Allies:
-                    if (!isEnemyPosition && targetPosition == Owner_Position)
+                    if (isEnemyPosition && targetPosition == Owner_Position)
                         return false;
                     break;
                 
@@ -152,7 +140,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
                         return false;
                     break;
             }
-
+            
             int requiredCount = 0;
             //Check that we do not exceed the count for One-Three target types.
             switch (Target_Type)
@@ -163,14 +151,14 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
                     requiredCount = (int) Target_Type;
                     break;
                 default:
-                    requiredCount = ((int) Target_Type) % MD_PARTY.MAX_PARTY_SIZE;
+                    requiredCount = (((int) Target_Type) % MD_PARTY.MAX_PARTY_SIZE) + 1;
                     break;
             }
+            
+            bool additionExceedsCount = 
+                requiredCount < SURVEY.Get_Selected_Count(Owner_Position, _ownerTeamId, isEnemyPosition) + 1;
 
-            bool additionDoesNotExceedCount = 
-                requiredCount == SURVEY.Get_Selected_Count(Owner_Position, _ownerTeamId, isEnemyPosition);
-
-            if (!additionDoesNotExceedCount)
+            if (additionExceedsCount)
                 return false;
             
             SURVEY.Flag_Position(targetPosition);

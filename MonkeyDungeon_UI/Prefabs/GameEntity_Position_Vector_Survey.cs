@@ -29,7 +29,7 @@ namespace MonkeyDungeon_UI.Prefabs
             int scalar_HorizontalOffset = (int) typeFromPosition % MD_PARTY.MAX_PARTY_SIZE_HALF;
             int scalar_VerticalOffset = (int) typeFromPosition / MD_PARTY.MAX_PARTY_SIZE_HALF;
 
-            int scalar_Flip = (position.TeamId - 1) * -1;
+            int scalar_Flip = position.TeamId == GameEntity_Team_ID.TEAM_ONE_ID ? -1 : 1;
             
             Vector3 vec = scalar_Flip * ((scalar_HorizontalOffset * BASIS_X) + (scalar_VerticalOffset * BASIS_Y));
             

@@ -9,6 +9,7 @@ using MonkeyDungeon_UI.Prefabs.UI;
 using MonkeyDungeon_UI.Scenes.GameScenes;
 using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_UI.Multiplayer.Handlers
@@ -30,7 +31,7 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
             GameEntity_Attribute_Name abilityName = recievedMessage.ATTRIBUTE;
 
             GameEntity_ClientSide entity = World_Layer.Get_GameEntity(entity_id);
-            entity.Set_Ability(abilityIndex, abilityName);
+            entity.Set_Ability(abilityIndex, GameEntity_Attribute_Name.Cast<GameEntity_Attribute_Name_Ability>(abilityName, GameEntity_Attribute_Type.ABILITY_NAMES));
         }
     }
 }

@@ -19,7 +19,15 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
             TEAM_ID = teamID;
         }
 
+        public override string ToString()
+        {
+            return TEAM_ID.ToString();
+        }
+
         public static implicit operator int(GameEntity_Team_ID teamID)
             => teamID.TEAM_ID;
+
+        public static bool Validate(GameEntity_Team_ID teamID)
+            => teamID != null && teamID != ID_NULL;
     }
 }

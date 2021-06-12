@@ -118,6 +118,7 @@
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Set_Ranged_Particle.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Ability_Point.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Entity_Ability.cs" />
+    <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Entity_Ability_Target_Type.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Entity_Resource.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Declare_Entity_Descriptions.cs" />
     <Compile Include="GameFeatures\Multiplayer\MessageWrappers\MMW_Update_Entity_UniqueID.cs" />

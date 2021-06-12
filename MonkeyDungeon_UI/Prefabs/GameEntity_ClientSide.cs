@@ -5,10 +5,11 @@ using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat;
 
 namespace MonkeyDungeon_UI.Prefabs
 {
-    public class GameEntity_ClientSide : GameEntity
+    public sealed class GameEntity_ClientSide : GameEntity
     {
         public void Set_Incapacitated_Status(bool status)
             => IsIncapacitated = status;
@@ -22,7 +23,7 @@ namespace MonkeyDungeon_UI.Prefabs
         private void Set_Death_State(bool state) { IsIncapacitated = state; Entity_Died?.Invoke(this); }
         private void Set_Dismissed_State(bool state) { IsDismissed = state; Entity_Dismissal_State_Changed?.Invoke(this); }
 
-        public readonly GameEntity_Attribute_Name[] ABILITY_NAMES = new GameEntity_Attribute_Name[MD_PARTY.MAX_ABILITY_COUNT];
+        public readonly GameEntity_ClientSide_Ability[] ABILITIES = new GameEntity_ClientSide_Ability[MD_PARTY.MAX_ABILITY_COUNT];
 
         public readonly List<GameEntity_ClientSide_Resource> RESOURCES = new List<GameEntity_ClientSide_Resource>();
 
@@ -37,7 +38,7 @@ namespace MonkeyDungeon_UI.Prefabs
         public event Action<GameEntity_ClientSide> Entity_Dismissal_State_Changed;
 
 
-        public GameEntity_ClientSide(GameEntity_Attribute_Name_Race race, GameEntity_Position position, bool isDismissed = false)
+        public GameEntity_ClientSide(GameEntity_Attribute_Name_Race race, GameEntity_Position position, GameEntity_ID id = null, bool isDismissed = false)
         {
             Level = new GameEntity_ClientSide_Resource(MD_VANILLA_RESOURCE_NAMES.RESOURCE_LEVEL);
             Ability_Points = new GameEntity_ClientSide_Resource(MD_VANILLA_RESOURCE_NAMES.RESOURCE_ABILITYPOINTS, 2);
@@ -47,11 +48,27 @@ namespace MonkeyDungeon_UI.Prefabs
             GameEntity_Position = position;
             GameEntity_Race = race;
             GameEntity_Cosmetic_ID = 0;
+
+            GameEntity_ID = id ?? GameEntity_ID.ID_NULL;
         }
         
-        internal void Set_Ability(GameEntity_Ability_Index abilityIndex, GameEntity_Attribute_Name abilityName)
+        internal void Set_Ability(GameEntity_Ability_Index abilityIndex, GameEntity_Attribute_Name_Ability abilityName)
         {
-            ABILITY_NAMES[abilityIndex] = abilityName;
+            ABILITIES[abilityIndex] = new GameEntity_ClientSide_Ability(abilityName);
+            ABILITIES[abilityIndex].Target.Bind_To_Owner(GameEntity_Position, GameEntity_Team_ID);
+        }
+
+        internal void Set_Ability_Target_Type(GameEntity_Attribute_Name_Ability abilityName,
+            Combat_Target_Type targetType)
+        {
+            foreach (GameEntity_ClientSide_Ability ability in ABILITIES)
+            {
+                if (ability.Ability_Name == abilityName)
+                {
+                    ability.Set_Target_Type(targetType);
+                    return;
+                }
+            }
         }
 
         internal void Add_Resource(GameEntity_Attribute_Name_Resource resourceName, float initalPercentage = 1)

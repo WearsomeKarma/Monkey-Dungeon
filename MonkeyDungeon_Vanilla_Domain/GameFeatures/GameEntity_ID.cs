@@ -48,5 +48,8 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 
         public static bool Validate(GameEntity_ID id)
             => id != null || id == ID_NULL;
+
+        public static GameEntity_ID Default_ID_From_Position(GameEntity_Position position)
+            => IDS[position.WORLD_POSITION + (position.TeamId * MD_PARTY.MAX_PARTY_SIZE)];
     }
 }

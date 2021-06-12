@@ -60,6 +60,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
                 new MMH_Set_Entity(this),
                 new MMH_Set_Entity_Ready(this),
                 new MMH_Set_Combat_Action(this),
+                new MMH_Set_Combat_Target(this),
                 new MMH_Request_EndTurn(this)
                 );
         }
@@ -233,10 +234,10 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
         {
             return new List<GameEntity_ServerSide>()
             {
-                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_FOUR,  Multiplayer_Relay_ID.ID_NULL, MD_VANILLA_RACE_NAMES.RACE_GOBLIN),
-                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_FIVE,  Multiplayer_Relay_ID.ID_NULL, MD_VANILLA_RACE_NAMES.RACE_GOBLIN),
-                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_SIX,   Multiplayer_Relay_ID.ID_NULL, MD_VANILLA_RACE_NAMES.RACE_GOBLIN),
-                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_SEVEN, Multiplayer_Relay_ID.ID_NULL, MD_VANILLA_RACE_NAMES.RACE_GOBLIN)
+                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_FOUR,  Multiplayer_Relay_ID.ID_NULL, GameEntity_Position.TEAM_TWO__FRONT_RIGHT, MD_VANILLA_RACE_NAMES.RACE_GOBLIN),
+                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_FIVE,  Multiplayer_Relay_ID.ID_NULL, GameEntity_Position.TEAM_TWO__FRONT_LEFT, MD_VANILLA_RACE_NAMES.RACE_GOBLIN),
+                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_SIX,   Multiplayer_Relay_ID.ID_NULL, GameEntity_Position.TEAM_TWO__REAR_RIGHT, MD_VANILLA_RACE_NAMES.RACE_GOBLIN),
+                GameState_Machine.GameEntity_Factory.Create_NewEntity(GameEntity_ID.ID_SEVEN, Multiplayer_Relay_ID.ID_NULL, GameEntity_Position.TEAM_TWO__REAR_LEFT, MD_VANILLA_RACE_NAMES.RACE_GOBLIN)
             };
         }
     }

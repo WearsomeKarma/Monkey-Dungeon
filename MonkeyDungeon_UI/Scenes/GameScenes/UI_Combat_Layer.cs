@@ -12,35 +12,35 @@ using System;
 using MonkeyDungeon_UI.Prefabs;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat;
 
 namespace MonkeyDungeon_UI.Scenes.GameScenes
 {
     public class UI_Combat_Layer : GameScene_Layer
     {
-        internal GameEntity_Attribute_Name Selected_Ability { get; private set; }
-        internal GameEntity_ID Selected_TargetIndex { get; private set; }
+        internal GameEntity_ClientSide_Ability Selected_Ability { get; private set; }
 
         private GameScene GameScene { get; set; }
         private World_Layer World_Layer { get; set; }
-
-        private UI_AnnouncementMessage _uiAnnouncementMessage;
+        
+        private UI_GameEntity_Survey_Target_Buttons Target_Buttons { get; set; }
+        
         private UI_Panning_Event UI_Announcement_Event { get; set; }
 
-        private UI_Button[] abilityButtons;
-        private UI_Button[] targetEnemyButtons;
-        private Ui_EndTurnUiButton _uiEndTurnUiButton;
-
+        private UI_AnnouncementMessage _uiAnnouncementMessage;
+        private UI_EndTurnUiButton _uiEndTurnUiButton;
         private UI_StatusBar _uiStatusBar;
 
-        private GameEntity_Attribute_Name[] abilityNames;
-        //TODO: prim wrap
-        private void Set_Ability_Names(GameEntity_Attribute_Name[] newAbilityNames)
+        private GameEntity_ClientSide_Ability[] abilityNames_ToRender;
+        private UI_Button[] abilityButtons;
+        
+        private void Set_Ability_Names(GameEntity_ClientSide_Ability[] abilities)
         {
             for (int i = 0; i < abilityButtons.Length; i++)
             {
-                bool state = newAbilityNames[i] != null && newAbilityNames.Length > i;
+                bool state = abilities[i] != null && abilities.Length > i;
             
-                abilityButtons[i].Text = state ? newAbilityNames[i] : GameEntity_Attribute_Name.NULL_ATTRIBUTE_NAME;
+                abilityButtons[i].Text = state ? abilities[i].Ability_Name : GameEntity_Attribute_Name.NULL_ATTRIBUTE_NAME;
                 abilityButtons[i].Enabled = state;
                 abilityButtons[i].SpriteComponent.Enabled = state;
             }
@@ -59,7 +59,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                 );
 
             Add_StaticObject(
-                _uiEndTurnUiButton = new Ui_EndTurnUiButton(this, new Vector3(Game.Width/2 - 130, -Game.Height/2+130, 0))
+                _uiEndTurnUiButton = new UI_EndTurnUiButton(this, new Vector3(Game.Width/2 - 130, -Game.Height/2+130, 0))
                 );
 
             abilityButtons = new UI_Button[]
@@ -68,7 +68,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                     this,
                     new Vector3(-Game.Width / 3f - 100, -Game.Height/2 + 20, 0),
                     new Vector2(200, 100),
-                    (b) => Use_Ability(abilityNames[0]),
+                    (b) => Use_Ability(GameEntity_Ability_Index.INDEX_ZERO),
                     Game.SpriteLibrary.ExtractRenderUnit("button"),
                     ""
                     ),
@@ -76,7 +76,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                     this,
                     new Vector3(-100, -Game.Height/2 + 20, 0),
                     new Vector2(200, 100),
-                    (b) => Use_Ability(abilityNames[1]),
+                    (b) => Use_Ability(GameEntity_Ability_Index.INDEX_ONE),
                     Game.SpriteLibrary.ExtractRenderUnit("button"),
                     ""
                     ),
@@ -84,47 +84,20 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                     this,
                     new Vector3(Game.Width / 3f - 100, -Game.Height/2 + 20, 0),
                     new Vector2(200, 100),
-                    (b) => Use_Ability(abilityNames[2]), //TODO: fix
+                    (b) => Use_Ability(GameEntity_Ability_Index.INDEX_TWO), //TODO: fix
                     Game.SpriteLibrary.ExtractRenderUnit("button"),
                     ""
                     )
             };
-            
-            targetEnemyButtons = new UI_Button[]
-            {
-                new UI_Button(
+
+            Target_Buttons = new UI_GameEntity_Survey_Target_Buttons
+                (
                     this,
-                    new Vector3(Game.Width/8f,Game.Height/4,0),
-                    new Vector2(50,50),
-                    (b) => Select_Enemy(GameEntity_ID.ID_FOUR),
-                    Game.SpriteLibrary.ExtractRenderUnit("targetButton"),
-                    ""
-                    ),
-                new UI_Button(
-                    this,
-                    new Vector3(Game.Width/4f,Game.Height / 8f,0),
-                    new Vector2(50,50),
-                    (b) => Select_Enemy(GameEntity_ID.ID_FIVE),
-                    Game.SpriteLibrary.ExtractRenderUnit("targetButton"),
-                    ""
-                    ),
-                new UI_Button(
-                    this,
-                    new Vector3(Game.Width/4f,Game.Height * 3f / 8f,0),
-                    new Vector2(50,50),
-                    (b) => Select_Enemy(GameEntity_ID.ID_SIX),
-                    Game.SpriteLibrary.ExtractRenderUnit("targetButton"),
-                    ""
-                    ),
-                new UI_Button(
-                    this,
-                    new Vector3(Game.Width * 3 / 8,Game.Height/4,0),
-                    new Vector2(50,50),
-                    (b) => Select_Enemy(GameEntity_ID.ID_SEVEN),
-                    Game.SpriteLibrary.ExtractRenderUnit("targetButton"),
-                    ""
-                    )
-            };
+                    Get_UI_TargetPositions(Game),
+                    Game.SpriteLibrary.ExtractRenderUnit("targetButton")
+                );
+
+            Target_Buttons.Button_Clicked += Select_Enemy;
 
             Add_StaticObject(
                 _uiAnnouncementMessage = new UI_AnnouncementMessage(this, new Vector3(-Game.Width / 2 - 320, Game.Height / 4, 0))
@@ -137,18 +110,13 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                 new Vector3(0,_uiAnnouncementMessage.Position.Y,0)
                 );
             
-            GameScene.MonkeyDungeon_Game_UI.Expectation_Context.Register_Handler(
+            Add_Handler_Expectation(
                 new MMH_Begin_Turn(this),
                 new MMH_Announcement(this)
                 );
 
             Add_Buttons(abilityButtons);
-            Add_Buttons(targetEnemyButtons);
-        }
-        
-        protected override void Handle_RenderLayer(RenderService renderService, FrameArgument e)
-        {
-            base.Handle_RenderLayer(renderService, e);
+            Add_Buttons(Target_Buttons.Get_Buttons());
         }
 
         protected override void Handle_UpdateLayer(FrameArgument e)
@@ -157,48 +125,48 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
             Inform_Ability();
         }
 
+        private bool Validate_Action_Selected()
+            => Selected_Ability != null;
+        
+        private bool Validate_Client_Action()
+            => Validate_Action_Selected() && Selected_Ability.Ability_Usage_Finished;
+        
         private void Inform_Ability()
         {
-            if (Selected_Ability != GameEntity_Attribute_Name.NULL_ATTRIBUTE_NAME && Selected_TargetIndex != GameEntity_ID.ID_NULL)
+            if (Validate_Client_Action())
             {
-                GameScene.MonkeyDungeon_Game_UI.Client_RecieverEndpoint_UI.Queue_Message(
-                    new MMW_Set_Combat_Action(Selected_TargetIndex, Selected_Ability)
-                    );
-                Selected_Ability = null;
-                Selected_TargetIndex = GameEntity_ID.ID_NULL;
+                Relay_Client_Action();
+                return;
             }
+            if(Validate_Action_Selected())
+                Update_Target_Buttons();
         }
 
+        private void Relay_Client_Action()
+        {
+            Relay_Message(
+                new MMW_Combat_Set_Selected_Ability(Selected_Ability)
+            );
+            
+            Reset_Selections();
+        }
+        
         internal void Inform_EndTurn()
         {
-            GameScene.MonkeyDungeon_Game_UI.Client_RecieverEndpoint_UI.Queue_Message(
+            Relay_Message(
                 new MMW_Request_EndTurn()
                 );
             _uiStatusBar.Dump_AbilityPoints();
         }
 
-        internal void Enable_TurnControl()
-        {
-            //TODO: enable ability buttons and end turn.
-        }
-
-        internal void Disable_TurnControl()
-        {
-            //TODO: disable ability buttons and end turn.
-        }
-
-        internal void BeginCombat(GameEntity_ClientSide clientPlayer)
-        {
-            Focus_Entity(clientPlayer);
-        }
-
         internal void BeginTurn(GameEntity_ID entityId)
         {
             _uiEndTurnUiButton.RefreshButton();
+            Target_Buttons.Set_Button_States(GameEntity_Team_ID.ID_NULL, false);
             Reset_Selections();
             GameEntity_ClientSide entity = World_Layer.Get_GameEntity(entityId);
-            abilityNames = entity.ABILITY_NAMES;
-            Set_Ability_Names(abilityNames);
+            abilityNames_ToRender = entity.ABILITIES;
+            Set_Ability_Names(abilityNames_ToRender);
             Focus_Entity(entity);
         }
 
@@ -220,8 +188,31 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
 
         internal void Reset_Selections()
         {
-            Selected_Ability = GameEntity_Attribute_Name.NULL_ATTRIBUTE_NAME;
-            Selected_TargetIndex = GameEntity_ID.ID_NULL;
+            if (Selected_Ability != null)
+                Selected_Ability.Target.Reset();
+            
+            Selected_Ability = null;
+        }
+
+        internal void Update_Target_Buttons()
+        {
+            //TODO: fully implement.
+            Combat_Target_Type targetType = Selected_Ability.Target_Type;
+            switch (targetType)
+            {
+                case Combat_Target_Type.Everything:
+                case Combat_Target_Type.All_Enemies:
+                case Combat_Target_Type.All_Friendlies:
+                    return; //TODO: add confirmation button.
+                case Combat_Target_Type.Three_Enemies:
+                case Combat_Target_Type.Two_Enemies:
+                case Combat_Target_Type.One_Enemy: 
+                    Target_Buttons.Set_Button_States(GameEntity_Team_ID.TEAM_TWO_ID, true);
+                    return;
+                default:
+                    Target_Buttons.Set_Button_States(GameEntity_Team_ID.TEAM_ONE_ID, true);
+                    return;
+            }
         }
 
         internal void Initalize_Buttons(UI_Button[] buttons, int comparingLength, Func<int, string> buttonTextHandler)
@@ -245,16 +236,16 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
 
         }
         
-        private void Use_Ability(GameEntity_Attribute_Name abilityName)
+        private void Use_Ability(GameEntity_Ability_Index abilityIndex)
         {
             Console.WriteLine("Use_Ability");
-            Selected_Ability = abilityName;
+            Selected_Ability = abilityNames_ToRender[abilityIndex];
         }
 
-        private void Select_Enemy(GameEntity_ID index)
+        private void Select_Enemy(GameEntity_Position position, UI_Button_Target button)
         {
             Console.WriteLine("Select_Enemy");
-            Selected_TargetIndex = index;
+            Selected_Ability?.Target.Add_Target(position);
         }
 
         private void Add_Buttons(UI_Button[] buttons)

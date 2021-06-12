@@ -4,24 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using isometricgame.GameEngine.Scenes;
+using MonkeyDungeon_UI.Prefabs;
 using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_UI.Multiplayer.MessageWrappers
 {
-    public class MMW_Set_Combat_Action : Multiplayer_Message_Wrapper
+    public class MMW_Combat_Set_Selected_Ability : Multiplayer_Message_Wrapper
     {
-        public MMW_Set_Combat_Action(
-            GameEntity_ID actionTargetId, 
-            GameEntity_Attribute_Name abilityName
+        public MMW_Combat_Set_Selected_Ability(
+            GameEntity_ClientSide_Ability ability
             ) 
             : base(
-                  MD_VANILLA_MMH.MMH_SET_COMBAT_ACTION, 
+                  MD_VANILLA_MMH.MMH_COMBAT_SET_SELECTED_ABILITY, 
                   GameEntity_ID.ID_ZERO, 
                   0, 
-                  actionTargetId, 
-                  abilityName
+                  0,
+                  ability.Ability_Name
                   )
         {
         }

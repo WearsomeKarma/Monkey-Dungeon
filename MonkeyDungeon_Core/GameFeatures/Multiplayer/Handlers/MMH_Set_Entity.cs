@@ -1,4 +1,5 @@
-﻿using MonkeyDungeon_Core.GameFeatures.GameEntities;
+﻿using System;
+using MonkeyDungeon_Core.GameFeatures.GameEntities;
 using MonkeyDungeon_Core.GameFeatures.GameStates;
 using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
@@ -28,7 +29,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
                 Handle_Invalid_Message(recievedMessage);
                 return;
             }
-
+            
             GameEntity_ServerSide e = GameState_Machine.Set_Entity(messageEntityID, relayId, factoryTag);
         }
         

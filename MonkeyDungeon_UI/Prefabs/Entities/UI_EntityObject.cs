@@ -53,9 +53,14 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
 
         public void Bind_To_Description(GameEntity_ClientSide entity)
         {
-            entityDescription = entity;
+            if (entityDescription != null)
+                Unbind_To_Description();
+            
             if (entity == null)
                 return;
+            
+            entityDescription = entity;
+            
             EntityDescription.Resource_Added += Resource_Added;
             EntityDescription.Entity_Died += Entity_Died;
             EntityDescription.Entity_Dismissal_State_Changed += Entity_Dismissal_State_Changed;

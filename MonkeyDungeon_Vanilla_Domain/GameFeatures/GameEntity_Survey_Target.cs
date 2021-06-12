@@ -82,10 +82,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
                 if (IsValid_For_Count(position, ownerPosition, teamIdTarget, invertRosterTarget))
                 {
                     count++;
-                    continue;
                 }
-                
-                return -1;
             }
 
             return count;

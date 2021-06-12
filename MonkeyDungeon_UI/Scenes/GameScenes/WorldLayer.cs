@@ -102,7 +102,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                 Ranged_UiParticleObject.Position
                 );
 
-            GameScene.MonkeyDungeon_Game_UI.Expectation_Context.Register_Handler(
+            Add_Handler_Expectation(
                 new MMH_Invoke_UI_Event(this),
                 new MMH_Declare_Entity_Description(this),
                 new MMH_Accept_Client(GameScene.MonkeyDungeon_Game_UI),
@@ -113,6 +113,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                 new MMH_Update_Entity_Level(this),
                 new MMH_Update_Entity_Resource(this),
                 new MMH_Update_Entity_Ability(this),
+                new MMH_Update_Entity_Ability_Target_Type(this),
                 new MMH_Update_Entity_UniqueID(this),
                 new MMH_Update_Ability_Point(this),
                 new MMH_Set_Melee_Combattants(this),

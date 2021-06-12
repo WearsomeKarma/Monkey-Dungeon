@@ -20,7 +20,7 @@ namespace MonkeyDungeon_UI.Prefabs.UI
     public class UI_Button : GameObject
     {
         public static InputHandler mouseInputHandler;
-        private Action<UI_Button> buttonClickHandler;
+        protected Action<UI_Button> Button_Click_Handler { get; set; }
         private PrimitiveHitbox hitbox;
         public string Text { get; set; }
         public bool Enabled { get; set; }
@@ -41,7 +41,7 @@ namespace MonkeyDungeon_UI.Prefabs.UI
             SpriteComponent.SetSprite(buttonVisual);
             Position = position;
 
-            this.buttonClickHandler = buttonClickHandler;
+            this.Button_Click_Handler = buttonClickHandler;
             Text = text;
         }
 
@@ -70,7 +70,7 @@ namespace MonkeyDungeon_UI.Prefabs.UI
 
         protected virtual void GainFocus()
         {
-            buttonClickHandler.Invoke(this);
+            Button_Click_Handler.Invoke(this);
         }
 
         protected virtual void LoseFocus()

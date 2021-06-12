@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 {
@@ -14,18 +15,20 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
             foreach (GameEntity_Position position in FIELD.Keys)
             {
                 entity = FIELD[position];
-                if (GameEntity.Validate(entity))
+                if (GameEntity.Validate(entity) && entity.GameEntity_ID == id)
+                {
                     return entity;
+                }
             }
-            
+
             return DEFAULT_VALUE;
         }
 
         public T Get_Entity(GameEntity_Position position)
             => Get_Entry_From_Position(position);
 
-        public GameEntity_Position Get_Position_From_Id(GameEntity_ID id)
-            => Get_Entity(id).GameEntity_Position;
+        public GameEntity_Position Get_Position_From_Id(GameEntity_ID id, GameEntity_Position defaultPosition = null)
+            => Get_Entity(id)?.GameEntity_Position ?? (defaultPosition ?? GameEntity_Position.NULL_POSITION);
         
         public GameEntity_ID[] Get_Entity_Ids(bool isPlayers)
         {
