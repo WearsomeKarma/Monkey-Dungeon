@@ -40,6 +40,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
 
         public List<GameEntity_ID> TurnOrder { get; private set; }
         public GameEntity_ServerSide Entity_Of_Current_Turn => Game_Field.Get_Entity(TurnOrder[TurnIndex]);
+        public GameEntity_Controller Controller_Of_Current_Turn => Entity_Of_Current_Turn.EntityController;
         public GameEntity_ID Entity_ID_Of_Current_Turn => Entity_Of_Current_Turn.GameEntity_ID;
         public Multiplayer_Relay_ID Entity_Of_Current_Turn_Relay_Id => Entity_Of_Current_Turn.Multiplayer_Relay_ID;
 
@@ -87,40 +88,41 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
             switch(CombatState)
             {
                 case CombatState.BeginNextTurn:
-                    BeginTurn();
+                    
+                    Begin_Turn();
                     break;
+                
                 case CombatState.PlayCurrentTurn:
-                    if (Is_Team_Incapacitated(GameEntity_Team_ID.TEAM_TWO_ID))
-                    {
-                        GameState_Machine.Request_Transition_ToState<Traveling_GameState>();
+                    
+                    if (Check_For_Team_Incapacitation())
                         break;
-                    }
-                    if (Is_Team_Incapacitated(GameEntity_Team_ID.TEAM_ONE_ID))
+                    
+                    Combat_Action action = Controller_Of_Current_Turn.Get_Combat_Action();
+                    if (action?.IsSetupComplete ?? false)
                     {
-                        GameState_Machine.Request_Transition_ToState<GameOver_GameState>();
-                        break;
-                    }
-                    Combat_Action action = Entity_Of_Current_Turn.EntityController.Get_Combat_Action(Game_Field);
-                    if (action != null)
-                    {
+                        Console.WriteLine("STRICT? " + action.Target.Has_Strict_Targets);
+                        
                         if (action.Action_Ends_Turn)
                         {
                             Request_EndOfTurn();
                             break;
                         }
+                        
                         GameState_Machine.Broadcast(
-                            new MMW_Announcement(action.Selected_Ability)
+                            new MMW_Announcement(action.Selected_Ability.Attribute_Name)
                         );
+                        
                         ACTION_RESOLVER.Resolve_Action(action);
+
+                        Controller_Of_Current_Turn.Action_Performed();
                     }
                     break;
+                
                 case CombatState.FinishCurrentTurn:
-                    Entity_Of_Current_Turn.Combat_EndTurn(Game_Field);
-                    Progress_TurnOrder();
-                    CombatState = CombatState.BeginNextTurn;
+                    Finish_Turn();
                     break;
                 case CombatState.FinishCombat:
-                    GameState_Machine.Request_Transition_ToState<Traveling_GameState>();
+                    Finish_Combat();
                     break;
                 case CombatState.OutOfCombat:
                 default: //do nothing.
@@ -128,10 +130,9 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
             }
         }
 
-        private void BeginTurn()
+        private void Begin_Turn()
         {
-            CombatState = CombatState.PlayCurrentTurn;
-            Entity_Of_Current_Turn.Combat_BeginTurn(Game_Field);
+            Entity_Of_Current_Turn.Combat_Begin_Turn__GameEntity();
 
             if (Entity_Of_Current_Turn_Relay_Id < 0)
                 return;
@@ -140,8 +141,42 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
                 Entity_Of_Current_Turn_Relay_Id,
                 new MMW_Begin_Turn(Entity_ID_Of_Current_Turn)
                 );
+            
+            CombatState = CombatState.PlayCurrentTurn;
         }
 
+        private void Finish_Turn()
+        {
+            Entity_Of_Current_Turn.Combat_End_Turn__GameEntity();
+            Progress_TurnOrder();
+            
+            CombatState = CombatState.BeginNextTurn;
+        }
+
+        private bool Check_For_Team_Incapacitation()
+        {
+            if (Is_Team_Incapacitated(GameEntity_Team_ID.TEAM_TWO_ID))
+            {
+                CombatState = CombatState.FinishCombat;
+                return true;
+            }
+            if (Is_Team_Incapacitated(GameEntity_Team_ID.TEAM_ONE_ID))
+            {
+                GameState_Machine.Request_Transition_ToState<GameOver_GameState>();
+                return true;
+            }
+
+            return false;
+        }
+        
+        private void Finish_Combat()
+        {
+            foreach(GameEntity_ServerSide entity in Game_Field.Get_Entities())
+                entity.Combat_End__GameEntity();
+            
+            GameState_Machine.Request_Transition_ToState<Traveling_GameState>();
+        }
+        
         internal void Act_Melee_Attack(GameEntity_ID scene_GameObject_ID1, GameEntity_ID scene_GameObject_ID2)
         {
             GameEntity_ID ally, enemy;

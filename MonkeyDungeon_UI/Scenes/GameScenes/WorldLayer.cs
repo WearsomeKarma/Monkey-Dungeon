@@ -84,6 +84,8 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                 }
             );
             
+            Add_StaticObject(WorldLayer_Roster);
+            
             Add_StaticObject(Ranged_UiParticleObject = new UI_ParticleObject(this, new Vector3(0, 0, 0)));
             Ranged_UiParticleObject.Toggle_Sprite(false);
             Ranged_UiParticleObject.Set_Particle(MD_VANILLA_PARTICLE_NAMES.CHAOS_BOLT);

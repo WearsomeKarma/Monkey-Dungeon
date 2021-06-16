@@ -45,6 +45,7 @@
     <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_PARTICLE_NAMES.cs" />
     <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_RACE_NAMES.cs" />
     <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_RESOURCE_NAMES.cs" />
+    <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_STATUSEFFECT_NAMES.cs" />
     <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_STAT_NAMES.cs" />
     <Compile Include="GameFeatures\AttributeNames\Definitions\MD_VANILLA_UI_EVENT_NAMES.cs" />
     <Compile Include="GameFeatures\AttributeNames\GameEntity_Attribute_Name_Ability.cs" />
@@ -65,7 +66,7 @@
     <Compile Include="GameFeatures\GameEntity_Position.cs" />
     <Compile Include="GameFeatures\GameEntity_Position_Type.cs" />
     <Compile Include="GameFeatures\GameEntity_Team_ID.cs" />
-    <Compile Include="GameFeatures\GameStates\Combat\Combat_Ability_Target.cs" />
+    <Compile Include="GameFeatures\GameStates\Combat\Combat_Target.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Assault_Type.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Damage_Type.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Redirection_Chance.cs" />

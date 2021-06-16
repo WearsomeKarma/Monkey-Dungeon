@@ -52,7 +52,7 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         public GameEntity_ServerSide Create_NewEntity(GameEntity_ID entityScene_ID, Multiplayer_Relay_ID relayId, GameEntity_Position position,  GameEntity_Attribute_Name race)
         {
-            GameEntity_ServerSide entityServerSide = GameEntity_Catalog[race].Clone(entityScene_ID);
+            GameEntity_ServerSide entityServerSide = GameEntity_Catalog[race].Clone__GameEntity(entityScene_ID);
             entityServerSide.Set_Position(position);
             return entityServerSide;
         }

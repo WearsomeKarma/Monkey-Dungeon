@@ -22,7 +22,7 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
 
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
-            GameEntity_ID entity_id = recievedMessage.Local_Entity_ID;
+            GameEntity_ID entity_id = recievedMessage.ENTITY_ID;
             int unique_id = recievedMessage.INT_VALUE;
 
             World_Layer.Set_Unique_ID(entity_id, (uint)unique_id);

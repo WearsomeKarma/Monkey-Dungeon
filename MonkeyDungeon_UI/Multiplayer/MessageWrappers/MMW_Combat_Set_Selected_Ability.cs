@@ -18,7 +18,7 @@ namespace MonkeyDungeon_UI.Multiplayer.MessageWrappers
             ) 
             : base(
                   MD_VANILLA_MMH.MMH_COMBAT_SET_SELECTED_ABILITY, 
-                  GameEntity_ID.ID_ZERO, 
+                  GameEntity_ID.ID_NULL,
                   0, 
                   0,
                   ability.Ability_Name

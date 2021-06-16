@@ -5,15 +5,12 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Controllers
 {
     public class GameEntity_Controller_Player : GameEntity_Controller
     {
-        protected override Combat_Action Handle_CombatAction_Request(GameEntity_ServerSide_Roster gameField)
+        protected override void Handle_Get__Combat_Action__Controller()
         {
-            if (PendingCombatAction?.IsSetupComplete ?? false)
-                return PendingCombatAction;
-
-            return null;
+            
         }
 
-        public override GameEntity_Controller Clone()
+        public override GameEntity_Controller Clone__Controller()
         {
             return new GameEntity_Controller_Player();
         }

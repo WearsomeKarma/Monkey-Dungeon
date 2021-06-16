@@ -145,14 +145,11 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
             return String.Format("{0}, Team:{1}", ((GameEntity_Position_Type) WORLD_POSITION).ToString(), TeamId);
         }
 
-        public static explicit operator GameEntity_Position(GameEntity_Position_Type type)
-            => TEAM_ONE__POSITIONS[(int) type];
-
         public static explicit operator GameEntity_Position_Type(GameEntity_Position position)
             => (GameEntity_Position_Type) (position.WORLD_POSITION);
 
         public static explicit operator int(GameEntity_Position position)
-            => position.WORLD_POSITION;
+            => position.WORLD_POSITION + (MD_PARTY.MAX_PARTY_SIZE * position.TeamId);
 
         /// <summary>
         /// General foreach wrapper function that will operate over team specific positions, or all positions (teamID=ID_NULL)
@@ -173,5 +170,8 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         
         public static bool Validate(GameEntity_Position position)
             => !((position == null) || (position == NULL_POSITION));
+
+        public static GameEntity_Position From_Type(GameEntity_Position_Type positionType, GameEntity_Team_ID teamId)
+            => ALL_NON_NULL__POSITIONS[((int) positionType) + (MD_PARTY.MAX_PARTY_SIZE * teamId)];
     }
 }

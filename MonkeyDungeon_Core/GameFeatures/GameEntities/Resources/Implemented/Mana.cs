@@ -11,7 +11,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Resources.Implemented
         {
         }
 
-        public override GameEntity_Resource Clone()
+        public override GameEntity_Resource Clone__Resource()
         {
             return new Mana(Max_Quantity, Value);
         }

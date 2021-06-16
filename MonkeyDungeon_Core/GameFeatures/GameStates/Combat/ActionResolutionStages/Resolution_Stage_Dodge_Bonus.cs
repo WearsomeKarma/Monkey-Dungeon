@@ -26,11 +26,11 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
                 
                 dodgeBonuses[i] = new Combat_Finalized_Factor(Get_Entity(targetPositions[i]).GameEntity_ID);
                 
-                GameEntity_Stat dodgeStat = targetedEntityServerSide.Stat_Manager.Get_Stat(action.Stat_Dodge_Bonus);
+                GameEntity_Stat dodgeStat = targetedEntityServerSide.Get__Stat__GameEntity<GameEntity_Stat>(action.Stat_Dodge_Bonus);
 
                 dodgeBonuses[i].Offset_Value(dodgeStat);
 
-                dodgeBonuses[i].Offset_Value(targetedEntityServerSide.StatusEffect_Manager.Get_Dodge_Bonuses(action));
+                dodgeBonuses[i].Offset_Value(targetedEntityServerSide.Get_Dodge_Bonuses__GameEntity(action));
             }
 
             action.Finalized_Dodge_Bonuses = dodgeBonuses;

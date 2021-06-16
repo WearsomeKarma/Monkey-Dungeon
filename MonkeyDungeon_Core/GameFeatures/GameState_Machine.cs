@@ -134,7 +134,7 @@ namespace MonkeyDungeon_Core.GameFeatures
                 new MMW_Update_Entity_Resource(
                     resource.Internal_Parent.GameEntity_ID,
                     (float)(resource.Value / resource.Max_Quantity),
-                    resource.ATTRIBUTE_NAME
+                    resource.Attribute_Name
                     )
                 );
         }
@@ -142,18 +142,18 @@ namespace MonkeyDungeon_Core.GameFeatures
         internal void Relay_Entity(GameEntity_ServerSide entityServerSide)
         {
             //send abilities
-            GameEntity_Ability[] abilities = entityServerSide.Ability_Manager.Get_Abilities();
+            GameEntity_Ability[] abilities = entityServerSide.Get__Abilities__GameEntity();
             for (int i = 0; i < abilities.Length; i++)
             {
                 Broadcast(
-                    new MMW_Update_Entity_Ability(entityServerSide.GameEntity_ID, GameEntity_Ability_Index.INDICES[i], abilities[i].ATTRIBUTE_NAME)
+                    new MMW_Update_Entity_Ability(entityServerSide.GameEntity_ID, GameEntity_Ability_Index.INDICES[i], abilities[i].Attribute_Name)
                     );
                 
                 Broadcast(
                     new MMW_Update_Entity_Ability_Target_Type(
                         entityServerSide.GameEntity_ID,
-                        abilities[i].Target_Type,
-                        abilities[i].ATTRIBUTE_NAME
+                        abilities[i].Ability__Combat_Target_Type,
+                        abilities[i].Attribute_Name
                         )
                     );
             }
@@ -164,7 +164,7 @@ namespace MonkeyDungeon_Core.GameFeatures
                 );
 
             //send resource names
-            GameEntity_Attribute_Name[] resources = entityServerSide.Resource_Manager.Get_Resource_Names();
+            GameEntity_Attribute_Name[] resources = entityServerSide.Get__Resource_Names__GameEntity();
             for(int i=0;i<resources.Length;i++)
             {
                 Broadcast(

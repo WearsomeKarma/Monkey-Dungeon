@@ -21,7 +21,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
             Multiplayer_Relay_ID relayId = recievedMessage.Relay_ID;
-            GameEntity_ID messageEntityID = recievedMessage.Local_Entity_ID;
+            GameEntity_ID messageEntityID = recievedMessage.ENTITY_ID;
             GameEntity_Attribute_Name factoryTag = recievedMessage.ATTRIBUTE;
             
             if(messageEntityID.IsRelay_Bound && IsInvalid_Message(relayId, messageEntityID))

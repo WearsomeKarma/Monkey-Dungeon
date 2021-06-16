@@ -20,12 +20,12 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
         {
         }
 
-        protected override double Get_AbilityResourceCost()
+        protected override double Handle_Get__Resource_Cost__Ability()
         {
-            return Resource_Value * 0.05f;
+            return Handle_Get__Quantified_Output__Ability() * 0.05f;
         }
 
-        public override GameEntity_Ability Clone()
+        public override GameEntity_Ability Clone__Ability()
         {
             return new Ability_PoopyFling();
         }

@@ -17,9 +17,13 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             List<GameEntity_ServerSide> entities = new List<GameEntity_ServerSide>();
 
-            foreach(GameEntity_ServerSide entity in entities)
-                if (positions.Contains(entity.GameEntity_Position))
-                    entities.Add(entity);
+            GameEntity_Position.For_Each_Position(
+                GameEntity_Team_ID.ID_NULL,
+                (p) =>
+                {
+                    if(positions.Contains(p) && FIELD[p] != null)
+                        entities.Add(FIELD[p]);
+                });
             
             return entities.ToArray();
         }

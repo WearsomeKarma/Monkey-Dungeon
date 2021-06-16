@@ -17,7 +17,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer
 
         protected bool IsValid_Message(Multiplayer_Message message)
         {
-            bool ret = Combat.Entity_ID_Of_Current_Turn.Relay_ID == message.Relay_ID;
+            bool ret = Combat.Entity_Of_Current_Turn_Relay_Id== message.Relay_ID;
 
             if (!ret)
                 Handle_Invalid_Message(message);

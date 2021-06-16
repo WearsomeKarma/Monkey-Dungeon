@@ -28,7 +28,7 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
         {
             GameEntity_Attribute_Name resourceName = recievedMessage.ATTRIBUTE;
 
-            GameEntity_ClientSide entity = World_Layer.Get_GameEntity(recievedMessage.Local_Entity_ID);
+            GameEntity_ClientSide entity = World_Layer.Get_GameEntity(recievedMessage.ENTITY_ID);
 
             //I hate this code and TODO: change it.
             entity.Add_Resource(GameEntity_Attribute_Name.Cast<GameEntity_Attribute_Name_Resource>(resourceName, GameEntity_Attribute_Type.RESOURCE_NAMES));

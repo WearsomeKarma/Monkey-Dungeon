@@ -129,10 +129,10 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
         /// STRING: the ability.
         /// </summary>
         public static readonly GameEntity_Attribute_Name MMH_COMBAT_SET_SELECTED_ABILITY 
-            = new GameEntity_Attribute_Name("MMH_Set_Combat_Action");
+            = new GameEntity_Attribute_Name("MMH_Combat_Set_Selected_Ability");
 
-        public static readonly GameEntity_Attribute_Name MMH_SET_COMBAT_TARGET
-            = new GameEntity_Attribute_Name("MMH_Set_Combat_Target");
+        public static readonly GameEntity_Attribute_Name MMH_COMBAT_ADD_TARGET
+            = new GameEntity_Attribute_Name("MMH_Combat_Add_Target");
         /// <summary>
         /// Context for relaying to client side - the entities involved in the melee event.
         /// ENTITY_ID: the ally side entity.

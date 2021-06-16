@@ -136,6 +136,8 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
             if (Validate_Client_Action())
             {
                 Relay_Client_Action();
+            
+                Reset_Selections();
                 return;
             }
             if(Validate_Action_Selected())
@@ -147,8 +149,15 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
             Relay_Message(
                 new MMW_Combat_Set_Selected_Ability(Selected_Ability)
             );
-            
-            Reset_Selections();
+
+            foreach (GameEntity_Position position in Selected_Ability.Target.Get_Reduced_Fields())
+            {
+                Relay_Message(
+                    new MMW_Combat_Add_Target(
+                        position
+                        )
+                    );
+            }
         }
         
         internal void Inform_EndTurn()
@@ -190,6 +199,8 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
         {
             if (Selected_Ability != null)
                 Selected_Ability.Target.Reset();
+            
+            Console.WriteLine("[UI_Combat_Layer.cs:205] -- Resetting selections.");
             
             Selected_Ability = null;
         }

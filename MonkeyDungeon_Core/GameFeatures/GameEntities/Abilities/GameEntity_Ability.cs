@@ -1,5 +1,7 @@
 ﻿using MonkeyDungeon_Vanilla_Domain;
 using System;
+using MonkeyDungeon_Core.GameFeatures.GameEntities.Resources;
+using MonkeyDungeon_Core.GameFeatures.GameEntities.Stats;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat;
 
@@ -7,93 +9,132 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
 {
     public class GameEntity_Ability : GameEntity_Attribute
     {
-        internal GameEntity_ID Owner_ID => Internal_Parent.GameEntity_ID;
+        internal GameEntity_ID              Ability_Owner__GameEntity_ID         => Internal_Parent.GameEntity_ID;
 
-        public GameEntity_Attribute_Name Resource_Name { get; private set; }
-        public double Cost => Get_AbilityResourceCost();
-        public int Cost_Ability_Points => Get_AbilityPointCost();
-        public double Resource_Value => Internal_Parent?.Resource_Manager.Get_Resource(Resource_Name)?.Value ?? throw new Exception("TODO: replace excep");
-        public double Resource_ValueStrict => Internal_Parent?.Resource_Manager.Get_Resource(Resource_Name)?.Value ?? throw new Exception("TODO: replace excep");
+        public GameEntity_Attribute_Name    Ability__Particle_Name               { get; protected set; }
+        
+        public int                          Ability__Point_Cost                  => Handle_Get__Point_Cost__Ability();
+        
+        public GameEntity_Attribute_Name    Ability__Primary_Resource_Name       { get; private set; }
+        public double                       Ability__Resource_Cost               => Handle_Get__Resource_Cost__Ability();
+        public double?                      Ability__Primary_Resource_Value      => Internal_Parent?
+                                                                                    .Get__Resource__GameEntity<GameEntity_Resource>
+                                                                                        (Ability__Primary_Resource_Name)
+                                                                                    ?.Value;
+        
+        internal GameEntity_Attribute_Name  Ability_Primary_Stat_Name            { get; private set; }
+        public double?                      Ability__Primary_Stat_Value          => Internal_Parent?
+                                                                                    .Get__Stat__GameEntity<GameEntity_Stat>
+                                                                                        (
+                                                                                        Ability_Primary_Stat_Name 
+                                                                                        ?? 
+                                                                                        GameEntity_Attribute_Name.NULL_ATTRIBUTE_NAME
+                                                                                        )
+                                                                                    ?.Value;
 
-        internal GameEntity_Attribute_Name Stat_Name { get; private set; }
-        public double Stat_Value => Internal_Parent?.Stat_Manager.Get_Stat(Stat_Name ?? GameEntity_Attribute_Name.NULL_ATTRIBUTE_NAME)?.Value ?? throw new Exception("TODO: replace excep");
+        
+        public Combat_Target_Type           Ability__Combat_Target_Type                 { get; protected set; }
+        public Combat_Damage_Type           Ability__Combat_Damage_Type                 { get; protected set; }
+        public Combat_Assault_Type          Ability__Combat_Assault_Type                { get; protected set; }
+        
+        public bool                         Ability__Combat_Enforces_Strict_Targetting  { get; protected set; }
 
-        public GameEntity_Attribute_Name Particle_Type { get; protected set; }
-
-        public Combat_Ability_Target Target { get; protected set; }
-        public Combat_Target_Type Target_Type { get; protected set; }
-        public Combat_Damage_Type Damage_Type { get; protected set; }
-        public Combat_Assault_Type Assault_Type { get; protected set; }
-        public bool Has_Strict_Targets { get; protected set; }
-
-        public GameEntity_Ability(
+        
+        public GameEntity_Ability
+            (
             GameEntity_Attribute_Name name,
-            GameEntity_Attribute_Name resourceName,
-            GameEntity_Attribute_Name statName,
-            Combat_Target_Type targetType = Combat_Target_Type.Self_Or_No_Target,
-            Combat_Damage_Type damageType = Combat_Damage_Type.Abstract,
-            Combat_Assault_Type assaultType = Combat_Assault_Type.None,
-            GameEntity_Attribute_Name particleType = null
+            GameEntity_Attribute_Name abilityPrimaryResourceName,
+            GameEntity_Attribute_Name abilityPrimaryStatName,
+            Combat_Target_Type abilityCombatTargetType = Combat_Target_Type.Self_Or_No_Target,
+            Combat_Damage_Type abilityCombatDamageType = Combat_Damage_Type.Abstract,
+            Combat_Assault_Type abilityCombatAssaultType = Combat_Assault_Type.None,
+            GameEntity_Attribute_Name abilityParticleName = null
             )
             : base(name)
         {
-            Resource_Name = resourceName;
-            Stat_Name = statName;
+            Ability__Primary_Resource_Name = abilityPrimaryResourceName;
+            Ability_Primary_Stat_Name = abilityPrimaryStatName;
 
-            Target_Type = targetType;
-            Damage_Type = damageType;
-            Assault_Type = assaultType;
+            Ability__Combat_Target_Type = abilityCombatTargetType;
+            Ability__Combat_Damage_Type = abilityCombatDamageType;
+            Ability__Combat_Assault_Type = abilityCombatAssaultType;
 
-            Particle_Type = particleType;
+            Ability__Particle_Name = abilityParticleName;
+
+            Ability__Combat_Enforces_Strict_Targetting = true;
         }
 
-        internal void Cast(Combat_Action action)
-            => Handle_Cast(action);
+        
+        
+        internal void Cast__Ability(Combat_Action action)
+            => Handle_Cast__Ability(action);
+        protected virtual void Handle_Cast__Ability(Combat_Action action) { }
 
-        internal Combat_Redirection_Chance Calculate_Redirect_Chance
-        (
-            Combat_Action action,
-            GameEntity_Position_Type ownerPositionType,
-            GameEntity_Position_Type targetPositionType,
-            Combat_Redirection_Chance baseChance
-        )
-            => Handle_Calculate_Redirect_Chance(action, ownerPositionType, targetPositionType, baseChance);
-        internal Combat_Resource_Offset Calculate_Damage(Combat_Action action)
-            => Handle_Calculate_Damage(action);
-
-        protected virtual void Handle_Cast                      (Combat_Action action) { }
-
-        protected virtual Combat_Redirection_Chance Handle_Calculate_Redirect_Chance
+        
+        
+        internal Combat_Redirection_Chance Calculate_Redirect_Chance__Ability
             (
             Combat_Action action,
             GameEntity_Position_Type ownerPositionType,
             GameEntity_Position_Type targetPositionType,
             Combat_Redirection_Chance baseChance
             )
+            => Handle_Ability_Calculate_Redirect_Chance(action, ownerPositionType, targetPositionType, baseChance);
+        
+        protected virtual Combat_Redirection_Chance Handle_Ability_Calculate_Redirect_Chance
+        (
+            Combat_Action action,
+            GameEntity_Position_Type ownerPositionType,
+            GameEntity_Position_Type targetPositionType,
+            Combat_Redirection_Chance baseChance
+        )
             => MD_VANILLA_COMBAT.NO_REDIRECT;
-        protected virtual Combat_Resource_Offset Handle_Calculate_Damage (Combat_Action action)
-            => new Combat_Resource_Offset(Damage_Type, Get_RelevantOutput());
+        
+        
+        
+        internal Combat_Resource_Offset Calculate_Damage__Ability(Combat_Action action)
+            => Handle_Calculate_Damage__Ability(action);
+        
+        protected virtual Combat_Resource_Offset Handle_Calculate_Damage__Ability (Combat_Action action)
+            => new Combat_Resource_Offset(Ability__Combat_Damage_Type, Handle_Get__Nullable_Output__Ability() ?? 0);
 
-        protected virtual double Get_RelevantOutput()           => Internal_Parent?.Stat_Manager.Get_Stat(Stat_Name)?.Value ?? 0;
-        protected virtual double Get_AbilityResourceCost()      => 1;
-        protected virtual int Get_AbilityPointCost()            => 1;
+        
+        
+        protected virtual double? Handle_Get__Nullable_Output__Ability()
+            => Ability__Primary_Resource_Value;
+        protected virtual double Handle_Get__Quantified_Output__Ability()
+            => Ability__Primary_Resource_Value ?? 0;
+        
+        
+        
+        protected virtual double Handle_Get__Resource_Cost__Ability()
+            => 1;
+        
+        
+        
+        protected virtual int Handle_Get__Point_Cost__Ability()
+            => 1;
 
-        public virtual GameEntity_Ability Clone()
+        
+        
+        public virtual GameEntity_Ability Clone__Ability()
         {
             GameEntity_Ability clone = new GameEntity_Ability(
-                ATTRIBUTE_NAME,
-                Resource_Name,
-                Stat_Name
+                Attribute_Name,
+                Ability__Primary_Resource_Name,
+                Ability_Primary_Stat_Name
                 );
             return clone;
         }
 
+        
+        
         public override string ToString()
         {
             return string.Format(
                 "Name: {0} \tOutput: {1}",
-                ATTRIBUTE_NAME,
-                Get_RelevantOutput()
+                Attribute_Name,
+                Handle_Get__Nullable_Output__Ability()
                 );
         }
     }

@@ -1,4 +1,7 @@
 using System;
+using isometricgame.GameEngine;
+using isometricgame.GameEngine.Events.Arguments;
+using isometricgame.GameEngine.Systems.Rendering;
 using MonkeyDungeon_UI.Prefabs.Entities;
 using MonkeyDungeon_UI.Scenes.GameScenes;
 using MonkeyDungeon_Vanilla_Domain;
@@ -9,7 +12,7 @@ using OpenTK;
 
 namespace MonkeyDungeon_UI.Prefabs
 {
-    public class GameEntity_WorldLayer_Roster
+    public class GameEntity_WorldLayer_Roster : GameObject
     {
         private World_Layer World_Layer { get; set; }
 
@@ -52,12 +55,25 @@ namespace MonkeyDungeon_UI.Prefabs
         }
         
         internal GameEntity_WorldLayer_Roster(World_Layer worldLayer, Vector3[] vectorSpace)
+            : base(worldLayer, Vector3.Zero)
         {
             VECTOR_SURVEY = new GameEntity_Position_Vector_Survey(vectorSpace);
             
             World_Layer = worldLayer;
             
             GameEntity_Position.For_Each_Position(GameEntity_Team_ID.ID_NULL, Fill_Position);
+        }
+
+        public override void OnUpdate(FrameArgument args)
+        {
+            foreach(UI_EntityObject entity in UI_ENTITY_OBJECT_ROSTER.Get_Entities())
+                entity.OnUpdate(args);
+        }
+
+        protected override void HandleDraw(RenderService renderService)
+        {
+            foreach(UI_EntityObject entity in UI_ENTITY_OBJECT_ROSTER.Get_Entities())
+                renderService.DrawObj(entity);
         }
 
         private void Fill_Position(GameEntity_Position position)

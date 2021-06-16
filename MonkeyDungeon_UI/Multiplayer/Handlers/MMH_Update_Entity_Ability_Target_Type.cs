@@ -20,7 +20,7 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
 
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
-            GameEntity_ID entityId = recievedMessage.Local_Entity_ID;
+            GameEntity_ID entityId = recievedMessage.ENTITY_ID;
             
             GameEntity_Attribute_Name_Ability abilityName
                 = GameEntity_Attribute_Name.Cast<GameEntity_Attribute_Name_Ability>(recievedMessage.ATTRIBUTE, GameEntity_Attribute_Type.ABILITY_NAMES);

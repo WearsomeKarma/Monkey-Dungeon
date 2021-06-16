@@ -15,7 +15,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
         {
         }
 
-        public override GameEntity_Ability Clone()
+        public override GameEntity_Ability Clone__Ability()
         {
             return new Ability_StandGuard();
         }

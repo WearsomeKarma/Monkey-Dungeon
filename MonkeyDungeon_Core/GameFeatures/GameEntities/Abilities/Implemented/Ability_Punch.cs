@@ -19,17 +19,17 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
         {
         }
 
-        protected override Combat_Resource_Offset Handle_Calculate_Damage(Combat_Action action)
+        protected override Combat_Resource_Offset Handle_Calculate_Damage__Ability(Combat_Action action)
         {
-            return new Combat_Resource_Offset(Combat_Damage_Type.Physical, Get_RelevantOutput());
+            return new Combat_Resource_Offset(Combat_Damage_Type.Physical, Handle_Get__Quantified_Output__Ability());
         }
 
-        protected override double Get_AbilityResourceCost()
+        protected override double Handle_Get__Resource_Cost__Ability()
         {
             return 0;
         }
 
-        public override GameEntity_Ability Clone()
+        public override GameEntity_Ability Clone__Ability()
         {
             return new Ability_Punch();
         }

@@ -13,11 +13,11 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Stats
                 Set_Value((double)initalValue);
         }
 
-        public GameEntity_Stat Clone()
+        public GameEntity_Stat Clone__Stat()
         {
             return new GameEntity_Stat
                 (
-                ATTRIBUTE_NAME, 
+                Attribute_Name, 
                 Min_Quantity, 
                 Max_Quantity,
                 Value

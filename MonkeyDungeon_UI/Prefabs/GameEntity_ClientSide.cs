@@ -11,11 +11,16 @@ namespace MonkeyDungeon_UI.Prefabs
 {
     public sealed class GameEntity_ClientSide : GameEntity
     {
+        public event Action<bool> Dismissed_Status_Changed;
+        
         public void Set_Incapacitated_Status(bool status)
             => IsIncapacitated = status;
 
         public void Set_Dismissed_Status(bool status)
-            => IsDismissed = status;
+        {
+            IsDismissed = status;
+            Dismissed_Status_Changed?.Invoke(status);
+        }
 
         public void Set_Cosmetic_Id(uint id)
             => GameEntity_Cosmetic_ID = id;
@@ -55,7 +60,8 @@ namespace MonkeyDungeon_UI.Prefabs
         internal void Set_Ability(GameEntity_Ability_Index abilityIndex, GameEntity_Attribute_Name_Ability abilityName)
         {
             ABILITIES[abilityIndex] = new GameEntity_ClientSide_Ability(abilityName);
-            ABILITIES[abilityIndex].Target.Bind_To_Owner(GameEntity_Position, GameEntity_Team_ID);
+            //TODO: make it take target type from server.
+            ABILITIES[abilityIndex].Target.Bind_To_Action(GameEntity_Position, GameEntity_Team_ID, Combat_Target_Type.One_Enemy, true);
         }
 
         internal void Set_Ability_Target_Type(GameEntity_Attribute_Name_Ability abilityName,

@@ -21,7 +21,7 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
 
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
-            World_Layer.Get_GameEntity(recievedMessage.Local_Entity_ID).Set_Dismissed_Status(false);
+            World_Layer.Get_GameEntity(recievedMessage.ENTITY_ID).Set_Dismissed_Status(false);
         }
     }
 }

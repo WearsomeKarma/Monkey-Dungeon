@@ -19,7 +19,7 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
 
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
-            GameEntity_ID shootingEntity = recievedMessage.Local_Entity_ID;
+            GameEntity_ID shootingEntity = recievedMessage.ENTITY_ID;
             GameEntity_ID shootingTarget = GameEntity_ID.IDS[recievedMessage.INT_VALUE];
             string particleType = recievedMessage.ATTRIBUTE;
 

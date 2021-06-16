@@ -10,17 +10,17 @@ namespace MonkeyDungeon_Core.GameFeatures
     public class Combat_Action
     {
         /// <summary>
-        /// The entity owner of the action.
-        /// </summary>
-        public GameEntity_ID Action_Owner { get; internal set; }
-        /// <summary>
         /// The ability selected for the action.
         /// </summary>
-        public GameEntity_Attribute_Name Selected_Ability { get; internal set; }
+        public GameEntity_Ability Selected_Ability { get; private set; }
+        /// <summary>
+        /// The entity owner of the action.
+        /// </summary>
+        public GameEntity_ID Action_Owner => GameEntity_ID.Nullwrap(Selected_Ability?.Ability_Owner__GameEntity_ID);
         /// <summary>
         /// The selected targets.
         /// </summary>
-        public Combat_Ability_Target Target { get; private set; }
+        public Combat_Target Target { get; private set; }
         
         /// <summary>
         /// The resource of each target that is effected by this action.
@@ -41,12 +41,12 @@ namespace MonkeyDungeon_Core.GameFeatures
         public Combat_Finalized_Factor[] Finalized_Dodge_Bonuses { get; internal set; }
         
         public bool Ability_Set => Selected_Ability != null;
-        public bool Requires_Target => (Target != null) ? (Target?.Target_Type != Combat_Target_Type.Self_Or_No_Target) : false;
+        public bool Requires_Target => Target?.Target_Type != Combat_Target_Type.Self_Or_No_Target;
         public bool Has_Targets => Target?.Has_Legal_Targets() ?? false;
         public bool Action_Ends_Turn { get; set; }
 
         public bool IsSetupComplete => 
-            Action_Owner != null
+            GameEntity_ID.Validate(Action_Owner)
             &&
             Ability_Set
             &&
@@ -54,26 +54,23 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         public Combat_Action()
         {
-            Target = new Combat_Ability_Target();
-            Action_Owner = GameEntity_ID.ID_NULL;
+            Target = new Combat_Target();
         }
 
-        internal void Finalized_Action(GameEntity_ServerSide_Roster field)
+        internal void Set_Ability(GameEntity_Ability ability)
         {
-            System.Console.WriteLine(this);
-            GameEntity_ServerSide owner = field.Get_Entity(Action_Owner);
-            GameEntity_Ability ability = owner.Ability_Manager.Get_Ability<GameEntity_Ability>(Selected_Ability);
-            
-            Target.Bind_To_Owner(owner.GameEntity_Position, owner.GameEntity_Team_ID);
+            Selected_Ability = ability;
+            Target.Target_Type = ability.Ability__Combat_Target_Type;
+            Target.Has_Strict_Targets = ability.Ability__Combat_Enforces_Strict_Targetting;
         }
         
-        public Combat_Action Copy()
+        //TODO: remove field argument.
+        internal void Begin_Action_Resolution(GameEntity_ServerSide_Roster field)
         {
-            Combat_Action copy = new Combat_Action();
-            copy.Action_Owner = Action_Owner;
-            copy.Selected_Ability = Selected_Ability;
-            copy.Target = Target;
-            return copy;
+            GameEntity_ServerSide owner = field.Get_Entity(Action_Owner);
+            
+            Console.WriteLine("--[Combat_Action.cs:63]--\n" + this);
+            Target.Bind_To_Action(owner.GameEntity_Position, owner.GameEntity_Team_ID, Selected_Ability.Ability__Combat_Target_Type, Selected_Ability.Ability__Combat_Enforces_Strict_Targetting);
         }
 
         public override string ToString()

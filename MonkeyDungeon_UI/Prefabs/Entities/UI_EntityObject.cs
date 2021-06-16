@@ -60,7 +60,8 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
                 return;
             
             entityDescription = entity;
-            
+
+            EntityDescription.Dismissed_Status_Changed += Dismissed_Status_Changed;
             EntityDescription.Resource_Added += Resource_Added;
             EntityDescription.Entity_Died += Entity_Died;
             EntityDescription.Entity_Dismissal_State_Changed += Entity_Dismissal_State_Changed;
@@ -73,10 +74,16 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
         {
             if (entityDescription == null)
                 return;
+            EntityDescription.Dismissed_Status_Changed -= Dismissed_Status_Changed;
             EntityDescription.Resource_Added -= Resource_Added;
             EntityDescription.Entity_Died -= Entity_Died;
             EntityDescription.Entity_Dismissal_State_Changed -= Entity_Dismissal_State_Changed;
             entityDescription = null;
+        }
+
+        private void Dismissed_Status_Changed(bool status)
+        {
+            SpriteComponent.Enabled = !status;
         }
 
         private void Resource_Added(GameEntity_ClientSide_Resource clientSideResource)

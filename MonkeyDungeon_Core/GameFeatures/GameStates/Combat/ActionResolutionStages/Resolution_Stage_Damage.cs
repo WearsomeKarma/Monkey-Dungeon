@@ -1,5 +1,6 @@
 ﻿using MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities;
 using System;
+using System.ComponentModel.Design;
 using MonkeyDungeon_Core.GameFeatures.GameEntities.Resources;
 using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
@@ -14,9 +15,9 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
             
             GameEntity_ServerSide owner = Get_Entity(action.Action_Owner);
             GameEntity_ServerSide effectedEntityServerSide;
-            GameEntity_Ability ability = owner.Ability_Manager.Get_Ability<GameEntity_Ability>(action.Selected_Ability);
+            GameEntity_Ability ability = action.Selected_Ability;
 
-            Combat_Resource_Offset baseOffset = ability.Calculate_Damage(action);
+            Combat_Resource_Offset baseOffset = ability.Calculate_Damage__Ability(action);
             
             Combat_Resource_Offset finalizedOffset;
             foreach (Combat_Finalized_Factor finalizedDodgeValue in action.Finalized_Dodge_Bonuses)
@@ -27,16 +28,16 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
                 effectedEntityServerSide = Get_Entity(finalizedDodgeValue.FACTOR_OWNER);
 
                 GameEntity_Resource affectedResource =
-                    effectedEntityServerSide.Resource_Manager.Get_Resource(action.Target_Affected_Resource);
+                    effectedEntityServerSide.Get__Resource__GameEntity<GameEntity_Resource>(action.Target_Affected_Resource);
 
                 if (affectedResource == null)
                     return;
                 
-                effectedEntityServerSide.StatusEffect_Manager.React_To_Pre_Resource_Offset(effectedResource, (double) finalizedOffset);
+                effectedEntityServerSide.React_To__Pre_Resource_Offset__GameEntity(effectedResource, (double) finalizedOffset);
                 
                 affectedResource.Offset_Value(finalizedOffset);
 
-                effectedEntityServerSide.StatusEffect_Manager.React_To_Post_Resource_Offset(effectedResource, (double) finalizedOffset);
+                effectedEntityServerSide.React_To__Post_Resource_Offset__GameEntity(effectedResource, (double) finalizedOffset);
             }
         }
     }

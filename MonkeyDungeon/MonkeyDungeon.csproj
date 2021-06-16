@@ -50,8 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameFeatures\Multiplayer\Local_Receiver.cs" />
     <Compile Include="GameFeatures\Multiplayer\Local_Session.cs" />
-    <Compile Include="GameFeatures\Multiplayer\Local_Recievers\Local_Reciever.cs" />
     <Compile Include="MonkeyGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -145,9 +145,6 @@
       <Project>{067f372f-ff8a-4071-a1e2-5d9acf9c37c0}</Project>
       <Name>MonkeyDungeon_Vanilla_Domain</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GameFeatures\Multiplayer\Client_Handlers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

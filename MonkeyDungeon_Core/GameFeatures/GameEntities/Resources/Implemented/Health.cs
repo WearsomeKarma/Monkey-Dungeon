@@ -14,10 +14,10 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Resources.Implemented
         
         protected override void Handle_Quantity_Depleted()
         {
-            Internal_Parent.StatusEffect_Manager.Add_StatusEffect(new StatusEffect_Dead());
+            Internal_Parent.Add__GameEntity_StatusEffect(new StatusEffect_Dead());
         }
 
-        public override GameEntity_Resource Clone()
+        public override GameEntity_Resource Clone__Resource()
         {
             return new Health(Min_Quantity, Max_Quantity, Value);
         }

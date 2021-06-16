@@ -37,6 +37,9 @@ namespace MonkeyDungeon_UI.UI_Events.Implemented
             : base(eventScheduler, MD_VANILLA_UI_EVENT_NAMES.UI_EVENT_MELEE, duration)
         {
             WorldLayer_Roster = worldLayer_Roster;
+
+            Ally_Side_Position = allySide;
+            Enemy_Side_Position = enemySide;
         }
 
 

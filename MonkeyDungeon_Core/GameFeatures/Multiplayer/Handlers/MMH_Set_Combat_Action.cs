@@ -6,7 +6,7 @@ using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
 {
-    public class MMH_Set_Combat_Action : Multiplayer_Message_GameState_Handler
+    public class MMH_Set_Combat_Action : Multiplayer_Message_CombatState_Handler
     {
         Combat_GameState Combat { get; set; }
 
@@ -20,23 +20,17 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
         {
             int relayId = recievedMessage.Relay_ID;
 
-            if (Combat.Entity_Of_Current_Turn_Relay_Id != relayId)
-            {
-                Handle_Invalid_Message(recievedMessage);
+            //TODO: do not make conditional checker method handle invalid message logic as well.
+            if (!IsValid_Message(recievedMessage))
                 return;
-            }
 
-            GameEntity_Position targetPosition = GameEntity_Position.ALL_NON_NULL__POSITIONS[recievedMessage.INT_VALUE];
             GameEntity_Attribute_Name abilityName = recievedMessage.ATTRIBUTE;
 
             //TODO: remove player controller honestly, just make players not have controllers. Or rethink the system.
-            GameEntity_Controller controller = 
-                Combat.Game_Field.Get_Entity(recievedMessage.Local_Entity_ID).EntityController;
+            GameEntity_Controller controller =
+                Combat.Controller_Of_Current_Turn;
 
-            //TODO: fix
-            controller.PendingCombatAction.Action_Owner = Combat.Entity_ID_Of_Current_Turn;
-            controller.Setup_Combat_Action_Ability(abilityName);
-            controller.Setup_Combat_Action_Target(targetPosition);
+            controller.Controller_Setup__Select_Ability(abilityName);
         }
     }
 }

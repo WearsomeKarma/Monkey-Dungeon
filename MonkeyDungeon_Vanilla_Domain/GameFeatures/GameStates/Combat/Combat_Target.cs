@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Xml.Schema;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
 namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
 {
-    public class Combat_Ability_Target
+    public class Combat_Target
     {
         private readonly GameEntity_Survey_Target SURVEY = new GameEntity_Survey_Target();
 
@@ -15,11 +16,13 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
         private GameEntity_Position Owner_Position;
         private GameEntity_Team_ID _ownerTeamId;
 
-        public void Bind_To_Owner(GameEntity_Position ownerPosition, GameEntity_Team_ID ownerTeamId)
+        public void Bind_To_Action(GameEntity_Position ownerPosition, GameEntity_Team_ID ownerTeamId, Combat_Target_Type targetType, bool hasStrictTargets)
         {
             Owner_Position = ownerPosition;
             _ownerTeamId = ownerTeamId;
-            Reset();
+
+            Has_Strict_Targets = hasStrictTargets;
+            Target_Type = targetType;
         }
 
         private Combat_Target_Type targetType = Combat_Target_Type.Self_Or_No_Target;
@@ -40,7 +43,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
 
         public bool Has_Strict_Targets { get; set; }
 
-        public Combat_Ability_Target()
+        public Combat_Target()
         {
             
         }
@@ -84,8 +87,10 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
                     break;
             }
 
-            return requiredCountInField ==
-                   SURVEY.Get_Selected_Count(ownerPosition, targetTeamId, invertRosterTarget);
+            int acquiredCount = SURVEY.Get_Selected_Count(ownerPosition, targetTeamId, invertRosterTarget);
+
+            return requiredCountInField == acquiredCount ||
+                   (!Has_Strict_Targets && requiredCountInField > 0);
         }
 
         /// <summary>
@@ -95,6 +100,8 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
         /// <returns></returns>
         public bool Add_Target(GameEntity_Position targetPosition)
         {
+            Console.WriteLine("[Combat_Ability_Target.cs:103] Adding Target: " + targetPosition);
+            
             //constraint null
             if (!GameEntity_Position.Validate(targetPosition))
                 return false;
@@ -220,7 +227,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
         
         public override string ToString()
         {
-            return string.Format("Target_Ids: [{0}]", string.Join<GameEntity_Position>(", ", Get_Reduced_Fields()));
+            return string.Format("Type: [{0}], Target_Ids: [{1}]", Target_Type, string.Join<GameEntity_Position>(", ", Get_Reduced_Fields()));
         }
     }
 }

@@ -92,8 +92,6 @@
     <Compile Include="GameFeatures\GameEntities\Resources\Implemented\Level.cs" />
     <Compile Include="GameFeatures\GameEntities\Resources\Implemented\Mana.cs" />
     <Compile Include="GameFeatures\GameEntities\Resources\Implemented\Stamina.cs" />
-    <Compile Include="GameFeatures\Exceptions\EntityStat_NotFound_Exception.cs" />
-    <Compile Include="GameFeatures\Exceptions\Entity_NotBound_Exception.cs" />
     <Compile Include="GameFeatures\GameStates\Combat_GameState.cs" />
     <Compile Include="GameFeatures\GameStates\GameOver_GameState.cs" />
     <Compile Include="GameFeatures\GameStates\Shopping_GameState.cs" />

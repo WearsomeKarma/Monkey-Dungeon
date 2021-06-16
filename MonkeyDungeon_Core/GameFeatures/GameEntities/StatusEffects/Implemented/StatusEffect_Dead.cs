@@ -1,27 +1,28 @@
 ﻿using MonkeyDungeon_Core.GameFeatures.GameStates;
 using System;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects.Implemented
 {
     public class StatusEffect_Dead : GameEntity_StatusEffect
     {
         public StatusEffect_Dead() 
-            : base(StatusEffectType.Dead, -1)
+            : base(MD_VANILLA_STATUSEFFECT_NAMES.STATUSEFFECT_DEAD, -1)
         {
         }
 
-        protected override void Handle_LoseOwner(GameEntity_ServerSide oldOwner)
+        protected override void Handle_Attach_To_Entity(GameEntity_ServerSide newEntityServerSide)
         {
-            oldOwner?.StatusEffect_Manager.Remove_StatusEffect(this);
+            newEntityServerSide.Remove_All__StatusEffects__GameEntity();
+            newEntityServerSide.Set_Incapacitated_State(true);
         }
 
-        protected override void Handle_NewOwner(GameEntity_ServerSide target)
+        protected override void Handle_Detach_From_Entity(GameEntity_ServerSide oldEntityServerSide)
         {
-            target?.StatusEffect_Manager.Remove_All_StatusEffects();
-            target?.Set_Incapacitated_State(true);
+            oldEntityServerSide.Remove__GameEntity_StatusEffect(this);
         }
 
-        protected override void Handle_Combat_BeginTurn_StatusEffect(GameEntity_ServerSide_Roster gameField)
+        protected override void Handle_Combat_BeginTurn__StatusEffect()
         {
             //combat.Request_EndOfTurn();
             throw new NotImplementedException(); //TODO: resolve above.

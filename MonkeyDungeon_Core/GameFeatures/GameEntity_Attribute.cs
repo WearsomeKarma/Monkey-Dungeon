@@ -6,14 +6,14 @@ namespace MonkeyDungeon_Core.GameFeatures
 {
     public class GameEntity_Attribute
     {
-        public readonly GameEntity_Attribute_Name ATTRIBUTE_NAME;
+        public readonly GameEntity_Attribute_Name Attribute_Name;
 
         internal GameEntity_ServerSide Internal_Parent { get; private set; }
         protected GameEntity_ServerSide Parent_EntityServerSide => Internal_Parent;
 
         public GameEntity_Attribute(GameEntity_Attribute_Name attributeName)
         {
-            ATTRIBUTE_NAME = attributeName;
+            Attribute_Name = attributeName;
         }
 
         internal void Attach_To_Entity(GameEntity_ServerSide newEntityServerSide)

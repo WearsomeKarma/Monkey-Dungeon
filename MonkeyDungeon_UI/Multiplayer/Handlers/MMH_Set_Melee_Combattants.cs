@@ -22,7 +22,7 @@ namespace MonkeyDungeon_UI.Multiplayer.Handlers
 
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
-            GameEntity_ID ally = recievedMessage.Local_Entity_ID;
+            GameEntity_ID ally = recievedMessage.ENTITY_ID;
             GameEntity_ID enemy = GameEntity_ID.IDS[recievedMessage.INT_VALUE];
 
             World_Layer.UI_MeleeEvent.Ally_Id = ally;

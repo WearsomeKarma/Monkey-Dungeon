@@ -11,7 +11,7 @@ namespace MonkeyDungeon_UI.Prefabs
 
         public GameEntity_Attribute_Name_Ability Ability_Name { get; private set; }
         public Combat_Target_Type Target_Type { get; private set; }
-        public Combat_Ability_Target Target { get; private set; }
+        public Combat_Target Target { get; private set; }
         public bool Ability_Usage_Finished => Target.Has_Legal_Targets();
         
         internal void Set_Target_Type(Combat_Target_Type targetType)
@@ -25,7 +25,7 @@ namespace MonkeyDungeon_UI.Prefabs
         internal GameEntity_ClientSide_Ability(GameEntity_Attribute_Name_Ability abilityName)
         {
             Ability_Name = abilityName;
-            Target = new Combat_Ability_Target();
+            Target = new Combat_Target();
         }
 
         public override string ToString()

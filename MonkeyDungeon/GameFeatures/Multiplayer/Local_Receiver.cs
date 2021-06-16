@@ -1,22 +1,23 @@
-﻿using MonkeyDungeon_Core.GameFeatures.Multiplayer;
-using MonkeyDungeon_Vanilla_Domain.Multiplayer;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 
-namespace MonkeyDungeon.GameFeatures.Multiplayer.Local_Recievers
+namespace MonkeyDungeon.GameFeatures.Multiplayer
 {
     /// <summary>
     /// A relay endpoint for either the local UI or local gamestate (server)
     /// </summary>
-    public class Local_Reciever : Multiplayer_Relay
+    public class Local_Receiver : Multiplayer_Relay
     {
-        private Action<Multiplayer_Message> Local_Endpoint_Delivery { get; set; }
+        private Action<Multiplayer_Message> Handler_Local_Endpoint_Delivery { get; set; }
         internal Queue<Multiplayer_Message> Local_Inbox { get; set; }
 
-        public Local_Reciever()
+        internal void Set_Local_Endpoint(Action<Multiplayer_Message> localEndpoint)
+        {
+            Handler_Local_Endpoint_Delivery = localEndpoint;
+        }
+        
+        public Local_Receiver()
             : base("0", 0) //sockets are not used, address and port are ignored.
         {
             Local_Inbox = new Queue<Multiplayer_Message>();
@@ -25,15 +26,10 @@ namespace MonkeyDungeon.GameFeatures.Multiplayer.Local_Recievers
         protected override Multiplayer_Message Handle_Read_New_Message()
             => (Local_Inbox.Count > 0) ? Local_Inbox.Dequeue() : Multiplayer_Message.MESSAGE_NULL;
 
-        internal void Set_Local_Endpoint(Action<Multiplayer_Message> localEndpoint)
-        {
-            Local_Endpoint_Delivery = localEndpoint;
-        }
-
         public override void Flush_Messages()
         {
             while (QueuedMessages.Count > 0)
-                Local_Endpoint_Delivery(QueuedMessages.Dequeue());
+                Handler_Local_Endpoint_Delivery(QueuedMessages.Dequeue());
         }
     }
 }

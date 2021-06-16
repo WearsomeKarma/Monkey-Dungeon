@@ -12,10 +12,10 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Resources
                 Set_Value((double)initalValue);
         }
 
-        public virtual GameEntity_Resource Clone()
+        public virtual GameEntity_Resource Clone__Resource()
         {
             GameEntity_Resource clone = new GameEntity_Resource(
-                ATTRIBUTE_NAME,
+                Attribute_Name,
                 Min_Quantity,
                 Max_Quantity,
                 Value
@@ -29,7 +29,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Resources
         /// <param name="offset"></param>
         /// <param name="peeking">If offset is possible, will modify the resource quantity if peeking is false.</param>
         /// <returns></returns>
-        public bool Try_Offset(double offset, bool peeking = false)
+        public bool Try_Offset__Resource(double offset, bool peeking = false)
         {
             bool breaks = MathHelper.Breaks_Clampd(Value + offset, Min_Quantity, Max_Quantity);
             if (!breaks && !peeking)
@@ -42,7 +42,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Resources
         /// Returns boolean based on whether the value changed at all.
         /// </summary>
         /// <param name="offset"></param>
-        public bool Force_Offset(double offset)
+        public bool Force_Offset__Resource(double offset)
         {
             double val = Value;
             Offset_Value(offset);
