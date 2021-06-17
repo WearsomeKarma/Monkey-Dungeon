@@ -26,18 +26,48 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         public readonly GameEntity_ServerSide_Roster GameField;
 
-        internal void Set_Enemy_Roster(GameEntity_ServerSide[] enemyEntities) => GameField.Set_Entities(enemyEntities);
-
-        public GameEntity_ServerSide Set_Entity(GameEntity_ID entityId, Multiplayer_Relay_ID relayId, GameEntity_Attribute_Name factory_Tag)
+        public void Create__Entity(GameEntity_ID entityId, Multiplayer_Relay_ID relayId, GameEntity_Attribute_Name factory_Tag)
         {
             Server.Bind_To_Relay(entityId, relayId);
-            GameEntity_ServerSide entityServerSide = GameEntity_Factory.Create_NewEntity(entityId, relayId, GameEntity_Position.ALL_NON_NULL__POSITIONS[entityId],  factory_Tag);
-
-            GameField.Set_Entity(entityServerSide);
-
-            return entityServerSide;
+            GameEntity_ServerSide entity = GameEntity_Factory.Create_NewEntity(entityId, relayId, GameEntity_Position.ALL_NON_NULL__POSITIONS[entityId],  factory_Tag);
+            
+            Set__Entity(entity);
         }
 
+        private void Bind__Entity(GameEntity_ServerSide entity)
+        {
+            entity.Game = this;
+            
+            entity.Event__Resource_Updated__GameEntity += Relay_Entity_Resource;
+            entity.Event__Ability_Points_Updated__GameEntity += Relay_Entity_Static_Resource;
+        }
+
+        private void Unbind__Entity(GameEntity_ServerSide entity)
+        {
+            entity.Game = null;
+            
+            entity.Event__Resource_Updated__GameEntity -= Relay_Entity_Resource;
+            entity.Event__Ability_Points_Updated__GameEntity -= Relay_Entity_Static_Resource;
+        }
+        
+        public void Set__Entity(GameEntity_ServerSide entity)
+        {
+            GameEntity_ServerSide existingEntity = GameField.Get_Entity(entity.GameEntity_ID);
+            
+            if (existingEntity != null)
+                Unbind__Entity(existingEntity);
+            
+            Bind__Entity(entity);
+            
+            GameField.Set_Entity(entity);
+        }
+
+        public void Set__Entities(GameEntity_ServerSide[] entities)
+        {
+            foreach(GameEntity_ServerSide entity in entities)
+                Set__Entity(entity);
+        }
+        
         public GameState CurrentGameState { get; private set; }
         public GameState RequestedGameState { get; private set; }
 

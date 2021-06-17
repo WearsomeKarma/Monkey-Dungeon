@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities;
 using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
@@ -9,6 +10,8 @@ namespace MonkeyDungeon_Core.GameFeatures
 {
     public class Combat_Action
     {
+        public static readonly Combat_Action END_TURN_ACTION = new Combat_Action();
+        
         /// <summary>
         /// The ability selected for the action.
         /// </summary>
@@ -36,9 +39,10 @@ namespace MonkeyDungeon_Core.GameFeatures
         /// </summary>
         public GameEntity_Attribute_Name Stat_Dodge_Bonus { get; internal set; }
         
-        public Combat_Finalized_Factor Finalized_Hit_Bonus { get; internal set; }
-        
-        public Combat_Finalized_Factor[] Finalized_Dodge_Bonuses { get; internal set; }
+        public Combat_Finalized_Value Finalized_Hit_Bonus { get; internal set; }
+
+        public readonly Dictionary<GameEntity_ID, Combat_Finalized_Value> Dodge_Bonus_Foreach_Target =
+            new Dictionary<GameEntity_ID, Combat_Finalized_Value>();
         
         public bool Ability_Set => Selected_Ability != null;
         public bool Requires_Target => Target?.Target_Type != Combat_Target_Type.Self_Or_No_Target;
@@ -62,6 +66,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             Selected_Ability = ability;
             Target.Target_Type = ability.Ability__Combat_Target_Type;
             Target.Has_Strict_Targets = ability.Ability__Combat_Enforces_Strict_Targetting;
+            Target_Affected_Resource = ability.Ability__Affecting_Resource;
         }
         
         //TODO: remove field argument.

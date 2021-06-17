@@ -12,13 +12,14 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
             GameEntity_ServerSide owner = Get_Entity(action);
             GameEntity_Stat scalingStat = owner.Get__Stat__GameEntity<GameEntity_Stat>(action.Stat_Hit_Bonus);
 
-            Combat_Finalized_Factor hitBonus = new Combat_Finalized_Factor(action.Action_Owner);
+            Combat_Finalized_Value hitBonus = new Combat_Finalized_Value(action.Action_Owner);
 
             hitBonus.Offset_Value(scalingStat);
             
             double statusEffectBonuses = owner.Get_Hit_Bonuses__GameEntity(action);
             hitBonus.Offset_Value(statusEffectBonuses);
 
+            Console.WriteLine("---------> hitBonus " + hitBonus);
             action.Finalized_Hit_Bonus = hitBonus;
         }
     }

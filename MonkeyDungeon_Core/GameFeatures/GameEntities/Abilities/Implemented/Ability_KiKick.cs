@@ -12,6 +12,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
                   MD_VANILLA_ABILITY_NAMES.ABILITY_KI_KICK, 
                   MD_VANILLA_RESOURCE_NAMES.RESOURCE_STAMINA, 
                   MD_VANILLA_STAT_NAMES.STAT_AGILITY,
+                  MD_VANILLA_RESOURCE_NAMES.RESOURCE_HEALTH,
                   Combat_Target_Type.One_Enemy,
                   Combat_Damage_Type.Physical,
                   Combat_Assault_Type.Melee

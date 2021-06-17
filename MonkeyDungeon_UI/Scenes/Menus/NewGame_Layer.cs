@@ -107,6 +107,7 @@ namespace MonkeyDungeon_UI.Scenes.Menus
                     new Vector3(0, Game.Height / 4, 0)
                     )
                 );
+            player.Set_Race(MD_VANILLA_RACE_NAMES.RACE_MONKEY, 0);
         }
 
         private void Increment_Class_Selection()

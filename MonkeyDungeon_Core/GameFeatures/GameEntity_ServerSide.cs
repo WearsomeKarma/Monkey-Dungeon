@@ -21,7 +21,7 @@ namespace MonkeyDungeon_Core.GameFeatures
     public class GameEntity_ServerSide : GameEntity
     {
         public void Set_Ready_State(bool state)         => IsReady = state;
-        public void Set_Incapacitated_State(bool state) => IsIncapacitated = state;
+        public void Set_Incapacitated_State(bool state) { IsIncapacitated = state; Handle_Incapacitated__GameEntity(); }
 
         public void Set_Position(GameEntity_Position position)
             => GameEntity_Position = position;
@@ -45,6 +45,9 @@ namespace MonkeyDungeon_Core.GameFeatures
             => STAT_MANAGER.Get__Stat<T>(name);
         
         private readonly GameEntity_Resource_Manager     RESOURCE_MANAGER;
+        private void Relay__Resource_Updated(GameEntity_Resource resource)
+            => Event__Resource_Updated__GameEntity?.Invoke(resource);
+        public event Action<GameEntity_Resource> Event__Resource_Updated__GameEntity;
         public T     Get__Resource__GameEntity<T>(GameEntity_Attribute_Name name) 
             where T : GameEntity_Resource
             => RESOURCE_MANAGER.Get__Resource<T>(name);
@@ -56,11 +59,18 @@ namespace MonkeyDungeon_Core.GameFeatures
         
         //public readonly GameEntity_Resistance_Manager   Resistance_Manager;
         private readonly GameEntity_Ability_Manager      ABILITY_MANAGER;
+        private void Relay__Ability_Points_Updated(GameEntity_Quantity points) =>
+            Event__Ability_Points_Updated__GameEntity?.Invoke(points as GameEntity_Resource);
+        public event Action<GameEntity_Resource> Event__Ability_Points_Updated__GameEntity;
         public T     Get__Ability__GameEntity<T>(GameEntity_Attribute_Name name) 
             where T : GameEntity_Ability
             => ABILITY_MANAGER.Get__Ability<T>(name);
         public GameEntity_Ability[] Get__Abilities__GameEntity()
             => ABILITY_MANAGER.Get__Abilities();
+        public bool Try_Offset__Ability_Point__GameEntity(int offset, bool peeking = false)
+            => ABILITY_MANAGER.Ability_Point_Pool.Try_Offset__Resource(offset, peeking);
+        public int Get__Ability_Point_Count__GameEntity()
+            => (int)ABILITY_MANAGER.Ability_Point_Pool.Value;
         
         private readonly GameEntity_StatusEffect_Manager STATUSEFFECT_MANAGER;
         public T     Get__StatusEffect__GameEntity<T>(GameEntity_Attribute_Name name) 
@@ -141,8 +151,12 @@ namespace MonkeyDungeon_Core.GameFeatures
 
             STAT_MANAGER            = new GameEntity_Stat_Manager           (this, stats        );
             RESOURCE_MANAGER        = new GameEntity_Resource_Manager       (this, resources    );
+            RESOURCE_MANAGER.Event__Resource_Updated += Relay__Resource_Updated;
+            
             //Resistance_Manager      = new GameEntity_Resistance_Manager     (this, resistances  );
             ABILITY_MANAGER         = new GameEntity_Ability_Manager        (this, abilities    );
+            ABILITY_MANAGER.Ability_Point_Pool.Quantity_Changed += Relay__Ability_Points_Updated;
+            
             STATUSEFFECT_MANAGER    = new GameEntity_StatusEffect_Manager   (this               );
             
             Attach__Controller        (controller);

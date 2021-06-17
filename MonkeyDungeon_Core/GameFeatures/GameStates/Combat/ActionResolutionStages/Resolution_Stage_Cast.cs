@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities;
+using MonkeyDungeon_Core.GameFeatures.GameEntities.Resources;
+using MonkeyDungeon_Core.GameFeatures.Multiplayer.MessageWrappers;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat;
 
@@ -13,28 +15,38 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
     {
         protected override void Handle_Stage(Combat_Action action)
         {
-            GameEntity_ServerSide entityServerSide = Get_Entity(action);
+            GameEntity_ServerSide entity = Get_Entity(action);
 
             GameEntity_Ability ability = action.Selected_Ability;
-            Combat_Assault_Type assaultType = ability.Ability__Combat_Assault_Type;
 
-            GameEntity_Position[] positions = action.Target.Get_Reduced_Fields();
-            GameEntity_ServerSide[] targets = Get_Entities(positions);
-            
-            //TOOD: fix
-            switch (assaultType)
+            GameEntity_Resource taxedResource =
+                entity.Get__Resource__GameEntity<GameEntity_Resource>(ability.Ability__Affecting_Resource);
+
+            if (CheckIf_Can_Use_Action(ability, entity, taxedResource))
             {
-                case Combat_Assault_Type.Melee:
-                    Resolver.Combat.Act_Melee_Attack(entityServerSide.GameEntity_ID, targets[0].GameEntity_ID);
-                    break;
-                case Combat_Assault_Type.Ranged:
-                    Resolver.Combat.Act_Ranged_Attack(entityServerSide.GameEntity_ID, targets[0].GameEntity_ID, ability.Ability__Particle_Name);
-                    break;
+                ability.Cast__Ability(action);
+
+                entity.React_To__Cast__GameEntity(action);
             }
+        }
 
-            ability.Cast__Ability(action);
+        private bool CheckIf_Can_Use_Action(GameEntity_Ability ability, GameEntity_ServerSide entity, GameEntity_Resource taxedResource)
+        {
+            bool hasAbilityPoints = entity.Try_Offset__Ability_Point__GameEntity(-ability.Ability__Point_Cost, true);
+            bool hasTaxedResource = taxedResource.Try_Offset__Resource(-ability.Ability__Resource_Cost, true);
+            
+            bool canPerform =
+                hasAbilityPoints
+                &&
+                hasTaxedResource;
 
-            entityServerSide.React_To__Cast__GameEntity(action);
+            if (canPerform)
+            {
+                entity.Try_Offset__Ability_Point__GameEntity(-ability.Ability__Point_Cost);
+                taxedResource.Try_Offset__Resource(-ability.Ability__Resource_Cost);
+            }
+            
+            return canPerform;
         }
     }
 }

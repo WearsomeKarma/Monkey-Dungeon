@@ -34,7 +34,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Resources
             bool breaks = MathHelper.Breaks_Clampd(Value + offset, Min_Quantity, Max_Quantity);
             if (!breaks && !peeking)
                 Offset_Value(offset);
-            return breaks;
+            return !breaks;
         }
 
         /// <summary>

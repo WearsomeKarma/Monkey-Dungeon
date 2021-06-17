@@ -34,66 +34,17 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
 
         private UI_ResourceBar healthBar;
 
-        private GameEntity_ClientSide entityDescription;
-        internal GameEntity_ClientSide EntityDescription
-        {
-            get => entityDescription; set
-            {
-                Change_Entity(value);
-            }
-        }
-
-        private void Change_Entity(GameEntity_ClientSide entity)
-        {
-            Unbind_To_Description();
-            Bind_To_Description(entity);
-            Set_Race(entity);
-            AnimationComponent.Play(0);
-        }
-
-        public void Bind_To_Description(GameEntity_ClientSide entity)
-        {
-            if (entityDescription != null)
-                Unbind_To_Description();
-            
-            if (entity == null)
-                return;
-            
-            entityDescription = entity;
-
-            EntityDescription.Dismissed_Status_Changed += Dismissed_Status_Changed;
-            EntityDescription.Resource_Added += Resource_Added;
-            EntityDescription.Entity_Died += Entity_Died;
-            EntityDescription.Entity_Dismissal_State_Changed += Entity_Dismissal_State_Changed;
-            Entity_Dismissal_State_Changed(entity);
-            
-            Set_Race(EntityDescription);
-        }
-        
-        private void Unbind_To_Description()
-        {
-            if (entityDescription == null)
-                return;
-            EntityDescription.Dismissed_Status_Changed -= Dismissed_Status_Changed;
-            EntityDescription.Resource_Added -= Resource_Added;
-            EntityDescription.Entity_Died -= Entity_Died;
-            EntityDescription.Entity_Dismissal_State_Changed -= Entity_Dismissal_State_Changed;
-            entityDescription = null;
-        }
-
         private void Dismissed_Status_Changed(bool status)
         {
             SpriteComponent.Enabled = !status;
         }
 
-        private void Resource_Added(GameEntity_ClientSide_Resource clientSideResource)
+        internal void Resource_Updated(GameEntity_ClientSide_Resource clientSideResource)
         {
             if (clientSideResource.Resource_Name == healthBar.Resource_Name)
             {
-                clientSideResource.Resource_Removed += (e) => e.Resource_Updated -= Check_Health;
-                clientSideResource.Resource_Updated += Check_Health;
-
-                healthBar.Attach_To_Resource(clientSideResource);
+                Check_Health(clientSideResource.Resource_Percentage);
+                healthBar.Percentage = clientSideResource.Resource_Percentage;
             }
         }
 
@@ -109,22 +60,20 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
                 AnimationComponent.SetNode(3);
         }
 
-        private void Entity_Died(GameEntity_ClientSide entity)
+        internal void Entity_Died()
         {
             AnimationComponent.Play(4);
         }
 
-        private void Entity_Dismissal_State_Changed(GameEntity_ClientSide obj)
+        internal void Entity_Dismissal_State_Changed(bool state)
         {
-            AnimationComponent.Enabled = !obj.IsDismissed;
+            AnimationComponent.Enabled = !state;
         }
-
-        public string UI_Race => EntityDescription.GameEntity_Race;
 
         private AnimationComponent AnimationComponent;
         public Vector3 Inital_Position { get; private set; }
 
-        public UI_EntityObject(SceneLayer sceneLayer, Vector3 position, GameEntity_ClientSide entity = null, int animRow = 8, int animCol = 8)
+        public UI_EntityObject(SceneLayer sceneLayer, Vector3 position, int animRow = 8, int animCol = 8)
             : base(sceneLayer, position)
         {
             Inital_Position = position;
@@ -152,15 +101,11 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
 
             SpriteComponent = AnimationComponent = new AnimationComponent(schem);
             AnimationComponent.SetNode(0);
-
-            EntityDescription = entity;
         }
 
-        internal void Set_Race(GameEntity_ClientSide entity)
+        internal void Set_Race(GameEntity_Attribute_Name race, uint uid)
         {
-            //TODO: Centralize primitives.
-            string race = entity?.GameEntity_Race ?? "Monkey";
-            uint uniqueIdentifier = entity?.GameEntity_Cosmetic_ID ?? 0;
+            uint uniqueIdentifier = uid;
 
             string h = race + Suffix_Head;
             string b = race + Suffix_Body;
@@ -169,7 +114,7 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
             if (!SceneLayer.Game.SpriteLibrary.HasSprite(h))
                 throw new ArgumentException();
 
-            Race = entity?.GameEntity_Race ?? "Monkey";
+            Race = race;
 
             SpriteComponent.SetSprite(h);
             Body = SceneLayer.Game.SpriteLibrary.ExtractRenderUnit(b);
@@ -184,7 +129,6 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
         internal void Set_Unique_ID(uint uid)
         {
             UniqueIdentifier.VAO_Index = uid;
-            EntityDescription.Set_Cosmetic_Id(uid);
         }
 
         protected override void HandleDraw(RenderService renderService)

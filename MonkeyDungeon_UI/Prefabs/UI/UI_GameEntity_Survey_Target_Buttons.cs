@@ -50,11 +50,16 @@ namespace MonkeyDungeon_UI.Prefabs.UI
         {
             GameEntity_Position.For_Each_Position(teamID, (p) =>
             {
-                FIELD[p].Enabled = state;
-                FIELD[p].SpriteComponent.Enabled = state;
+                Set_Button_State(p, state);
             });
         }
-        
+
+        public void Set_Button_State(GameEntity_Position position, bool state)
+        {
+            FIELD[position].Enabled = state;
+            FIELD[position].SpriteComponent.Enabled = state;
+        }
+
         private void Handle_Button_Clicked(GameEntity_Position position, UI_Button button)
         {
             Button_Clicked?.Invoke(position, button as UI_Button_Target);

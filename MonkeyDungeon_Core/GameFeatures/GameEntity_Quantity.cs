@@ -37,7 +37,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         public bool IsDepleted
             => (Value - Min_Quantity) < 0.0001;
 
-        public GameEntity_Quantity(GameEntity_Attribute_Name attributeName, double min, double max)
+        public GameEntity_Quantity(GameEntity_Attribute_Name attributeName, double min, double max, double? value = null)
             : base(attributeName)
         {
             min = MathHelper.Clampd(min, min, max);
@@ -46,7 +46,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             Min_Quantity = min;
             Max_Quantity = max;
 
-            Value = Max_Quantity;
+            Value = value ?? Max_Quantity;
         }
 
         internal double Offset_Value(double offsetValue)
@@ -147,8 +147,12 @@ namespace MonkeyDungeon_Core.GameFeatures
         protected void Clamp(double targetValue)
         {
             double newValue = MathHelper.Clampd(targetValue, Min_Quantity, Max_Quantity);
-            Inspect_Change(newValue - Value);
+            double oldValue = Value;
             Value = newValue;
+            Inspect_Change(newValue - oldValue);
         }
+
+        public override string ToString()
+            => string.Format("[Quantity] {0}:value, {1}:{2}", Min_Quantity, Value, Max_Quantity);
     }
 }

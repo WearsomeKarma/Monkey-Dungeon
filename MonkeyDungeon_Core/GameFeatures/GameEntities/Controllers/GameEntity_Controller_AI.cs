@@ -20,7 +20,10 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Controllers
             GameEntity_ServerSide[] players = GameEntity_Roster.Get_Entities(GameEntity_Team_ID.TEAM_ONE_ID, true);
             GameEntity_Position targetId = players[rand.Next(players.Length)].GameEntity_Position;
 
-            Controller_Combat_Action.Set_Ability(Attached_GameEntity.Get__Ability__GameEntity<Ability_Punch>(MD_VANILLA_ABILITY_NAMES.ABILITY_PUNCH));
+            GameEntity_Ability ability =
+                Attached_GameEntity.Get__Ability__GameEntity<GameEntity_Ability>(MD_VANILLA_ABILITY_NAMES.ABILITY_PUNCH);
+            
+            Controller_Combat_Action.Set_Ability(ability);
             Combat_Setup__Add_Target(targetId);
         }
 

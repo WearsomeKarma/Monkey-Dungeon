@@ -26,6 +26,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities
         internal GameEntity_Ability_Manager(GameEntity_ServerSide managingAttachedEntity, List<GameEntity_Ability> abilities = null)
         {
             ATTACHED_ENTITY = managingAttachedEntity;
+            Ability_Point_Pool.Attach_To_Entity(managingAttachedEntity);
             
             if (abilities != null)
                 foreach (GameEntity_Ability ability in abilities)

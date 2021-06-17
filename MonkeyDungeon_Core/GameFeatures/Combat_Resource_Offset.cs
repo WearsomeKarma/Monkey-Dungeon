@@ -17,6 +17,9 @@ namespace MonkeyDungeon_Core.GameFeatures
             Amount = new GameEntity_Quantity(GameEntity_Attribute_Name.NULL_ATTRIBUTE_NAME, 0, amount);
         }
 
+        public override string ToString()
+            => string.Format("[Combat Resource Offset] Type: {0} Amount: {1}", DamageType, Amount);
+
         public static implicit operator double(Combat_Resource_Offset offset)
             => offset.Amount;
     }

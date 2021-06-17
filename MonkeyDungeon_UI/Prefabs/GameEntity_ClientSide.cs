@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
+using MonkeyDungeon_UI.Prefabs.Entities;
 using MonkeyDungeon_UI.Prefabs.UI;
 using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
@@ -11,37 +13,45 @@ namespace MonkeyDungeon_UI.Prefabs
 {
     public sealed class GameEntity_ClientSide : GameEntity
     {
-        public event Action<bool> Dismissed_Status_Changed;
-        
         public void Set_Incapacitated_Status(bool status)
-            => IsIncapacitated = status;
+        {
+            IsIncapacitated = status;
+            if(status)
+                UI_EntityObject.Entity_Died();
+        }
 
         public void Set_Dismissed_Status(bool status)
         {
             IsDismissed = status;
-            Dismissed_Status_Changed?.Invoke(status);
+            UI_EntityObject.Entity_Dismissal_State_Changed(status);
         }
 
         public void Set_Cosmetic_Id(uint id)
-            => GameEntity_Cosmetic_ID = id;
-        
-        private void Set_Death_State(bool state) { IsIncapacitated = state; Entity_Died?.Invoke(this); }
-        private void Set_Dismissed_State(bool state) { IsDismissed = state; Entity_Dismissal_State_Changed?.Invoke(this); }
+        {
+            GameEntity_Cosmetic_ID = id;
+            UI_EntityObject?.Set_Unique_ID(id);
+        }
 
         public readonly GameEntity_ClientSide_Ability[] ABILITIES = new GameEntity_ClientSide_Ability[MD_PARTY.MAX_ABILITY_COUNT];
 
         public readonly List<GameEntity_ClientSide_Resource> RESOURCES = new List<GameEntity_ClientSide_Resource>();
+        private void Resource_Updated(GameEntity_ClientSide_Resource resource)
+        {
+            UI_EntityObject?.Resource_Updated(resource);
+        }
 
         public GameEntity_ClientSide_Resource Level { get; private set; }
         public GameEntity_ClientSide_Resource Ability_Points { get; private set; }
 
         public readonly int SCENE_ID;
-        public readonly int INITATIVE_ORDER;
 
-        public event Action<GameEntity_ClientSide_Resource> Resource_Added;
-        public event Action<GameEntity_ClientSide> Entity_Died;
-        public event Action<GameEntity_ClientSide> Entity_Dismissal_State_Changed;
-
+        private UI_EntityObject UI_EntityObject { get; set; }
+        public void Bind_To__UI_EntityObject(UI_EntityObject uiEntityObject)
+        {
+            UI_EntityObject = uiEntityObject;
+            UI_EntityObject.Set_Unique_ID(GameEntity_Cosmetic_ID);
+            UI_EntityObject.Set_Race(GameEntity_Race, GameEntity_Cosmetic_ID);
+        }
 
         public GameEntity_ClientSide(GameEntity_Attribute_Name_Race race, GameEntity_Position position, GameEntity_ID id = null, bool isDismissed = false)
         {
@@ -81,10 +91,11 @@ namespace MonkeyDungeon_UI.Prefabs
         {
             GameEntity_ClientSide_Resource r;
             RESOURCES.Add(r = new GameEntity_ClientSide_Resource(resourceName, initalPercentage));
-            Resource_Added?.Invoke(r);
+
+            r.Resource_Updated += Resource_Updated;
         }
 
-        internal void Set_Resource_Percentage(string resourceName, float percentage)
+        internal void Set_Resource_Percentage(GameEntity_Attribute_Name resourceName, float percentage)
         {
             foreach (GameEntity_ClientSide_Resource resource in RESOURCES)
                 if (resource.Resource_Name == resourceName)

@@ -7,13 +7,13 @@ namespace MonkeyDungeon_UI.Prefabs
     {
         public event Action<GameEntity_ClientSide_Resource> Resource_Removed;
 
-        public event Action<float> Resource_Updated;
+        public event Action<GameEntity_ClientSide_Resource> Resource_Updated;
         private float resource_Percentage;
         public float Resource_Percentage { get => resource_Percentage;
             set
             {
                 resource_Percentage = value;
-                Resource_Updated?.Invoke(resource_Percentage);
+                Resource_Updated?.Invoke(this);
             }
         }
 

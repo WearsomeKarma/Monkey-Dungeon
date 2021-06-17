@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameFeatures\Combat_Action.cs" />
-    <Compile Include="GameFeatures\Combat_Finalized_Factor.cs" />
+    <Compile Include="GameFeatures\Combat_Finalized_Value.cs" />
     <Compile Include="GameFeatures\Combat_Resource_Offset.cs" />
     <Compile Include="GameFeatures\GameEntity_Attribute.cs" />
     <Compile Include="GameFeatures\GameEntity_Quantity.cs" />
@@ -50,7 +50,7 @@
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Damage.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Dodge_Bonus.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Hit_Bonus.cs" />
-    <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Redirect_Chance.cs" />
+    <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Redirection.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Action_Resolution_Stage.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Action_Resolver.cs" />
     <Compile Include="GameFeatures\GameEntities\Abilities\GameEntity_Ability.cs" />

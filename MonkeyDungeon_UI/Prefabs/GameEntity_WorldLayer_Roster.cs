@@ -43,7 +43,7 @@ namespace MonkeyDungeon_UI.Prefabs
             GameEntity_ID idAtPosition = GAME_ENTITY_ROSTER.Get_Entity(position).GameEntity_ID;
             GameEntity_ClientSide entity = new GameEntity_ClientSide(race, position, idAtPosition, isDismissed);
             GAME_ENTITY_ROSTER.Set_Entity(entity);
-            UI_ENTITY_OBJECT_ROSTER.Get_Entity(position).Bind_To_Description(entity);
+            entity.Bind_To__UI_EntityObject(UI_ENTITY_OBJECT_ROSTER.Get_Entity(position));
         }
 
         internal void Bind_To_Description(GameEntity_ID id, GameEntity_Attribute_Name_Race race,

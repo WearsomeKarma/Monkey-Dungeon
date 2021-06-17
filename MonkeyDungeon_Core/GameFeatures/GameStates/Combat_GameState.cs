@@ -98,16 +98,15 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
                         break;
                     
                     Combat_Action action = Controller_Of_Current_Turn.Get_Combat_Action();
+                    
+                    if (action == Combat_Action.END_TURN_ACTION)
+                    {
+                        Request_EndOfTurn();
+                        break;
+                    }
+                    
                     if (action?.IsSetupComplete ?? false)
                     {
-                        Console.WriteLine("STRICT? " + action.Target.Has_Strict_Targets);
-                        
-                        if (action.Action_Ends_Turn)
-                        {
-                            Request_EndOfTurn();
-                            break;
-                        }
-                        
                         GameState_Machine.Broadcast(
                             new MMW_Announcement(action.Selected_Ability.Attribute_Name)
                         );
@@ -134,14 +133,15 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
         {
             Entity_Of_Current_Turn.Combat_Begin_Turn__GameEntity();
 
-            if (Entity_Of_Current_Turn_Relay_Id < 0)
-                return;
-
-            GameState_Machine.Relay(
-                Entity_Of_Current_Turn_Relay_Id,
-                new MMW_Begin_Turn(Entity_ID_Of_Current_Turn)
+            //Relay of 0 or higher is a player, so we tell them their turn has begun.
+            if (Entity_Of_Current_Turn_Relay_Id > -1)
+            {
+                GameState_Machine.Relay(
+                    Entity_Of_Current_Turn_Relay_Id,
+                    new MMW_Begin_Turn(Entity_ID_Of_Current_Turn)
                 );
-            
+            }
+
             CombatState = CombatState.PlayCurrentTurn;
         }
 
@@ -242,7 +242,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
                     );
             }
 
-            gameWorld.Set_Enemy_Roster(enemies.ToArray());
+            gameWorld.Set__Entities(enemies.ToArray());
 
             gameWorld.Relay_Team(GameEntity_Team_ID.TEAM_TWO_ID);
 

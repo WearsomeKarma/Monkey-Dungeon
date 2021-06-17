@@ -19,6 +19,18 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
             return DEFAULT_VALUE;
         }
 
+        protected T[] Get_Reduced_Field(Predicate<T> match)
+        {
+            T[] reducedFieldArray = Get_Reduced_Field();
+            List<T> predicatedField = new List<T>();
+
+            foreach(T entry in reducedFieldArray)
+                if (match(entry))
+                    predicatedField.Add(entry);
+            
+            return predicatedField.ToArray();
+        }
+        
         protected T[] Get_Reduced_Field()
         {
             List<T> reducedField = new List<T>();

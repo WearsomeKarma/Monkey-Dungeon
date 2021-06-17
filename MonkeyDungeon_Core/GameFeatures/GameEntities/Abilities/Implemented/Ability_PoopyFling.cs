@@ -12,6 +12,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
                   MD_VANILLA_ABILITY_NAMES.ABILITY_POOPY_FLING, 
                   MD_VANILLA_RESOURCE_NAMES.RESOURCE_HEALTH, 
                   MD_VANILLA_STAT_NAMES.STAT_STINKINESS,
+                  MD_VANILLA_RESOURCE_NAMES.RESOURCE_HEALTH,
                   Combat_Target_Type.One_Enemy,
                   Combat_Damage_Type.Poison,
                   Combat_Assault_Type.Ranged,

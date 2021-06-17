@@ -26,7 +26,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Entities
         public static readonly float    STAT_PROGRESSION_SMARTYPANTS        =   0.05f   ;
         public static readonly float    STAT_PROGRESSION_STINKINESS         =   0.00f   ;
 
-        public static readonly float    RESOURCE_BASE_HEALTH                =   4       ;
+        public static readonly float    RESOURCE_BASE_HEALTH                =   14       ;
         public static readonly float    RESOURCE_BASE_STAMINA               =   14      ;
         public static readonly float    RESOURCE_BASE_MANA                  =   4       ;
 
@@ -51,20 +51,16 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Entities
                   new List<GameEntity_Stat>()
                   {
                       new Strength(
-                          STAT_BASE_STRENGTH,
-                          STAT_PROGRESSION_STRENGTH
+                          STAT_BASE_STRENGTH
                           ),
                       new Agility(
-                          STAT_BASE_AGILITY,
-                          STAT_PROGRESSION_AGILITY
+                          STAT_BASE_AGILITY
                           ),
                       new Smartypants(
-                          STAT_BASE_SMARTYPANTS,
-                          STAT_PROGRESSION_SMARTYPANTS
+                          STAT_BASE_SMARTYPANTS
                           ),
                       new Stinkiness(
-                          STAT_BASE_STINKINESS,
-                          STAT_PROGRESSION_STINKINESS
+                          STAT_BASE_STINKINESS
                           ),
                   },
                   new List<GameEntity_Resource>()

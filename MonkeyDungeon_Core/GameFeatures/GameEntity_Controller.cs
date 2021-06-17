@@ -24,25 +24,18 @@ namespace MonkeyDungeon_Core.GameFeatures
         
         internal void Controller_Setup__Select_Ability(GameEntity_Attribute_Name abilityName)
         {
-            if (!IsAutomonous)
-            {
-                Controller_Combat_Action.Set_Ability(Attached_GameEntity.Get__Ability__GameEntity<GameEntity_Ability>(abilityName));
-            }
+            Controller_Combat_Action.Set_Ability(Attached_GameEntity.Get__Ability__GameEntity<GameEntity_Ability>(abilityName));
         }
-        internal void Combat_Setup__Add_Target(GameEntity_Position position)
+        internal bool Combat_Setup__Add_Target(GameEntity_Position position)
         {
-            if (!IsAutomonous)
-            {
-                if (Controller_Combat_Action == null)
-                    throw new InvalidOperationException("Ability is null.");
-                Controller_Combat_Action.Target.Add_Target(position);
-            }
+            return Controller_Combat_Action.Target.Add_Target(position);
         }
+        
         internal Combat_Action Get_Combat_Action()
         {
             if (!Attached_GameEntity.Has_PlayableMoves__GameEntity())
             {
-                return new Combat_Action() {Action_Ends_Turn = true};
+                return Combat_Action.END_TURN_ACTION;
             }
 
             Handle_Get__Combat_Action__Controller();

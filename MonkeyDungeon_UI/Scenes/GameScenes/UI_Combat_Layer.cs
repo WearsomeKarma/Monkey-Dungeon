@@ -136,12 +136,12 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
             if (Validate_Client_Action())
             {
                 Relay_Client_Action();
-            
+                
                 Reset_Selections();
                 return;
             }
-            if(Validate_Action_Selected())
-                Update_Target_Buttons();
+            
+            Update_Target_Buttons();
         }
 
         private void Relay_Client_Action()
@@ -208,22 +208,33 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
         internal void Update_Target_Buttons()
         {
             //TODO: fully implement.
-            Combat_Target_Type targetType = Selected_Ability.Target_Type;
+            Combat_Target_Type targetType = Selected_Ability?.Target_Type ?? Combat_Target_Type.Self_Or_No_Target;
             switch (targetType)
             {
                 case Combat_Target_Type.Everything:
                 case Combat_Target_Type.All_Enemies:
                 case Combat_Target_Type.All_Friendlies:
-                    return; //TODO: add confirmation button.
+                case Combat_Target_Type.Self_Or_No_Target:    
+                    Target_Buttons.Set_Button_States(GameEntity_Team_ID.ID_NULL, false);
+                    return;
                 case Combat_Target_Type.Three_Enemies:
                 case Combat_Target_Type.Two_Enemies:
                 case Combat_Target_Type.One_Enemy: 
-                    Target_Buttons.Set_Button_States(GameEntity_Team_ID.TEAM_TWO_ID, true);
+                    Set_Conscious_Target_Buttons(GameEntity_Team_ID.TEAM_TWO_ID);
                     return;
                 default:
-                    Target_Buttons.Set_Button_States(GameEntity_Team_ID.TEAM_ONE_ID, true);
+                    Set_Conscious_Target_Buttons(GameEntity_Team_ID.TEAM_ONE_ID);
                     return;
             }
+        }
+
+        private void Set_Conscious_Target_Buttons(GameEntity_Team_ID teamId)
+        {
+            GameEntity_Position.For_Each_Position(teamId, (p) =>
+            {
+                GameEntity_ClientSide entity = World_Layer.Get_GameEntity(p);
+                Target_Buttons.Set_Button_State(p, !(entity.IsDismissed || entity.IsIncapacitated));
+            });
         }
 
         internal void Initalize_Buttons(UI_Button[] buttons, int comparingLength, Func<int, string> buttonTextHandler)

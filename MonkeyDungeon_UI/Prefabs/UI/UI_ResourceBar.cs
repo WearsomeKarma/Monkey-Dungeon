@@ -46,8 +46,8 @@ namespace MonkeyDungeon_UI.Prefabs.UI
             Percentage = Attached_ClientSideResource.Resource_Percentage;
         }
 
-        private void Resource_Changed(float percentage)
-            => Percentage = percentage;
+        private void Resource_Changed(GameEntity_ClientSide_Resource resource)
+            => Percentage = resource.Resource_Percentage;
 
         protected override void HandleDraw(RenderService renderService)
         {

@@ -84,6 +84,12 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                 }
             );
             
+            GameEntity_Position.For_Each_Position
+                (
+                GameEntity_Team_ID.TEAM_TWO_ID,
+                (p) => WorldLayer_Roster.Get_GameEntity(p).Set_Dismissed_Status(true)
+                );
+            
             Add_StaticObject(WorldLayer_Roster);
             
             Add_StaticObject(Ranged_UiParticleObject = new UI_ParticleObject(this, new Vector3(0, 0, 0)));

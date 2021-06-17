@@ -93,7 +93,7 @@ namespace MonkeyDungeon_UI.Prefabs.UI
             EntityDescription = entity;
             EntityDescription.Subscribe_To_Resource_Changes(ResourceBars);
             EntityDescription.Ability_Points.Resource_Updated += Handle_AbilityPoint_Change;
-            Handle_AbilityPoint_Change((int)EntityDescription.Ability_Points.Resource_Percentage);
+            Handle_AbilityPoint_Change(EntityDescription.Ability_Points);
 
             target = spriteLibrary.ExtractRenderUnit(EntityDescription.GameEntity_Race + UI_EntityObject.Suffix_Head);
             Entity_SceneID = EntityDescription.SCENE_ID;
@@ -112,8 +112,10 @@ namespace MonkeyDungeon_UI.Prefabs.UI
                 ap.Waste();
         }
 
-        private void Handle_AbilityPoint_Change(float val)
+        private void Handle_AbilityPoint_Change(GameEntity_ClientSide_Resource resource)
         {
+            float val = resource.Resource_Percentage;
+            
             int index = 0;
             if (abilityPointCount > 0)
                 index = abilityPointCount - 1;

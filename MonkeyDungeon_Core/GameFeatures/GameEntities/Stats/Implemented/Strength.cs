@@ -5,8 +5,8 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Stats.Implemented
 {
     public class Strength : GameEntity_Stat
     {
-        public Strength(float baseValue, float maxProgresionRate) 
-            : base(MD_VANILLA_STAT_NAMES.STAT_STRENGTH, baseValue, maxProgresionRate)
+        public Strength(float baseValue) 
+            : base(MD_VANILLA_STAT_NAMES.STAT_STRENGTH, 0, baseValue)
         {
         }
     }

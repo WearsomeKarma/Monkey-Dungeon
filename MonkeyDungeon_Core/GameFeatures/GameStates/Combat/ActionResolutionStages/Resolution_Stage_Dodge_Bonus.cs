@@ -11,29 +11,41 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
         protected override void Handle_Stage(Combat_Action action)
         {
             GameEntity_Position[] targetPositions = action.Target.Get_Reduced_Fields();
-            GameEntity_ServerSide targetedEntityServerSide;
-            
-            Combat_Finalized_Factor[] dodgeBonuses = new Combat_Finalized_Factor[targetPositions.Length];
+            GameEntity_ServerSide entity;
+
+            Combat_Finalized_Value dodgeBonus;
             for (int i = 0; i < targetPositions.Length; i++)
             {
-                targetedEntityServerSide = Get_Entity(targetPositions[i]);
+                entity = Get_Entity(targetPositions[i]);
 
                 if (action.Stat_Dodge_Bonus == GameEntity_Attribute_Name.NULL_ATTRIBUTE_NAME)
                 {
-                    dodgeBonuses[i] = action.Finalized_Hit_Bonus; // results in 1/1 in resource offset calculation.
-                    continue;
+                    dodgeBonus = new Combat_Finalized_Value(entity.GameEntity_ID);
+                    dodgeBonus.Offset_Value(action.Finalized_Hit_Bonus);
+                    Record_Dodge_Bonus(action, dodgeBonus);
+                    return;
                 }
                 
-                dodgeBonuses[i] = new Combat_Finalized_Factor(Get_Entity(targetPositions[i]).GameEntity_ID);
+                dodgeBonus = new Combat_Finalized_Value(Get_Entity(targetPositions[i]).GameEntity_ID);
                 
-                GameEntity_Stat dodgeStat = targetedEntityServerSide.Get__Stat__GameEntity<GameEntity_Stat>(action.Stat_Dodge_Bonus);
+                GameEntity_Stat dodgeStat = entity.Get__Stat__GameEntity<GameEntity_Stat>(action.Stat_Dodge_Bonus);
 
-                dodgeBonuses[i].Offset_Value(dodgeStat);
+                dodgeBonus.Offset_Value(dodgeStat);
 
-                dodgeBonuses[i].Offset_Value(targetedEntityServerSide.Get_Dodge_Bonuses__GameEntity(action));
+                dodgeBonus.Offset_Value(entity.Get_Dodge_Bonuses__GameEntity(action));
+                
+                Record_Dodge_Bonus(action, dodgeBonus);
             }
+        }
 
-            action.Finalized_Dodge_Bonuses = dodgeBonuses;
+        private void Record_Dodge_Bonus(Combat_Action action, Combat_Finalized_Value dodgeBonus)
+        {
+            if (action.Dodge_Bonus_Foreach_Target.ContainsKey(dodgeBonus.VALUE_OWNER))
+            {
+                action.Dodge_Bonus_Foreach_Target[dodgeBonus.VALUE_OWNER] = dodgeBonus;
+                return;
+            }
+            action.Dodge_Bonus_Foreach_Target.Add(dodgeBonus.VALUE_OWNER, dodgeBonus);
         }
     }
 }

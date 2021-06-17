@@ -14,6 +14,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities.Implemented
                 MD_VANILLA_ABILITY_NAMES.ABILITY_HEALING_TAIL, 
                 MD_VANILLA_RESOURCE_NAMES.RESOURCE_MANA, 
                 MD_VANILLA_STAT_NAMES.STAT_SMARTYPANTS,
+                MD_VANILLA_RESOURCE_NAMES.RESOURCE_HEALTH,
                 Combat_Target_Type.One_Enemy,
                 Combat_Damage_Type.Magical,
                 Combat_Assault_Type.Melee

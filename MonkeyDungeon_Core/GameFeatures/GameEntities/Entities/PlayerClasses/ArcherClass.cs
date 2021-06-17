@@ -51,20 +51,16 @@ namespace MonkeyDungeon_Core.GameFeatures.GameEntities.Entities
                   new List<GameEntity_Stat>()
                   {
                       new Strength(
-                          STAT_BASE_STRENGTH, 
-                          STAT_PROGRESSION_STRENGTH
+                          STAT_BASE_STRENGTH
                           ),
                       new Agility(
-                          STAT_BASE_AGILITY, 
-                          STAT_PROGRESSION_AGILITY
+                          STAT_BASE_AGILITY
                           ),
                       new Smartypants(
-                          STAT_BASE_SMARTYPANTS, 
-                          STAT_PROGRESSION_SMARTYPANTS
+                          STAT_BASE_SMARTYPANTS
                           ),
                       new Stinkiness(
-                          STAT_BASE_STINKINESS, 
-                          STAT_PROGRESSION_STINKINESS
+                          STAT_BASE_STINKINESS
                           ),
                   },
                   new List<GameEntity_Resource>()

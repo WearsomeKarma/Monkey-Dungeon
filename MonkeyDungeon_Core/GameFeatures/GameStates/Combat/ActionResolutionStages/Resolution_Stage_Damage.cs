@@ -14,31 +14,49 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
             GameEntity_Attribute_Name effectedResource = action.Target_Affected_Resource;
             
             GameEntity_ServerSide owner = Get_Entity(action.Action_Owner);
-            GameEntity_ServerSide effectedEntityServerSide;
+            GameEntity_ServerSide valueOwner;
             GameEntity_Ability ability = action.Selected_Ability;
 
             Combat_Resource_Offset baseOffset = ability.Calculate_Damage__Ability(action);
-            
-            Combat_Resource_Offset finalizedOffset;
-            foreach (Combat_Finalized_Factor finalizedDodgeValue in action.Finalized_Dodge_Bonuses)
+            Console.WriteLine("[rs_damage.cs:21] baseOffset: " + baseOffset);
+
+            foreach (GameEntity_ServerSide target in Get_Entities(action.Target.Get_Reduced_Fields()))
             {
-                finalizedOffset =
-                    new Combat_Resource_Offset(baseOffset.DamageType, baseOffset * action.Finalized_Hit_Bonus/ finalizedDodgeValue);
-
-                effectedEntityServerSide = Get_Entity(finalizedDodgeValue.FACTOR_OWNER);
-
-                GameEntity_Resource affectedResource =
-                    effectedEntityServerSide.Get__Resource__GameEntity<GameEntity_Resource>(action.Target_Affected_Resource);
-
-                if (affectedResource == null)
-                    return;
-                
-                effectedEntityServerSide.React_To__Pre_Resource_Offset__GameEntity(effectedResource, (double) finalizedOffset);
-                
-                affectedResource.Offset_Value(finalizedOffset);
-
-                effectedEntityServerSide.React_To__Post_Resource_Offset__GameEntity(effectedResource, (double) finalizedOffset);
+                Handle_Entity(target, action, baseOffset);
             }
+        }
+        
+        private void Handle_Entity(GameEntity_ServerSide entity, Combat_Action action, Combat_Resource_Offset baseOffset)
+        {
+            Combat_Resource_Offset finalizedOffset = Get_Finalized_Offset
+                (
+                baseOffset, 
+                action.Finalized_Hit_Bonus, 
+                action.Dodge_Bonus_Foreach_Target[entity.GameEntity_ID]
+                );
+            
+            GameEntity_Resource effectedResource =
+                entity.Get__Resource__GameEntity<GameEntity_Resource>(action.Target_Affected_Resource);
+            
+            if (effectedResource == null)
+                return;
+                
+            entity.React_To__Pre_Resource_Offset__GameEntity(effectedResource.Attribute_Name, (double) finalizedOffset);
+                
+            effectedResource.Offset_Value(finalizedOffset);
+
+            entity.React_To__Post_Resource_Offset__GameEntity(effectedResource.Attribute_Name, (double) finalizedOffset);
+        }
+
+        private Combat_Resource_Offset Get_Finalized_Offset
+        (
+            Combat_Resource_Offset baseOffset, 
+            Combat_Finalized_Value hitBonus, 
+            Combat_Finalized_Value dodgeBonus
+        )
+        {
+            return new Combat_Resource_Offset(baseOffset.DamageType,
+                -1 * baseOffset * hitBonus / dodgeBonus);
         }
     }
 }
