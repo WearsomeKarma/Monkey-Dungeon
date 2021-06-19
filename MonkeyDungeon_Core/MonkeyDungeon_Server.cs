@@ -6,21 +6,21 @@ namespace MonkeyDungeon_Core
 {
     public class MonkeyDungeon_Server : Multiplayer_Relay_Manager
     {
-        public GameState_Machine GameState_Machine { get; private set; }
+        public Game_StateMachine GameState_Machine { get; private set; }
 
         public MonkeyDungeon_Server(
             Multiplayer_Relay localRelay
             )
             :base(localRelay)
         {
-            GameState_Machine = new GameState_Machine(
+            GameState_Machine = new Game_StateMachine(
                 this,
                 new GameState[]
                 {
-                    new Traveling_GameState(),
-                    new Combat_GameState(),
-                    new Shopping_GameState(),
-                    new GameOver_GameState()
+                    new GameState_Traveling(),
+                    new GameState_Combat(),
+                    new GameState_Checkpoint(),
+                    new GameState_GameOver()
                 }
                 );
         }

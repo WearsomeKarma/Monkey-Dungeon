@@ -6,18 +6,18 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer
 {
     public abstract class Multiplayer_Message_CombatState_Handler : Multiplayer_Message_GameState_Handler
     {
-        protected Combat_GameState Combat { get; private set; }
+        protected GameState_Combat GameStateCombat { get; private set; }
 
-        public Multiplayer_Message_CombatState_Handler(Combat_GameState combat,
+        public Multiplayer_Message_CombatState_Handler(GameState_Combat gameStateCombat,
             params GameEntity_Attribute_Name[] acceptedTypes)
-        : base(combat, acceptedTypes)
+        : base(gameStateCombat, acceptedTypes)
         {
-            Combat = combat;
+            GameStateCombat = gameStateCombat;
         }
 
         protected bool IsValid_Message(Multiplayer_Message message)
         {
-            bool ret = Combat.Entity_Of_Current_Turn_Relay_Id== message.Relay_ID;
+            bool ret = GameStateCombat.Entity_Of_Current_Turn_Relay_Id== message.Relay_ID;
 
             if (!ret)
                 Handle_Invalid_Message(message);

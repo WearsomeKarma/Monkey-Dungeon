@@ -71,7 +71,7 @@ namespace MonkeyDungeon_UI.Prefabs
         {
             ABILITIES[abilityIndex] = new GameEntity_ClientSide_Ability(abilityName);
             //TODO: make it take target type from server.
-            ABILITIES[abilityIndex].Target.Bind_To_Action(GameEntity_Position, GameEntity_Team_ID, Combat_Target_Type.One_Enemy, true);
+            ABILITIES[abilityIndex].SurveyTarget.Bind_To_Action(GameEntity_Position, GameEntity_Team_ID, Combat_Target_Type.One_Enemy, true);
         }
 
         internal void Set_Ability_Target_Type(GameEntity_Attribute_Name_Ability abilityName,

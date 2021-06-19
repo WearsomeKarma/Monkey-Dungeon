@@ -15,14 +15,14 @@ namespace MonkeyDungeon_UI.Prefabs.UI
         private readonly GameEntity_Position_Vector_Survey VECTOR_SURVEY;
 
         public UI_Button_Target[] Get_Buttons()
-            => Get_Reduced_Field();
+            => Get__Reduced_Field__Survey();
         
         internal UI_GameEntity_Survey_Target_Buttons(UI_Combat_Layer sceneLayer, Vector3[] vectorSpace, RenderUnit buttonVisual) 
             : base(null)
         {
             VECTOR_SURVEY = new GameEntity_Position_Vector_Survey(vectorSpace);
             
-            GameEntity_Position.For_Each_Position(GameEntity_Team_ID.ID_NULL,
+            GameEntity_Position.For_Each__Position(GameEntity_Team_ID.ID_NULL,
                 (p) =>
                 {
                     UI_Button_Target buttonTarget = new UI_Button_Target
@@ -38,7 +38,7 @@ namespace MonkeyDungeon_UI.Prefabs.UI
                     buttonTarget.Enabled = false;
                     buttonTarget.SpriteComponent.Enabled = false;
                     
-                    Set_Entry_By_Position
+                    Set__Entry_By_Position__Survey
                     (
                         p, 
                         buttonTarget
@@ -48,7 +48,7 @@ namespace MonkeyDungeon_UI.Prefabs.UI
 
         public void Set_Button_States(GameEntity_Team_ID teamID, bool state)
         {
-            GameEntity_Position.For_Each_Position(teamID, (p) =>
+            GameEntity_Position.For_Each__Position(teamID, (p) =>
             {
                 Set_Button_State(p, state);
             });

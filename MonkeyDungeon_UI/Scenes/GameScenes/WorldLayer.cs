@@ -77,14 +77,14 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                     Game.SpriteLibrary.ExtractRenderUnit("BridgePath"))
                 );
 
-            GameEntity_Position.For_Each_Position(GameEntity_Team_ID.ID_NULL,
+            GameEntity_Position.For_Each__Position(GameEntity_Team_ID.ID_NULL,
                 (p) =>
                 {
                     WorldLayer_Roster.Set_Entity(p, MD_VANILLA_RACE_NAMES.RACE_MONKEY, p.TeamId == GameEntity_Team_ID.TEAM_ONE_ID);
                 }
             );
             
-            GameEntity_Position.For_Each_Position
+            GameEntity_Position.For_Each__Position
                 (
                 GameEntity_Team_ID.TEAM_TWO_ID,
                 (p) => WorldLayer_Roster.Get_GameEntity(p).Set_Dismissed_Status(true)

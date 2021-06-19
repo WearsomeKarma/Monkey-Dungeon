@@ -11,15 +11,15 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
         }
 
         public UI_EntityObject Get_Entity(GameEntity_Position position)
-            => Get_Entry_From_Position(position);
+            => Get__Entry_From_Position__Survey(position);
 
         public UI_EntityObject[] Get_Entities()
-            => Get_Reduced_Field();
+            => Get__Reduced_Field__Survey();
 
         public void Set_Entity(GameEntity_Position position, UI_EntityObject ui_entityObject)
-            => Set_Entry_By_Position(position, ui_entityObject);
+            => Set__Entry_By_Position__Survey(position, ui_entityObject);
         
         public void Swap_UI_Elements(GameEntity_Position position, GameEntity_Position_Swap_Type swapType)
-            => Swap_Entries(position, swapType);
+            => Swap__Entries__Survey(position, swapType);
     }
 }

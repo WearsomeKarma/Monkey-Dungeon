@@ -43,7 +43,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             ENTITY_ID = GameEntity_ID.Nullwrap(entityId);
             FLOAT_VALUE = fval;
             INT_VALUE = ival;
-            ATTRIBUTE = sval ?? GameEntity_Attribute_Name.NULL_ATTRIBUTE_NAME;
+            ATTRIBUTE = sval ?? GameEntity_Attribute_Name.NULL__ATTRIBUTE_NAME;
         }
 
         internal Multiplayer_Message(
@@ -62,7 +62,7 @@ namespace MonkeyDungeon_Vanilla_Domain.Multiplayer
             ENTITY_ID = GameEntity_ID.Nullwrap(entityId);
             FLOAT_VALUE = fval;
             INT_VALUE = ival;
-            ATTRIBUTE = sval ?? GameEntity_Attribute_Name.NULL_ATTRIBUTE_NAME;
+            ATTRIBUTE = sval ?? GameEntity_Attribute_Name.NULL__ATTRIBUTE_NAME;
         }
         
         public bool Equals(Multiplayer_Message m)

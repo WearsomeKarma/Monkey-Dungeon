@@ -1,5 +1,5 @@
 ﻿using System;
-using MonkeyDungeon_Core.GameFeatures.GameEntities;
+using MonkeyDungeon_Core.GameFeatures.GameComponents;
 using MonkeyDungeon_Core.GameFeatures.GameStates;
 using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;

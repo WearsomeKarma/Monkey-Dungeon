@@ -41,11 +41,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameFeatures\Combat_Action.cs" />
-    <Compile Include="GameFeatures\Combat_Finalized_Value.cs" />
-    <Compile Include="GameFeatures\Combat_Resource_Offset.cs" />
-    <Compile Include="GameFeatures\GameEntity_Attribute.cs" />
-    <Compile Include="GameFeatures\GameEntity_Quantity.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityAttributes\Abilities\GameEntity_ServerSide_Ability.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityAttributes\StatusEffects\GameEntity_ServerSide_StatusEffect.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityQuantities\Resources\GameEntity_ServerSide_Resource.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityQuantities\Stats\GameEntity_ServerSide_Stat.cs" />
+    <Compile Include="GameFeatures\GameEntity_ServerSide_Action.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityAttributes\Abilities\GameEntity_Ability_Manager.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityAttributes\Abilities\Implemented\Ability_ApeShit.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityAttributes\Abilities\Implemented\Ability_BanannaRang.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityAttributes\Abilities\Implemented\Ability_ChaosBolt.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityAttributes\Abilities\Implemented\Ability_HealingTail.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityAttributes\Abilities\Implemented\Ability_KiKick.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityAttributes\Abilities\Implemented\Ability_PoopyFling.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityAttributes\Abilities\Implemented\Ability_Punch.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityAttributes\Abilities\Implemented\Ability_StandGuard.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityAttributes\StatusEffects\GameEntity_StatusEffect.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityAttributes\StatusEffects\GameEntity_StatusEffect_Manager.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityAttributes\StatusEffects\Implemented\StatusEffect_Dead.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityAttributes\StatusEffects\Implemented\StatusEffect_Petrified.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityQuantities\Resources\GameEntity_Resource_Manager.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityQuantities\Resources\Implemented\Health.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityQuantities\Resources\Implemented\Level.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityQuantities\Resources\Implemented\Mana.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityQuantities\Resources\Implemented\Stamina.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityQuantities\Stats\GameEntity_Stat_Manager.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityQuantities\Stats\Implemented\Agility.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityQuantities\Stats\Implemented\Smartypants.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityQuantities\Stats\Implemented\Stinkiness.cs" />
+    <Compile Include="GameFeatures\GameComponents\EntityQuantities\Stats\Implemented\Strength.cs" />
+    <Compile Include="GameFeatures\GameEntity_ServerSide_Quantity.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Cast.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Damage.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Dodge_Bonus.cs" />
@@ -53,51 +77,25 @@
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Redirection.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Action_Resolution_Stage.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Action_Resolver.cs" />
-    <Compile Include="GameFeatures\GameEntities\Abilities\GameEntity_Ability.cs" />
-    <Compile Include="GameFeatures\GameEntities\Abilities\GameEntity_Ability_Manager.cs" />
-    <Compile Include="GameFeatures\GameEntities\Resources\GameEntity_Resource.cs" />
-    <Compile Include="GameFeatures\GameEntities\Resources\GameEntity_Resource_Manager.cs" />
-    <Compile Include="GameFeatures\GameEntities\Stats\GameEntity_Stat.cs" />
-    <Compile Include="GameFeatures\GameEntities\StatusEffects\GameEntity_StatusEffect.cs" />
-    <Compile Include="GameFeatures\GameEntities\StatusEffects\GameEntity_StatusEffect_Manager.cs" />
-    <Compile Include="GameFeatures\GameEntities\Stats\GameEntity_Stat_Manager.cs" />
     <Compile Include="GameFeatures\GameEntity_ServerSide.cs" />
-    <Compile Include="GameFeatures\GameEntity_Controller.cs" />
-    <Compile Include="GameFeatures\GameEntity_Factory.cs" />
+    <Compile Include="GameFeatures\GameEntity_ServerSide_Controller.cs" />
+    <Compile Include="GameFeatures\GameEntity_ServerSide_Factory.cs" />
     <Compile Include="GameFeatures\GameEntity_ServerSide_Roster.cs" />
     <Compile Include="GameFeatures\GameStates\GameState.cs" />
-    <Compile Include="GameFeatures\GameState_Machine.cs" />
-    <Compile Include="GameFeatures\GameEntities\Abilities\Implemented\Ability_ApeShit.cs" />
-    <Compile Include="GameFeatures\GameEntities\Abilities\Implemented\Ability_BanannaRang.cs" />
-    <Compile Include="GameFeatures\GameEntities\Abilities\Implemented\Ability_ChaosBolt.cs" />
-    <Compile Include="GameFeatures\GameEntities\Abilities\Implemented\Ability_HealingTail.cs" />
-    <Compile Include="GameFeatures\GameEntities\Abilities\Implemented\Ability_KiKick.cs" />
-    <Compile Include="GameFeatures\GameEntities\Abilities\Implemented\Ability_PoopyFling.cs" />
-    <Compile Include="GameFeatures\GameEntities\Abilities\Implemented\Ability_Punch.cs" />
-    <Compile Include="GameFeatures\GameEntities\Abilities\Implemented\Ability_StandGuard.cs" />
-    <Compile Include="GameFeatures\GameEntities\Stats\Implemented\Agility.cs" />
-    <Compile Include="GameFeatures\GameEntities\Stats\Implemented\Smartypants.cs" />
-    <Compile Include="GameFeatures\GameEntities\Stats\Implemented\Stinkiness.cs" />
-    <Compile Include="GameFeatures\GameEntities\Stats\Implemented\Strength.cs" />
-    <Compile Include="GameFeatures\GameEntities\Entities\Enemies\Goblins\EC_Goblin.cs" />
-    <Compile Include="GameFeatures\GameEntities\Entities\PlayerClasses\ArcherClass.cs" />
-    <Compile Include="GameFeatures\GameEntities\Entities\PlayerClasses\ClericClass.cs" />
-    <Compile Include="GameFeatures\GameEntities\Entities\PlayerClasses\KnightClass.cs" />
-    <Compile Include="GameFeatures\GameEntities\Entities\PlayerClasses\MonkClass.cs" />
-    <Compile Include="GameFeatures\GameEntities\Entities\PlayerClasses\WarriorClass.cs" />
-    <Compile Include="GameFeatures\GameEntities\Entities\PlayerClasses\WizardClass.cs" />
-    <Compile Include="GameFeatures\GameEntities\Controllers\GameEntity_Controller_AI.cs" />
-    <Compile Include="GameFeatures\GameEntities\Controllers\GameEntity_Controller_Player.cs" />
-    <Compile Include="GameFeatures\GameEntities\Resources\Implemented\Health.cs" />
-    <Compile Include="GameFeatures\GameEntities\Resources\Implemented\Level.cs" />
-    <Compile Include="GameFeatures\GameEntities\Resources\Implemented\Mana.cs" />
-    <Compile Include="GameFeatures\GameEntities\Resources\Implemented\Stamina.cs" />
-    <Compile Include="GameFeatures\GameStates\Combat_GameState.cs" />
-    <Compile Include="GameFeatures\GameStates\GameOver_GameState.cs" />
-    <Compile Include="GameFeatures\GameStates\Shopping_GameState.cs" />
-    <Compile Include="GameFeatures\GameStates\Traveling_GameState.cs" />
-    <Compile Include="GameFeatures\GameEntities\StatusEffects\Implemented\StatusEffect_Dead.cs" />
-    <Compile Include="GameFeatures\GameEntities\StatusEffects\Implemented\StatusEffect_Petrified.cs" />
+    <Compile Include="GameFeatures\Game_StateMachine.cs" />
+    <Compile Include="GameFeatures\GameComponents\Entities\Enemies\Goblins\EC_Goblin.cs" />
+    <Compile Include="GameFeatures\GameComponents\Entities\PlayerClasses\ArcherClass.cs" />
+    <Compile Include="GameFeatures\GameComponents\Entities\PlayerClasses\ClericClass.cs" />
+    <Compile Include="GameFeatures\GameComponents\Entities\PlayerClasses\KnightClass.cs" />
+    <Compile Include="GameFeatures\GameComponents\Entities\PlayerClasses\MonkClass.cs" />
+    <Compile Include="GameFeatures\GameComponents\Entities\PlayerClasses\WarriorClass.cs" />
+    <Compile Include="GameFeatures\GameComponents\Entities\PlayerClasses\WizardClass.cs" />
+    <Compile Include="GameFeatures\GameComponents\Controllers\GameEntityServerSideControllerAi.cs" />
+    <Compile Include="GameFeatures\GameComponents\Controllers\GameEntityServerSideControllerPlayer.cs" />
+    <Compile Include="GameFeatures\GameStates\GameState_Combat.cs" />
+    <Compile Include="GameFeatures\GameStates\GameState_GameOver.cs" />
+    <Compile Include="GameFeatures\GameStates\GameState_Checkpoint.cs" />
+    <Compile Include="GameFeatures\GameStates\GameState_Traveling.cs" />
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Request_EndTurn.cs" />
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Combat_Action.cs" />
     <Compile Include="GameFeatures\Multiplayer\Handlers\MMH_Set_Combat_Target.cs" />
@@ -131,6 +129,9 @@
       <Name>MonkeyDungeon_Vanilla_Domain</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="GameFeatures\GameComponents\EntityAttributes" />
+    <Folder Include="GameFeatures\GameComponents\EntityQuantities" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

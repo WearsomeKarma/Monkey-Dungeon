@@ -1,19 +1,15 @@
-﻿using MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities;
-using MonkeyDungeon_Core.GameFeatures.GameEntities.Controllers;
-using MonkeyDungeon_Core.GameFeatures.GameEntities.Resources;
-using MonkeyDungeon_Core.GameFeatures.GameEntities.Resources.Implemented;
-using MonkeyDungeon_Core.GameFeatures.GameEntities.Stats;
-using MonkeyDungeon_Core.GameFeatures.GameEntities.StatusEffects;
-using MonkeyDungeon_Core.GameFeatures.GameStates;
-using MonkeyDungeon_Vanilla_Domain;
+﻿using MonkeyDungeon_Core.GameFeatures.GameComponents.EntityAttributes.Abilities;
+using MonkeyDungeon_Core.GameFeatures.GameComponents.Controllers;
+using MonkeyDungeon_Core.GameFeatures.GameComponents.EntityQuantities.Resources;
+using MonkeyDungeon_Core.GameFeatures.GameComponents.EntityQuantities.Resources.Implemented;
+using MonkeyDungeon_Core.GameFeatures.GameComponents.EntityQuantities.Stats;
+using MonkeyDungeon_Core.GameFeatures.GameComponents.EntityAttributes.StatusEffects;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat;
-using MonkeyDungeon_Vanilla_Domain.Multiplayer;
+using System.Collections.Generic;
+using System;
 
 namespace MonkeyDungeon_Core.GameFeatures
 {
@@ -30,42 +26,42 @@ namespace MonkeyDungeon_Core.GameFeatures
         private int unique_ID                           = 0;
         public int Unique_ID                            { get => unique_ID; internal set => unique_ID = (value >= 0) ? value : 0; }
 
-        public GameEntity_Controller EntityController   { get; internal set;    }
-        public void Attach__Controller                  (GameEntity_Controller newEntity) { EntityController?.Controller_Detach_From_Entity(); newEntity?.Controller_Attack_To_Entity(this); }
+        public GameEntity_ServerSide_Controller EntityServerSideController   { get; internal set;    }
+        public void Attach__Controller                  (GameEntity_ServerSide_Controller newEntityServerSide) { EntityServerSideController?.Controller_Detach_From_Entity(); newEntityServerSide?.Controller_Attack_To_Entity(this); }
 
         private Level level;
         public int Level                                { get => (level != null) ? (int)level.Value : 0; set => Set__GameEntity_Level(value); }
         
-        public GameState_Machine Game                   { get; internal set;    }
+        public Game_StateMachine Game                   { get; internal set;    }
         public GameEntity_ServerSide_Roster Entity_Field => Game?.GameField;
 
         private readonly GameEntity_Stat_Manager         STAT_MANAGER;
         public T     Get__Stat__GameEntity<T>(GameEntity_Attribute_Name name) 
-            where T : GameEntity_Stat
+            where T : GameEntity_ServerSide_Stat
             => STAT_MANAGER.Get__Stat<T>(name);
         
         private readonly GameEntity_Resource_Manager     RESOURCE_MANAGER;
-        private void Relay__Resource_Updated(GameEntity_Resource resource)
+        private void Relay__Resource_Updated(GameEntity_ServerSide_Resource resource)
             => Event__Resource_Updated__GameEntity?.Invoke(resource);
-        public event Action<GameEntity_Resource> Event__Resource_Updated__GameEntity;
+        public event Action<GameEntity_ServerSide_Resource> Event__Resource_Updated__GameEntity;
         public T     Get__Resource__GameEntity<T>(GameEntity_Attribute_Name name) 
-            where T : GameEntity_Resource
+            where T : GameEntity_ServerSide_Resource
             => RESOURCE_MANAGER.Get__Resource<T>(name);
         public void Offset__Resource__GameEntity<T>(GameEntity_Attribute_Name name, double value)
-            where T : GameEntity_Resource
-            => Get__Resource__GameEntity<T>(name).Offset_Value(value);
+            where T : GameEntity_ServerSide_Resource
+            => Get__Resource__GameEntity<T>(name).Offset__Value__Quantity(value);
         public GameEntity_Attribute_Name[] Get__Resource_Names__GameEntity()
             => RESOURCE_MANAGER.Get__Resource_Names();
         
         //public readonly GameEntity_Resistance_Manager   Resistance_Manager;
         private readonly GameEntity_Ability_Manager      ABILITY_MANAGER;
-        private void Relay__Ability_Points_Updated(GameEntity_Quantity points) =>
-            Event__Ability_Points_Updated__GameEntity?.Invoke(points as GameEntity_Resource);
-        public event Action<GameEntity_Resource> Event__Ability_Points_Updated__GameEntity;
+        private void Relay__Ability_Points_Updated<T>(GameEntity_Quantity<T> points) where T : GameEntity =>
+            Event__Ability_Points_Updated__GameEntity?.Invoke(points as GameEntity_ServerSide_Resource);
+        public event Action<GameEntity_ServerSide_Resource> Event__Ability_Points_Updated__GameEntity;
         public T     Get__Ability__GameEntity<T>(GameEntity_Attribute_Name name) 
-            where T : GameEntity_Ability
+            where T : GameEntity_ServerSide_Ability
             => ABILITY_MANAGER.Get__Ability<T>(name);
-        public GameEntity_Ability[] Get__Abilities__GameEntity()
+        public GameEntity_ServerSide_Ability[] Get__Abilities__GameEntity()
             => ABILITY_MANAGER.Get__Abilities();
         public bool Try_Offset__Ability_Point__GameEntity(int offset, bool peeking = false)
             => ABILITY_MANAGER.Ability_Point_Pool.Try_Offset__Resource(offset, peeking);
@@ -74,24 +70,23 @@ namespace MonkeyDungeon_Core.GameFeatures
         
         private readonly GameEntity_StatusEffect_Manager STATUSEFFECT_MANAGER;
         public T     Get__StatusEffect__GameEntity<T>(GameEntity_Attribute_Name name) 
-            where T : GameEntity_StatusEffect
+            where T : GameEntity_ServerSide_StatusEffect
             => STATUSEFFECT_MANAGER.Get__StatusEffect__GameEntity<T>(name);
         public void  Add__GameEntity_StatusEffect<T>(T statusEffect) 
-            where T : GameEntity_StatusEffect
+            where T : GameEntity_ServerSide_StatusEffect
             => STATUSEFFECT_MANAGER.Add__StatusEffect__GameEntity(statusEffect);
         public void  Remove__GameEntity_StatusEffect<T>(T statusEffect) 
-            where T : GameEntity_StatusEffect
+            where T : GameEntity_ServerSide_StatusEffect
             => STATUSEFFECT_MANAGER.Remove__StatusEffect__GameEntity(statusEffect);
         public void  Remove_All__StatusEffects__GameEntity()
             => STATUSEFFECT_MANAGER.Remove_All__StatusEffects__GameEntity();
         public void  Remove_All__StatusEffects_Except__GameEntity<T>() 
-            where T : GameEntity_StatusEffect
+            where T : GameEntity_ServerSide_StatusEffect
             => STATUSEFFECT_MANAGER.Remove_All__Except<T>();
-        public void React_To__Cast__GameEntity(Combat_Action action)
-            => STATUSEFFECT_MANAGER.React_To_Cast(action);
+        public void React_To__Cast__GameEntity()
+            => STATUSEFFECT_MANAGER.React_To_Cast();
         public Combat_Redirection_Chance[] React_To__Redirect_Chance__GameEntity
             (
-            Combat_Action action,
             Combat_Assault_Type assaultType,
             GameEntity_Position_Type assaulterPositionType,
             GameEntity_Position_Type targetPositionType,
@@ -99,7 +94,6 @@ namespace MonkeyDungeon_Core.GameFeatures
             )
             => STATUSEFFECT_MANAGER.React_To_Redirect_Chance
                 (
-                action,
                 assaultType,
                 assaulterPositionType,
                 targetPositionType,
@@ -125,10 +119,10 @@ namespace MonkeyDungeon_Core.GameFeatures
                 resourceName,
                 finalizedOffset
                 );
-        public double Get_Dodge_Bonuses__GameEntity(Combat_Action action)
-            => STATUSEFFECT_MANAGER.Get_Dodge_Bonuses__StatusEffect_Manager(action);
-        public double Get_Hit_Bonuses__GameEntity(Combat_Action action)
-            => STATUSEFFECT_MANAGER.Get_Hit_Bonuses__StatusEffect_Manager(action);
+        public double Get_Dodge_Bonuses__GameEntity()
+            => STATUSEFFECT_MANAGER.Get_Dodge_Bonuses__StatusEffect_Manager();
+        public double Get_Hit_Bonuses__GameEntity()
+            => STATUSEFFECT_MANAGER.Get_Hit_Bonuses__StatusEffect_Manager();
         
         public GameEntity_ServerSide(
 
@@ -137,11 +131,11 @@ namespace MonkeyDungeon_Core.GameFeatures
             int     level,
             int     unique_ID,
 
-            List<GameEntity_Stat>       stats,
-            List<GameEntity_Resource>   resources,
-            List<GameEntity_Ability>    abilities,
+            List<GameEntity_ServerSide_Stat>       stats,
+            List<GameEntity_ServerSide_Resource>   resources,
+            List<GameEntity_ServerSide_Ability>    abilities,
             //List<GameEntity_Resistance> resistances,
-            GameEntity_Controller       controller
+            GameEntity_ServerSide_Controller       serverSideController
 
             )
         {
@@ -155,11 +149,11 @@ namespace MonkeyDungeon_Core.GameFeatures
             
             //Resistance_Manager      = new GameEntity_Resistance_Manager     (this, resistances  );
             ABILITY_MANAGER         = new GameEntity_Ability_Manager        (this, abilities    );
-            ABILITY_MANAGER.Ability_Point_Pool.Quantity_Changed += Relay__Ability_Points_Updated;
+            ABILITY_MANAGER.Ability_Point_Pool.Event__Quantity_Changed__Quantity += Relay__Ability_Points_Updated;
             
             STATUSEFFECT_MANAGER    = new GameEntity_StatusEffect_Manager   (this               );
             
-            Attach__Controller        (controller);
+            Attach__Controller        (serverSideController);
             Set__GameEntity_Level               (level);
         }
 
@@ -173,7 +167,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             ABILITY_MANAGER         = new GameEntity_Ability_Manager        (this);
             STATUSEFFECT_MANAGER    = new GameEntity_StatusEffect_Manager   (this);
 
-            Attach__Controller        (new GameEntity_Controller_AI());
+            Attach__Controller        (new GameEntityServerSideControllerAi());
             Set__GameEntity_Level               ();
         }
 
@@ -182,33 +176,33 @@ namespace MonkeyDungeon_Core.GameFeatures
             if (this.level == null)
             {
                 this.level = new Level(100, level);
-                this.level.Attach_To_Entity(this);
+                this.level.Attach_To__Entity__ServerSide_Resource(this);
             }
             this.level.Force_Offset__Resource(level - Level);
         }
 
         internal void Combat_Begin__GameEntity()
         {
-            EntityController.Combat_Begin();
+            EntityServerSideController.Combat_Begin();
         }
         
         internal void Combat_Begin_Turn__GameEntity()
         {
             STATUSEFFECT_MANAGER.Combat_BeginTurn__StatusEffect_Manager();
 
-            EntityController.Combat_Begin_Turn();
+            EntityServerSideController.Combat_Begin_Turn();
             //TODO: improve on this.
-            ABILITY_MANAGER.Ability_Point_Pool.Set_Value(2);
+            ABILITY_MANAGER.Ability_Point_Pool.Set__Value__Quantity(2);
         }
 
         internal void Combat_End_Turn__GameEntity()
         {
-            EntityController.Combat_End_Turn();
+            EntityServerSideController.Combat_End_Turn();
         }
 
         internal void Combat_End__GameEntity()
         {
-            EntityController.Combat_End();
+            EntityServerSideController.Combat_End();
         }
 
         internal bool Has_PlayableMoves__GameEntity()
@@ -223,17 +217,17 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         public GameEntity_ServerSide Clone__GameEntity(GameEntity_ID gameEntityId)
         {
-            List<GameEntity_Stat> clonedStats = new List<GameEntity_Stat>();
-            List<GameEntity_Resource> clonedResources = new List<GameEntity_Resource>();
-            List<GameEntity_Ability> clonedAbilities = new List<GameEntity_Ability>();
+            List<GameEntity_ServerSide_Stat> clonedStats = new List<GameEntity_ServerSide_Stat>();
+            List<GameEntity_ServerSide_Resource> clonedResources = new List<GameEntity_ServerSide_Resource>();
+            List<GameEntity_ServerSide_Ability> clonedAbilities = new List<GameEntity_ServerSide_Ability>();
             //List<GameEntity_Resistance> clonedResistances = new List<GameEntity_Resistance>();
 
-            foreach (GameEntity_Stat stat in STAT_MANAGER.Get__Stats())
-                clonedStats.Add(stat.Clone__Stat());
-            foreach (GameEntity_Resource resource in RESOURCE_MANAGER.Get__Resources())
-                clonedResources.Add(resource.Clone__Resource());
-            foreach (GameEntity_Ability ability in ABILITY_MANAGER.Get__Abilities())
-                clonedAbilities.Add(ability.Clone__Ability());
+            foreach (GameEntity_ServerSide_Stat stat in STAT_MANAGER.Get__Stats())
+                clonedStats.Add(stat.Clone__Stat() as GameEntity_ServerSide_Stat);
+            foreach (GameEntity_ServerSide_Resource resource in RESOURCE_MANAGER.Get__Resources())
+                clonedResources.Add(resource.Clone__Resource() as GameEntity_ServerSide_Resource);
+            foreach (GameEntity_ServerSide_Ability ability in ABILITY_MANAGER.Get__Abilities())
+                clonedAbilities.Add(ability.Clone__ServerSide_Ability());
             //foreach (GameEntity_Resistance resistance in Resistance_Manager.Get_Resistances())
             //    clonedResistances.Add(resistance.Clone());
 
@@ -252,7 +246,7 @@ namespace MonkeyDungeon_Core.GameFeatures
                 { GameEntity_ID = gameEntityId};
 
             //TODO: fix
-            EntityController.Clone__Controller().Controller_Attack_To_Entity(entityServerSide);
+            EntityServerSideController.Clone__Controller().Controller_Attack_To_Entity(entityServerSide);
             
             return entityServerSide;
         }
@@ -260,7 +254,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         public override string ToString()
         {
             string r = "";
-            foreach (GameEntity_Resource re in RESOURCE_MANAGER.Get__Resources())
+            foreach (GameEntity_ServerSide_Resource re in RESOURCE_MANAGER.Get__Resources())
                 r += string.Format("[{0}:{1}]", re.Attribute_Name, re.Value);
             string ec_s = string.Format(
                 "Name: {0} \tResources: <{1}>",

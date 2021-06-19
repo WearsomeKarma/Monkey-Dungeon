@@ -25,14 +25,14 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         }
 
         public T Get_Entity(GameEntity_Position position)
-            => Get_Entry_From_Position(position);
+            => Get__Entry_From_Position__Survey(position);
 
         public GameEntity_Position Get_Position_From_Id(GameEntity_ID id, GameEntity_Position defaultPosition = null)
             => Get_Entity(id)?.GameEntity_Position ?? (defaultPosition ?? GameEntity_Position.NULL_POSITION);
         
         public GameEntity_ID[] Get_Entity_Ids(bool isPlayers)
         {
-            GameEntity[] rosterEntries = Get_Reduced_Field();
+            GameEntity[] rosterEntries = Get__Reduced_Field__Survey();
 
             List<GameEntity_ID> ids = new List<GameEntity_ID>();
             for (int i = 0; i < MD_PARTY.MAX_PARTY_SIZE; i++)
@@ -58,7 +58,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         
         public void Swap_Positions(GameEntity_Position position, GameEntity_Position_Swap_Type swapType)
         {
-            Swap_Entries(position, swapType);
+            Swap__Entries__Survey(position, swapType);
         }
         
         protected GameEntity_Field()

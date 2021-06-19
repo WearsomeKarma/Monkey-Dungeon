@@ -7,8 +7,9 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 {
     public class GameEntity_Attribute_Name
     {
-        public static GameEntity_Attribute_Name NULL_ATTRIBUTE_NAME = new GameEntity_Attribute_Name("");
-
+        public static GameEntity_Attribute_Name NULL__ATTRIBUTE_NAME = new GameEntity_Attribute_Name("Null");
+        public static GameEntity_Attribute_Name GENERIC__ATTRIBUTE_NAME = new GameEntity_Attribute_Name("Generic");
+        
         public readonly string NAME;
 
         internal GameEntity_Attribute_Name(string name)
@@ -20,7 +21,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
             => NAME;
 
         public static implicit operator string(GameEntity_Attribute_Name gameEntity_AttributeName)
-            => gameEntity_AttributeName.NAME ?? NULL_ATTRIBUTE_NAME;
+            => gameEntity_AttributeName.NAME ?? NULL__ATTRIBUTE_NAME;
 
         public static T Cast<T>(GameEntity_Attribute_Name attributeName, GameEntity_Attribute_Type type)
             where T : GameEntity_Attribute_Name

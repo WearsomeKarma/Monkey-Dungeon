@@ -151,12 +151,22 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         public static explicit operator int(GameEntity_Position position)
             => position.WORLD_POSITION + (MD_PARTY.MAX_PARTY_SIZE * position.TeamId);
 
+        public static void For_Each__Hostile_Position(GameEntity_Team_ID friendlyTeamId,
+            Action<GameEntity_Position> action)
+        {
+            For_Each__Position(GameEntity_Team_ID.ID_NULL, (p) =>
+            {
+                if (p.TeamId != friendlyTeamId)
+                    action(p);
+            });
+        }
+
         /// <summary>
         /// General foreach wrapper function that will operate over team specific positions, or all positions (teamID=ID_NULL)
         /// </summary>
         /// <param name="teamID"></param>
         /// <param name="action"></param>
-        public static void For_Each_Position(GameEntity_Team_ID teamID, Action<GameEntity_Position> action)
+        public static void For_Each__Position(GameEntity_Team_ID teamID, Action<GameEntity_Position> action)
         {
             //function off of possible null!
             GameEntity_Position[] positionField = 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using MonkeyDungeon_Core.GameFeatures.GameEntities.Abilities;
+using System.ComponentModel;
+using MonkeyDungeon_Core.GameFeatures.GameComponents.EntityAttributes.Abilities;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat;
 
@@ -8,98 +9,131 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
 {
     public class Resolution_Stage_Redirection : Combat_Action_Resolution_Stage
     {
-        protected override void Handle_Stage(Combat_Action action)
+        protected override void Handle_Stage(GameEntity_ServerSide_Action action)
         {
-            GameEntity_ServerSide owner = Get_Entity(action.Action_Owner);
+            GameEntity_ServerSide owner = Get_Entity(action.Action__Invoking_Entity);
+            
+            Initalize__Redirection_Survey(action);
+            Apply__Invoker_Modifiers(action);
+            Apply__Targeted_Entity_Modifiers(action);
 
-            GameEntity_Position[] targets = action.Target.Get_Reduced_Fields();
-
-            Combat_Redirection_Chance[] chances = Get_Chances_For_Each_Target(
-                action,
-                targets,
-                action.Selected_Ability,
-                (GameEntity_Position_Type)owner.GameEntity_Position
-            );
+            Determine__Redirections(action);
             
             Relay_UI_Event(owner, action);
         }
 
-        private void Apply_Redirections()
+        private void Initalize__Redirection_Survey(GameEntity_ServerSide_Action action)
         {
-            
-        }
+            GameEntity_ServerSide_Ability ability = action.Action__Selected_Ability;
+            GameEntity_Position_Type assaulterPositionType = (GameEntity_Position_Type) Get_Entity(action).GameEntity_Position;
+            GameEntity_Position[] targetedPositions = action.Action__Survey_Target.Get__Targeted_Hostile_Positions__Survey_Target(action.Action__Invoking_Entity.Team_Id);
 
-        private Combat_Redirection_Chance[] Get_Chances_For_Each_Target(
-            Combat_Action action,
-            GameEntity_Position[] targets, 
-            GameEntity_Ability usedAbility, 
-            GameEntity_Position_Type ownerPositionType
-            )
-        {
-            Combat_Assault_Type assaultType = usedAbility.Ability__Combat_Assault_Type;
-            GameEntity_Position_Type targetPositionType;
-            
-            GameEntity_ServerSide target;
-            List<Combat_Redirection_Chance> chances = new List<Combat_Redirection_Chance>();
+            action.Action__Survey_Redirection.Reset();
 
-            Combat_Redirection_Chance abilityChance;
-            Combat_Redirection_Chance[] statusEffectChances;
-
-            Combat_Redirection_Chance baseChance;
-            
-            for (int i = 0; i < targets.Length; i++)
+            foreach (GameEntity_Position targetedPosition in targetedPositions)
             {
-                target = Entity_Field.Get_Entity(targets[i]);
-                targetPositionType = (GameEntity_Position_Type) target.GameEntity_Position;
-                baseChance = MD_VANILLA_COMBAT.Base_Redirection_Chance(assaultType, ownerPositionType, targetPositionType);
-
-                abilityChance = usedAbility.Calculate_Redirect_Chance__Ability
-                (
-                    action,
-                    ownerPositionType,
-                    targetPositionType,
-                    baseChance
-                );
-
-                baseChance = Combat_Redirection_Chance.Combine(baseChance, abilityChance);
+                GameEntity_Position_Type targetPositionType = (GameEntity_Position_Type) targetedPosition;
                 
-                statusEffectChances = target.React_To__Redirect_Chance__GameEntity
+                action.Action__Survey_Redirection[targetedPosition].Combine__Redirection_Chance
                 (
-                    action,
-                    assaultType,
-                    ownerPositionType,
-                    targetPositionType,
-                    baseChance
+                    Combat_Redirection_Chance.Base_Redirection_Chance
+                    (
+                        ability.Ability__Combat_Assault_Type,
+                        assaulterPositionType,
+                        targetPositionType
+                    )
                 );
-
-                foreach (Combat_Redirection_Chance chance in statusEffectChances)
-                {
-                    baseChance = Combat_Redirection_Chance.Combine(baseChance, chance);
-                }
-                
-                if (baseChance.REDIRECTION != GameEntity_Position_Swap_Type.Swap_Null)
-                    chances.Add(baseChance);
             }
-
-            return chances.ToArray();
         }
 
-        private void Relay_UI_Event(GameEntity_ServerSide entityServerSide, Combat_Action action)
+        private void Apply__Invoker_Modifiers(GameEntity_ServerSide_Action action)
         {
-            GameEntity_Ability ability = action.Selected_Ability;
+            GameEntity_ServerSide_Ability ability = action.Action__Selected_Ability;
+            GameEntity_Position[] targetedPositions =
+                action.Action__Survey_Redirection.Get__Positions_Of_Hostiles__Survey_Redirection(action.Action__Invoking_Entity.Team_Id);
+            GameEntity_Position_Type ownerPositionType =
+                (GameEntity_Position_Type) Get_Entity(action).GameEntity_Position;
+            
+            foreach (GameEntity_Position targetedPosition in targetedPositions)
+            {
+                GameEntity_Position_Type targetPositionType = (GameEntity_Position_Type) targetedPosition;
+
+                Combat_Redirection_Chance chance = ability.Calculate__Redirect_Chance__Ability
+                (
+                    ownerPositionType,
+                    targetPositionType,
+                    action.Action__Survey_Redirection[targetedPosition]
+                );
+                
+                action.Action__Survey_Redirection[targetedPosition].Combine__Redirection_Chance(chance);
+            }
+        }
+
+        private void Apply__Targeted_Entity_Modifiers(GameEntity_ServerSide_Action action)
+        {
+            GameEntity_ServerSide_Ability ability = action.Action__Selected_Ability;
+            GameEntity_Position[] targetedPositions =
+                action.Action__Survey_Redirection.Get__Positions_Of_Hostiles__Survey_Redirection(action.Action__Invoking_Entity.Team_Id);
+            GameEntity_Position_Type assaulterPositionType =
+                (GameEntity_Position_Type) Get_Entity(action).GameEntity_Position;
+
+            foreach (GameEntity_Position targetedPosition in targetedPositions)
+            {
+                GameEntity_Position_Type targetPositionType = (GameEntity_Position_Type) targetedPosition;
+
+                GameEntity_ServerSide targetedEntity = Get_Entity(targetedPosition);
+
+                Combat_Redirection_Chance[] chances = targetedEntity.React_To__Redirect_Chance__GameEntity
+                (
+                    ability.Ability__Combat_Assault_Type,
+                    assaulterPositionType,
+                    targetPositionType,
+                    action.Action__Survey_Redirection[targetedPosition]
+                );
+
+                foreach (Combat_Redirection_Chance chance in chances)
+                {
+                    action.Action__Survey_Redirection[targetedPosition].Combine__Redirection_Chance(chance);
+                }
+            }
+        }
+
+        private void Determine__Redirections(GameEntity_ServerSide_Action action)
+        {
+            GameEntity_Position[] targetedPositions = action.Action__Survey_Redirection.Get__Positions__Survey_Redirection();
+
+            foreach (GameEntity_Position targetedPosition in targetedPositions)
+            {
+                Combat_Redirection_Chance chance = action.Action__Survey_Redirection[targetedPosition];
+                
+                if (chance.Determine__If_Redirection_Occurs__Redirection_Chance())
+                {
+                    action.Action__Survey_Target.Remove_Target(targetedPosition);
+
+                    GameEntity_Position redirectedPosition = Combat_Redirection_Chance.Redirect(targetedPosition,
+                        chance.Redirection_Chance__Redirection_Type);
+
+                    action.Action__Survey_Target.Add_Target(redirectedPosition);
+                }
+            }
+        }
+        
+        private void Relay_UI_Event(GameEntity_ServerSide entityServerSide, GameEntity_ServerSide_Action action)
+        {
+            GameEntity_ServerSide_Ability ability = action.Action__Selected_Ability;
             Combat_Assault_Type assaultType = ability.Ability__Combat_Assault_Type;
 
-            GameEntity_Position[] positions = action.Target.Get_Reduced_Fields();
+            GameEntity_Position[] positions = action.Action__Survey_Target.Get__Targeted_Positions__Survey_Target();
             GameEntity_ServerSide[] targets = Get_Entities(positions);
             
             //TOOD: fix
             switch (assaultType)
             {
                 case Combat_Assault_Type.Melee:
-                    Resolver.Combat.Act_Melee_Attack(entityServerSide.GameEntity_ID, targets[0].GameEntity_ID);
+                    Resolver.GameStateCombat.Act_Melee_Attack(entityServerSide.GameEntity_ID, targets[0].GameEntity_ID);
                     break;
                 case Combat_Assault_Type.Ranged:
-                    Resolver.Combat.Act_Ranged_Attack(entityServerSide.GameEntity_ID, targets[0].GameEntity_ID, ability.Ability__Particle_Name);
+                    Resolver.GameStateCombat.Act_Ranged_Attack(entityServerSide.GameEntity_ID, targets[0].GameEntity_ID, ability.Ability__Particle_Name);
                     break;
             }
         }

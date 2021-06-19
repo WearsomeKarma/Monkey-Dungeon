@@ -1,4 +1,4 @@
-﻿using MonkeyDungeon_Core.GameFeatures.GameEntities.Resources;
+﻿using MonkeyDungeon_Core.GameFeatures.GameComponents.EntityQuantities.Resources;
 using MonkeyDungeon_Vanilla_Domain;
 using System;
 using System.Collections.Generic;
@@ -11,13 +11,13 @@ namespace MonkeyDungeon_Core.GameFeatures
     public class GameEntity_ServerSide_Roster : GameEntity_Field<GameEntity_ServerSide>
     {
         internal GameEntity_ServerSide[] Get_Entities()
-            => Get_Reduced_Field();
+            => Get__Reduced_Field__Survey();
         
         internal GameEntity_ServerSide[] Get_Entities(GameEntity_Position[] positions)
         {
             List<GameEntity_ServerSide> entities = new List<GameEntity_ServerSide>();
 
-            GameEntity_Position.For_Each_Position(
+            GameEntity_Position.For_Each__Position(
                 GameEntity_Team_ID.ID_NULL,
                 (p) =>
                 {
@@ -44,7 +44,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         
         internal GameEntity_ServerSide[] Get_Entities(GameEntity_Team_ID teamID, bool checkForConciousness=false)
         {
-            GameEntity_ServerSide[] entities = Get_Reduced_Field();
+            GameEntity_ServerSide[] entities = Get__Reduced_Field__Survey();
 
             List<GameEntity_ServerSide> ofTeam = new List<GameEntity_ServerSide>();
             
@@ -59,7 +59,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             List<GameEntity_Attribute_Name_Race> races = new List<GameEntity_Attribute_Name_Race>();
             
-            foreach(GameEntity_ServerSide entity in Get_Reduced_Field())
+            foreach(GameEntity_ServerSide entity in Get__Reduced_Field__Survey())
                 races.Add(entity.GameEntity_Race);
 
             return races.ToArray();
@@ -74,7 +74,7 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             bool ret = true;
 
-            foreach (GameEntity_ServerSide entity in Get_Reduced_Field())
+            foreach (GameEntity_ServerSide entity in Get__Reduced_Field__Survey())
             {
                 Console.WriteLine("{0} -- isReady: {1}", entity, entity.IsReady);
                 if (entity.GameEntity_Team_ID == GameEntity_Team_ID.TEAM_ONE_ID)

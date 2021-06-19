@@ -40,7 +40,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
             {
                 bool state = abilities[i] != null && abilities.Length > i;
             
-                abilityButtons[i].Text = state ? abilities[i].Ability_Name : GameEntity_Attribute_Name.NULL_ATTRIBUTE_NAME;
+                abilityButtons[i].Text = state ? abilities[i].Ability_Name : GameEntity_Attribute_Name.NULL__ATTRIBUTE_NAME;
                 abilityButtons[i].Enabled = state;
                 abilityButtons[i].SpriteComponent.Enabled = state;
             }
@@ -150,7 +150,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
                 new MMW_Combat_Set_Selected_Ability(Selected_Ability)
             );
 
-            foreach (GameEntity_Position position in Selected_Ability.Target.Get_Reduced_Fields())
+            foreach (GameEntity_Position position in Selected_Ability.SurveyTarget.Get__Targeted_Positions__Survey_Target())
             {
                 Relay_Message(
                     new MMW_Combat_Add_Target(
@@ -198,7 +198,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
         internal void Reset_Selections()
         {
             if (Selected_Ability != null)
-                Selected_Ability.Target.Reset();
+                Selected_Ability.SurveyTarget.Reset();
             
             Console.WriteLine("[UI_Combat_Layer.cs:205] -- Resetting selections.");
             
@@ -230,7 +230,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
 
         private void Set_Conscious_Target_Buttons(GameEntity_Team_ID teamId)
         {
-            GameEntity_Position.For_Each_Position(teamId, (p) =>
+            GameEntity_Position.For_Each__Position(teamId, (p) =>
             {
                 GameEntity_ClientSide entity = World_Layer.Get_GameEntity(p);
                 Target_Buttons.Set_Button_State(p, !(entity.IsDismissed || entity.IsIncapacitated));
@@ -267,7 +267,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
         private void Select_Enemy(GameEntity_Position position, UI_Button_Target button)
         {
             Console.WriteLine("Select_Enemy");
-            Selected_Ability?.Target.Add_Target(position);
+            Selected_Ability?.SurveyTarget.Add_Target(position);
         }
 
         private void Add_Buttons(UI_Button[] buttons)

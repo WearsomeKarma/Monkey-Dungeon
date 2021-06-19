@@ -16,3 +16,9 @@ C:/Users/Pahpr/source/repos/Monkey-Dungeon/MonkeyDungeon_Vanilla_Domain/obj/Debu
 /home/shalidor/gitrepos/md_refactor/Monkey-Dungeon/MonkeyDungeon_Vanilla_Domain/obj/Debug/MonkeyDungeon_Vanilla_Domain.pdb
 /home/shalidor/gitrepos/md_refactor/Monkey-Dungeon/MonkeyDungeon_Vanilla_Domain/bin/Debug/MonkeyDungeon_Vanilla_Domain.dll
 /home/shalidor/gitrepos/md_refactor/Monkey-Dungeon/MonkeyDungeon_Vanilla_Domain/bin/Debug/MonkeyDungeon_Vanilla_Domain.pdb
+C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_Vanilla_Domain\bin\Debug\MonkeyDungeon_Vanilla_Domain.dll
+C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_Vanilla_Domain\bin\Debug\MonkeyDungeon_Vanilla_Domain.pdb
+C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_Vanilla_Domain\obj\Debug\MonkeyDungeon_Vanilla_Domain.csprojAssemblyReference.cache
+C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_Vanilla_Domain\obj\Debug\MonkeyDungeon_Vanilla_Domain.csproj.CoreCompileInputs.cache
+C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_Vanilla_Domain\obj\Debug\MonkeyDungeon_Vanilla_Domain.dll
+C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_Vanilla_Domain\obj\Debug\MonkeyDungeon_Vanilla_Domain.pdb

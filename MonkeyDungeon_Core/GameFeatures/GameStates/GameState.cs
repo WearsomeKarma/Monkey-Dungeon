@@ -12,8 +12,8 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
 
     public class GameState
     {
-        public GameState_Machine GameState_Machine { get; private set; }
-        internal void Set_GameWorld(GameState_Machine gameWorld)
+        public Game_StateMachine GameState_Machine { get; private set; }
+        internal void Set_GameWorld(Game_StateMachine gameWorld)
         {
             GameState_Machine = gameWorld;
             Handle_AcquiredWorld();
@@ -30,46 +30,46 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
             TransitionState = TransitionState.Awaiting;
         }
 
-        internal void Reset(GameState_Machine gameWorld)
+        internal void Reset(Game_StateMachine gameWorld)
         {
             Handle_ResetState(gameWorld);
             TransitionState = TransitionState.Awaiting;
         }
 
-        internal void Begin(GameState_Machine gameWorld)
+        internal void Begin(Game_StateMachine gameWorld)
         {
             TransitionState = TransitionState.Beginning;
             Handle_Begin_State(gameWorld);
             TransitionState = TransitionState.Acting;
         }
 
-        internal void End(GameState_Machine gameWorld)
+        internal void End(Game_StateMachine gameWorld)
         {
             TransitionState = TransitionState.Ending;
             Handle_End_State(gameWorld);
             TransitionState = TransitionState.Finished;
         }
 
-        internal void UpdateState(GameState_Machine gameWorld, double deltaTime=0)
+        internal void UpdateState(Game_StateMachine gameWorld, double deltaTime=0)
         {
             Handle_Update_State(gameWorld, deltaTime);
         }
 
         protected void End() => TransitionState = TransitionState.Ending;
 
-        protected virtual void Handle_ResetState(GameState_Machine gameWorld)
+        protected virtual void Handle_ResetState(Game_StateMachine gameWorld)
         {
 
         }
-        protected virtual void Handle_Begin_State(GameState_Machine gameWorld)
+        protected virtual void Handle_Begin_State(Game_StateMachine gameWorld)
         {
 
         }
-        protected virtual void Handle_End_State(GameState_Machine gameWorld)
+        protected virtual void Handle_End_State(Game_StateMachine gameWorld)
         {
 
         }
-        protected virtual void Handle_Update_State(GameState_Machine gameWorld, double deltaTime)
+        protected virtual void Handle_Update_State(Game_StateMachine gameWorld, double deltaTime)
         {
 
         }
