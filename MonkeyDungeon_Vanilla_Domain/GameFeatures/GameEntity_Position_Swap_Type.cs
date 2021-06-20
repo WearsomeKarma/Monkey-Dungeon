@@ -21,6 +21,13 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         /// <summary>
         /// Redirects to no target - potentially resulting in termination of action or swapped object.
         /// </summary>
-        Swap_Null = -1
+        Swap_To_Null = -1,
+        /// <summary>
+        /// Use this to indicate that no redirection modification is desired.
+        /// For example, if the base redirection is 70% vertical, use this to leave
+        /// the current redirection type alone. Set value to 0 additive or 1 multiplicative
+        /// to leave the chance percentage alone.
+        /// </summary>
+        Swap_Is_Null = -2
     }
 }

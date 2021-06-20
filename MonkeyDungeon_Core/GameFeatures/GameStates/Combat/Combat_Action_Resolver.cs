@@ -27,17 +27,24 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat
                 stage.Bind_To_Resolver(this, gameStateCombat);
         }
 
-        public void Resolve_Action(GameEntity_ServerSide_Action action)
+        public Combat_Action_Conclusion_Type Resolve__Action__Resolver(GameEntity_ServerSide_Action action)
         {
-            action.Begin_Action_Resolution(GameStateCombat.Game_Field);
+            action.Begin_Action_Resolution(GameStateCombat.Combat__Game_Field);
+
+            Combat_Action_Conclusion_Type stageConclusion = Combat_Action_Conclusion_Type.SUCCESS;
             
             Resolution_Stage_Index = 0;
             while(Resolution_Stage_Index < BASE_PROCEDURE.Length)
             {
                 Console.WriteLine(BASE_PROCEDURE[Resolution_Stage_Index]);
-                BASE_PROCEDURE[Resolution_Stage_Index].Begin_Stage(action);
+                stageConclusion = BASE_PROCEDURE[Resolution_Stage_Index].Resolve__Action__Resolution_Stage(action);
+                Console.WriteLine("[Combat_Action_Resolver.cs:41] Stage resolution type: " + stageConclusion);
+                if (stageConclusion < 0)
+                    break;
                 Resolution_Stage_Index++;
             }
+
+            return stageConclusion;
         }
     }
 }

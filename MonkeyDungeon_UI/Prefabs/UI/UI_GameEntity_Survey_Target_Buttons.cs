@@ -18,7 +18,7 @@ namespace MonkeyDungeon_UI.Prefabs.UI
             => Get__Reduced_Field__Survey();
         
         internal UI_GameEntity_Survey_Target_Buttons(UI_Combat_Layer sceneLayer, Vector3[] vectorSpace, RenderUnit buttonVisual) 
-            : base(null)
+            : base(() => null)
         {
             VECTOR_SURVEY = new GameEntity_Position_Vector_Survey(vectorSpace);
             

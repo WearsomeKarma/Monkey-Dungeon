@@ -11,24 +11,24 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
         {
         }
 
-        protected override void Handle_Update_State(Game_StateMachine gameWorld, double deltaTime)
+        protected override void Handle_Update__State__GameState_Combat(Game_StateMachine gameWorld, double deltaTime)
         {
             timer.Progress_DeltaTime(deltaTime);
             if (timer.IsFinished)
-                gameWorld.Request_Transition_ToState<GameState_Combat>();
+                gameWorld.Request__State_Transition__StateMachine<GameState_Combat>();
         }
 
-        protected override void Handle_Begin_State(Game_StateMachine gameWorld)
+        protected override void Handle_Begin__State__GameState(Game_StateMachine gameWorld)
         {
             timer.Set();
-            GameState_Machine.Broadcast(
+            GameState_Machine.Broadcast__Message__StateMachine(
                 new MMW_Set_Traveling_State(true)
                 );
         }
 
-        protected override void Handle_End_State(Game_StateMachine gameWorld)
+        protected override void Handle_Conclude__State__GameState(Game_StateMachine gameWorld)
         {
-            GameState_Machine.Broadcast(
+            GameState_Machine.Broadcast__Message__StateMachine(
                 new MMW_Set_Traveling_State(false)
                 );
         }

@@ -54,5 +54,12 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 
         public static GameEntity_ID Nullwrap(GameEntity_ID id)
             => id ?? ID_NULL;
+
+        public static void For_Each__GameEntity_ID(GameEntity_Team_ID teamId, Action<GameEntity_ID> action)
+        {
+            foreach(GameEntity_ID id in IDS)
+                if (id.Team_Id == teamId)
+                    action.Invoke(id);
+        }
     }
 }

@@ -17,9 +17,9 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
             if (!IsValid_Message(recievedMessage))
                 return;
 
-            GameEntity_ServerSide_Controller serverSideController = GameStateCombat.ServerSideControllerOfCurrentTurn;
+            GameEntity_ServerSide_Controller serverSideController = GameStateCombat.Combat__Entity_Controller__Of_Current_Turn;
 
-            serverSideController.Combat_Setup__Add_Target(GameEntity_Position.ALL_NON_NULL__POSITIONS[recievedMessage.INT_VALUE]);
+            serverSideController.Combat_Setup__Add_Target__ServerSide_Controller(GameEntity_Position.ALL_NON_NULL__POSITIONS[recievedMessage.INT_VALUE]);
         }
     }
 }

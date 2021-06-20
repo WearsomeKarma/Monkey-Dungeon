@@ -9,23 +9,28 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
 {
     public class Resolution_Stage_Redirection : Combat_Action_Resolution_Stage
     {
-        protected override void Handle_Stage(GameEntity_ServerSide_Action action)
+        protected override Combat_Action_Conclusion_Type Handle__Resolve_Action__Resolution_Stage(GameEntity_ServerSide_Action action)
         {
-            GameEntity_ServerSide owner = Get_Entity(action.Action__Invoking_Entity);
+            GameEntity_ServerSide owner = Get__Entity__Resolution_Stage(action.Action__Invoking_Entity);
             
             Initalize__Redirection_Survey(action);
             Apply__Invoker_Modifiers(action);
             Apply__Targeted_Entity_Modifiers(action);
 
             Determine__Redirections(action);
+
+            if (!action.Has_Targets)
+                return Combat_Action_Conclusion_Type.FAIL__INVALID_TARGETS;
             
             Relay_UI_Event(owner, action);
+
+            return Combat_Action_Conclusion_Type.SUCCESS;
         }
 
         private void Initalize__Redirection_Survey(GameEntity_ServerSide_Action action)
         {
             GameEntity_ServerSide_Ability ability = action.Action__Selected_Ability;
-            GameEntity_Position_Type assaulterPositionType = (GameEntity_Position_Type) Get_Entity(action).GameEntity_Position;
+            GameEntity_Position_Type assaulterPositionType = (GameEntity_Position_Type) Get__Entity__Resolution_Stage(action).GameEntity__Position;
             GameEntity_Position[] targetedPositions = action.Action__Survey_Target.Get__Targeted_Hostile_Positions__Survey_Target(action.Action__Invoking_Entity.Team_Id);
 
             action.Action__Survey_Redirection.Reset();
@@ -33,15 +38,18 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
             foreach (GameEntity_Position targetedPosition in targetedPositions)
             {
                 GameEntity_Position_Type targetPositionType = (GameEntity_Position_Type) targetedPosition;
-                
-                action.Action__Survey_Redirection[targetedPosition].Combine__Redirection_Chance
+
+                Combat_Redirection_Chance baseChance = Combat_Redirection_Chance.Base_Redirection_Chance
                 (
-                    Combat_Redirection_Chance.Base_Redirection_Chance
-                    (
-                        ability.Ability__Combat_Assault_Type,
-                        assaulterPositionType,
-                        targetPositionType
-                    )
+                    ability.Ability__Combat_Assault_Type,
+                    assaulterPositionType,
+                    targetPositionType
+                );
+                
+                action.Action__Survey_Redirection[targetedPosition].Modify__By_Quantity__Quantity
+                (
+                    baseChance,
+                    baseChance.MODIFICATION_TYPE
                 );
             }
         }
@@ -52,7 +60,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
             GameEntity_Position[] targetedPositions =
                 action.Action__Survey_Redirection.Get__Positions_Of_Hostiles__Survey_Redirection(action.Action__Invoking_Entity.Team_Id);
             GameEntity_Position_Type ownerPositionType =
-                (GameEntity_Position_Type) Get_Entity(action).GameEntity_Position;
+                (GameEntity_Position_Type) Get__Entity__Resolution_Stage(action).GameEntity__Position;
             
             foreach (GameEntity_Position targetedPosition in targetedPositions)
             {
@@ -65,7 +73,11 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
                     action.Action__Survey_Redirection[targetedPosition]
                 );
                 
-                action.Action__Survey_Redirection[targetedPosition].Combine__Redirection_Chance(chance);
+                action.Action__Survey_Redirection[targetedPosition].Modify__By_Quantity__Quantity
+                    (
+                    chance,
+                    chance.MODIFICATION_TYPE
+                    );
             }
         }
 
@@ -75,13 +87,13 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
             GameEntity_Position[] targetedPositions =
                 action.Action__Survey_Redirection.Get__Positions_Of_Hostiles__Survey_Redirection(action.Action__Invoking_Entity.Team_Id);
             GameEntity_Position_Type assaulterPositionType =
-                (GameEntity_Position_Type) Get_Entity(action).GameEntity_Position;
+                (GameEntity_Position_Type) Get__Entity__Resolution_Stage(action).GameEntity__Position;
 
             foreach (GameEntity_Position targetedPosition in targetedPositions)
             {
                 GameEntity_Position_Type targetPositionType = (GameEntity_Position_Type) targetedPosition;
 
-                GameEntity_ServerSide targetedEntity = Get_Entity(targetedPosition);
+                GameEntity_ServerSide targetedEntity = Get__Entity__Resolution_Stage(targetedPosition);
 
                 Combat_Redirection_Chance[] chances = targetedEntity.React_To__Redirect_Chance__GameEntity
                 (
@@ -93,7 +105,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
 
                 foreach (Combat_Redirection_Chance chance in chances)
                 {
-                    action.Action__Survey_Redirection[targetedPosition].Combine__Redirection_Chance(chance);
+                    action.Action__Survey_Redirection[targetedPosition].Modify__By_Quantity__Quantity(chance, chance.MODIFICATION_TYPE);
                 }
             }
         }
@@ -108,12 +120,19 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
                 
                 if (chance.Determine__If_Redirection_Occurs__Redirection_Chance())
                 {
-                    action.Action__Survey_Target.Remove_Target(targetedPosition);
-
                     GameEntity_Position redirectedPosition = Combat_Redirection_Chance.Redirect(targetedPosition,
                         chance.Redirection_Chance__Redirection_Type);
 
-                    action.Action__Survey_Target.Add_Target(redirectedPosition);
+                    GameEntity_ServerSide redirectedEntity = Get__Entity__Resolution_Stage(redirectedPosition);
+
+                    //Ignore redirections to deceased/missing redirected targets.
+                    if (redirectedEntity?.GameEntity__Is_Not_Present ?? false)
+                        continue;
+                    
+                    action.Action__Survey_Target.Remove_Target(targetedPosition);
+
+                    if (redirectedEntity != null)
+                        action.Action__Survey_Target.Add_Target(redirectedPosition);
                 }
             }
         }
@@ -124,16 +143,16 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
             Combat_Assault_Type assaultType = ability.Ability__Combat_Assault_Type;
 
             GameEntity_Position[] positions = action.Action__Survey_Target.Get__Targeted_Positions__Survey_Target();
-            GameEntity_ServerSide[] targets = Get_Entities(positions);
+            GameEntity_ServerSide[] targets = Get__Entities__Resolution_Stage(positions);
             
             //TOOD: fix
             switch (assaultType)
             {
                 case Combat_Assault_Type.Melee:
-                    Resolver.GameStateCombat.Act_Melee_Attack(entityServerSide.GameEntity_ID, targets[0].GameEntity_ID);
+                    Resolver.GameStateCombat.Relay__Melee_Attack__GameState_Combat(entityServerSide.GameEntity__ID, targets[0].GameEntity__ID);
                     break;
                 case Combat_Assault_Type.Ranged:
-                    Resolver.GameStateCombat.Act_Ranged_Attack(entityServerSide.GameEntity_ID, targets[0].GameEntity_ID, ability.Ability__Particle_Name);
+                    Resolver.GameStateCombat.Relay__Ranged_Attack__GameState_Combat(entityServerSide.GameEntity__ID, targets[0].GameEntity__ID, ability.Ability__Particle_Name);
                     break;
             }
         }

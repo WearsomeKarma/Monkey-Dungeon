@@ -1,15 +1,15 @@
 ﻿using System;
-using MonkeyDungeon_Core.GameFeatures;
+using System.ComponentModel;
 
 namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 {
     public class GameEntity_Quantity<T> : GameEntity_Attribute<T> where T : GameEntity
     {
-        public double Max_Quantity { get; internal set; }
-        public double Min_Quantity { get; internal set; }
+        public double Quantity__Maximal_Value { get; internal set; }
+        public double Quantity__Minimal_Value { get; internal set; }
 
-        public double Value { get; internal set; }
-
+        public double Quantity__Value { get; internal set; }
+        
         /// <summary>
         /// Resources can only be manipulated during the beginning of the turn or ability resolution.
         /// </summary>
@@ -30,29 +30,35 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         public event Action<GameEntity_Quantity<T>> Event__Quantity_Depleted__Quantity;
 
         public bool IsDepleted
-            => (Value - Min_Quantity) < 0.0001;
+            => (Quantity__Value - Quantity__Minimal_Value) < 0.0001;
 
-         protected GameEntity_Quantity(GameEntity_Attribute_Name attributeName, double min, double max, double? value = null)
+         protected GameEntity_Quantity
+             (
+             GameEntity_Attribute_Name attributeName,
+             double? initalValue = null, 
+             double min = Double.MinValue, 
+             double max = Double.MaxValue
+             )
             : base(attributeName)
         {
             min = MathHelper.Clampd(min, min, max);
             max = (max > min) ? max : min;
 
-            Min_Quantity = min;
-            Max_Quantity = max;
-
-            Value = value ?? Max_Quantity;
+            Quantity__Minimal_Value = min;
+            Quantity__Maximal_Value = max;
+            
+            Set__Value__Quantity(initalValue ?? Quantity__Maximal_Value);
         }
 
         public double Offset__Value__Quantity(double offsetValue)
         {
             offsetValue = Handle_Pre_Offset_Value(offsetValue);
 
-            Clamp(Value + offsetValue);
+            Clamp(Quantity__Value + offsetValue);
 
-            Handle_Post_Offset_Value(Value);
+            Handle_Post_Offset_Value(Quantity__Value);
 
-            return Value;
+            return Quantity__Value;
         }
 
         public double Set__Value__Quantity(double newValue)
@@ -61,35 +67,57 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 
             Clamp(newValue);
 
-            Handle_Post_Set_Value(Value);
+            Handle_Post_Set_Value(Quantity__Value);
 
-            return Value;
+            return Quantity__Value;
         }
 
         public void Set__Minimal_Value__Quantity(double newMin)
         {
             newMin = Handle_Pre_Set_Min(newMin);
 
-            Min_Quantity = (newMin < Max_Quantity) ? newMin : Max_Quantity;
+            Quantity__Minimal_Value = (newMin < Quantity__Maximal_Value) ? newMin : Quantity__Maximal_Value;
 
-            Clamp(Value);
+            Clamp(Quantity__Value);
 
-            Handle_Post_Set_Min(Min_Quantity);
+            Handle_Post_Set_Min(Quantity__Minimal_Value);
         }
 
         public void Set__Maximal_Value__Quantity(double newMax, bool raiseValue = false)
         {
             newMax = Handle_Pre_Set_Max(newMax);
 
-            double oldMax = Max_Quantity;
+            double oldMax = Quantity__Maximal_Value;
 
-            Max_Quantity = (newMax > Min_Quantity) ? newMax : Min_Quantity;
-            Clamp(Value);
+            Quantity__Maximal_Value = (newMax > Quantity__Minimal_Value) ? newMax : Quantity__Minimal_Value;
+            Clamp(Quantity__Value);
 
             if (raiseValue)
                 Offset__Value__Quantity(newMax - oldMax);
 
-            Handle_Post_Set_Max(Max_Quantity);
+            Handle_Post_Set_Max(Quantity__Maximal_Value);
+        }
+
+        public virtual void Modify__By_Quantity__Quantity
+            (
+            GameEntity_Quantity<T> quantity, 
+            GameEntity__Quantity_Modification_Type modificationType
+            )
+        {
+            switch (modificationType)
+            {
+                case GameEntity__Quantity_Modification_Type.Additive:
+                    Offset__Value__Quantity(quantity);
+                    break;
+                case GameEntity__Quantity_Modification_Type.Multiplicative:
+                    Set__Value__Quantity(Quantity__Value * quantity);
+                    break;
+                case GameEntity__Quantity_Modification_Type.Mutate:
+                    Set__Value__Quantity(quantity);
+                    break;
+                case GameEntity__Quantity_Modification_Type.None:
+                    break;
+            }
         }
         
         private void Check_For__Depletion()
@@ -109,7 +137,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
             Handle_Quantity_Change();
             Event__Quantity_Changed__Quantity?.Invoke(this);
             
-            bool isIncrease = diff > Value;
+            bool isIncrease = diff > Quantity__Value;
 
             if (isIncrease)
                 Event__Quantity_Increasing__Quantity?.Invoke(this, diff);
@@ -122,7 +150,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         }
 
         public static implicit operator double(GameEntity_Quantity<T> q)
-            => q.Value;
+            => q.Quantity__Value;
 
         protected virtual double Handle_Pre_Offset_Value(double offsetValue) => offsetValue;
         protected virtual double Handle_Pre_Set_Value(double newValue) => newValue;
@@ -141,13 +169,13 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 
         protected void Clamp(double targetValue)
         {
-            double newValue = MathHelper.Clampd(targetValue, Min_Quantity, Max_Quantity);
-            double oldValue = Value;
-            Value = newValue;
+            double newValue = MathHelper.Clampd(targetValue, Quantity__Minimal_Value, Quantity__Maximal_Value);
+            double oldValue = Quantity__Value;
+            Quantity__Value = newValue;
             Inspect__Change(newValue - oldValue);
         }
 
         public override string ToString()
-            => string.Format("[Quantity] {0}:value, {1}:{2}", Min_Quantity, Value, Max_Quantity);
+            => string.Format("[Quantity] {0}:value, {1}:{2}", Quantity__Minimal_Value, Quantity__Value, Quantity__Maximal_Value);
     }
 }

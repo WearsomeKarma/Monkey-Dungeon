@@ -8,7 +8,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameComponents.EntityQuantities.Resour
     public class Health : GameEntity_ServerSide_Resource
     {
         public Health(double min, double max, double? initalValue = null)
-            : base(MD_VANILLA_RESOURCE_NAMES.RESOURCE_HEALTH, min, max, initalValue)
+            : base(MD_VANILLA_RESOURCE_NAMES.RESOURCE_HEALTH, initalValue, min, max)
         {
         }
         
@@ -19,7 +19,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameComponents.EntityQuantities.Resour
 
         public override GameEntity_Resource<GameEntity_ServerSide> Clone__Resource()
         {
-            return new Health(Min_Quantity, Max_Quantity, Value);
+            return new Health(Quantity__Minimal_Value, Quantity__Maximal_Value, Quantity__Value);
         }
     }
 }

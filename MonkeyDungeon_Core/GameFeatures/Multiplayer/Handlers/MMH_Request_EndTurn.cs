@@ -16,7 +16,7 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
         protected override void Handle_Message(Multiplayer_Message recievedMessage)
         {
             int relayId = recievedMessage.Relay_ID;
-            if (GameStateCombat.Entity_Of_Current_Turn_Relay_Id != relayId)
+            if (GameStateCombat.Combat__Entity_Relay_Id__Of_Current_Turn != relayId)
             {
                 Handle_Invalid_Message(recievedMessage);
                 return;

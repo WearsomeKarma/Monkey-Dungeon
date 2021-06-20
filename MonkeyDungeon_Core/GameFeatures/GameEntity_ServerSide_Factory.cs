@@ -34,8 +34,8 @@ namespace MonkeyDungeon_Core.GameFeatures
             List<string> ret = new List<string>();
 
             foreach (GameEntity_ServerSide entitiy in GameEntity_Catalog.Values)
-                if (!ret.Contains(entitiy.GameEntity_Race))
-                    ret.Add(entitiy.GameEntity_Race);
+                if (!ret.Contains(entitiy.GameEntity__Race))
+                    ret.Add(entitiy.GameEntity__Race);
 
             return ret.ToArray();
         }
@@ -47,7 +47,7 @@ namespace MonkeyDungeon_Core.GameFeatures
 
         public void Add_Template(GameEntity_ServerSide gameEntityServerSide)
         {
-            GameEntity_Catalog.Add(gameEntityServerSide.GameEntity_Race, gameEntityServerSide);
+            GameEntity_Catalog.Add(gameEntityServerSide.GameEntity__Race, gameEntityServerSide);
         }
 
         public GameEntity_ServerSide Create_NewEntity(GameEntity_ID entityScene_ID, Multiplayer_Relay_ID relayId, GameEntity_Position position,  GameEntity_Attribute_Name race)

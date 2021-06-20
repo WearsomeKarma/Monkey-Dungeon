@@ -30,7 +30,7 @@ namespace MonkeyDungeon_UI.Prefabs
             => UI_ENTITY_OBJECT_ROSTER.Get_Entity(position);
 
         public UI_EntityObject Get_UI_EntityObject(GameEntity_ID id)
-            => UI_ENTITY_OBJECT_ROSTER.Get_Entity(Get_GameEntity(id).GameEntity_Position);
+            => UI_ENTITY_OBJECT_ROSTER.Get_Entity(Get_GameEntity(id).GameEntity__Position);
         
         public void Swap_Positions(GameEntity_Position position, GameEntity_Position_Swap_Type swapType)
         {
@@ -40,7 +40,7 @@ namespace MonkeyDungeon_UI.Prefabs
 
         internal void Set_Entity(GameEntity_Position position, GameEntity_Attribute_Name_Race race, bool isDismissed = false)
         {
-            GameEntity_ID idAtPosition = GAME_ENTITY_ROSTER.Get_Entity(position).GameEntity_ID;
+            GameEntity_ID idAtPosition = GAME_ENTITY_ROSTER.Get_Entity(position).GameEntity__ID;
             GameEntity_ClientSide entity = new GameEntity_ClientSide(race, position, idAtPosition, isDismissed);
             GAME_ENTITY_ROSTER.Set_Entity(entity);
             entity.Bind_To__UI_EntityObject(UI_ENTITY_OBJECT_ROSTER.Get_Entity(position));

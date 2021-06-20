@@ -67,7 +67,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat
         public bool Has_Strict_Targets { get; set; }
 
         public Combat_Survey_Target()
-            : base(false)
+            : base(() => false)
         {
             
         }

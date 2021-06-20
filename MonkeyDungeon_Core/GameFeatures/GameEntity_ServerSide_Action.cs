@@ -53,7 +53,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             Action__Survey_Dodge_Bonuses =
                 new GameEntity_Survey_Quantity<GameEntity_ServerSide, GameEntity_ServerSide_Quantity>
                 (
-                    ()=> new GameEntity_ServerSide_Quantity()
+                    ()=> GameEntity_ServerSide_Quantity.Get__Generic_At_Zero__ServerSide_Quantity()
                 );
         }
 
@@ -70,7 +70,7 @@ namespace MonkeyDungeon_Core.GameFeatures
             GameEntity_ServerSide owner = field.Get_Entity(Action__Invoking_Entity);
             
             Console.WriteLine("--[Combat_Action.cs:63]--\n" + this);
-            Action__Survey_Target.Bind_To_Action(owner.GameEntity_Position, owner.GameEntity_Team_ID, Action__Selected_Ability.Ability__Combat_Target_Type, Action__Selected_Ability.Ability__Combat_Enforces_Strict_Targetting);
+            Action__Survey_Target.Bind_To_Action(owner.GameEntity__Position, owner.GameEntity__Team_ID, Action__Selected_Ability.Ability__Combat_Target_Type, Action__Selected_Ability.Ability__Combat_Enforces_Strict_Targetting);
         }
 
         public override string ToString()

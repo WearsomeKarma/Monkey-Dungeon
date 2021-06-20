@@ -16,9 +16,9 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
         internal void Set_GameWorld(Game_StateMachine gameWorld)
         {
             GameState_Machine = gameWorld;
-            Handle_AcquiredWorld();
+            Handle_Acquired__Game_StateMachine__GameState();
         }
-        protected virtual void Handle_AcquiredWorld() { }
+        protected virtual void Handle_Acquired__Game_StateMachine__GameState() { }
         public TransitionState TransitionState { get; private set; }
         
         //TODO: Add relays.
@@ -39,20 +39,20 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
         internal void Begin(Game_StateMachine gameWorld)
         {
             TransitionState = TransitionState.Beginning;
-            Handle_Begin_State(gameWorld);
+            Handle_Begin__State__GameState(gameWorld);
             TransitionState = TransitionState.Acting;
         }
 
         internal void End(Game_StateMachine gameWorld)
         {
             TransitionState = TransitionState.Ending;
-            Handle_End_State(gameWorld);
+            Handle_Conclude__State__GameState(gameWorld);
             TransitionState = TransitionState.Finished;
         }
 
         internal void UpdateState(Game_StateMachine gameWorld, double deltaTime=0)
         {
-            Handle_Update_State(gameWorld, deltaTime);
+            Handle_Update__State__GameState_Combat(gameWorld, deltaTime);
         }
 
         protected void End() => TransitionState = TransitionState.Ending;
@@ -61,15 +61,15 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
         {
 
         }
-        protected virtual void Handle_Begin_State(Game_StateMachine gameWorld)
+        protected virtual void Handle_Begin__State__GameState(Game_StateMachine gameWorld)
         {
 
         }
-        protected virtual void Handle_End_State(Game_StateMachine gameWorld)
+        protected virtual void Handle_Conclude__State__GameState(Game_StateMachine gameWorld)
         {
 
         }
-        protected virtual void Handle_Update_State(Game_StateMachine gameWorld, double deltaTime)
+        protected virtual void Handle_Update__State__GameState_Combat(Game_StateMachine gameWorld, double deltaTime)
         {
 
         }

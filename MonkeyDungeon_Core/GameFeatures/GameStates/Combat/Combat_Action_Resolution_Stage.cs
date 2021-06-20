@@ -8,14 +8,17 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat
     public abstract class Combat_Action_Resolution_Stage
     {
         private GameState_Combat GameStateCombat { get; set; }
-        protected GameEntity_ServerSide_Roster Entity_Field => GameStateCombat.Game_Field;
-        protected GameEntity_ServerSide Get_Entity(GameEntity_ID id)
+        protected GameEntity_ServerSide_Roster Entity_Field => GameStateCombat.Combat__Game_Field;
+        protected GameEntity_ServerSide Get__Entity__Resolution_Stage(GameEntity_ID id)
             => Entity_Field.Get_Entity(id);
 
-        protected GameEntity_ServerSide Get_Entity(GameEntity_Position position)
+        protected GameEntity_ServerSide Get__Entity__Resolution_Stage(GameEntity_Position position)
             => Entity_Field.Get_Entity(position);
 
-        protected GameEntity_ServerSide[] Get_Entities(GameEntity_Position[] positions)
+        protected GameEntity_ServerSide Get__Entity__Resolution_Stage(GameEntity_ServerSide_Action action)
+            => Get__Entity__Resolution_Stage(action.Action__Invoking_Entity);
+        
+        protected GameEntity_ServerSide[] Get__Entities__Resolution_Stage(GameEntity_Position[] positions)
             => Entity_Field.Get_Entities(positions);
         
         protected Combat_Action_Resolver Resolver { get; set; }
@@ -25,13 +28,10 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat
             GameStateCombat = gameStateCombat;
         }
 
-        protected GameEntity_ServerSide Get_Entity(GameEntity_ServerSide_Action action)
-            => Get_Entity(action.Action__Invoking_Entity);
-        
-        internal void Begin_Stage(GameEntity_ServerSide_Action action)
+        internal Combat_Action_Conclusion_Type Resolve__Action__Resolution_Stage(GameEntity_ServerSide_Action action)
         {
-            Handle_Stage(action);
+            return Handle__Resolve_Action__Resolution_Stage(action);
         }
-        protected abstract void Handle_Stage(GameEntity_ServerSide_Action action);
+        protected abstract Combat_Action_Conclusion_Type Handle__Resolve_Action__Resolution_Stage(GameEntity_ServerSide_Action action);
     }
 }

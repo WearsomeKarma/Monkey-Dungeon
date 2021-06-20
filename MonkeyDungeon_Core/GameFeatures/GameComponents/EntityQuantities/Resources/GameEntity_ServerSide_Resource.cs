@@ -1,4 +1,5 @@
-﻿using MonkeyDungeon_Vanilla_Domain.GameFeatures;
+﻿using System;
+using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameComponents.EntityQuantities.Resources
 {
@@ -8,17 +9,17 @@ namespace MonkeyDungeon_Core.GameFeatures.GameComponents.EntityQuantities.Resour
     
         public GameEntity_ServerSide_Resource
             (
-            GameEntity_Attribute_Name resourceName, 
-            double min, 
-            double max, 
-            double? initalValue = null
+            GameEntity_Attribute_Name resourceName,
+            double? initalValue = null,
+            double min = Double.MinValue, 
+            double max = Double.MaxValue
             ) 
             : base
                 (
                 resourceName, 
+                initalValue,
                 min, 
-                max, 
-                initalValue
+                max
                 )
         {
         }

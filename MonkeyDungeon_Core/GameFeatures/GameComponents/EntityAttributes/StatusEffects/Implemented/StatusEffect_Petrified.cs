@@ -11,7 +11,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameComponents.EntityAttributes.Status
         {
         }
 
-        protected override void Handle_Combat_BeginTurn__StatusEffect()
+        protected override void Handle_Begin__Combat_Turn__StatusEffect()
         {
             //combat.Request_EndOfTurn();
             throw new NotImplementedException(); //TODO: resolve above.

@@ -47,8 +47,6 @@ C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_UI\bin\Debug\MonkeyDungeon_UI.
 C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_UI\bin\Debug\MonkeyDungeon_Vanilla_Domain.dll
 C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_UI\bin\Debug\OpenTK.dll
 C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_UI\bin\Debug\MonkeyDungeon_Vanilla_Domain.pdb
-C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_UI\bin\Debug\isometricgame.pdb
-C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_UI\bin\Debug\isometricgame.dll.config
 C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_UI\bin\Debug\OpenTK.pdb
 C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_UI\bin\Debug\OpenTK.xml
 C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_UI\obj\Debug\MonkeyDungeon_Vanilla_UI.csprojAssemblyReference.cache
@@ -56,3 +54,6 @@ C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_UI\obj\Debug\MonkeyDungeon_Van
 C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_UI\obj\Debug\MonkeyDungeon_Vanilla_UI.csproj.CopyComplete
 C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_UI\obj\Debug\MonkeyDungeon_UI.dll
 C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_UI\obj\Debug\MonkeyDungeon_UI.pdb
+C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_UI\bin\Debug\isometricgame.dll
+C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_UI\bin\Debug\isometricgame.pdb
+C:\Users\Pahpr\rider\Monkey-Dungeon\MonkeyDungeon_UI\bin\Debug\isometricgame.dll.config

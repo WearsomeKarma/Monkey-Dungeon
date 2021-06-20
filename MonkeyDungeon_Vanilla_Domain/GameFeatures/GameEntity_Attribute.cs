@@ -1,8 +1,4 @@
-﻿
-using MonkeyDungeon_Vanilla_Domain;
-using MonkeyDungeon_Vanilla_Domain.GameFeatures;
-
-namespace MonkeyDungeon_Core.GameFeatures
+﻿namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 {
     public class GameEntity_Attribute<T> where T : GameEntity
     {
@@ -21,16 +17,16 @@ namespace MonkeyDungeon_Core.GameFeatures
                 Detach_From__Entity__Attribute();
 
             Attached_Entity = newEntityServerSide;
-            Handle_Attach_To_Entity(Attached_Entity);
+            Handle_Attach_To__Entity__Attribute();
         }
 
         protected void Detach_From__Entity__Attribute()
         {
-            Handle_Detach_From_Entity(Attached_Entity);
+            Handle_Detach_From__Entity__Attribute();
             Attached_Entity = null;
         }
 
-        protected virtual void Handle_Attach_To_Entity(T newEntityServerSide) { }
-        protected virtual void Handle_Detach_From_Entity(T oldEntityServerSide) { }
+        protected virtual void Handle_Attach_To__Entity__Attribute() { }
+        protected virtual void Handle_Detach_From__Entity__Attribute() { }
     }
 }

@@ -9,12 +9,15 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
 {
     public class Resolution_Stage_Damage : Combat_Action_Resolution_Stage
     {
-        protected override void Handle_Stage(GameEntity_ServerSide_Action action)
+        protected override Combat_Action_Conclusion_Type Handle__Resolve_Action__Resolution_Stage(GameEntity_ServerSide_Action action)
         {
-            Determine__Damage_Per_Target(action);
+            Determine__Invoker_Base_Damage(action);
+            Apply__Damage_To_Targets(action);
+
+            return Combat_Action_Conclusion_Type.SUCCESS;
         }
 
-        private void Determine__Damage_Per_Target(GameEntity_ServerSide_Action action)
+        private void Determine__Invoker_Base_Damage(GameEntity_ServerSide_Action action)
         {
             GameEntity_ServerSide_Ability ability = action.Action__Selected_Ability;
             GameEntity_Damage<GameEntity_ServerSide> baseOffset = ability.Calculate__Damage__Ability();
@@ -36,6 +39,25 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
                         dodgeBonus
                         )
                     );
+            }
+        }
+
+        private void Apply__Damage_To_Targets(GameEntity_ServerSide_Action action)
+        {
+            GameEntity_ServerSide_Ability ability = action.Action__Selected_Ability;
+            GameEntity_Position[] targetedPositions =
+                action.Action__Survey_Target.Get__Targeted_Positions__Survey_Target();
+
+            foreach (GameEntity_Position targetedPosition in targetedPositions)
+            {
+                GameEntity_ServerSide targetedEntity = Get__Entity__Resolution_Stage(targetedPosition);
+                GameEntity_Damage<GameEntity_ServerSide> damage = action.Action__Survey_Damage[targetedPosition];
+                
+                targetedEntity.React_To__Pre_Resource_Offset__GameEntity(ability.Ability__Targeted_Resource, damage);
+                
+                targetedEntity.Offset__Resource__GameEntity<GameEntity_ServerSide_Resource>(ability.Ability__Targeted_Resource, damage);
+                
+                targetedEntity.React_To__Post_Resource_Offset__GameEntity(ability.Ability__Targeted_Resource, damage);
             }
         }
 

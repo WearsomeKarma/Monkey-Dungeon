@@ -19,8 +19,8 @@ namespace MonkeyDungeon_Core.GameFeatures.GameComponents.EntityAttributes.Status
         public void Remove__StatusEffect__GameEntity                             (GameEntity_ServerSide_StatusEffect effect) { if (!STATUSEFFECTS.Contains(effect)) return; STATUSEFFECTS.Remove(effect); effect.Detach_From__Entity__ServerSide_StatusEffect(); }
         public void Remove_All__StatusEffects__GameEntity                        () { foreach (GameEntity_ServerSide_StatusEffect effect in STATUSEFFECTS.ToList()) Remove__StatusEffect__GameEntity(effect); }
         public void Remove_All__Except<T>              () where T : GameEntity_ServerSide_StatusEffect { foreach (GameEntity_ServerSide_StatusEffect effect in STATUSEFFECTS.ToList()) if (effect is T) Remove__StatusEffect__GameEntity(effect); }
-        public void Disable__StatusEffects<T>                        () where T : GameEntity_ServerSide_StatusEffect { foreach (GameEntity_ServerSide_StatusEffect effect in STATUSEFFECTS.ToList()) if (effect is T) effect.Toggle__StatusEffect(false); }
-        public void Disable__StatusEffect                            (GameEntity_ServerSide_StatusEffect effect) { foreach (GameEntity_ServerSide_StatusEffect subEffect in STATUSEFFECTS.ToList()) if (subEffect == effect) effect.Toggle__StatusEffect(false); }
+        public void Disable__StatusEffects<T>                        () where T : GameEntity_ServerSide_StatusEffect { foreach (GameEntity_ServerSide_StatusEffect effect in STATUSEFFECTS.ToList()) if (effect is T) effect.Toggle__StatusEffect__ServerSide_StatusEffect(false); }
+        public void Disable__StatusEffect                            (GameEntity_ServerSide_StatusEffect effect) { foreach (GameEntity_ServerSide_StatusEffect subEffect in STATUSEFFECTS.ToList()) if (subEffect == effect) effect.Toggle__StatusEffect__ServerSide_StatusEffect(false); }
 
         internal GameEntity_StatusEffect_Manager(GameEntity_ServerSide managedAttachedEntity)
         {
@@ -30,14 +30,14 @@ namespace MonkeyDungeon_Core.GameFeatures.GameComponents.EntityAttributes.Status
         internal void Combat_BeginTurn__StatusEffect_Manager()
         {
             foreach (GameEntity_ServerSide_StatusEffect effect in STATUSEFFECTS)
-                effect.Combat_BeginTurn__StatusEffect();
+                effect.Begin__Combat_Turn__ServerSide_StatusEffect();
         }
 
         internal void React_To_Cast()
         {
             foreach (GameEntity_ServerSide_StatusEffect effect in STATUSEFFECTS)
             {
-                effect.React_To_Cast__StatusEffect();
+                effect.React_To__Cast__ServerSide_StatusEffect();
             }
         }
 
@@ -46,7 +46,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameComponents.EntityAttributes.Status
             double ret = 0;
 
             foreach (GameEntity_ServerSide_StatusEffect effect in STATUSEFFECTS)
-                ret += effect.Get_Hit_Bonus__StatusEffect();
+                ret += effect.Get__Hit_Bonus__ServerSide_StatusEffect();
             
             return ret;
         }
@@ -56,7 +56,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameComponents.EntityAttributes.Status
             double ret = 0;
 
             foreach (GameEntity_ServerSide_StatusEffect effect in STATUSEFFECTS)
-                ret += effect.Get_Dodge_Bonus__StatusEffect();
+                ret += effect.Get__Dodge_Bonus__ServerSide_StatusEffect();
             
             return ret;
         }
@@ -64,13 +64,13 @@ namespace MonkeyDungeon_Core.GameFeatures.GameComponents.EntityAttributes.Status
         internal void React_To_Pre_Resource_Offset(GameEntity_Attribute_Name resource, double finalizedOffset)
         {
             foreach (GameEntity_ServerSide_StatusEffect effect in STATUSEFFECTS)
-                effect.React_To_Pre_Resource_Offset__StatusEffect(resource, finalizedOffset);
+                effect.React_To__Pre_Resource_Offset__ServerSide_StatusEffect(resource, finalizedOffset);
         }
 
         internal void React_To_Post_Resource_Offset(GameEntity_Attribute_Name resource, double finalizedOffset)
         {
             foreach(GameEntity_ServerSide_StatusEffect effect in STATUSEFFECTS)
-                effect.React_To_Post_Resource_Offset__Status_Effect(resource, finalizedOffset);
+                effect.React_To__Post_Resource_Offset__ServerSide_Status_Effect(resource, finalizedOffset);
         }
 
         internal Combat_Redirection_Chance[] React_To_Redirect_Chance
@@ -86,7 +86,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameComponents.EntityAttributes.Status
             
             foreach (GameEntity_ServerSide_StatusEffect effect in STATUSEFFECTS)
             {
-                chance = effect.React_To_Redirect_Chance__StatusEffect
+                chance = effect.React_To__Redirect_Chance__ServerSide_StatusEffect
                 (
                     assaultType,
                     assaulterPositionType,

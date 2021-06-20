@@ -1,9 +1,6 @@
-﻿using MonkeyDungeon_Core.GameFeatures.GameComponents.EntityAttributes.Abilities;
-using MonkeyDungeon_Vanilla_Domain;
+﻿using System;
+using MonkeyDungeon_Core.GameFeatures.GameComponents.EntityAttributes.Abilities;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
-using System;
-using MonkeyDungeon_Core.GameFeatures.GameComponents.EntityAttributes.Abilities.Implemented;
-using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameComponents.Controllers
@@ -12,19 +9,21 @@ namespace MonkeyDungeon_Core.GameFeatures.GameComponents.Controllers
     {
         public GameEntityServerSideControllerAi()
             : base(true)
-        { }
+        {
+        }
 
         protected override void Handle_Get__Combat_Action__Controller()
         {
-            Random rand = new Random();
-            GameEntity_ServerSide[] players = GameEntity_Roster.Get_Entities(GameEntity_Team_ID.TEAM_ONE_ID, true);
-            GameEntity_Position targetId = players[rand.Next(players.Length)].GameEntity_Position;
+            var rand = new Random();
+            var players = GameEntity_Roster.Get_Entities(GameEntity_Team_ID.TEAM_ONE_ID, true);
+            var targetId = players[rand.Next(players.Length)].GameEntity__Position;
 
-            GameEntity_ServerSide_Ability ability =
-                Attached_GameEntity.Get__Ability__GameEntity<GameEntity_ServerSide_Ability>(MD_VANILLA_ABILITY_NAMES.ABILITY_PUNCH);
-            
+            var ability =
+                Attached_Entity.Get__Ability__GameEntity<GameEntity_ServerSide_Ability>(MD_VANILLA_ABILITY_NAMES
+                    .ABILITY_PUNCH);
+
             GameEntity_Controller_ServerSide_Action.Set_Ability(ability);
-            Combat_Setup__Add_Target(targetId);
+            Combat_Setup__Add_Target__ServerSide_Controller(targetId);
         }
 
         public override GameEntity_ServerSide_Controller Clone__Controller()

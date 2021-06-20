@@ -13,21 +13,25 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
 {
     public class Resolution_Stage_Cast : Combat_Action_Resolution_Stage
     {
-        protected override void Handle_Stage(GameEntity_ServerSide_Action action)
+        protected override Combat_Action_Conclusion_Type Handle__Resolve_Action__Resolution_Stage(GameEntity_ServerSide_Action action)
         {
-            GameEntity_ServerSide entity = Get_Entity(action);
+            GameEntity_ServerSide entity = Get__Entity__Resolution_Stage(action);
 
             GameEntity_ServerSide_Ability ability = action.Action__Selected_Ability;
 
             GameEntity_ServerSide_Resource taxedResource =
-                entity.Get__Resource__GameEntity<GameEntity_ServerSide_Resource>(ability.Ability__Targeted_Resource);
+                entity.Get__Resource__GameEntity<GameEntity_ServerSide_Resource>(ability.Ability__Taxed_Resource_Name);
 
             if (CheckIf_Can_Use_Action(ability, entity, taxedResource))
             {
                 ability.Cast__ServerSide_Ability();
 
                 entity.React_To__Cast__GameEntity();
+
+                return Combat_Action_Conclusion_Type.SUCCESS;
             }
+
+            return Combat_Action_Conclusion_Type.FAIL__INSUFFICENT_RESOURCES;
         }
 
         private bool CheckIf_Can_Use_Action(GameEntity_ServerSide_Ability ability, GameEntity_ServerSide entity, GameEntity_ServerSide_Resource taxedResource)

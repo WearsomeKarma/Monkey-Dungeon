@@ -15,20 +15,19 @@ namespace MonkeyDungeon_UI.Prefabs
     {
         public void Set_Incapacitated_Status(bool status)
         {
-            IsIncapacitated = status;
-            if(status)
-                UI_EntityObject.Entity_Died();
+            GameEntity__Is_Incapacitated = status;
+            UI_EntityObject.Entity_Died(status);
         }
 
         public void Set_Dismissed_Status(bool status)
         {
-            IsDismissed = status;
+            GameEntity__Is_Dismissed = status;
             UI_EntityObject.Entity_Dismissal_State_Changed(status);
         }
 
         public void Set_Cosmetic_Id(uint id)
         {
-            GameEntity_Cosmetic_ID = id;
+            GameEntity__Cosmetic_ID = id;
             UI_EntityObject?.Set_Unique_ID(id);
         }
 
@@ -49,29 +48,29 @@ namespace MonkeyDungeon_UI.Prefabs
         public void Bind_To__UI_EntityObject(UI_EntityObject uiEntityObject)
         {
             UI_EntityObject = uiEntityObject;
-            UI_EntityObject.Set_Unique_ID(GameEntity_Cosmetic_ID);
-            UI_EntityObject.Set_Race(GameEntity_Race, GameEntity_Cosmetic_ID);
+            UI_EntityObject.Set_Unique_ID(GameEntity__Cosmetic_ID);
+            UI_EntityObject.Set_Race(GameEntity__Race, GameEntity__Cosmetic_ID);
         }
 
-        public GameEntity_ClientSide(GameEntity_Attribute_Name_Race race, GameEntity_Position position, GameEntity_ID id = null, bool isDismissed = false)
+        public GameEntity_ClientSide(GameEntity_Attribute_Name_Race race, GameEntity_Position position, GameEntity_ID id = null, bool gameEntityISDismissed = false)
         {
             Level = new GameEntity_ClientSide_Resource(MD_VANILLA_RESOURCE_NAMES.RESOURCE_LEVEL);
             Ability_Points = new GameEntity_ClientSide_Resource(MD_VANILLA_RESOURCE_NAMES.RESOURCE_ABILITYPOINTS, 2);
 
-            IsDismissed = isDismissed;
+            GameEntity__Is_Dismissed = gameEntityISDismissed;
 
-            GameEntity_Position = position;
-            GameEntity_Race = race;
-            GameEntity_Cosmetic_ID = 0;
+            GameEntity__Position = position;
+            GameEntity__Race = race;
+            GameEntity__Cosmetic_ID = 0;
 
-            GameEntity_ID = id ?? GameEntity_ID.ID_NULL;
+            GameEntity__ID = id ?? GameEntity_ID.ID_NULL;
         }
         
         internal void Set_Ability(GameEntity_Ability_Index abilityIndex, GameEntity_Attribute_Name_Ability abilityName)
         {
             ABILITIES[abilityIndex] = new GameEntity_ClientSide_Ability(abilityName);
             //TODO: make it take target type from server.
-            ABILITIES[abilityIndex].SurveyTarget.Bind_To_Action(GameEntity_Position, GameEntity_Team_ID, Combat_Target_Type.One_Enemy, true);
+            ABILITIES[abilityIndex].SurveyTarget.Bind_To_Action(GameEntity__Position, GameEntity__Team_ID, Combat_Target_Type.One_Enemy, true);
         }
 
         internal void Set_Ability_Target_Type(GameEntity_Attribute_Name_Ability abilityName,

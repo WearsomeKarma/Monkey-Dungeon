@@ -233,7 +233,7 @@ namespace MonkeyDungeon_UI.Scenes.GameScenes
             GameEntity_Position.For_Each__Position(teamId, (p) =>
             {
                 GameEntity_ClientSide entity = World_Layer.Get_GameEntity(p);
-                Target_Buttons.Set_Button_State(p, !(entity.IsDismissed || entity.IsIncapacitated));
+                Target_Buttons.Set_Button_State(p, !(entity.GameEntity__Is_Dismissed || entity.GameEntity__Is_Incapacitated));
             });
         }
 

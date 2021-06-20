@@ -29,7 +29,7 @@ namespace MonkeyDungeon_Core
         {
             Check_Relays();
 
-            GameState_Machine.CheckFor_GameState_Transition(deltaTime);
+            GameState_Machine.Check_For__GameState_Transition__StateMachine(deltaTime);
 
             Flush_Relays();
         }

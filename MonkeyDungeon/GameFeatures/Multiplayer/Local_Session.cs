@@ -1,16 +1,11 @@
-﻿using MonkeyDungeon_Core;
-using MonkeyDungeon_Core.GameFeatures.Multiplayer;
+﻿using System;
+using MonkeyDungeon_Core;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonkeyDungeon.GameFeatures.Multiplayer
 {
     /// <summary>
-    /// Interfaces between the Client_UI Local_Reciever and the GameState Local_Reciever.
+    ///     Interfaces between the Client_UI Local_Reciever and the GameState Local_Reciever.
     /// </summary>
     public class Local_Session
     {
@@ -22,17 +17,19 @@ namespace MonkeyDungeon.GameFeatures.Multiplayer
             Client_Endpoint = clientEndpoint;
             Server_Instance = new MonkeyDungeon_Server(serverEndpoint);
 
-            Client_Endpoint.Set_Local_Endpoint((m) => {
+            Client_Endpoint.Set_Local_Endpoint(m =>
+            {
                 Write_Client_Tag("[SENT from Client]");
                 Write_Data(m.ToString());
-                
+
                 Handle_Local_Endpoint(m, serverEndpoint);
                 Write_Server_Tag("[PROCESSED]");
             });
-            serverEndpoint.Set_Local_Endpoint((m) => {
+            serverEndpoint.Set_Local_Endpoint(m =>
+            {
                 Write_Server_Tag("[SENT from Server]");
                 Write_Data(m.ToString());
-                
+
                 Handle_Local_Endpoint(m, Client_Endpoint);
                 Write_Client_Tag("[PROCESSED]");
             });
@@ -41,7 +38,7 @@ namespace MonkeyDungeon.GameFeatures.Multiplayer
         internal void On_Update_Frame(double deltaTime)
         {
             Client_Endpoint.CheckFor_NewMessages();
-            
+
             Client_Endpoint.Flush_Messages();
 
             Server_Instance.On_Update_Frame(deltaTime);
@@ -57,13 +54,13 @@ namespace MonkeyDungeon.GameFeatures.Multiplayer
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine(m);
         }
-        
+
         private void Write_Server_Tag(string m)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(m);
         }
-        
+
         private void Write_Data(string m)
         {
             Console.ForegroundColor = ConsoleColor.Gray;

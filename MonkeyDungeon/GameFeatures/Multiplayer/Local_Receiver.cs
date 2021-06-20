@@ -5,10 +5,16 @@ using MonkeyDungeon_Vanilla_Domain.Multiplayer;
 namespace MonkeyDungeon.GameFeatures.Multiplayer
 {
     /// <summary>
-    /// A relay endpoint for either the local UI or local gamestate (server)
+    ///     A relay endpoint for either the local UI or local gamestate (server)
     /// </summary>
     public class Local_Receiver : Multiplayer_Relay
     {
+        public Local_Receiver()
+            : base("0", 0) //sockets are not used, address and port are ignored.
+        {
+            Local_Inbox = new Queue<Multiplayer_Message>();
+        }
+
         private Action<Multiplayer_Message> Handler_Local_Endpoint_Delivery { get; set; }
         internal Queue<Multiplayer_Message> Local_Inbox { get; set; }
 
@@ -16,15 +22,11 @@ namespace MonkeyDungeon.GameFeatures.Multiplayer
         {
             Handler_Local_Endpoint_Delivery = localEndpoint;
         }
-        
-        public Local_Receiver()
-            : base("0", 0) //sockets are not used, address and port are ignored.
-        {
-            Local_Inbox = new Queue<Multiplayer_Message>();
-        }
 
         protected override Multiplayer_Message Handle_Read_New_Message()
-            => (Local_Inbox.Count > 0) ? Local_Inbox.Dequeue() : Multiplayer_Message.MESSAGE_NULL;
+        {
+            return Local_Inbox.Count > 0 ? Local_Inbox.Dequeue() : Multiplayer_Message.MESSAGE_NULL;
+        }
 
         public override void Flush_Messages()
         {

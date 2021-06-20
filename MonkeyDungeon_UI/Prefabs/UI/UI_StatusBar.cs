@@ -95,7 +95,7 @@ namespace MonkeyDungeon_UI.Prefabs.UI
             EntityDescription.Ability_Points.Resource_Updated += Handle_AbilityPoint_Change;
             Handle_AbilityPoint_Change(EntityDescription.Ability_Points);
 
-            target = spriteLibrary.ExtractRenderUnit(EntityDescription.GameEntity_Race + UI_EntityObject.Suffix_Head);
+            target = spriteLibrary.ExtractRenderUnit(EntityDescription.GameEntity__Race + UI_EntityObject.Suffix_Head);
             Entity_SceneID = EntityDescription.SCENE_ID;
         }
 

@@ -1,11 +1,10 @@
-﻿using MonkeyDungeon_Core.GameFeatures;
-using MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat;
+﻿using MonkeyDungeon_Vanilla_Domain.GameFeatures.GameStates.Combat;
 
 namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 {
     public abstract class GameEntity_Ability<T> : GameEntity_Attribute<T> where T : GameEntity
     {
-        public GameEntity_ID                Ability__Invoker__GameEntity_ID         => Attached_Entity.GameEntity_ID;
+        public GameEntity_ID                Ability__Invoker__GameEntity_ID         => Attached_Entity.GameEntity__ID;
 
         public GameEntity_Attribute_Name    Ability__Particle_Name               { get; protected set; }
         
@@ -73,7 +72,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
             GameEntity_Position_Type targetPositionType,
             Combat_Redirection_Chance baseChance
         )
-            => Combat_Redirection_Chance.NO_REDIRECT;
+            => Combat_Redirection_Chance.NULL_REDIRECT;
         
         
         

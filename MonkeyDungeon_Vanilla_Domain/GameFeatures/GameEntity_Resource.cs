@@ -1,17 +1,20 @@
-﻿namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
+﻿using System;
+
+namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 {
     public class GameEntity_Resource<T> : GameEntity_Quantity<T> where T : GameEntity
     {
         protected GameEntity_Resource
             (
             GameEntity_Attribute_Name resourceName, 
-            double min, 
-            double max, 
-            double? initalValue = null
+            double? initalValue = null,
+            double min = Double.MinValue, 
+            double max = Double.MaxValue
             ) 
             : base
                 (
                 resourceName, 
+                initalValue,
                 min, 
                 max
                 )
@@ -24,9 +27,9 @@
         {
             GameEntity_Resource<T> clone = new GameEntity_Resource<T>(
                 Attribute_Name,
-                Min_Quantity,
-                Max_Quantity,
-                Value
+                Quantity__Minimal_Value,
+                Quantity__Maximal_Value,
+                Quantity__Value
                 );
             return clone;
         }
@@ -39,7 +42,7 @@
         /// <returns></returns>
         public bool Try_Offset__Resource(double offset, bool peeking = false)
         {
-            bool breaks = MathHelper.Breaks_Clampd(Value + offset, Min_Quantity, Max_Quantity);
+            bool breaks = MathHelper.Breaks_Clampd(Quantity__Value + offset, Quantity__Minimal_Value, Quantity__Maximal_Value);
             if (!breaks && !peeking)
                 Offset__Value__Quantity(offset);
             return !breaks;
@@ -52,9 +55,9 @@
         /// <param name="offset"></param>
         public bool Force_Offset__Resource(double offset)
         {
-            double val = Value;
+            double val = Quantity__Value;
             Offset__Value__Quantity(offset);
-            return (val - Value != 0);
+            return (val - Quantity__Value != 0);
         }
     }
 }

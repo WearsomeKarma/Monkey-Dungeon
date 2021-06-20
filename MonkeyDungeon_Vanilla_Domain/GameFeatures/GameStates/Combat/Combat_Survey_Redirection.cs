@@ -10,10 +10,15 @@
 
         public GameEntity_Position[] Get__Positions__Survey_Redirection()
             => Get__Reduced_Positions__Survey();
-        
-        public Combat_Survey_Redirection() 
-            : base(Combat_Redirection_Chance.NO_REDIRECT)
+
+        public Combat_Survey_Redirection()
+            : base(() => new Combat_Redirection_Chance(GameEntity_Position_Swap_Type.No_Swap, 1, GameEntity__Quantity_Modification_Type.None))
         {
+        }
+
+        protected override bool Check_If__Equivalent_To_Default__Survey(Combat_Redirection_Chance value)
+        {
+            return value.Redirection_Chance__Redirection_Type == GameEntity_Position_Swap_Type.No_Swap;
         }
     }
 }

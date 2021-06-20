@@ -15,7 +15,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -55,7 +55,6 @@
     <Compile Include="GameFeatures\GameComponents\EntityAttributes\Abilities\Implemented\Ability_PoopyFling.cs" />
     <Compile Include="GameFeatures\GameComponents\EntityAttributes\Abilities\Implemented\Ability_Punch.cs" />
     <Compile Include="GameFeatures\GameComponents\EntityAttributes\Abilities\Implemented\Ability_StandGuard.cs" />
-    <Compile Include="GameFeatures\GameComponents\EntityAttributes\StatusEffects\GameEntity_StatusEffect.cs" />
     <Compile Include="GameFeatures\GameComponents\EntityAttributes\StatusEffects\GameEntity_StatusEffect_Manager.cs" />
     <Compile Include="GameFeatures\GameComponents\EntityAttributes\StatusEffects\Implemented\StatusEffect_Dead.cs" />
     <Compile Include="GameFeatures\GameComponents\EntityAttributes\StatusEffects\Implemented\StatusEffect_Petrified.cs" />
@@ -75,6 +74,7 @@
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Dodge_Bonus.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Hit_Bonus.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\ActionResolutionStages\Resolution_Stage_Redirection.cs" />
+    <Compile Include="GameFeatures\GameStates\Combat\Combat_Action_Conclusion_Type.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Action_Resolution_Stage.cs" />
     <Compile Include="GameFeatures\GameStates\Combat\Combat_Action_Resolver.cs" />
     <Compile Include="GameFeatures\GameEntity_ServerSide.cs" />

@@ -8,27 +8,27 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         public T Get_Entity(GameEntity_ID id)
         {
             if (!GameEntity_ID.Validate(id))
-                return DEFAULT_VALUE;
+                return null;
             
             T entity;
 
             foreach (GameEntity_Position position in FIELD.Keys)
             {
                 entity = FIELD[position];
-                if (GameEntity.Validate(entity) && entity.GameEntity_ID == id)
+                if (GameEntity.Validate(entity) && entity.GameEntity__ID == id)
                 {
                     return entity;
                 }
             }
 
-            return DEFAULT_VALUE;
+            return null;
         }
 
         public T Get_Entity(GameEntity_Position position)
             => Get__Entry_From_Position__Survey(position);
 
         public GameEntity_Position Get_Position_From_Id(GameEntity_ID id, GameEntity_Position defaultPosition = null)
-            => Get_Entity(id)?.GameEntity_Position ?? (defaultPosition ?? GameEntity_Position.NULL_POSITION);
+            => Get_Entity(id)?.GameEntity__Position ?? (defaultPosition ?? GameEntity_Position.NULL_POSITION);
         
         public GameEntity_ID[] Get_Entity_Ids(bool isPlayers)
         {
@@ -36,7 +36,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 
             List<GameEntity_ID> ids = new List<GameEntity_ID>();
             for (int i = 0; i < MD_PARTY.MAX_PARTY_SIZE; i++)
-                ids.Add(rosterEntries[i].GameEntity_ID);
+                ids.Add(rosterEntries[i].GameEntity__ID);
 
             return ids.ToArray();
         }
@@ -45,7 +45,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         {
             if (GameEntity.Validate(entity))
             {
-                FIELD[entity.GameEntity_Position] = entity;
+                FIELD[entity.GameEntity__Position] = entity;
                 return;
             }
         }
@@ -62,7 +62,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         }
         
         protected GameEntity_Field()
-            : base(GameEntity.NULL_ENTITY as T)
+            : base(() => null)
         {}
     }
 }

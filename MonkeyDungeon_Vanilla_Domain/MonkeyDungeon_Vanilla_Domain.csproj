@@ -66,6 +66,7 @@
     <Compile Include="GameFeatures\GameEntity_Quantity.cs" />
     <Compile Include="GameFeatures\GameEntity_Resource.cs" />
     <Compile Include="GameFeatures\GameEntity_Stat.cs" />
+    <Compile Include="GameFeatures\GameEntity_StatusEffect.cs" />
     <Compile Include="GameFeatures\GameEntity_Survey.cs" />
     <Compile Include="GameFeatures\GameEntity_Field.cs" />
     <Compile Include="GameFeatures\GameEntity_ID.cs" />

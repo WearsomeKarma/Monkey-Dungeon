@@ -28,9 +28,9 @@ namespace MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers
 
             //TODO: remove player controller honestly, just make players not have controllers. Or rethink the system.
             GameEntity_ServerSide_Controller serverSideController =
-                GameStateCombat.ServerSideControllerOfCurrentTurn;
+                GameStateCombat.Combat__Entity_Controller__Of_Current_Turn;
 
-            serverSideController.Controller_Setup__Select_Ability(abilityName);
+            serverSideController.Controller_Setup__Select_Ability__ServerSide_Controller(abilityName);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
         {
         }
 
-        protected override void Handle_Begin_State(Game_StateMachine gameWorld)
+        protected override void Handle_Begin__State__GameState(Game_StateMachine gameWorld)
         {
 
         }

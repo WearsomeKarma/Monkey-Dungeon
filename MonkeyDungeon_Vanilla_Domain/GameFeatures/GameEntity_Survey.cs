@@ -6,7 +6,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
 {
     public class GameEntity_Survey<T>
     {
-        protected readonly T DEFAULT_VALUE;
+        protected readonly Func<T> DEFAULT_QUANTITIZER;
         
         protected readonly Dictionary<GameEntity_Position, T> FIELD;
         
@@ -16,7 +16,7 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
             if (GameEntity_Position.Validate(position))
                 return FIELD[position];
 
-            return DEFAULT_VALUE;
+            return default(T);
         }
 
         protected T[] Get__Entries_From_Positions__Survey(GameEntity_Position[] positions)
@@ -87,30 +87,30 @@ namespace MonkeyDungeon_Vanilla_Domain.GameFeatures
         {
             GameEntity_Position.For_Each__Position(GameEntity_Team_ID.ID_NULL, (p) =>
             {
-                FIELD[p] = DEFAULT_VALUE;
+                FIELD[p] = DEFAULT_QUANTITIZER();
             });
         }
 
         protected virtual bool Check_If__Equivalent_To_Default__Survey(T value)
         {
-            return value?.Equals(DEFAULT_VALUE) ?? false;
+            return value?.Equals(DEFAULT_QUANTITIZER()) ?? false;
         }
         
-        protected GameEntity_Survey(T defaultValue)
+        protected GameEntity_Survey(Func<T> defaultQuantitizer)
         {
-            DEFAULT_VALUE = defaultValue;
+            DEFAULT_QUANTITIZER = defaultQuantitizer;
             
             FIELD = new Dictionary<GameEntity_Position, T>()
             {
-                { GameEntity_Position.TEAM_ONE__FRONT_RIGHT, defaultValue },
-                { GameEntity_Position.TEAM_ONE__FRONT_LEFT, defaultValue },
-                { GameEntity_Position.TEAM_ONE__REAR_RIGHT, defaultValue },
-                { GameEntity_Position.TEAM_ONE__REAR_LEFT, defaultValue },
+                { GameEntity_Position.TEAM_ONE__FRONT_RIGHT, defaultQuantitizer() },
+                { GameEntity_Position.TEAM_ONE__FRONT_LEFT, defaultQuantitizer() },
+                { GameEntity_Position.TEAM_ONE__REAR_RIGHT, defaultQuantitizer() },
+                { GameEntity_Position.TEAM_ONE__REAR_LEFT, defaultQuantitizer() },
                 
-                { GameEntity_Position.TEAM_TWO__FRONT_RIGHT, defaultValue },
-                { GameEntity_Position.TEAM_TWO__FRONT_LEFT, defaultValue },
-                { GameEntity_Position.TEAM_TWO__REAR_RIGHT, defaultValue },
-                { GameEntity_Position.TEAM_TWO__REAR_LEFT, defaultValue }
+                { GameEntity_Position.TEAM_TWO__FRONT_RIGHT, defaultQuantitizer() },
+                { GameEntity_Position.TEAM_TWO__FRONT_LEFT, defaultQuantitizer() },
+                { GameEntity_Position.TEAM_TWO__REAR_RIGHT, defaultQuantitizer() },
+                { GameEntity_Position.TEAM_TWO__REAR_LEFT, defaultQuantitizer() }
             };
         }
         

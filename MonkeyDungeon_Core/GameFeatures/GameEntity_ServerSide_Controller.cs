@@ -10,30 +10,28 @@ namespace MonkeyDungeon_Core.GameFeatures
     /// <summary>
     /// Represents the control over an EntityComponent
     /// </summary>
-    public class GameEntity_ServerSide_Controller
+    public class GameEntity_ServerSide_Controller : GameEntity_Attribute<GameEntity_ServerSide>
     {
         public bool IsAutomonous { get; private set; }
 
-        protected GameEntity_ServerSide Attached_GameEntity { get; private set; }
-        protected GameEntity_ID Attached_GameEntity_ID => GameEntity_ID.Nullwrap(Attached_GameEntity?.GameEntity_ID);
-        public Game_StateMachine GameState_Machine => Attached_GameEntity?.Game;
-        public GameEntity_ServerSide_Roster GameEntity_Roster => Attached_GameEntity?.Entity_Field;
+        protected GameEntity_ID Attached_GameEntity_ID => GameEntity_ID.Nullwrap(Attached_Entity?.GameEntity__ID);
+        public GameEntity_ServerSide_Roster GameEntity_Roster => Attached_Entity?.Entity_Field;
         
         internal GameEntity_ServerSide_Action GameEntity_Controller_ServerSide_Action { get; private set; }
         internal Combat_Survey_Target ControllerCombatSurveyTarget => GameEntity_Controller_ServerSide_Action?.Action__Survey_Target;
         
-        internal void Controller_Setup__Select_Ability(GameEntity_Attribute_Name abilityName)
+        internal void Controller_Setup__Select_Ability__ServerSide_Controller(GameEntity_Attribute_Name abilityName)
         {
-            GameEntity_Controller_ServerSide_Action.Set_Ability(Attached_GameEntity.Get__Ability__GameEntity<GameEntity_ServerSide_Ability>(abilityName));
+            GameEntity_Controller_ServerSide_Action.Set_Ability(Attached_Entity.Get__Ability__GameEntity<GameEntity_ServerSide_Ability>(abilityName));
         }
-        internal bool Combat_Setup__Add_Target(GameEntity_Position position)
+        internal bool Combat_Setup__Add_Target__ServerSide_Controller(GameEntity_Position position)
         {
             return GameEntity_Controller_ServerSide_Action.Action__Survey_Target.Add_Target(position);
         }
         
         internal GameEntity_ServerSide_Action Get_Combat_Action()
         {
-            if (!Attached_GameEntity.Has_PlayableMoves__GameEntity())
+            if (!Attached_Entity.Has_PlayableMoves__GameEntity())
             {
                 return GameEntity_ServerSide_Action.END_TURN_ACTION;
             }
@@ -46,64 +44,46 @@ namespace MonkeyDungeon_Core.GameFeatures
         }
         protected virtual void Handle_Get__Combat_Action__Controller() { }
 
-        internal void Action_Performed()
-            => Controller_Reset_Pending_Action();
+        internal void Begin__Combat__ServerSide_Controller() => Handle_Begin__Combat__ServerSide_Controller();
+        protected virtual void Handle_Begin__Combat__ServerSide_Controller() { }
 
-        internal void Combat_Begin() => Handle_Combat_Begin();
-        protected virtual void Handle_Combat_Begin() { }
-
-        internal void Combat_Begin_Turn()
+        internal void Begin__Combat_Turn__ServerSide_Controller()
         {
-            Controller_Reset_Pending_Action();
-            Handle_Combat_Begin_Turn();
+            Reset__Pending_Action__ServerSide_Controller();
+            Handle_Begin__Combat_Turn__ServerSide_Controller();
         }
-        protected virtual void Handle_Combat_Begin_Turn() { }
+        protected virtual void Handle_Begin__Combat_Turn__ServerSide_Controller() { }
 
         internal void Combat_End_Turn()
         {
-            Handle_Combat_End_Turn();
+            Handle_Conclude__Combat_Turn__ServerSide_Controller();
         }
-        protected virtual void Handle_Combat_End_Turn() { }
+        protected virtual void Handle_Conclude__Combat_Turn__ServerSide_Controller() { }
 
-        internal void Combat_End()
+        internal void Conclude__Combat__ServerSide_Controller()
         {
-            Handle_Combat_End();
+            Handle_Conclude__Combat__ServerSide_Controller();
         }
-        protected virtual void Handle_Combat_End() { }
+        protected virtual void Handle_Conclude__Combat__ServerSide_Controller() { }
 
-        private void Controller_Reset_Pending_Action()
+        internal void Reset__Pending_Action__ServerSide_Controller()
             => GameEntity_Controller_ServerSide_Action = new GameEntity_ServerSide_Action();
         
         
         
         public GameEntity_ServerSide_Controller(bool isAutonomous = false)
+        : base(GameEntity_Attribute_Name.GENERIC__ATTRIBUTE_NAME) //TODO: make controller tags.
         {
             IsAutomonous = isAutonomous;
-            Controller_Reset_Pending_Action();
+            Reset__Pending_Action__ServerSide_Controller();
         }
 
-        internal void Controller_Attack_To_Entity(GameEntity_ServerSide newEntityServerSide)
-        {
-            if (Attached_GameEntity != null)
-                Controller_Detach_From_Entity();
-            Handle_Controller_Attach_To_Entity(newEntityServerSide);
-            Attached_GameEntity = newEntityServerSide;
-            //TODO: remove this
-            Attached_GameEntity.EntityServerSideController = this;
+        internal void Attach_To__Entity__ServerSide_Controller(GameEntity_ServerSide newEntityServerSide)
+            => Attach_To__Entity__Attribute(newEntityServerSide);
 
-            Controller_Reset_Pending_Action();
-        }
-        
         internal void Controller_Detach_From_Entity()
-        {
-            Handle_Controller_Detach_From_Entity();
-            Attached_GameEntity = null;
-            
-            Controller_Reset_Pending_Action();
-        }
+            => Detach_From__Entity__Attribute();
         
-        protected virtual void Handle_Controller_Attach_To_Entity(GameEntity_ServerSide newEntityServerSide) { }
-        protected virtual void Handle_Controller_Detach_From_Entity() { }
         public virtual GameEntity_ServerSide_Controller Clone__Controller()
             => new GameEntity_ServerSide_Controller(IsAutomonous);
     }

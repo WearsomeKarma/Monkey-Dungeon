@@ -10,7 +10,7 @@ namespace MonkeyDungeon_UI.Prefabs
         private readonly Vector3[] Roster_Positions = new Vector3[MD_PARTY.MAX_PARTY_SIZE];
         
         internal GameEntity_Position_Vector_Survey(Vector3 basisX, Vector3 basisY) 
-            : base(Vector3.Zero)
+            : base(() => Vector3.Zero)
         {
             BASIS_X = basisX;
             BASIS_Y = basisY;
@@ -19,7 +19,7 @@ namespace MonkeyDungeon_UI.Prefabs
         }
 
         internal GameEntity_Position_Vector_Survey(Vector3[] fixedPositions)
-            : base(Vector3.Zero)
+            : base(() => Vector3.Zero)
         {
             for (int i = 0; i < Roster_Positions.Length; i++)
                 Roster_Positions[i] = fixedPositions[i];

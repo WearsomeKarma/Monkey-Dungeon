@@ -1,25 +1,22 @@
-﻿using MonkeyDungeon_Core.GameFeatures.GameComponents;
-using MonkeyDungeon_Core.GameFeatures.GameComponents.EntityAttributes.Abilities;
-using MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers;
+﻿using MonkeyDungeon_Core.GameFeatures.Multiplayer.Handlers;
 using MonkeyDungeon_Core.GameFeatures.Multiplayer.MessageWrappers;
 using MonkeyDungeon_Vanilla_Domain;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures;
 using MonkeyDungeon_Vanilla_Domain.Multiplayer;
-using System;
 using System.Collections.Generic;
 using MonkeyDungeon_Core.GameFeatures.GameStates.Combat;
-using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames;
 using MonkeyDungeon_Vanilla_Domain.GameFeatures.AttributeNames.Definitions;
 
 namespace MonkeyDungeon_Core.GameFeatures.GameStates
 {
     public enum CombatState
     {
-        BeginNextTurn,
-        PlayCurrentTurn,
-        FinishCurrentTurn,
-        FinishCombat,
-        OutOfCombat
+        CombatState_Progress__Turn_Order,
+        CombatState_Begin__Turn,
+        CombatState_Play__Current_Turn,
+        CombatState_Finish__Current_Turn,
+        CombatState_Finish__Combat,
+        CombatState_Await__State_Transition
     }
 
     public class GameState_Combat : GameState
@@ -38,15 +35,15 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
         /// </summary>
         public int TurnOffset { get; private set; }
 
-        public List<GameEntity_ID> TurnOrder { get; private set; }
-        public GameEntity_ServerSide Entity_Of_Current_Turn => Game_Field.Get_Entity(TurnOrder[TurnIndex]);
-        public GameEntity_ServerSide_Controller ServerSideControllerOfCurrentTurn => Entity_Of_Current_Turn.EntityServerSideController;
-        public GameEntity_ID Entity_ID_Of_Current_Turn => Entity_Of_Current_Turn.GameEntity_ID;
-        public Multiplayer_Relay_ID Entity_Of_Current_Turn_Relay_Id => Entity_Of_Current_Turn.Multiplayer_Relay_ID;
+        public List<GameEntity_ID> Combat__Turn_Order { get; private set; }
+        public GameEntity_ServerSide Combat__Entity__Of_Current_Turn => Combat__Game_Field.Get_Entity(Combat__Turn_Order[TurnIndex]);
+        public GameEntity_ServerSide_Controller Combat__Entity_Controller__Of_Current_Turn => Combat__Entity__Of_Current_Turn.Entity_ServerSide_Controller;
+        public GameEntity_ID Combat__Entity_ID__Of_Current_Turn => Combat__Entity__Of_Current_Turn.GameEntity__ID;
+        public Multiplayer_Relay_ID Combat__Entity_Relay_Id__Of_Current_Turn => Combat__Entity__Of_Current_Turn.GameEntity__Multiplayer_Relay_ID;
 
-        public GameEntity_ServerSide_Roster Game_Field => GameState_Machine.GameField;
-        internal GameEntity_ServerSide[] Players => Game_Field.Get_Entities(GameEntity_Team_ID.TEAM_ONE_ID);
-        internal GameEntity_ServerSide[] Enemies => Game_Field.Get_Entities(GameEntity_Team_ID.TEAM_TWO_ID);
+        public GameEntity_ServerSide_Roster Combat__Game_Field => GameState_Machine.GameField;
+        internal GameEntity_ServerSide[] Combat__Players => Combat__Game_Field.Get_Entities(GameEntity_Team_ID.TEAM_ONE_ID);
+        internal GameEntity_ServerSide[] Combat__Enemies => Combat__Game_Field.Get_Entities(GameEntity_Team_ID.TEAM_TWO_ID);
 
         public GameState_Combat()
         {
@@ -55,9 +52,9 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
             ACTION_RESOLVER = new Combat_Action_Resolver(this);
         }
 
-        protected override void Handle_AcquiredWorld()
+        protected override void Handle_Acquired__Game_StateMachine__GameState()
         {
-            GameState_Machine.Register_Multiplayer_Handlers(
+            GameState_Machine.Register__Multiplayer_Handlers__StateMachine(
                 new MMH_Set_Entity(this),
                 new MMH_Set_Entity_Ready(this),
                 new MMH_Set_Combat_Action(this),
@@ -66,38 +63,43 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
                 );
         }
 
-        private void DictateTurnOrder()
+        private void Dictate__Turn_Order()
         {
-            TurnOrder = new List<GameEntity_ID>();
+            Combat__Turn_Order = new List<GameEntity_ID>();
 
-            GameEntity_ServerSide[] players = Players;
-            GameEntity_ServerSide[] enemies = Enemies;
+            GameEntity_ServerSide[] players = Combat__Players;
+            GameEntity_ServerSide[] enemies = Combat__Enemies;
 
             for(int i=0;i< players.Length;i++)
             {
-                TurnOrder.Add(players[i].GameEntity_ID);
+                Combat__Turn_Order.Add(players[i].GameEntity__ID);
             }
             for(int i=0;i<enemies.Length;i++)
             {
-                TurnOrder.Add(enemies[i].GameEntity_ID);
+                Combat__Turn_Order.Add(enemies[i].GameEntity__ID);
             }
         }
         
-        protected override void Handle_Update_State(Game_StateMachine gameWorld, double deltaTime)
+        protected override void Handle_Update__State__GameState_Combat(Game_StateMachine gameWorld, double deltaTime)
         {
             switch(CombatState)
             {
-                case CombatState.BeginNextTurn:
-                    
-                    Begin_Turn();
+                case CombatState.CombatState_Progress__Turn_Order:
+
+                    Combat_State__Progress_Turn_Order();
                     break;
                 
-                case CombatState.PlayCurrentTurn:
+                case CombatState.CombatState_Begin__Turn:
                     
-                    if (Check_For_Team_Incapacitation())
+                    Combat_State__Begin_Turn();
+                    break;
+                
+                case CombatState.CombatState_Play__Current_Turn:
+                    
+                    if (Check_For__Team_Incapacitation())
                         break;
                     
-                    GameEntity_ServerSide_Action action = ServerSideControllerOfCurrentTurn.Get_Combat_Action();
+                    GameEntity_ServerSide_Action action = Combat__Entity_Controller__Of_Current_Turn.Get_Combat_Action();
                     
                     if (action == GameEntity_ServerSide_Action.END_TURN_ACTION)
                     {
@@ -107,77 +109,88 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
                     
                     if (action?.IsSetupComplete ?? false)
                     {
-                        GameState_Machine.Broadcast(
+                        GameState_Machine.Broadcast__Message__StateMachine(
                             new MMW_Announcement(action.Action__Selected_Ability.Attribute_Name)
                         );
                         
-                        ACTION_RESOLVER.Resolve_Action(action);
+                        ACTION_RESOLVER.Resolve__Action__Resolver(action);
 
-                        ServerSideControllerOfCurrentTurn.Action_Performed();
+                        Combat__Entity_Controller__Of_Current_Turn.Reset__Pending_Action__ServerSide_Controller();
                     }
                     break;
                 
-                case CombatState.FinishCurrentTurn:
-                    Finish_Turn();
+                case CombatState.CombatState_Finish__Current_Turn:
+                    Combat_State__Finish_Turn();
                     break;
-                case CombatState.FinishCombat:
-                    Finish_Combat();
+                case CombatState.CombatState_Finish__Combat:
+                    Combat_State__Finish_Combat();
                     break;
-                case CombatState.OutOfCombat:
+                case CombatState.CombatState_Await__State_Transition:
                 default: //do nothing.
                     break;
             }
         }
 
-        private void Begin_Turn()
+        private void Combat_State__Progress_Turn_Order()
         {
-            Entity_Of_Current_Turn.Combat_Begin_Turn__GameEntity();
+            Progress__Turn_Order();
+            CombatState = CombatState.CombatState_Begin__Turn;
+        }
+        
+        private void Combat_State__Begin_Turn()
+        {
+            if (Combat__Entity__Of_Current_Turn.GameEntity__Is_Not_Present)
+            {
+                CombatState = CombatState.CombatState_Progress__Turn_Order;
+                return;
+            }
+
+            Combat__Entity__Of_Current_Turn.Combat_Begin_Turn__GameEntity();
 
             //Relay of 0 or higher is a player, so we tell them their turn has begun.
-            if (Entity_Of_Current_Turn_Relay_Id > -1)
+            if (Combat__Entity_Relay_Id__Of_Current_Turn > -1)
             {
-                GameState_Machine.Relay(
-                    Entity_Of_Current_Turn_Relay_Id,
-                    new MMW_Begin_Turn(Entity_ID_Of_Current_Turn)
+                GameState_Machine.Relay__Message__StateMachine(
+                    Combat__Entity_Relay_Id__Of_Current_Turn,
+                    new MMW_Begin_Turn(Combat__Entity_ID__Of_Current_Turn)
                 );
             }
 
-            CombatState = CombatState.PlayCurrentTurn;
+            CombatState = CombatState.CombatState_Play__Current_Turn;
         }
 
-        private void Finish_Turn()
+        private void Combat_State__Finish_Turn()
         {
-            Entity_Of_Current_Turn.Combat_End_Turn__GameEntity();
-            Progress_TurnOrder();
+            Combat__Entity__Of_Current_Turn.Combat_End_Turn__GameEntity();
             
-            CombatState = CombatState.BeginNextTurn;
+            CombatState = CombatState.CombatState_Progress__Turn_Order;
         }
 
-        private bool Check_For_Team_Incapacitation()
+        private bool Check_For__Team_Incapacitation()
         {
-            if (Is_Team_Incapacitated(GameEntity_Team_ID.TEAM_TWO_ID))
+            if (Check_If__Team_Is_Incapacitated(GameEntity_Team_ID.TEAM_TWO_ID))
             {
-                CombatState = CombatState.FinishCombat;
+                CombatState = CombatState.CombatState_Finish__Combat;
                 return true;
             }
-            if (Is_Team_Incapacitated(GameEntity_Team_ID.TEAM_ONE_ID))
+            if (Check_If__Team_Is_Incapacitated(GameEntity_Team_ID.TEAM_ONE_ID))
             {
-                GameState_Machine.Request_Transition_ToState<GameState_GameOver>();
+                GameState_Machine.Request__State_Transition__StateMachine<GameState_GameOver>();
                 return true;
             }
 
             return false;
         }
         
-        private void Finish_Combat()
+        private void Combat_State__Finish_Combat()
         {
-            foreach(GameEntity_ServerSide entity in Game_Field.Get_Entities())
+            foreach(GameEntity_ServerSide entity in Combat__Game_Field.Get_Entities())
                 entity.Combat_End__GameEntity();
             
-            GameState_Machine.Request_Transition_ToState<GameState_Traveling>();
+            GameState_Machine.Request__State_Transition__StateMachine<GameState_Traveling>();
         }
         
-        internal void Act_Melee_Attack(GameEntity_ID scene_GameObject_ID1, GameEntity_ID scene_GameObject_ID2)
+        internal void Relay__Melee_Attack__GameState_Combat(GameEntity_ID scene_GameObject_ID1, GameEntity_ID scene_GameObject_ID2)
         {
             GameEntity_ID ally, enemy;
             if (scene_GameObject_ID1 < MD_PARTY.MAX_PARTY_SIZE)
@@ -190,23 +203,23 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
                 ally = scene_GameObject_ID2;
                 enemy = scene_GameObject_ID1;
             }
-            GameState_Machine.Broadcast(
+            GameState_Machine.Broadcast__Message__StateMachine(
                 new MMW_Set_Melee_Combattants(
                     ally,
                     enemy
                     )
                 );
 
-            GameState_Machine.Broadcast(
+            GameState_Machine.Broadcast__Message__StateMachine(
                 new MMW_Invoke_UI_Event(
                     MD_VANILLA_UI_EVENT_NAMES.UI_EVENT_MELEE
                     )
                 );
         }
 
-        internal void Act_Ranged_Attack(GameEntity_ID shooterId, GameEntity_ID targetId, GameEntity_Attribute_Name particleType)
+        internal void Relay__Ranged_Attack__GameState_Combat(GameEntity_ID shooterId, GameEntity_ID targetId, GameEntity_Attribute_Name particleType)
         {
-            GameState_Machine.Broadcast(
+            GameState_Machine.Broadcast__Message__StateMachine(
                 new MMW_Set_Ranged_Particle(
                     shooterId,
                     targetId,
@@ -215,57 +228,58 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates
                 );
         }
 
-        public void TakeAnExtraTurn() => TurnOffset = 0;
-        private void Normalize_TurnProgression() => TurnOffset = 1;
-        private void Progress_TurnOrder()
+        public void Register__Extra_Turn__GameState_Combat() => TurnOffset = 0;
+        private void Normalize__Turn_Progression() => TurnOffset = 1;
+        private void Progress__Turn_Order()
         {
-            TurnIndex = (TurnIndex + TurnOffset) % TurnOrder.Count;
-            Normalize_TurnProgression();
+            TurnIndex = (TurnIndex + TurnOffset) % Combat__Turn_Order.Count;
+            Normalize__Turn_Progression();
         }
 
         public void Request_EndOfTurn()
         {
-            CombatState = CombatState.FinishCurrentTurn;
+            CombatState = CombatState.CombatState_Finish__Current_Turn;
         }
 
-        protected override void Handle_Begin_State(Game_StateMachine gameWorld)
+        protected override void Handle_Begin__State__GameState(Game_StateMachine gameWorld)
         {
-            List<GameEntity_ServerSide> enemies = GenerateNewEnemies(gameWorld);
+            List<GameEntity_ServerSide> enemies = Generate__New_Enemies(gameWorld);
             GameEntity_Attribute_Name[] enemyRaces = new GameEntity_Attribute_Name[enemies.Count];
             for (int i = 0; i < enemies.Count; i++)
-                enemyRaces[i] = enemies[i].GameEntity_Race;
+                enemyRaces[i] = enemies[i].GameEntity__Race;
 
             for (int i = 0; i < enemyRaces.Length; i++)
             {
-                GameState_Machine.Broadcast(
+                GameState_Machine.Broadcast__Message__StateMachine(
                     new MMW_Declare_Entity_Descriptions(GameEntity_ID.IDS[i + MD_PARTY.MAX_PARTY_SIZE], enemyRaces[i])
                     );
             }
 
             gameWorld.Set__Entities(enemies.ToArray());
 
-            gameWorld.Relay_Team(GameEntity_Team_ID.TEAM_TWO_ID);
+            gameWorld.Relay__Team__StateMachine(GameEntity_Team_ID.TEAM_TWO_ID);
+            
 
-            CombatState = CombatState.BeginNextTurn;
+            CombatState = CombatState.CombatState_Begin__Turn;
 
-            DictateTurnOrder();
+            Dictate__Turn_Order();
         }
 
-        protected override void Handle_End_State(Game_StateMachine gameWorld)
+        protected override void Handle_Conclude__State__GameState(Game_StateMachine gameWorld)
         {
-            gameWorld.Dismiss_Team(GameEntity_Team_ID.TEAM_TWO_ID);
+            gameWorld.Dismiss__Team__StateMachine(GameEntity_Team_ID.TEAM_TWO_ID);
         }
 
-        internal bool Is_Team_Incapacitated(GameEntity_Team_ID teamID)
+        internal bool Check_If__Team_Is_Incapacitated(GameEntity_Team_ID teamID)
         {
             bool ret = true;
-            foreach (GameEntity_ServerSide entity in Game_Field.Get_Entities(teamID))
-                ret = ret && entity.IsIncapacitated;
+            foreach (GameEntity_ServerSide entity in Combat__Game_Field.Get_Entities(teamID))
+                ret = ret && entity.GameEntity__Is_Incapacitated;
             return ret;
         }
 
         //TODO: FIX THIS
-        private List<GameEntity_ServerSide> GenerateNewEnemies(Game_StateMachine gameState)
+        private List<GameEntity_ServerSide> Generate__New_Enemies(Game_StateMachine gameState)
         {
             return new List<GameEntity_ServerSide>()
             {

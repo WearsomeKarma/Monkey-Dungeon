@@ -8,16 +8,16 @@ namespace MonkeyDungeon_Core.GameFeatures.GameComponents.EntityQuantities.Stats
         public GameEntity_ServerSide_Stat
             (
             GameEntity_Attribute_Name statName = null, 
+            double? initalValue = null,
             double minQuantity = Double.MinValue, 
-            double maxQuantity = Double.MaxValue, 
-            double? initalValue = null
+            double maxQuantity = Double.MaxValue
             ) 
             : base
                 (
-                statName ?? GameEntity_Attribute_Name.GENERIC__ATTRIBUTE_NAME, 
+                statName ?? GameEntity_Attribute_Name.GENERIC__ATTRIBUTE_NAME,
+                initalValue, 
                 minQuantity, 
-                maxQuantity, 
-                initalValue
+                maxQuantity
                 )
         {
         }
@@ -26,5 +26,16 @@ namespace MonkeyDungeon_Core.GameFeatures.GameComponents.EntityQuantities.Stats
             => Attach_To__Entity__Attribute(entity);
         internal void Detach_From__Entity__ServerSide_Stat()
             => Detach_From__Entity__Attribute();
+
+        public override GameEntity_Stat<GameEntity_ServerSide> Clone__Stat()
+        {
+            return new GameEntity_ServerSide_Stat
+            (
+                Attribute_Name, 
+                Quantity__Minimal_Value, 
+                Quantity__Maximal_Value,
+                Quantity__Value
+            );
+        }
     }
 }

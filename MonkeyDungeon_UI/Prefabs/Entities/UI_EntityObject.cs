@@ -60,9 +60,9 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
                 AnimationComponent.SetNode(3);
         }
 
-        internal void Entity_Died()
+        internal void Entity_Died(bool status)
         {
-            AnimationComponent.Play(4);
+            AnimationComponent.Play(status ? 4 : 0);
         }
 
         internal void Entity_Dismissal_State_Changed(bool state)

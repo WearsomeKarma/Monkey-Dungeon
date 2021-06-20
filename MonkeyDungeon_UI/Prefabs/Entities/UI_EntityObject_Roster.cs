@@ -6,7 +6,7 @@ namespace MonkeyDungeon_UI.Prefabs.Entities
     {
         //TODO: contemplate giving a non-null default value?
         internal UI_EntityObject_Roster() 
-            : base(null)
+            : base(() => null)
         {
         }
 

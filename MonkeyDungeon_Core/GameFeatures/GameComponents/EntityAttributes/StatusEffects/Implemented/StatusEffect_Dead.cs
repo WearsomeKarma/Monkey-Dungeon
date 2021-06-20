@@ -11,21 +11,20 @@ namespace MonkeyDungeon_Core.GameFeatures.GameComponents.EntityAttributes.Status
         {
         }
 
-        protected override void Handle_Attach_To_Entity(GameEntity_ServerSide newEntityServerSide)
+        protected override void Handle_Attach_To__Entity__Attribute()
         {
-            newEntityServerSide.Remove_All__StatusEffects__GameEntity();
-            newEntityServerSide.Set_Incapacitated_State(true);
+            Attached_Entity.Remove_All__StatusEffects__GameEntity();
+            Attached_Entity.Set_Incapacitated_State(true);
         }
 
-        protected override void Handle_Detach_From_Entity(GameEntity_ServerSide oldEntityServerSide)
+        protected override void Handle_Detach_From__Entity__Attribute()
         {
-            oldEntityServerSide.Remove__GameEntity_StatusEffect(this);
+            Attached_Entity.Remove__GameEntity_StatusEffect(this);
         }
 
-        protected override void Handle_Combat_BeginTurn__StatusEffect()
+        protected override void Handle_Begin__Combat_Turn__StatusEffect()
         {
-            //combat.Request_EndOfTurn();
-            throw new NotImplementedException(); //TODO: resolve above.
+            
         }
     }
 }

@@ -8,7 +8,7 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
 {
     public class Resolution_Stage_Dodge_Bonus : Combat_Action_Resolution_Stage
     {
-        protected override void Handle_Stage(GameEntity_ServerSide_Action action)
+        protected override Combat_Action_Conclusion_Type Handle__Resolve_Action__Resolution_Stage(GameEntity_ServerSide_Action action)
         {
             GameEntity_ServerSide_Ability ability = action.Action__Selected_Ability;
             GameEntity_Position[] targetPositions = action.Action__Survey_Target.Get__Targeted_Positions__Survey_Target();
@@ -16,14 +16,14 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
             
             foreach(GameEntity_Position targetedPosition in targetPositions)
             {
-                entity = Get_Entity(targetedPosition);
+                entity = Get__Entity__Resolution_Stage(targetedPosition);
 
                 if (ability.Get__Dodging_Stat__Ability() == GameEntity_Attribute_Name.NULL__ATTRIBUTE_NAME)
                 {
                     action.Action__Survey_Dodge_Bonuses[targetedPosition]
                         .Offset__Value__Quantity(action.Action__Hit_Bonus__Of_Invoking_Entity);
                     
-                    return;
+                    return Combat_Action_Conclusion_Type.SUCCESS;
                 }
                 
                 GameEntity_ServerSide_Stat dodgeStat = 
@@ -33,6 +33,8 @@ namespace MonkeyDungeon_Core.GameFeatures.GameStates.Combat.ActionResolutionStag
 
                 action.Action__Survey_Dodge_Bonuses[targetedPosition].Offset__Value__Quantity(entity.Get_Dodge_Bonuses__GameEntity());
             }
+
+            return Combat_Action_Conclusion_Type.SUCCESS;
         }
     }
 }

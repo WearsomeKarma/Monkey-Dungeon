@@ -28,39 +28,39 @@ namespace MonkeyDungeon_Core.GameFeatures
             return entities.ToArray();
         }
 
-        private bool Check_For_Team_Qualification(GameEntity_ServerSide entity, GameEntity_Team_ID teamID, bool checkForConciousness)
+        private bool Check_For__Team_Qualification(GameEntity_ServerSide entity, GameEntity_Team_ID teamID, bool checkForConciousness)
         {
             return (
-                    entity.GameEntity_Team_ID == teamID
+                    entity.GameEntity__Team_ID == teamID
                     )
                 &&
                 (
                     !checkForConciousness
                     ||
-                    !entity.IsIncapacitated
+                    !entity.GameEntity__Is_Incapacitated
                 )
                 ;
         }
         
         internal GameEntity_ServerSide[] Get_Entities(GameEntity_Team_ID teamID, bool checkForConciousness=false)
         {
-            GameEntity_ServerSide[] entities = Get__Reduced_Field__Survey();
+            GameEntity_ServerSide[] entities = Get__Reduced_Field__Survey(teamID);
 
             List<GameEntity_ServerSide> ofTeam = new List<GameEntity_ServerSide>();
             
             foreach(GameEntity_ServerSide entity in entities)
-                if (Check_For_Team_Qualification(entity, teamID, checkForConciousness))
+                if (Check_For__Team_Qualification(entity, teamID, checkForConciousness))
                     ofTeam.Add(entity);
 
             return ofTeam.ToArray();
         }
         
-        public GameEntity_Attribute_Name_Race[] Get_Races()
+        public GameEntity_Attribute_Name_Race[] Get_Races(GameEntity_Team_ID teamId)
         {
             List<GameEntity_Attribute_Name_Race> races = new List<GameEntity_Attribute_Name_Race>();
             
-            foreach(GameEntity_ServerSide entity in Get__Reduced_Field__Survey())
-                races.Add(entity.GameEntity_Race);
+            foreach(GameEntity_ServerSide entity in Get__Reduced_Field__Survey(teamId))
+                races.Add(entity.GameEntity__Race);
 
             return races.ToArray();
         }
@@ -74,11 +74,11 @@ namespace MonkeyDungeon_Core.GameFeatures
         {
             bool ret = true;
 
-            foreach (GameEntity_ServerSide entity in Get__Reduced_Field__Survey())
+            foreach (GameEntity_ServerSide entity in Get__Reduced_Field__Survey(GameEntity_Team_ID.TEAM_ONE_ID))
             {
-                Console.WriteLine("{0} -- isReady: {1}", entity, entity.IsReady);
-                if (entity.GameEntity_Team_ID == GameEntity_Team_ID.TEAM_ONE_ID)
-                    ret = entity.IsReady;
+                Console.WriteLine("{0} -- isReady: {1}", entity, entity.GameEntity__Is_Ready);
+                if (entity.GameEntity__Team_ID == GameEntity_Team_ID.TEAM_ONE_ID)
+                    ret = entity.GameEntity__Is_Ready;
                 if (!ret)
                     return ret;
             }
